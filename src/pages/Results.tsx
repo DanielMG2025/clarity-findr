@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Pencil, MapPin, Star, TrendingUp, Sparkles, Lock } from "lucide-react";
+import { Pencil, MapPin, Star, TrendingUp, Sparkles, Lock, Info, Activity } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
@@ -11,11 +11,18 @@ import {
   AggregatedRow,
   AssessmentData,
   Clinic,
+  ClinicInsight,
   MatchResult,
   runMatching,
   storage,
 } from "@/lib/fertility";
 import QuoteForm from "@/components/QuoteForm";
+
+const TIER_STYLE: Record<string, string> = {
+  premium: "bg-primary/10 text-primary border-primary/30",
+  mid: "bg-muted text-foreground border-border",
+  budget: "bg-accent-soft text-accent border-accent/30",
+};
 
 const ConfidencePill = ({ confidence }: { confidence: MatchResult["confidence"] }) => {
   const map = {
