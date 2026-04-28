@@ -40,11 +40,26 @@ const ConfidencePill = ({ confidence }: { confidence: MatchResult["confidence"] 
 const ResultCard = ({ m, unlocked }: { m: MatchResult; unlocked: boolean }) => {
   const c = m.clinic;
   const showRange = unlocked && m.sample_size > 0;
+  const priceLabel =
+    m.vs_country_avg_pct === null
+      ? null
+      : m.vs_country_avg_pct < -2
+        ? `${Math.abs(m.vs_country_avg_pct)}% below average`
+        : m.vs_country_avg_pct > 2
+          ? `${m.vs_country_avg_pct}% above average`
+          : "in line with average";
   return (
     <Card className="p-6 shadow-card hover:shadow-elegant transition-smooth bg-gradient-card border-2">
       <div className="flex items-start justify-between gap-4 mb-4">
-        <div>
-          <h3 className="text-xl font-bold">{c.name}</h3>
+        <div className="min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            <h3 className="text-xl font-bold">{c.name}</h3>
+            <span
+              className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider border ${TIER_STYLE[c.tier]}`}
+            >
+              {c.tier}
+            </span>
+          </div>
           <div className="flex items-center gap-3 text-sm text-muted-foreground mt-1">
             <span className="inline-flex items-center gap-1">
               <MapPin className="size-3.5" /> {c.city}, {c.country}
@@ -78,7 +93,7 @@ const ResultCard = ({ m, unlocked }: { m: MatchResult; unlocked: boolean }) => {
               <>€{m.estimated_price.toLocaleString()}</>
             )}
           </div>
-          <div className="mt-1 flex items-center gap-2">
+          <div className="mt-1 flex items-center gap-2 flex-wrap">
             <ConfidencePill confidence={m.confidence} />
             {m.sample_size > 0 && (
               <span className="text-[11px] text-muted-foreground">
@@ -86,22 +101,28 @@ const ResultCard = ({ m, unlocked }: { m: MatchResult; unlocked: boolean }) => {
               </span>
             )}
           </div>
+          {priceLabel && (
+            <div className="text-[11px] text-muted-foreground mt-1.5">{priceLabel}</div>
+          )}
         </div>
         <div className="rounded-xl bg-accent-soft p-4">
           <div className="text-xs text-muted-foreground uppercase tracking-wider">
-            Success rate
+            Clinic score
           </div>
-          <div className="text-xl font-bold text-accent tabular-nums">
-            {c.success_rate_estimate}%
-          </div>
+          <div className="text-xl font-bold text-accent tabular-nums">{m.composite_score}/100</div>
           <div className="text-[11px] text-muted-foreground mt-1 flex items-center gap-1">
-            <TrendingUp className="size-3" /> reported
+            <Activity className="size-3" /> success · price · rating
           </div>
+          {c.success_rate_estimate && (
+            <div className="text-[11px] text-muted-foreground mt-1">
+              <TrendingUp className="size-3 inline" /> {c.success_rate_estimate}% reported success
+            </div>
+          )}
         </div>
       </div>
 
       <div className="flex flex-wrap gap-1.5 mb-4">
-        {c.treatments_available.map((t) => (
+        {c.treatments_available.slice(0, 4).map((t) => (
           <Badge key={t} variant="secondary" className="rounded-full font-medium">
             {t}
           </Badge>
