@@ -484,8 +484,18 @@ const Results = () => {
             )}
 
             {!loading && matches.length > 0 && (() => {
-              const totalQuotes = matches.reduce((s, m) => s + m.sample_size, 0);
+              const scrapedBacked = matches.filter((m) => m.price_source === "scraped").length;
               const crowdBacked = matches.filter((m) => m.price_source === "crowd").length;
+              const realBacked = scrapedBacked + crowdBacked;
+              const totalQuotes = matches
+                .filter((m) => m.price_source === "crowd")
+                .reduce((s, m) => s + m.sample_size, 0);
+              const parts: string[] = [];
+              if (scrapedBacked) parts.push(`${scrapedBacked} extracted from clinic websites`);
+              if (crowdBacked)
+                parts.push(
+                  `${crowdBacked} from ${totalQuotes} community quote${totalQuotes === 1 ? "" : "s"}`,
+                );
               return (
                 <div className="rounded-2xl border-2 border-primary/30 bg-card/80 backdrop-blur p-4 mb-2 flex flex-wrap items-center gap-3">
                   <div className="size-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
@@ -496,19 +506,25 @@ const Results = () => {
                       Based on real market data
                     </div>
                     <div className="text-sm text-foreground/90">
-                      <span className="font-semibold">{crowdBacked} of {matches.length}</span>{" "}
-                      top matches priced from{" "}
-                      <span className="font-semibold inline-flex items-center gap-1">
-                        <Users className="size-3.5" />
-                        {totalQuotes} community quote{totalQuotes === 1 ? "" : "s"}
-                      </span>
-                      {crowdBacked < matches.length && (
+                      <span className="font-semibold">
+                        {realBacked} of {matches.length}
+                      </span>{" "}
+                      top matches priced from real sources
+                      {parts.length > 0 && (
+                        <span className="text-muted-foreground"> — {parts.join(", ")}</span>
+                      )}
+                      {realBacked < matches.length && (
                         <span className="text-muted-foreground">
-                          {" "}— remaining clinics fall back to clinic-listed estimates.
+                          {parts.length ? "; " : " — "}remaining fall back to clinic-listed estimates.
                         </span>
                       )}
                     </div>
                   </div>
+                  {scrapedBacked > 0 && (
+                    <span className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-full font-semibold bg-accent/15 text-accent border border-accent/40">
+                      <Globe className="size-3" /> Live scraped data
+                    </span>
+                  )}
                 </div>
               );
             })()}
