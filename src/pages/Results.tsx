@@ -37,9 +37,65 @@ const ConfidencePill = ({ confidence }: { confidence: MatchResult["confidence"] 
   );
 };
 
-const ResultCard = ({ m, unlocked }: { m: MatchResult; unlocked: boolean }) => {
+const ResultCard = ({
+  m,
+  unlocked,
+  assessment,
+}: {
+  m: MatchResult;
+  unlocked: boolean;
+  assessment: AssessmentData;
+}) => {
   const c = m.clinic;
   const showRange = unlocked && m.sample_size > 0;
+  const [aiExplanation, setAiExplanation] = useState<string | null>(null);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
+
+  const fetchExplanation = async () => {
+    if (aiExplanation || aiLoading) return;
+    setAiLoading(true);
+    setAiError(null);
+    try {
+      const { data, error } = await supabase.functions.invoke("clinic-explainer", {
+        body: {
+          assessment: {
+            age: assessment.age,
+            treatment_interest: assessment.treatment_interest,
+            budget_range: assessment.budget_range,
+            country_preference: assessment.country_preference,
+            diagnosis: assessment.diagnosis,
+          },
+          match: {
+            clinic_name: c.name,
+            country: c.country,
+            city: c.city,
+            tier: c.tier,
+            estimated_price: m.estimated_price,
+            price_low: m.price_low,
+            price_high: m.price_high,
+            success_rate: c.success_rate_estimate,
+            rating: c.rating_score,
+            sample_size: m.sample_size,
+            confidence: m.confidence,
+            pricing_percentile: m.pricing_percentile,
+            vs_country_avg_pct: m.vs_country_avg_pct,
+            volatility: m.volatility,
+            composite_score: m.composite_score,
+            treatments_available: c.treatments_available,
+          },
+        },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      setAiExplanation(data?.explanation ?? "");
+    } catch (e) {
+      setAiError(e instanceof Error ? e.message : "Could not generate explanation");
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
   const priceLabel =
     m.vs_country_avg_pct === null
       ? null
@@ -145,9 +201,23 @@ const ResultCard = ({ m, unlocked }: { m: MatchResult; unlocked: boolean }) => {
         </div>
       )}
 
-      <Button variant="outline" className="w-full">
-        See clinic details
-      </Button>
+      {aiExplanation ? (
+        <div className="rounded-xl border-2 border-primary/30 bg-primary-soft/50 p-4 text-sm space-y-1.5">
+          <div className="flex items-center gap-2 font-semibold text-primary text-xs uppercase tracking-wider">
+            <Sparkles className="size-3.5" /> AI explanation
+          </div>
+          <div className="whitespace-pre-line text-foreground/90 leading-relaxed">
+            {aiExplanation}
+          </div>
+        </div>
+      ) : aiError ? (
+        <div className="text-xs text-destructive bg-destructive/10 rounded-lg p-3">{aiError}</div>
+      ) : (
+        <Button variant="outline" className="w-full" onClick={fetchExplanation} disabled={aiLoading}>
+          <Sparkles className="size-4" />
+          {aiLoading ? "Generating…" : "Why this match? (AI)"}
+        </Button>
+      )}
     </Card>
   );
 };
@@ -264,7 +334,7 @@ const Results = () => {
             <>
               <div className="grid md:grid-cols-2 gap-6">
                 {matches.map((m) => (
-                  <ResultCard key={m.clinic.id} m={m} unlocked={unlocked} />
+                  <ResultCard key={m.clinic.id} m={m} unlocked={unlocked} assessment={assessment!} />
                 ))}
               </div>
               <div className="mt-8 rounded-xl border border-border bg-muted/40 p-4 flex items-start gap-3 text-xs text-muted-foreground">

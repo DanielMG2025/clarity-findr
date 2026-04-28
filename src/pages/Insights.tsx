@@ -8,9 +8,11 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { Sparkles, RefreshCw } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { AggregatedRow } from "@/lib/fertility";
 
@@ -23,6 +25,24 @@ interface QuoteRow {
 const Insights = () => {
   const [agg, setAgg] = useState<AggregatedRow[]>([]);
   const [quotes, setQuotes] = useState<QuoteRow[]>([]);
+  const [aiInsights, setAiInsights] = useState<string[]>([]);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
+
+  const loadAiInsights = async () => {
+    setAiLoading(true);
+    setAiError(null);
+    try {
+      const { data, error } = await supabase.functions.invoke("market-insights", { body: {} });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      setAiInsights(Array.isArray(data?.insights) ? data.insights : []);
+    } catch (e) {
+      setAiError(e instanceof Error ? e.message : "Could not load AI insights");
+    } finally {
+      setAiLoading(false);
+    }
+  };
 
   useEffect(() => {
     (async () => {
@@ -33,6 +53,7 @@ const Insights = () => {
       setAgg((a ?? []) as AggregatedRow[]);
       setQuotes((q ?? []) as QuoteRow[]);
     })();
+    loadAiInsights();
   }, []);
 
   // Avg IVF price by country
@@ -70,6 +91,55 @@ const Insights = () => {
               Aggregated, anonymized pricing data from {quotes.length} community-submitted quotes.
             </p>
           </div>
+        </section>
+
+        <section className="container pt-10">
+          <Card className="p-6 shadow-elegant border-2 border-primary/20 bg-gradient-card">
+            <div className="flex items-center justify-between gap-4 mb-4 flex-wrap">
+              <div className="flex items-center gap-2">
+                <Sparkles className="size-5 text-primary" />
+                <h2 className="text-lg font-bold">AI market insights</h2>
+                <span className="text-[10px] uppercase tracking-wider bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold">
+                  live
+                </span>
+              </div>
+              <Button variant="ghost" size="sm" onClick={loadAiInsights} disabled={aiLoading}>
+                <RefreshCw className={`size-3.5 ${aiLoading ? "animate-spin" : ""}`} />
+                Refresh
+              </Button>
+            </div>
+            {aiError ? (
+              <div className="text-sm text-destructive">{aiError}</div>
+            ) : aiLoading && aiInsights.length === 0 ? (
+              <div className="space-y-2">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="h-4 bg-muted/60 rounded animate-pulse" />
+                ))}
+              </div>
+            ) : aiInsights.length === 0 ? (
+              <div className="text-sm text-muted-foreground">
+                No insights yet. Try refreshing.
+              </div>
+            ) : (
+              <ul className="grid md:grid-cols-2 gap-3">
+                {aiInsights.map((ins, i) => (
+                  <li
+                    key={i}
+                    className="flex gap-3 text-sm bg-background/60 rounded-xl p-3 border border-border/60"
+                  >
+                    <span className="text-primary font-bold tabular-nums shrink-0">
+                      0{i + 1}
+                    </span>
+                    <span className="text-foreground/90 leading-relaxed">{ins}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <p className="text-[11px] text-muted-foreground mt-4">
+              Generated from {agg.length} aggregated price points across all clinics. Updates as
+              the community contributes.
+            </p>
+          </Card>
         </section>
 
         <section className="container py-10 grid lg:grid-cols-3 gap-6">
