@@ -25,6 +25,24 @@ interface QuoteRow {
 const Insights = () => {
   const [agg, setAgg] = useState<AggregatedRow[]>([]);
   const [quotes, setQuotes] = useState<QuoteRow[]>([]);
+  const [aiInsights, setAiInsights] = useState<string[]>([]);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
+
+  const loadAiInsights = async () => {
+    setAiLoading(true);
+    setAiError(null);
+    try {
+      const { data, error } = await supabase.functions.invoke("market-insights", { body: {} });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      setAiInsights(Array.isArray(data?.insights) ? data.insights : []);
+    } catch (e) {
+      setAiError(e instanceof Error ? e.message : "Could not load AI insights");
+    } finally {
+      setAiLoading(false);
+    }
+  };
 
   useEffect(() => {
     (async () => {
@@ -35,6 +53,7 @@ const Insights = () => {
       setAgg((a ?? []) as AggregatedRow[]);
       setQuotes((q ?? []) as QuoteRow[]);
     })();
+    loadAiInsights();
   }, []);
 
   // Avg IVF price by country
