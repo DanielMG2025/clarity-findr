@@ -45,11 +45,14 @@ export const BUDGET_UPPER: Record<BudgetRange, number> = {
   unsure: 100000,
 };
 
+export type ClinicTier = "premium" | "mid" | "budget";
+
 export interface Clinic {
   id: string;
   name: string;
   country: string;
   city: string | null;
+  tier: ClinicTier;
   treatments_available: string[];
   base_price_ivf: number | null;
   base_price_egg_donation: number | null;
@@ -67,6 +70,17 @@ export interface AggregatedRow {
   avg_price: number;
   min_price: number;
   max_price: number;
+  sample_size: number;
+  price_volatility: number;
+}
+
+export interface ClinicInsight {
+  clinic_name: string;
+  avg_user_rating: number;
+  pricing_percentile: number;
+  demand_score: number;
+  availability_score: number;
+  confidence_level: "low" | "medium" | "high";
   sample_size: number;
 }
 
