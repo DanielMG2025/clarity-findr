@@ -8,9 +8,11 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { Sparkles, RefreshCw } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { AggregatedRow } from "@/lib/fertility";
 
