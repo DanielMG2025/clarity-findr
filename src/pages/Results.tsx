@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Pencil, MapPin, Star, TrendingUp, Sparkles, Lock } from "lucide-react";
+import { Pencil, MapPin, Star, TrendingUp, Sparkles, Lock, Info, Activity } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
@@ -11,11 +11,18 @@ import {
   AggregatedRow,
   AssessmentData,
   Clinic,
+  ClinicInsight,
   MatchResult,
   runMatching,
   storage,
 } from "@/lib/fertility";
 import QuoteForm from "@/components/QuoteForm";
+
+const TIER_STYLE: Record<string, string> = {
+  premium: "bg-primary/10 text-primary border-primary/30",
+  mid: "bg-muted text-foreground border-border",
+  budget: "bg-accent-soft text-accent border-accent/30",
+};
 
 const ConfidencePill = ({ confidence }: { confidence: MatchResult["confidence"] }) => {
   const map = {
@@ -33,11 +40,26 @@ const ConfidencePill = ({ confidence }: { confidence: MatchResult["confidence"] 
 const ResultCard = ({ m, unlocked }: { m: MatchResult; unlocked: boolean }) => {
   const c = m.clinic;
   const showRange = unlocked && m.sample_size > 0;
+  const priceLabel =
+    m.vs_country_avg_pct === null
+      ? null
+      : m.vs_country_avg_pct < -2
+        ? `${Math.abs(m.vs_country_avg_pct)}% below average`
+        : m.vs_country_avg_pct > 2
+          ? `${m.vs_country_avg_pct}% above average`
+          : "in line with average";
   return (
     <Card className="p-6 shadow-card hover:shadow-elegant transition-smooth bg-gradient-card border-2">
       <div className="flex items-start justify-between gap-4 mb-4">
-        <div>
-          <h3 className="text-xl font-bold">{c.name}</h3>
+        <div className="min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            <h3 className="text-xl font-bold">{c.name}</h3>
+            <span
+              className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider border ${TIER_STYLE[c.tier]}`}
+            >
+              {c.tier}
+            </span>
+          </div>
           <div className="flex items-center gap-3 text-sm text-muted-foreground mt-1">
             <span className="inline-flex items-center gap-1">
               <MapPin className="size-3.5" /> {c.city}, {c.country}
@@ -71,7 +93,7 @@ const ResultCard = ({ m, unlocked }: { m: MatchResult; unlocked: boolean }) => {
               <>€{m.estimated_price.toLocaleString()}</>
             )}
           </div>
-          <div className="mt-1 flex items-center gap-2">
+          <div className="mt-1 flex items-center gap-2 flex-wrap">
             <ConfidencePill confidence={m.confidence} />
             {m.sample_size > 0 && (
               <span className="text-[11px] text-muted-foreground">
@@ -79,22 +101,28 @@ const ResultCard = ({ m, unlocked }: { m: MatchResult; unlocked: boolean }) => {
               </span>
             )}
           </div>
+          {priceLabel && (
+            <div className="text-[11px] text-muted-foreground mt-1.5">{priceLabel}</div>
+          )}
         </div>
         <div className="rounded-xl bg-accent-soft p-4">
           <div className="text-xs text-muted-foreground uppercase tracking-wider">
-            Success rate
+            Clinic score
           </div>
-          <div className="text-xl font-bold text-accent tabular-nums">
-            {c.success_rate_estimate}%
-          </div>
+          <div className="text-xl font-bold text-accent tabular-nums">{m.composite_score}/100</div>
           <div className="text-[11px] text-muted-foreground mt-1 flex items-center gap-1">
-            <TrendingUp className="size-3" /> reported
+            <Activity className="size-3" /> success · price · rating
           </div>
+          {c.success_rate_estimate && (
+            <div className="text-[11px] text-muted-foreground mt-1">
+              <TrendingUp className="size-3 inline" /> {c.success_rate_estimate}% reported success
+            </div>
+          )}
         </div>
       </div>
 
       <div className="flex flex-wrap gap-1.5 mb-4">
-        {c.treatments_available.map((t) => (
+        {c.treatments_available.slice(0, 4).map((t) => (
           <Badge key={t} variant="secondary" className="rounded-full font-medium">
             {t}
           </Badge>
@@ -129,6 +157,7 @@ const Results = () => {
   const [assessment, setAssessment] = useState<AssessmentData | null>(null);
   const [clinics, setClinics] = useState<Clinic[]>([]);
   const [aggregated, setAggregated] = useState<AggregatedRow[]>([]);
+  const [insights, setInsights] = useState<ClinicInsight[]>([]);
   const [unlocked, setUnlocked] = useState(storage.isUnlocked());
   const [loading, setLoading] = useState(true);
 
@@ -140,24 +169,30 @@ const Results = () => {
     }
     setAssessment(a);
     (async () => {
-      const [{ data: cs }, { data: ag }] = await Promise.all([
+      const [{ data: cs }, { data: ag }, { data: ins }] = await Promise.all([
         supabase.from("clinics").select("*"),
         supabase.from("aggregated_pricing").select("*"),
+        supabase.from("clinic_insights").select("*"),
       ]);
       setClinics((cs ?? []) as Clinic[]);
       setAggregated((ag ?? []) as AggregatedRow[]);
+      setInsights((ins ?? []) as ClinicInsight[]);
       setLoading(false);
     })();
   }, [navigate]);
 
   const matches = useMemo(() => {
     if (!assessment || !clinics.length) return [];
-    return runMatching(assessment, clinics, aggregated);
-  }, [assessment, clinics, aggregated]);
+    return runMatching(assessment, clinics, aggregated, insights);
+  }, [assessment, clinics, aggregated, insights]);
 
   const refreshAggregated = async () => {
-    const { data: ag } = await supabase.from("aggregated_pricing").select("*");
+    const [{ data: ag }, { data: ins }] = await Promise.all([
+      supabase.from("aggregated_pricing").select("*"),
+      supabase.from("clinic_insights").select("*"),
+    ]);
     setAggregated((ag ?? []) as AggregatedRow[]);
+    setInsights((ins ?? []) as ClinicInsight[]);
     setUnlocked(true);
   };
 
@@ -226,11 +261,22 @@ const Results = () => {
           {loading ? (
             <div className="text-center py-20 text-muted-foreground">Calculating matches…</div>
           ) : (
-            <div className="grid md:grid-cols-2 gap-6">
-              {matches.map((m) => (
-                <ResultCard key={m.clinic.id} m={m} unlocked={unlocked} />
-              ))}
-            </div>
+            <>
+              <div className="grid md:grid-cols-2 gap-6">
+                {matches.map((m) => (
+                  <ResultCard key={m.clinic.id} m={m} unlocked={unlocked} />
+                ))}
+              </div>
+              <div className="mt-8 rounded-xl border border-border bg-muted/40 p-4 flex items-start gap-3 text-xs text-muted-foreground">
+                <Info className="size-4 mt-0.5 shrink-0" />
+                <p>
+                  This platform provides informational insights and not medical advice. Prices are
+                  estimates based on public data and patient-submitted quotes; actual costs may
+                  vary. Always consult a licensed fertility specialist before making treatment
+                  decisions.
+                </p>
+              </div>
+            </>
           )}
         </section>
 
