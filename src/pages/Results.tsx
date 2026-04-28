@@ -253,6 +253,24 @@ const Results = () => {
   const [insights, setInsights] = useState<ClinicInsight[]>([]);
   const [unlocked, setUnlocked] = useState(storage.isUnlocked());
   const [loading, setLoading] = useState(true);
+  const [aiInsights, setAiInsights] = useState<string[]>([]);
+  const [aiInsightsLoading, setAiInsightsLoading] = useState(false);
+  const [aiInsightsError, setAiInsightsError] = useState<string | null>(null);
+
+  const loadAiInsights = async () => {
+    setAiInsightsLoading(true);
+    setAiInsightsError(null);
+    try {
+      const { data, error } = await supabase.functions.invoke("market-insights", { body: {} });
+      if (error) throw error;
+      if ((data as any)?.error) throw new Error((data as any).error);
+      setAiInsights(((data as any)?.insights ?? []) as string[]);
+    } catch (e) {
+      setAiInsightsError(e instanceof Error ? e.message : "Could not load AI insights");
+    } finally {
+      setAiInsightsLoading(false);
+    }
+  };
 
   useEffect(() => {
     const a = storage.loadAssessment();
