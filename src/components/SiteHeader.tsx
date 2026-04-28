@@ -7,6 +7,7 @@ const SiteHeader = () => {
     { to: "/", label: "Home" },
     { to: "/assessment", label: "Assessment" },
     { to: "/insights", label: "Market insights" },
+    { to: "/egg-bank", label: "Egg Bank" },
     { to: "/admin/import", label: "Bulk import" },
   ];
   return (

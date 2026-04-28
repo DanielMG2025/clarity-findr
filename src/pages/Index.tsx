@@ -38,14 +38,15 @@ const Index = () => {
               patient data
             </div>
             <h1 className="text-4xl md:text-6xl font-extrabold leading-[1.05] tracking-tight">
-              Find the real cost of IVF
+              Make the most important decision of your life
               <span className="block bg-gradient-primary bg-clip-text text-transparent">
-                and the best clinic for you.
+                with real data.
               </span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-xl">
-              A next-generation decision engine combining crowdsourced pricing, success rates and
-              your personal profile — so you walk into your first consultation already informed.
+              The fertility intelligence platform — combining real patient quotes, clinical
+              outcomes and AI-powered reasoning, so you choose your clinic with clarity, not
+              marketing brochures.
             </p>
             <div className="flex flex-wrap gap-3">
               <Button asChild size="lg" variant="hero">
