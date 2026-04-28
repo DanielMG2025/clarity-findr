@@ -107,9 +107,41 @@ function clinicBasePriceFor(clinic: Clinic, treatment: TreatmentInterest | ""): 
   return clinic.base_price_ivf;
 }
 
-function clinicTotalFor(clinic: Clinic, treatment: TreatmentInterest | ""): number {
+function clinicListedTotal(clinic: Clinic, treatment: TreatmentInterest | ""): number {
   const base = clinicBasePriceFor(clinic, treatment) ?? clinic.base_price_ivf ?? 0;
   return base + (clinic.medication_estimate ?? 0) + (clinic.extras_estimate ?? 0);
+}
+
+// Budget midpoint used for "price fit" (instead of just a hard cap).
+const BUDGET_MIDPOINT: Record<BudgetRange, number> = {
+  "<5k": 4000,
+  "5k-8k": 6500,
+  "8k-12k": 10000,
+  ">12k": 15000,
+  unsure: 8000,
+};
+
+/**
+ * Pricing engine — single source of truth.
+ * Prefers crowdsourced avg when sample size is meaningful (>=3),
+ * falls back to listed estimate. Range = avg * 0.9 .. * 1.2 (spec).
+ */
+export function computePricing(
+  clinic: Clinic,
+  treatment: TreatmentInterest | "",
+  agg: AggregatedRow | undefined,
+) {
+  const listed = clinicListedTotal(clinic, treatment);
+  const useCrowd = !!agg && agg.sample_size >= 3 && agg.avg_price > 0;
+  const expected = useCrowd ? Math.round(agg!.avg_price) : listed;
+  // Spec: price_min = expected * 0.9, price_max = expected * 1.2
+  const price_min = useCrowd
+    ? Math.min(agg!.min_price, Math.round(expected * 0.9))
+    : Math.round(expected * 0.9);
+  const price_max = useCrowd
+    ? Math.max(agg!.max_price, Math.round(expected * 1.2))
+    : Math.round(expected * 1.2);
+  return { expected, listed, price_min, price_max, source: useCrowd ? "crowd" : "listed" as const };
 }
 
 export function computeCompositeScore(
