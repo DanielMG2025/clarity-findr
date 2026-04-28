@@ -15,7 +15,7 @@ const SiteHeader = () => {
           <span className="grid place-items-center size-8 rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
             <Sparkles className="size-4" />
           </span>
-          Clarity Fertility
+          Fertility Compass
         </Link>
         <nav className="hidden md:flex items-center gap-8 text-sm">
           {links.map((l) => (
