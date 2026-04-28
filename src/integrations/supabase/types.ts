@@ -227,6 +227,45 @@ export type Database = {
         }
         Relationships: []
       }
+      scraped_pricing: {
+        Row: {
+          clinic_name: string
+          currency: string
+          id: string
+          notes: string | null
+          parse_confidence: number
+          scraped_at: string
+          scraped_price: number
+          source_domain: string | null
+          source_url: string
+          treatment_type: string
+        }
+        Insert: {
+          clinic_name: string
+          currency?: string
+          id?: string
+          notes?: string | null
+          parse_confidence?: number
+          scraped_at?: string
+          scraped_price: number
+          source_domain?: string | null
+          source_url: string
+          treatment_type: string
+        }
+        Update: {
+          clinic_name?: string
+          currency?: string
+          id?: string
+          notes?: string | null
+          parse_confidence?: number
+          scraped_at?: string
+          scraped_price?: number
+          source_domain?: string | null
+          source_url?: string
+          treatment_type?: string
+        }
+        Relationships: []
+      }
       user_submitted_quotes: {
         Row: {
           base_price: number

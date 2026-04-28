@@ -45,6 +45,17 @@ export interface AggregatedRow {
   price_volatility: number;
 }
 
+export interface ScrapedPricingRow {
+  clinic_name: string;
+  treatment_type: string;
+  scraped_price: number;
+  currency: string;
+  source_url: string;
+  source_domain: string | null;
+  parse_confidence: number;
+  scraped_at: string;
+}
+
 export interface ClinicInsight {
   clinic_name: string;
   avg_user_rating: number;
@@ -55,19 +66,26 @@ export interface ClinicInsight {
   sample_size: number;
 }
 
+export type PriceSource = "scraped" | "crowd" | "listed";
+
 /** Output of pricingEngine for a single clinic. */
 export interface PricingResult {
   expected: number;
   listed: number;
   price_min: number;
   price_max: number;
-  source: "crowd" | "listed";
+  source: PriceSource;
   /** % vs the country average for this treatment (negative = cheaper). null if no data. */
   vs_country_avg_pct: number | null;
   country_avg: number | null;
   volatility: number;
   sample_size: number;
   confidence: Confidence;
+  /** Present when source === "scraped". */
+  scraped_source_url?: string | null;
+  scraped_source_domain?: string | null;
+  scraped_parse_confidence?: number | null;
+  scraped_at?: string | null;
 }
 
 /** Output of matchingEngine for a single clinic. */
@@ -94,7 +112,10 @@ export interface MatchResult {
   /** Clinic's own listed total (base + meds + extras), regardless of source. */
   listed_price: number;
   /** Where the headline price comes from. */
-  price_source: "crowd" | "listed";
+  price_source: PriceSource;
+  scraped_source_url?: string | null;
+  scraped_source_domain?: string | null;
+  scraped_parse_confidence?: number | null;
   price_low: number;
   price_high: number;
   confidence: Confidence;

@@ -14,6 +14,7 @@ import type {
   Clinic,
   ClinicInsight,
   MatchResult,
+  ScrapedPricingRow,
   TreatmentInterest,
 } from "./types";
 
@@ -26,6 +27,7 @@ export function runDecisionPipeline(
   clinics: Clinic[],
   aggregated: AggregatedRow[],
   insights: ClinicInsight[] = [],
+  scraped: ScrapedPricingRow[] = [],
 ): MatchResult[] {
   const treatment = (assessment.treatment_interest || "IVF") as TreatmentInterest;
   const budgetCap = BUDGET_UPPER[assessment.budget_range || "unsure"];
@@ -49,11 +51,15 @@ export function runDecisionPipeline(
   });
   if (candidates.length === 0) candidates = [...clinics];
 
-  // 2. Pricing engine — per clinic + country averages
-  const countryAverages = buildCountryAverages(clinics, aggregated, treatment);
+  // 2. Pricing engine — per clinic + country averages (scraped → crowd → listed)
+  const countryAverages = buildCountryAverages(clinics, aggregated, treatment, scraped);
   const priced = candidates.map((c) => {
     const agg = aggOf(c);
-    return { clinic: c, agg, pricing: pricingEngine(c, treatment, agg, countryAverages) };
+    return {
+      clinic: c,
+      agg,
+      pricing: pricingEngine(c, treatment, agg, countryAverages, scraped),
+    };
   });
 
   const candidateMinPrice = Math.min(...priced.map((p) => p.pricing.expected));
@@ -83,6 +89,9 @@ export function runDecisionPipeline(
       sample_size: pricing.sample_size,
       vs_country_avg_pct: pricing.vs_country_avg_pct,
       volatility: pricing.volatility,
+      scraped_source_url: pricing.scraped_source_url ?? null,
+      scraped_source_domain: pricing.scraped_source_domain ?? null,
+      scraped_parse_confidence: pricing.scraped_parse_confidence ?? null,
       agg,
       insight,
       explanations,

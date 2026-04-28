@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Pencil, MapPin, Star, TrendingUp, Sparkles, Lock, Info, Activity, CheckCircle2, Globe2, Brain, RefreshCw, Database, FileText, Users } from "lucide-react";
+import { Pencil, MapPin, Star, TrendingUp, Sparkles, Lock, Info, Activity, CheckCircle2, Globe2, Brain, RefreshCw, Database, FileText, Users, Globe, ExternalLink } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ import {
   Clinic,
   ClinicInsight,
   MatchResult,
+  ScrapedPricingRow,
   runMatching,
   storage,
 } from "@/lib/fertility";
@@ -40,25 +41,42 @@ const ConfidencePill = ({ confidence }: { confidence: MatchResult["confidence"] 
 const DataSourceBadge = ({
   source,
   sampleSize,
+  parseConfidence,
 }: {
   source: MatchResult["price_source"];
   sampleSize: number;
-}) =>
-  source === "crowd" ? (
-    <span
-      className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-full font-semibold bg-primary/10 text-primary border border-primary/30"
-      title={`Normalized from ${sampleSize} community-submitted quote${sampleSize === 1 ? "" : "s"}`}
-    >
-      <Database className="size-3" /> Real market data
-    </span>
-  ) : (
+  parseConfidence?: number | null;
+}) => {
+  if (source === "scraped") {
+    const pct = parseConfidence ? Math.round(parseConfidence * 100) : null;
+    return (
+      <span
+        className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-full font-semibold bg-accent/15 text-accent border border-accent/40"
+        title={`Extracted from clinic website${pct ? ` (parser confidence ${pct}%)` : ""}`}
+      >
+        <Globe className="size-3" /> Real market data · scraped
+      </span>
+    );
+  }
+  if (source === "crowd") {
+    return (
+      <span
+        className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-full font-semibold bg-primary/10 text-primary border border-primary/30"
+        title={`Normalized from ${sampleSize} community-submitted quote${sampleSize === 1 ? "" : "s"}`}
+      >
+        <Database className="size-3" /> Real market data
+      </span>
+    );
+  }
+  return (
     <span
       className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-full font-semibold bg-muted text-muted-foreground border border-border"
-      title="Estimated from clinic-published price lists. No community quotes yet."
+      title="Estimated from clinic-published price lists. No scraped or community data yet."
     >
       <FileText className="size-3" /> Listed estimate
     </span>
   );
+};
 
 const ResultCard = ({
   m,
@@ -187,11 +205,27 @@ const ResultCard = ({
             <div className="text-xs text-muted-foreground uppercase tracking-wider">
               Estimated total
             </div>
-            <DataSourceBadge source={m.price_source} sampleSize={m.sample_size} />
+            <DataSourceBadge
+              source={m.price_source}
+              sampleSize={m.sample_size}
+              parseConfidence={m.scraped_parse_confidence ?? null}
+            />
           </div>
           <div className="text-2xl font-bold text-primary tabular-nums leading-none">
             €{m.estimated_price.toLocaleString()}
           </div>
+          {m.price_source === "scraped" && m.scraped_source_url && (
+            <a
+              href={m.scraped_source_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[11px] text-accent hover:underline inline-flex items-center gap-1"
+              title="Data extracted from clinic website"
+            >
+              <ExternalLink className="size-3" />
+              Data extracted from {m.scraped_source_domain || "clinic website"}
+            </a>
+          )}
           {normalizedDeltaPct !== null && Math.abs(normalizedDeltaPct) >= 3 && (
             <div className="text-[11px] text-muted-foreground">
               Normalized from real quotes —{" "}
@@ -308,6 +342,7 @@ const Results = () => {
   const [assessment, setAssessment] = useState<AssessmentData | null>(null);
   const [clinics, setClinics] = useState<Clinic[]>([]);
   const [aggregated, setAggregated] = useState<AggregatedRow[]>([]);
+  const [scraped, setScraped] = useState<ScrapedPricingRow[]>([]);
   const [insights, setInsights] = useState<ClinicInsight[]>([]);
   const [unlocked, setUnlocked] = useState(storage.isUnlocked());
   const [loading, setLoading] = useState(true);
@@ -338,14 +373,16 @@ const Results = () => {
     }
     setAssessment(a);
     (async () => {
-      const [{ data: cs }, { data: ag }, { data: ins }] = await Promise.all([
+      const [{ data: cs }, { data: ag }, { data: ins }, { data: sc }] = await Promise.all([
         supabase.from("clinics").select("*"),
         supabase.from("aggregated_pricing").select("*"),
         supabase.from("clinic_insights").select("*"),
+        supabase.from("scraped_pricing").select("*"),
       ]);
       setClinics((cs ?? []) as Clinic[]);
       setAggregated((ag ?? []) as AggregatedRow[]);
       setInsights((ins ?? []) as ClinicInsight[]);
+      setScraped((sc ?? []) as ScrapedPricingRow[]);
       setLoading(false);
       loadAiInsights();
     })();
@@ -353,8 +390,8 @@ const Results = () => {
 
   const matches = useMemo(() => {
     if (!assessment || !clinics.length) return [];
-    return runMatching(assessment, clinics, aggregated, insights);
-  }, [assessment, clinics, aggregated, insights]);
+    return runMatching(assessment, clinics, aggregated, insights, scraped);
+  }, [assessment, clinics, aggregated, insights, scraped]);
 
   const countryComparison = useMemo(() => {
     if (!clinics.length) return [] as { country: string; avg: number; diff: number | null }[];
@@ -447,8 +484,18 @@ const Results = () => {
             )}
 
             {!loading && matches.length > 0 && (() => {
-              const totalQuotes = matches.reduce((s, m) => s + m.sample_size, 0);
+              const scrapedBacked = matches.filter((m) => m.price_source === "scraped").length;
               const crowdBacked = matches.filter((m) => m.price_source === "crowd").length;
+              const realBacked = scrapedBacked + crowdBacked;
+              const totalQuotes = matches
+                .filter((m) => m.price_source === "crowd")
+                .reduce((s, m) => s + m.sample_size, 0);
+              const parts: string[] = [];
+              if (scrapedBacked) parts.push(`${scrapedBacked} extracted from clinic websites`);
+              if (crowdBacked)
+                parts.push(
+                  `${crowdBacked} from ${totalQuotes} community quote${totalQuotes === 1 ? "" : "s"}`,
+                );
               return (
                 <div className="rounded-2xl border-2 border-primary/30 bg-card/80 backdrop-blur p-4 mb-2 flex flex-wrap items-center gap-3">
                   <div className="size-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
@@ -459,19 +506,25 @@ const Results = () => {
                       Based on real market data
                     </div>
                     <div className="text-sm text-foreground/90">
-                      <span className="font-semibold">{crowdBacked} of {matches.length}</span>{" "}
-                      top matches priced from{" "}
-                      <span className="font-semibold inline-flex items-center gap-1">
-                        <Users className="size-3.5" />
-                        {totalQuotes} community quote{totalQuotes === 1 ? "" : "s"}
-                      </span>
-                      {crowdBacked < matches.length && (
+                      <span className="font-semibold">
+                        {realBacked} of {matches.length}
+                      </span>{" "}
+                      top matches priced from real sources
+                      {parts.length > 0 && (
+                        <span className="text-muted-foreground"> — {parts.join(", ")}</span>
+                      )}
+                      {realBacked < matches.length && (
                         <span className="text-muted-foreground">
-                          {" "}— remaining clinics fall back to clinic-listed estimates.
+                          {parts.length ? "; " : " — "}remaining fall back to clinic-listed estimates.
                         </span>
                       )}
                     </div>
                   </div>
+                  {scrapedBacked > 0 && (
+                    <span className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-full font-semibold bg-accent/15 text-accent border border-accent/40">
+                      <Globe className="size-3" /> Live scraped data
+                    </span>
+                  )}
                 </div>
               );
             })()}

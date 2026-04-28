@@ -78,8 +78,11 @@ export function insightsEngine(
     );
   }
 
-  // 7) Crowd-data backed pricing
-  if (pricing.source === "crowd") {
+  // 7) Source-of-truth note (scraped > crowd > listed)
+  if (pricing.source === "scraped") {
+    const domain = pricing.scraped_source_domain ? ` (${pricing.scraped_source_domain})` : "";
+    out.push(`Pricing extracted directly from clinic website${domain} — based on real published data.`);
+  } else if (pricing.source === "crowd") {
     out.push(
       `Pricing normalized from ${pricing.sample_size} real patient quote${pricing.sample_size === 1 ? "" : "s"}.`,
     );
