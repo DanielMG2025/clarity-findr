@@ -37,9 +37,65 @@ const ConfidencePill = ({ confidence }: { confidence: MatchResult["confidence"] 
   );
 };
 
-const ResultCard = ({ m, unlocked }: { m: MatchResult; unlocked: boolean }) => {
+const ResultCard = ({
+  m,
+  unlocked,
+  assessment,
+}: {
+  m: MatchResult;
+  unlocked: boolean;
+  assessment: AssessmentData;
+}) => {
   const c = m.clinic;
   const showRange = unlocked && m.sample_size > 0;
+  const [aiExplanation, setAiExplanation] = useState<string | null>(null);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
+
+  const fetchExplanation = async () => {
+    if (aiExplanation || aiLoading) return;
+    setAiLoading(true);
+    setAiError(null);
+    try {
+      const { data, error } = await supabase.functions.invoke("clinic-explainer", {
+        body: {
+          assessment: {
+            age: assessment.age,
+            treatment_interest: assessment.treatment_interest,
+            budget_range: assessment.budget_range,
+            country_preference: assessment.country_preference,
+            diagnosis: assessment.diagnosis,
+          },
+          match: {
+            clinic_name: c.name,
+            country: c.country,
+            city: c.city,
+            tier: c.tier,
+            estimated_price: m.estimated_price,
+            price_low: m.price_low,
+            price_high: m.price_high,
+            success_rate: c.success_rate_estimate,
+            rating: c.rating_score,
+            sample_size: m.sample_size,
+            confidence: m.confidence,
+            pricing_percentile: m.pricing_percentile,
+            vs_country_avg_pct: m.vs_country_avg_pct,
+            volatility: m.volatility,
+            composite_score: m.composite_score,
+            treatments_available: c.treatments_available,
+          },
+        },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      setAiExplanation(data?.explanation ?? "");
+    } catch (e) {
+      setAiError(e instanceof Error ? e.message : "Could not generate explanation");
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
   const priceLabel =
     m.vs_country_avg_pct === null
       ? null
