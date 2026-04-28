@@ -54,9 +54,20 @@ const QuoteForm = ({ onSubmitted }: { onSubmitted?: () => void }) => {
       return;
     }
     setSubmitting(true);
-    const { error } = await supabase
-      .from("user_submitted_quotes")
-      .insert([{ ...parsed.data, is_verified: false }]);
+    const d = parsed.data;
+    const { error } = await supabase.from("user_submitted_quotes").insert([
+      {
+        clinic_name: d.clinic_name,
+        country: d.country,
+        treatment_type: d.treatment_type,
+        base_price: d.base_price,
+        medication_cost: d.medication_cost,
+        extras_cost: d.extras_cost,
+        date_received: d.date_received || null,
+        notes: d.notes || null,
+        is_verified: false,
+      },
+    ]);
     setSubmitting(false);
     if (error) {
       toast.error("Could not submit quote", { description: error.message });
