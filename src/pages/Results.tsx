@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Pencil, MapPin, Star, TrendingUp, Sparkles, Lock, Info, Activity } from "lucide-react";
+import { Pencil, MapPin, Star, TrendingUp, Sparkles, Lock, Info, Activity, CheckCircle2, Globe2 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
@@ -136,20 +136,39 @@ const ResultCard = ({
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-4">
-        <div className="rounded-xl bg-primary-soft p-4">
+        <div className="rounded-xl bg-primary-soft p-4 space-y-1.5">
           <div className="text-xs text-muted-foreground uppercase tracking-wider">
             Estimated total
           </div>
-          <div className="text-xl font-bold text-primary tabular-nums">
-            {showRange ? (
-              <>
-                €{m.price_low.toLocaleString()} – €{m.price_high.toLocaleString()}
-              </>
-            ) : (
-              <>€{m.estimated_price.toLocaleString()}</>
-            )}
+          <div className="text-2xl font-bold text-primary tabular-nums leading-none">
+            €{m.estimated_price.toLocaleString()}
           </div>
-          <div className="mt-1 flex items-center gap-2 flex-wrap">
+          {showRange ? (
+            <div className="text-[11px] text-muted-foreground">
+              Typical range:{" "}
+              <span className="font-semibold text-foreground">
+                €{m.price_low.toLocaleString()}–€{m.price_high.toLocaleString()}
+              </span>
+            </div>
+          ) : (
+            <div className="text-[11px] text-muted-foreground">
+              Range hidden — submit a quote to unlock
+            </div>
+          )}
+          {priceLabel && (
+            <div
+              className={`text-[11px] font-semibold ${
+                m.vs_country_avg_pct !== null && m.vs_country_avg_pct < -2
+                  ? "text-accent"
+                  : m.vs_country_avg_pct !== null && m.vs_country_avg_pct > 2
+                    ? "text-warning"
+                    : "text-muted-foreground"
+              }`}
+            >
+              {priceLabel}
+            </div>
+          )}
+          <div className="pt-1 flex items-center gap-2 flex-wrap">
             <ConfidencePill confidence={m.confidence} />
             {m.sample_size > 0 && (
               <span className="text-[11px] text-muted-foreground">
@@ -157,16 +176,15 @@ const ResultCard = ({
               </span>
             )}
           </div>
-          {priceLabel && (
-            <div className="text-[11px] text-muted-foreground mt-1.5">{priceLabel}</div>
-          )}
         </div>
         <div className="rounded-xl bg-accent-soft p-4">
           <div className="text-xs text-muted-foreground uppercase tracking-wider">
             Clinic score
           </div>
-          <div className="text-xl font-bold text-accent tabular-nums">{m.composite_score}/100</div>
-          <div className="text-[11px] text-muted-foreground mt-1 flex items-center gap-1">
+          <div className="text-2xl font-bold text-accent tabular-nums leading-none mt-1">
+            {m.composite_score}/100
+          </div>
+          <div className="text-[11px] text-muted-foreground mt-1.5 flex items-center gap-1">
             <Activity className="size-3" /> success · price · rating
           </div>
           {c.success_rate_estimate && (
@@ -185,14 +203,19 @@ const ResultCard = ({
         ))}
       </div>
 
-      <ul className="space-y-1.5 text-sm text-muted-foreground mb-5">
-        {m.explanations.slice(0, 3).map((e, i) => (
-          <li key={i} className="flex gap-2">
-            <Sparkles className="size-3.5 text-primary mt-0.5 shrink-0" />
-            <span>{e}</span>
-          </li>
-        ))}
-      </ul>
+      <div className="rounded-xl border border-border bg-muted/30 p-4 mb-4">
+        <div className="text-xs font-bold uppercase tracking-wider text-foreground/80 mb-2 flex items-center gap-1.5">
+          <CheckCircle2 className="size-3.5 text-accent" /> Why this clinic
+        </div>
+        <ul className="space-y-1.5 text-sm text-muted-foreground">
+          {m.explanations.slice(0, 3).map((e, i) => (
+            <li key={i} className="flex gap-2">
+              <span className="text-accent mt-0.5">•</span>
+              <span>{e}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       {!unlocked && m.sample_size > 0 && (
         <div className="text-xs flex items-center gap-2 text-muted-foreground bg-muted/60 rounded-lg p-3 mb-3">
@@ -255,6 +278,27 @@ const Results = () => {
     if (!assessment || !clinics.length) return [];
     return runMatching(assessment, clinics, aggregated, insights);
   }, [assessment, clinics, aggregated, insights]);
+
+  const countryComparison = useMemo(() => {
+    if (!clinics.length) return [] as { country: string; avg: number; diff: number | null }[];
+    const treatment = assessment?.treatment_interest || "IVF";
+    const groups: Record<string, number[]> = {};
+    clinics
+      .filter((c) => c.treatments_available.includes(treatment) && c.total_estimated_price)
+      .forEach((c) => {
+        groups[c.country] ||= [];
+        groups[c.country].push(c.total_estimated_price as number);
+      });
+    const rows = Object.entries(groups).map(([country, arr]) => ({
+      country,
+      avg: Math.round(arr.reduce((s, n) => s + n, 0) / arr.length),
+    }));
+    if (!rows.length) return [];
+    const cheapest = Math.min(...rows.map((r) => r.avg));
+    return rows
+      .map((r) => ({ ...r, diff: cheapest === r.avg ? null : Math.round(((r.avg - cheapest) / cheapest) * 100) }))
+      .sort((a, b) => a.avg - b.avg);
+  }, [clinics, assessment]);
 
   const refreshAggregated = async () => {
     const [{ data: ag }, { data: ins }] = await Promise.all([
@@ -337,6 +381,64 @@ const Results = () => {
                   <ResultCard key={m.clinic.id} m={m} unlocked={unlocked} assessment={assessment!} />
                 ))}
               </div>
+
+              {countryComparison.length > 1 && (
+                <Card className="mt-10 p-6 shadow-card bg-gradient-card border-2">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Globe2 className="size-5 text-primary" />
+                    <h2 className="text-xl font-bold">Explore treatment abroad</h2>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-5">
+                    Same {assessment?.treatment_interest || "IVF"} treatment, different markets — see how much you could save.
+                  </p>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {countryComparison.map((r, i) => (
+                      <div
+                        key={r.country}
+                        className={`rounded-xl p-4 border-2 ${
+                          i === 0 ? "border-accent/40 bg-accent-soft" : "border-border bg-card"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="font-semibold">{r.country}</div>
+                          {i === 0 && (
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-accent">
+                              Best value
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-2xl font-bold tabular-nums mt-1">
+                          €{r.avg.toLocaleString()}
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-0.5">
+                          {r.diff === null ? "Reference price" : `+${r.diff}% vs cheapest`}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+              )}
+
+              {!unlocked && (
+                <Card className="mt-8 p-5 border-2 border-dashed border-primary/40 bg-primary-soft/40 flex flex-col md:flex-row md:items-center gap-4">
+                  <div className="flex-1">
+                    <div className="text-xs font-bold uppercase tracking-wider text-primary mb-1">
+                      Help improve pricing accuracy
+                    </div>
+                    <h3 className="font-bold">Users who share their quote get more accurate results.</h3>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Share one anonymous quote → unlock exact community price ranges and improve insights for everyone.
+                    </p>
+                  </div>
+                  <Button
+                    variant="hero"
+                    onClick={() => document.getElementById("crowdsource")?.scrollIntoView({ behavior: "smooth" })}
+                  >
+                    Share my quote
+                  </Button>
+                </Card>
+              )}
+
               <div className="mt-8 rounded-xl border border-border bg-muted/40 p-4 flex items-start gap-3 text-xs text-muted-foreground">
                 <Info className="size-4 mt-0.5 shrink-0" />
                 <p>
@@ -350,7 +452,7 @@ const Results = () => {
           )}
         </section>
 
-        <section className="container pb-10">
+        <section id="crowdsource" className="container pb-10 scroll-mt-20">
           <QuoteForm onSubmitted={refreshAggregated} />
         </section>
       </main>

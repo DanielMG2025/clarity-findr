@@ -278,6 +278,14 @@ const Assessment = () => {
                 style={{ width: `${progress}%` }}
               />
             </div>
+            <div className="mt-3 text-xs text-muted-foreground inline-flex items-center gap-2">
+              <span className="size-1.5 rounded-full bg-accent animate-pulse" />
+              {step < 2
+                ? "We're tailoring your results based on your profile…"
+                : step < 5
+                  ? "Cross-referencing real patient data and clinic outcomes…"
+                  : "Almost there — preparing your personalized matches."}
+            </div>
           </div>
 
           <Card className="p-8 md:p-10 shadow-elegant bg-gradient-card">
