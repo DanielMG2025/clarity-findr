@@ -157,6 +157,7 @@ const Results = () => {
   const [assessment, setAssessment] = useState<AssessmentData | null>(null);
   const [clinics, setClinics] = useState<Clinic[]>([]);
   const [aggregated, setAggregated] = useState<AggregatedRow[]>([]);
+  const [insights, setInsights] = useState<ClinicInsight[]>([]);
   const [unlocked, setUnlocked] = useState(storage.isUnlocked());
   const [loading, setLoading] = useState(true);
 
@@ -168,24 +169,30 @@ const Results = () => {
     }
     setAssessment(a);
     (async () => {
-      const [{ data: cs }, { data: ag }] = await Promise.all([
+      const [{ data: cs }, { data: ag }, { data: ins }] = await Promise.all([
         supabase.from("clinics").select("*"),
         supabase.from("aggregated_pricing").select("*"),
+        supabase.from("clinic_insights").select("*"),
       ]);
       setClinics((cs ?? []) as Clinic[]);
       setAggregated((ag ?? []) as AggregatedRow[]);
+      setInsights((ins ?? []) as ClinicInsight[]);
       setLoading(false);
     })();
   }, [navigate]);
 
   const matches = useMemo(() => {
     if (!assessment || !clinics.length) return [];
-    return runMatching(assessment, clinics, aggregated);
-  }, [assessment, clinics, aggregated]);
+    return runMatching(assessment, clinics, aggregated, insights);
+  }, [assessment, clinics, aggregated, insights]);
 
   const refreshAggregated = async () => {
-    const { data: ag } = await supabase.from("aggregated_pricing").select("*");
+    const [{ data: ag }, { data: ins }] = await Promise.all([
+      supabase.from("aggregated_pricing").select("*"),
+      supabase.from("clinic_insights").select("*"),
+    ]);
     setAggregated((ag ?? []) as AggregatedRow[]);
+    setInsights((ins ?? []) as ClinicInsight[]);
     setUnlocked(true);
   };
 
