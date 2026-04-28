@@ -21,6 +21,7 @@ export type Database = {
           id: string
           max_price: number
           min_price: number
+          price_volatility: number
           sample_size: number
           treatment_type: string
           updated_at: string
@@ -31,6 +32,7 @@ export type Database = {
           id?: string
           max_price: number
           min_price: number
+          price_volatility?: number
           sample_size: number
           treatment_type: string
           updated_at?: string
@@ -41,8 +43,45 @@ export type Database = {
           id?: string
           max_price?: number
           min_price?: number
+          price_volatility?: number
           sample_size?: number
           treatment_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      clinic_insights: {
+        Row: {
+          availability_score: number
+          avg_user_rating: number
+          clinic_name: string
+          confidence_level: string
+          demand_score: number
+          id: string
+          pricing_percentile: number
+          sample_size: number
+          updated_at: string
+        }
+        Insert: {
+          availability_score?: number
+          avg_user_rating?: number
+          clinic_name: string
+          confidence_level?: string
+          demand_score?: number
+          id?: string
+          pricing_percentile?: number
+          sample_size?: number
+          updated_at?: string
+        }
+        Update: {
+          availability_score?: number
+          avg_user_rating?: number
+          clinic_name?: string
+          confidence_level?: string
+          demand_score?: number
+          id?: string
+          pricing_percentile?: number
+          sample_size?: number
           updated_at?: string
         }
         Relationships: []
@@ -61,6 +100,7 @@ export type Database = {
           name: string
           rating_score: number | null
           success_rate_estimate: number | null
+          tier: string
           total_estimated_price: number | null
           treatments_available: string[]
         }
@@ -77,6 +117,7 @@ export type Database = {
           name: string
           rating_score?: number | null
           success_rate_estimate?: number | null
+          tier?: string
           total_estimated_price?: number | null
           treatments_available?: string[]
         }
@@ -93,6 +134,7 @@ export type Database = {
           name?: string
           rating_score?: number | null
           success_rate_estimate?: number | null
+          tier?: string
           total_estimated_price?: number | null
           treatments_available?: string[]
         }
@@ -247,6 +289,7 @@ export type Database = {
     }
     Functions: {
       refresh_aggregated_pricing: { Args: never; Returns: undefined }
+      refresh_clinic_insights: { Args: never; Returns: undefined }
     }
     Enums: {
       [_ in never]: never
