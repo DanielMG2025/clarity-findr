@@ -108,10 +108,24 @@ const ResultCard = ({
           ? `${m.vs_country_avg_pct}% above average`
           : "in line with average";
   return (
-    <Card className="p-6 shadow-card hover:shadow-elegant transition-smooth bg-gradient-card border-2">
+    <Card
+      className={`relative p-6 transition-smooth bg-gradient-card border-2 ${
+        isTop
+          ? "border-primary/60 shadow-elegant ring-2 ring-primary/20"
+          : "shadow-card hover:shadow-elegant"
+      }`}
+    >
+      {isTop && (
+        <div className="absolute -top-3 left-6 bg-gradient-primary text-primary-foreground text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-soft">
+          ★ Top match for you
+        </div>
+      )}
       <div className="flex items-start justify-between gap-4 mb-4">
         <div className="min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
+            <span className="inline-flex items-center justify-center size-6 rounded-md bg-foreground/5 text-foreground/70 text-xs font-bold tabular-nums">
+              #{rank}
+            </span>
             <h3 className="text-xl font-bold">{c.name}</h3>
             <span
               className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider border ${TIER_STYLE[c.tier]}`}
