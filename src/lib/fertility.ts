@@ -107,9 +107,41 @@ function clinicBasePriceFor(clinic: Clinic, treatment: TreatmentInterest | ""): 
   return clinic.base_price_ivf;
 }
 
-function clinicTotalFor(clinic: Clinic, treatment: TreatmentInterest | ""): number {
+function clinicListedTotal(clinic: Clinic, treatment: TreatmentInterest | ""): number {
   const base = clinicBasePriceFor(clinic, treatment) ?? clinic.base_price_ivf ?? 0;
   return base + (clinic.medication_estimate ?? 0) + (clinic.extras_estimate ?? 0);
+}
+
+// Budget midpoint used for "price fit" (instead of just a hard cap).
+const BUDGET_MIDPOINT: Record<BudgetRange, number> = {
+  "<5k": 4000,
+  "5k-8k": 6500,
+  "8k-12k": 10000,
+  ">12k": 15000,
+  unsure: 8000,
+};
+
+/**
+ * Pricing engine — single source of truth.
+ * Prefers crowdsourced avg when sample size is meaningful (>=3),
+ * falls back to listed estimate. Range = avg * 0.9 .. * 1.2 (spec).
+ */
+export function computePricing(
+  clinic: Clinic,
+  treatment: TreatmentInterest | "",
+  agg: AggregatedRow | undefined,
+) {
+  const listed = clinicListedTotal(clinic, treatment);
+  const useCrowd = !!agg && agg.sample_size >= 3 && agg.avg_price > 0;
+  const expected = useCrowd ? Math.round(agg!.avg_price) : listed;
+  // Spec: price_min = expected * 0.9, price_max = expected * 1.2
+  const price_min = useCrowd
+    ? Math.min(agg!.min_price, Math.round(expected * 0.9))
+    : Math.round(expected * 0.9);
+  const price_max = useCrowd
+    ? Math.max(agg!.max_price, Math.round(expected * 1.2))
+    : Math.round(expected * 1.2);
+  return { expected, listed, price_min, price_max, source: useCrowd ? "crowd" : "listed" as const };
 }
 
 export function computeCompositeScore(
@@ -138,6 +170,7 @@ export function runMatching(
 ): MatchResult[] {
   const treatment = (assessment.treatment_interest || "IVF") as TreatmentInterest;
   const budgetCap = BUDGET_UPPER[assessment.budget_range || "unsure"];
+  const budgetMid = BUDGET_MIDPOINT[assessment.budget_range || "unsure"];
 
   const recommendEggDonation = assessment.age > 40 && treatment !== "Egg Donation";
 
@@ -147,36 +180,55 @@ export function runMatching(
     return offersTreatment || (recommendEggDonation && offersED);
   });
 
-  candidates = candidates.filter((c) => clinicTotalFor(c, treatment) <= budgetCap);
+  // Soft budget filter
+  candidates = candidates.filter((c) => {
+    const agg = aggregated.find((a) => a.clinic_name === c.name && a.treatment_type === treatment);
+    return computePricing(c, treatment, agg).expected <= budgetCap * 1.15;
+  });
   if (candidates.length === 0) candidates = [...clinics];
 
-  const totals = candidates.map((c) => clinicTotalFor(c, treatment));
+  // Per-clinic pricing (crowd-aware)
+  const priced = candidates.map((c) => {
+    const agg = aggregated.find((a) => a.clinic_name === c.name && a.treatment_type === treatment);
+    return { c, agg, pricing: computePricing(c, treatment, agg) };
+  });
+
+  const totals = priced.map((p) => p.pricing.expected);
   const minTotal = Math.min(...totals);
   const maxTotal = Math.max(...totals);
   const range = Math.max(maxTotal - minTotal, 1);
 
-  // Country average for the requested treatment
-  const treatmentAggs = aggregated.filter((a) => a.treatment_type === treatment);
-  const countryAvg =
-    treatmentAggs.length > 0
-      ? treatmentAggs.reduce((s, a) => s + a.avg_price, 0) / treatmentAggs.length
-      : 0;
+  // Country averages (per country) — used for "% vs avg" in user's preferred country
+  const countryAverages = new Map<string, number>();
+  {
+    const groups = new Map<string, number[]>();
+    aggregated
+      .filter((a) => a.treatment_type === treatment)
+      .forEach((a) => {
+        // Need country; pull from clinic record
+        const clinic = clinics.find((c) => c.name === a.clinic_name);
+        if (!clinic) return;
+        if (!groups.has(clinic.country)) groups.set(clinic.country, []);
+        groups.get(clinic.country)!.push(a.avg_price);
+      });
+    groups.forEach((arr, country) => {
+      countryAverages.set(country, arr.reduce((s, n) => s + n, 0) / arr.length);
+    });
+  }
 
-  const results: MatchResult[] = candidates.map((c) => {
-    const total = clinicTotalFor(c, treatment);
-
-    // Pricing percentile across candidates (0 = cheapest)
+  const results: MatchResult[] = priced.map(({ c, agg, pricing }) => {
+    const total = pricing.expected;
     const pricing_percentile = Math.round(((total - minTotal) / range) * 100);
 
-    // Price fit: 40 pts
-    const priceFit = 40 * (1 - (total - minTotal) / range);
-    // Treatment fit: 25 pts (prompt v2)
+    // Price fit (40 pts): closer to budget midpoint = better, hard penalty if over cap
+    const distFromBudget = Math.abs(total - budgetMid);
+    const budgetSpan = Math.max(budgetMid * 0.6, 2000);
+    let priceFit = 40 * Math.max(0, 1 - distFromBudget / budgetSpan);
+    if (total > budgetCap) priceFit *= 0.4;
+
     const treatmentFit = c.treatments_available.includes(treatment) ? 25 : 0;
-    // Geography: 15 pts
     const geo = c.country === assessment.country_preference ? 15 : 0;
-    // Success rate: 10 pts
     const successPts = ((c.success_rate_estimate ?? 50) / 100) * 10;
-    // Clinic quality (rating): 10 pts
     const ratingPts = ((c.rating_score ?? 4) / 5) * 10;
 
     let score = Math.round(priceFit + treatmentFit + geo + successPts + ratingPts);
@@ -184,56 +236,73 @@ export function runMatching(
       score = Math.min(100, score + 5);
     }
 
-    const agg = aggregated.find(
-      (a) => a.clinic_name === c.name && a.treatment_type === treatment,
-    );
-    const insight = insights.find((i) => i.clinic_name === c.name);
-
-    const price_low = agg ? agg.min_price : Math.round(total * 0.85);
-    const price_high = agg ? agg.max_price : Math.round(total * 1.15);
     const sample_size = agg?.sample_size ?? 0;
     const volatility = agg?.price_volatility ?? 0;
     const confidence: MatchResult["confidence"] =
-      sample_size >= 8 ? "high" : sample_size >= 3 ? "medium" : "low";
+      sample_size >= 30 ? "high" : sample_size >= 10 ? "medium" : "low";
 
+    const countryAvg = countryAverages.get(c.country) ?? 0;
     const vs_country_avg_pct =
-      countryAvg > 0 && agg ? Math.round(((agg.avg_price - countryAvg) / countryAvg) * 100) : null;
+      countryAvg > 0 ? Math.round(((total - countryAvg) / countryAvg) * 100) : null;
 
-    const composite_score = computeCompositeScore(c, insight, pricing_percentile);
+    const composite_score = computeCompositeScore(c, insights.find((i) => i.clinic_name === c.name), pricing_percentile);
 
+    // Explanations — ranked, plain-English, concrete numbers
     const explanations: string[] = [];
-    if (vs_country_avg_pct !== null) {
-      if (Math.abs(vs_country_avg_pct) >= 3) {
-        explanations.push(
-          vs_country_avg_pct < 0
-            ? `${Math.abs(vs_country_avg_pct)}% below the typical ${treatment} cost.`
-            : `${vs_country_avg_pct}% above the typical ${treatment} cost.`,
-        );
+
+    // 1) Budget verdict
+    if (total <= budgetCap) {
+      const savings = budgetCap - total;
+      if (savings >= 500) {
+        explanations.push(`Fits your budget — about €${savings.toLocaleString()} below your ceiling.`);
       } else {
-        explanations.push(`In line with the typical ${treatment} cost.`);
+        explanations.push(`Fits your budget.`);
+      }
+    } else {
+      explanations.push(`Slightly above your stated budget (by €${(total - budgetCap).toLocaleString()}).`);
+    }
+
+    // 2) Price vs market
+    if (vs_country_avg_pct !== null) {
+      if (vs_country_avg_pct <= -5) {
+        explanations.push(`${Math.abs(vs_country_avg_pct)}% cheaper than the ${c.country} average.`);
+      } else if (vs_country_avg_pct >= 5) {
+        explanations.push(`${vs_country_avg_pct}% pricier than the ${c.country} average.`);
+      } else {
+        explanations.push(`Priced in line with the ${c.country} average.`);
       }
     }
-    if (treatmentFit > 0) {
-      explanations.push(`Offers ${treatment} as a core service.`);
-    } else if (recommendEggDonation) {
-      explanations.push(`Recommended given your age — strong Egg Donation program.`);
-    }
+
+    // 3) Outcomes
     if (c.success_rate_estimate && c.success_rate_estimate >= 60) {
-      explanations.push(`Reported success rate of ${c.success_rate_estimate}%.`);
+      explanations.push(`Strong reported outcomes (${c.success_rate_estimate}% success rate).`);
+    } else if (c.success_rate_estimate && c.success_rate_estimate < 45) {
+      explanations.push(`Lower reported success rate (${c.success_rate_estimate}%) — worth verifying.`);
     }
+
+    // 4) Geography fit
     if (geo > 0) {
-      explanations.push(`Located in your preferred country (${c.country}).`);
+      explanations.push(`In your preferred country (${c.country}).`);
+    } else {
+      explanations.push(`Abroad in ${c.country} — factor travel into total cost.`);
     }
-    if (volatility >= 0.15) {
-      explanations.push(`Price varies notably between patients (volatility ${(volatility * 100).toFixed(0)}%).`);
+
+    // 5) Treatment-specific note
+    if (recommendEggDonation && c.treatments_available.includes("Egg Donation")) {
+      explanations.push(`Offers egg donation — often more relevant above 40.`);
+    }
+
+    // 6) Data quality / variability
+    if (sample_size >= 10 && volatility >= 0.15) {
+      explanations.push(`Prices vary noticeably between patients (±${(volatility * 100).toFixed(0)}%) — request a written quote.`);
     }
 
     return {
       clinic: c,
       match_score: Math.max(0, Math.min(100, score)),
       estimated_price: total,
-      price_low,
-      price_high,
+      price_low: pricing.price_min,
+      price_high: pricing.price_max,
       confidence,
       sample_size,
       pricing_percentile,
@@ -241,8 +310,8 @@ export function runMatching(
       volatility,
       composite_score,
       agg,
-      insight,
-      explanations,
+      insight: insights.find((i) => i.clinic_name === c.name),
+      explanations: Array.from(new Set(explanations)).slice(0, 4),
     };
   });
 
