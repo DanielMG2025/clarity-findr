@@ -437,7 +437,7 @@ const Results = () => {
             )}
 
             {unlocked && (
-              <div className="rounded-2xl border-2 border-accent/40 bg-accent-soft p-4 mb-6 flex items-center gap-3">
+              <div className="rounded-2xl border-2 border-accent/40 bg-accent-soft p-4 mb-4 flex items-center gap-3">
                 <Sparkles className="size-5 text-accent" />
                 <div className="text-sm">
                   <span className="font-semibold">You contributed — here's your reward:</span>{" "}
@@ -445,6 +445,36 @@ const Results = () => {
                 </div>
               </div>
             )}
+
+            {!loading && matches.length > 0 && (() => {
+              const totalQuotes = matches.reduce((s, m) => s + m.sample_size, 0);
+              const crowdBacked = matches.filter((m) => m.price_source === "crowd").length;
+              return (
+                <div className="rounded-2xl border-2 border-primary/30 bg-card/80 backdrop-blur p-4 mb-2 flex flex-wrap items-center gap-3">
+                  <div className="size-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                    <Database className="size-4 text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-[200px]">
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-primary mb-0.5">
+                      Based on real market data
+                    </div>
+                    <div className="text-sm text-foreground/90">
+                      <span className="font-semibold">{crowdBacked} of {matches.length}</span>{" "}
+                      top matches priced from{" "}
+                      <span className="font-semibold inline-flex items-center gap-1">
+                        <Users className="size-3.5" />
+                        {totalQuotes} community quote{totalQuotes === 1 ? "" : "s"}
+                      </span>
+                      {crowdBacked < matches.length && (
+                        <span className="text-muted-foreground">
+                          {" "}— remaining clinics fall back to clinic-listed estimates.
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </section>
 
