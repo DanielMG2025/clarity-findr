@@ -91,6 +91,10 @@ export interface MatchResult {
   match_score: number;
   composite_score: number;
   estimated_price: number;
+  /** Clinic's own listed total (base + meds + extras), regardless of source. */
+  listed_price: number;
+  /** Where the headline price comes from. */
+  price_source: "crowd" | "listed";
   price_low: number;
   price_high: number;
   confidence: Confidence;

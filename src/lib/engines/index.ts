@@ -75,6 +75,8 @@ export function runDecisionPipeline(
       composite_score: match.composite_score,
       pricing_percentile: match.pricing_percentile,
       estimated_price: pricing.expected,
+      listed_price: pricing.listed,
+      price_source: pricing.source,
       price_low: pricing.price_min,
       price_high: pricing.price_max,
       confidence: pricing.confidence,
