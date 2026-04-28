@@ -45,6 +45,17 @@ export interface AggregatedRow {
   price_volatility: number;
 }
 
+export interface ScrapedPricingRow {
+  clinic_name: string;
+  treatment_type: string;
+  scraped_price: number;
+  currency: string;
+  source_url: string;
+  source_domain: string | null;
+  parse_confidence: number;
+  scraped_at: string;
+}
+
 export interface ClinicInsight {
   clinic_name: string;
   avg_user_rating: number;
