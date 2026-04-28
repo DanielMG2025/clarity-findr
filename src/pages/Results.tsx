@@ -334,7 +334,7 @@ const Results = () => {
             <>
               <div className="grid md:grid-cols-2 gap-6">
                 {matches.map((m) => (
-                  <ResultCard key={m.clinic.id} m={m} unlocked={unlocked} />
+                  <ResultCard key={m.clinic.id} m={m} unlocked={unlocked} assessment={assessment!} />
                 ))}
               </div>
               <div className="mt-8 rounded-xl border border-border bg-muted/40 p-4 flex items-start gap-3 text-xs text-muted-foreground">
