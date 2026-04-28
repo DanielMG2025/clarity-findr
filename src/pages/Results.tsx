@@ -279,6 +279,27 @@ const Results = () => {
     return runMatching(assessment, clinics, aggregated, insights);
   }, [assessment, clinics, aggregated, insights]);
 
+  const countryComparison = useMemo(() => {
+    if (!clinics.length) return [] as { country: string; avg: number; diff: number | null }[];
+    const treatment = assessment?.treatment_interest || "IVF";
+    const groups: Record<string, number[]> = {};
+    clinics
+      .filter((c) => c.treatments_available.includes(treatment) && c.total_estimated_price)
+      .forEach((c) => {
+        groups[c.country] ||= [];
+        groups[c.country].push(c.total_estimated_price as number);
+      });
+    const rows = Object.entries(groups).map(([country, arr]) => ({
+      country,
+      avg: Math.round(arr.reduce((s, n) => s + n, 0) / arr.length),
+    }));
+    if (!rows.length) return [];
+    const cheapest = Math.min(...rows.map((r) => r.avg));
+    return rows
+      .map((r) => ({ ...r, diff: cheapest === r.avg ? null : Math.round(((r.avg - cheapest) / cheapest) * 100) }))
+      .sort((a, b) => a.avg - b.avg);
+  }, [clinics, assessment]);
+
   const refreshAggregated = async () => {
     const [{ data: ag }, { data: ins }] = await Promise.all([
       supabase.from("aggregated_pricing").select("*"),
@@ -360,6 +381,64 @@ const Results = () => {
                   <ResultCard key={m.clinic.id} m={m} unlocked={unlocked} assessment={assessment!} />
                 ))}
               </div>
+
+              {countryComparison.length > 1 && (
+                <Card className="mt-10 p-6 shadow-card bg-gradient-card border-2">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Globe2 className="size-5 text-primary" />
+                    <h2 className="text-xl font-bold">Explore treatment abroad</h2>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-5">
+                    Same {assessment?.treatment_interest || "IVF"} treatment, different markets — see how much you could save.
+                  </p>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {countryComparison.map((r, i) => (
+                      <div
+                        key={r.country}
+                        className={`rounded-xl p-4 border-2 ${
+                          i === 0 ? "border-accent/40 bg-accent-soft" : "border-border bg-card"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="font-semibold">{r.country}</div>
+                          {i === 0 && (
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-accent">
+                              Best value
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-2xl font-bold tabular-nums mt-1">
+                          €{r.avg.toLocaleString()}
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-0.5">
+                          {r.diff === null ? "Reference price" : `+${r.diff}% vs cheapest`}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+              )}
+
+              {!unlocked && (
+                <Card className="mt-8 p-5 border-2 border-dashed border-primary/40 bg-primary-soft/40 flex flex-col md:flex-row md:items-center gap-4">
+                  <div className="flex-1">
+                    <div className="text-xs font-bold uppercase tracking-wider text-primary mb-1">
+                      Help improve pricing accuracy
+                    </div>
+                    <h3 className="font-bold">Users who share their quote get more accurate results.</h3>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Share one anonymous quote → unlock exact community price ranges and improve insights for everyone.
+                    </p>
+                  </div>
+                  <Button
+                    variant="hero"
+                    onClick={() => document.getElementById("crowdsource")?.scrollIntoView({ behavior: "smooth" })}
+                  >
+                    Share my quote
+                  </Button>
+                </Card>
+              )}
+
               <div className="mt-8 rounded-xl border border-border bg-muted/40 p-4 flex items-start gap-3 text-xs text-muted-foreground">
                 <Info className="size-4 mt-0.5 shrink-0" />
                 <p>
@@ -373,7 +452,7 @@ const Results = () => {
           )}
         </section>
 
-        <section className="container pb-10">
+        <section id="crowdsource" className="container pb-10 scroll-mt-20">
           <QuoteForm onSubmitted={refreshAggregated} />
         </section>
       </main>
