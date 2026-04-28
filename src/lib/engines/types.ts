@@ -112,7 +112,10 @@ export interface MatchResult {
   /** Clinic's own listed total (base + meds + extras), regardless of source. */
   listed_price: number;
   /** Where the headline price comes from. */
-  price_source: "crowd" | "listed";
+  price_source: PriceSource;
+  scraped_source_url?: string | null;
+  scraped_source_domain?: string | null;
+  scraped_parse_confidence?: number | null;
   price_low: number;
   price_high: number;
   confidence: Confidence;
