@@ -7,7 +7,7 @@ const SiteFooter = () => (
         decisions.
       </p>
       <p className="text-xs">Prices are estimates; actual costs may vary by clinic and case.</p>
-      <p className="text-xs">© {new Date().getFullYear()} Clarity Fertility — a decision platform prototype.</p>
+      <p className="text-xs">© {new Date().getFullYear()} Fertility Compass — a decision platform prototype.</p>
     </div>
   </footer>
 );
