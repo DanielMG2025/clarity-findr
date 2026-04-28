@@ -41,25 +41,42 @@ const ConfidencePill = ({ confidence }: { confidence: MatchResult["confidence"] 
 const DataSourceBadge = ({
   source,
   sampleSize,
+  parseConfidence,
 }: {
   source: MatchResult["price_source"];
   sampleSize: number;
-}) =>
-  source === "crowd" ? (
-    <span
-      className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-full font-semibold bg-primary/10 text-primary border border-primary/30"
-      title={`Normalized from ${sampleSize} community-submitted quote${sampleSize === 1 ? "" : "s"}`}
-    >
-      <Database className="size-3" /> Real market data
-    </span>
-  ) : (
+  parseConfidence?: number | null;
+}) => {
+  if (source === "scraped") {
+    const pct = parseConfidence ? Math.round(parseConfidence * 100) : null;
+    return (
+      <span
+        className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-full font-semibold bg-accent/15 text-accent border border-accent/40"
+        title={`Extracted from clinic website${pct ? ` (parser confidence ${pct}%)` : ""}`}
+      >
+        <Globe className="size-3" /> Real market data · scraped
+      </span>
+    );
+  }
+  if (source === "crowd") {
+    return (
+      <span
+        className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-full font-semibold bg-primary/10 text-primary border border-primary/30"
+        title={`Normalized from ${sampleSize} community-submitted quote${sampleSize === 1 ? "" : "s"}`}
+      >
+        <Database className="size-3" /> Real market data
+      </span>
+    );
+  }
+  return (
     <span
       className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-full font-semibold bg-muted text-muted-foreground border border-border"
-      title="Estimated from clinic-published price lists. No community quotes yet."
+      title="Estimated from clinic-published price lists. No scraped or community data yet."
     >
       <FileText className="size-3" /> Listed estimate
     </span>
   );
+};
 
 const ResultCard = ({
   m,
