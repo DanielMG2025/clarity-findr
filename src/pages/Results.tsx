@@ -136,20 +136,39 @@ const ResultCard = ({
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-4">
-        <div className="rounded-xl bg-primary-soft p-4">
+        <div className="rounded-xl bg-primary-soft p-4 space-y-1.5">
           <div className="text-xs text-muted-foreground uppercase tracking-wider">
             Estimated total
           </div>
-          <div className="text-xl font-bold text-primary tabular-nums">
-            {showRange ? (
-              <>
-                €{m.price_low.toLocaleString()} – €{m.price_high.toLocaleString()}
-              </>
-            ) : (
-              <>€{m.estimated_price.toLocaleString()}</>
-            )}
+          <div className="text-2xl font-bold text-primary tabular-nums leading-none">
+            €{m.estimated_price.toLocaleString()}
           </div>
-          <div className="mt-1 flex items-center gap-2 flex-wrap">
+          {showRange ? (
+            <div className="text-[11px] text-muted-foreground">
+              Typical range:{" "}
+              <span className="font-semibold text-foreground">
+                €{m.price_low.toLocaleString()}–€{m.price_high.toLocaleString()}
+              </span>
+            </div>
+          ) : (
+            <div className="text-[11px] text-muted-foreground">
+              Range hidden — submit a quote to unlock
+            </div>
+          )}
+          {priceLabel && (
+            <div
+              className={`text-[11px] font-semibold ${
+                m.vs_country_avg_pct !== null && m.vs_country_avg_pct < -2
+                  ? "text-accent"
+                  : m.vs_country_avg_pct !== null && m.vs_country_avg_pct > 2
+                    ? "text-warning"
+                    : "text-muted-foreground"
+              }`}
+            >
+              {priceLabel}
+            </div>
+          )}
+          <div className="pt-1 flex items-center gap-2 flex-wrap">
             <ConfidencePill confidence={m.confidence} />
             {m.sample_size > 0 && (
               <span className="text-[11px] text-muted-foreground">
@@ -157,16 +176,15 @@ const ResultCard = ({
               </span>
             )}
           </div>
-          {priceLabel && (
-            <div className="text-[11px] text-muted-foreground mt-1.5">{priceLabel}</div>
-          )}
         </div>
         <div className="rounded-xl bg-accent-soft p-4">
           <div className="text-xs text-muted-foreground uppercase tracking-wider">
             Clinic score
           </div>
-          <div className="text-xl font-bold text-accent tabular-nums">{m.composite_score}/100</div>
-          <div className="text-[11px] text-muted-foreground mt-1 flex items-center gap-1">
+          <div className="text-2xl font-bold text-accent tabular-nums leading-none mt-1">
+            {m.composite_score}/100
+          </div>
+          <div className="text-[11px] text-muted-foreground mt-1.5 flex items-center gap-1">
             <Activity className="size-3" /> success · price · rating
           </div>
           {c.success_rate_estimate && (
@@ -185,14 +203,19 @@ const ResultCard = ({
         ))}
       </div>
 
-      <ul className="space-y-1.5 text-sm text-muted-foreground mb-5">
-        {m.explanations.slice(0, 3).map((e, i) => (
-          <li key={i} className="flex gap-2">
-            <Sparkles className="size-3.5 text-primary mt-0.5 shrink-0" />
-            <span>{e}</span>
-          </li>
-        ))}
-      </ul>
+      <div className="rounded-xl border border-border bg-muted/30 p-4 mb-4">
+        <div className="text-xs font-bold uppercase tracking-wider text-foreground/80 mb-2 flex items-center gap-1.5">
+          <CheckCircle2 className="size-3.5 text-accent" /> Why this clinic
+        </div>
+        <ul className="space-y-1.5 text-sm text-muted-foreground">
+          {m.explanations.slice(0, 3).map((e, i) => (
+            <li key={i} className="flex gap-2">
+              <span className="text-accent mt-0.5">•</span>
+              <span>{e}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       {!unlocked && m.sample_size > 0 && (
         <div className="text-xs flex items-center gap-2 text-muted-foreground bg-muted/60 rounded-lg p-3 mb-3">
