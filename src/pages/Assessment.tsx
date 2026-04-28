@@ -43,6 +43,14 @@ const OptionPill = ({
   </button>
 );
 
+const ageHint = (age: number) => {
+  if (age < 30) return "At your age, success rates per cycle are typically the highest in our dataset.";
+  if (age < 35) return "Most clinics report stable success rates in this range.";
+  if (age < 38) return "Time matters — clinics with strong protocols tend to outperform here.";
+  if (age < 41) return "Egg quality declines noticeably; donor egg options may also be worth comparing.";
+  return "Many clinics in our network specialize in this stage, often with donor egg programs.";
+};
+
 const StepAge = ({ data, set }: StepProps) => (
   <div className="space-y-6">
     <div className="text-center">
@@ -59,6 +67,9 @@ const StepAge = ({ data, set }: StepProps) => (
     <div className="flex justify-between text-xs text-muted-foreground">
       <span>18</span>
       <span>55</span>
+    </div>
+    <div className="text-sm rounded-xl bg-primary-soft text-primary p-4 border border-primary/20">
+      💡 {ageHint(data.age)}
     </div>
   </div>
 );
@@ -146,25 +157,40 @@ const StepTreatment = ({ data, set }: StepProps) => (
   </div>
 );
 
+const BUDGET_HINTS: Record<string, string> = {
+  "<5k": "Tight budget — Spain, Czech Republic and Greece tend to fit best.",
+  "5k-8k": "This range covers most public-private hybrids and mid-tier clinics in EU.",
+  "8k-12k": "Premium EU clinics and basic UK programs fall here.",
+  ">12k": "High-end clinics, complex cases or US/UK private programs.",
+  unsure: "We'll show you the full price spectrum so you can calibrate.",
+};
+
 const StepBudget = ({ data, set }: StepProps) => (
-  <div className="grid grid-cols-1 gap-2">
-    {(
-      [
-        ["<5k", "Under €5,000"],
-        ["5k-8k", "€5,000 – €8,000"],
-        ["8k-12k", "€8,000 – €12,000"],
-        [">12k", "Above €12,000"],
-        ["unsure", "Not sure yet"],
-      ] as const
-    ).map(([k, label]) => (
-      <OptionPill
-        key={k}
-        active={data.budget_range === k}
-        onClick={() => set({ budget_range: k })}
-      >
-        {label}
-      </OptionPill>
-    ))}
+  <div className="space-y-3">
+    <div className="grid grid-cols-1 gap-2">
+      {(
+        [
+          ["<5k", "Under €5,000"],
+          ["5k-8k", "€5,000 – €8,000"],
+          ["8k-12k", "€8,000 – €12,000"],
+          [">12k", "Above €12,000"],
+          ["unsure", "Not sure yet"],
+        ] as const
+      ).map(([k, label]) => (
+        <OptionPill
+          key={k}
+          active={data.budget_range === k}
+          onClick={() => set({ budget_range: k })}
+        >
+          {label}
+        </OptionPill>
+      ))}
+    </div>
+    {data.budget_range && (
+      <div className="text-sm rounded-xl bg-accent-soft text-accent-foreground p-4 border border-accent/20">
+        💡 {BUDGET_HINTS[data.budget_range]}
+      </div>
+    )}
   </div>
 );
 
