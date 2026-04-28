@@ -373,14 +373,16 @@ const Results = () => {
     }
     setAssessment(a);
     (async () => {
-      const [{ data: cs }, { data: ag }, { data: ins }] = await Promise.all([
+      const [{ data: cs }, { data: ag }, { data: ins }, { data: sc }] = await Promise.all([
         supabase.from("clinics").select("*"),
         supabase.from("aggregated_pricing").select("*"),
         supabase.from("clinic_insights").select("*"),
+        supabase.from("scraped_pricing").select("*"),
       ]);
       setClinics((cs ?? []) as Clinic[]);
       setAggregated((ag ?? []) as AggregatedRow[]);
       setInsights((ins ?? []) as ClinicInsight[]);
+      setScraped((sc ?? []) as ScrapedPricingRow[]);
       setLoading(false);
       loadAiInsights();
     })();
@@ -388,8 +390,8 @@ const Results = () => {
 
   const matches = useMemo(() => {
     if (!assessment || !clinics.length) return [];
-    return runMatching(assessment, clinics, aggregated, insights);
-  }, [assessment, clinics, aggregated, insights]);
+    return runMatching(assessment, clinics, aggregated, insights, scraped);
+  }, [assessment, clinics, aggregated, insights, scraped]);
 
   const countryComparison = useMemo(() => {
     if (!clinics.length) return [] as { country: string; avg: number; diff: number | null }[];
