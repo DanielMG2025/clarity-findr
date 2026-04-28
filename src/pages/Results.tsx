@@ -205,11 +205,27 @@ const ResultCard = ({
             <div className="text-xs text-muted-foreground uppercase tracking-wider">
               Estimated total
             </div>
-            <DataSourceBadge source={m.price_source} sampleSize={m.sample_size} />
+            <DataSourceBadge
+              source={m.price_source}
+              sampleSize={m.sample_size}
+              parseConfidence={m.scraped_parse_confidence ?? null}
+            />
           </div>
           <div className="text-2xl font-bold text-primary tabular-nums leading-none">
             €{m.estimated_price.toLocaleString()}
           </div>
+          {m.price_source === "scraped" && m.scraped_source_url && (
+            <a
+              href={m.scraped_source_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[11px] text-accent hover:underline inline-flex items-center gap-1"
+              title="Data extracted from clinic website"
+            >
+              <ExternalLink className="size-3" />
+              Data extracted from {m.scraped_source_domain || "clinic website"}
+            </a>
+          )}
           {normalizedDeltaPct !== null && Math.abs(normalizedDeltaPct) >= 3 && (
             <div className="text-[11px] text-muted-foreground">
               Normalized from real quotes —{" "}
