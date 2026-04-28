@@ -68,8 +68,17 @@ const Import = () => {
     }
     setSubmitting(true);
     try {
-      const payload = valid.map((v) => ({ ...v.data, is_verified: false }));
-      // chunk insert (RLS allows anonymous insert per existing policy)
+      const payload = valid.map((v) => ({
+        clinic_name: v.data.clinic_name,
+        country: v.data.country,
+        treatment_type: v.data.treatment_type,
+        base_price: v.data.base_price,
+        medication_cost: v.data.medication_cost,
+        extras_cost: v.data.extras_cost,
+        date_received: v.data.date_received ?? null,
+        notes: v.data.notes ?? null,
+        is_verified: false,
+      }));
       const chunkSize = 200;
       for (let i = 0; i < payload.length; i += chunkSize) {
         const chunk = payload.slice(i, i + chunkSize);
