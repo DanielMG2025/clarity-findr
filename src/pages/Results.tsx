@@ -261,11 +261,22 @@ const Results = () => {
           {loading ? (
             <div className="text-center py-20 text-muted-foreground">Calculating matches…</div>
           ) : (
-            <div className="grid md:grid-cols-2 gap-6">
-              {matches.map((m) => (
-                <ResultCard key={m.clinic.id} m={m} unlocked={unlocked} />
-              ))}
-            </div>
+            <>
+              <div className="grid md:grid-cols-2 gap-6">
+                {matches.map((m) => (
+                  <ResultCard key={m.clinic.id} m={m} unlocked={unlocked} />
+                ))}
+              </div>
+              <div className="mt-8 rounded-xl border border-border bg-muted/40 p-4 flex items-start gap-3 text-xs text-muted-foreground">
+                <Info className="size-4 mt-0.5 shrink-0" />
+                <p>
+                  This platform provides informational insights and not medical advice. Prices are
+                  estimates based on public data and patient-submitted quotes; actual costs may
+                  vary. Always consult a licensed fertility specialist before making treatment
+                  decisions.
+                </p>
+              </div>
+            </>
           )}
         </section>
 
