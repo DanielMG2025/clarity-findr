@@ -41,11 +41,14 @@ const ResultCard = ({
   m,
   unlocked,
   assessment,
+  rank,
 }: {
   m: MatchResult;
   unlocked: boolean;
   assessment: AssessmentData;
+  rank: number;
 }) => {
+  const isTop = rank === 1;
   const c = m.clinic;
   const showRange = unlocked && m.sample_size > 0;
   const [aiExplanation, setAiExplanation] = useState<string | null>(null);
