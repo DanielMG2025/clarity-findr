@@ -229,11 +229,20 @@ export type Database = {
       }
       scraped_pricing: {
         Row: {
+          base_price: number | null
           clinic_name: string
+          country: string | null
           currency: string
+          detected_keywords: string[]
+          extras_estimate: number | null
           id: string
+          medication_estimate: number | null
+          normalization_rule: string | null
           notes: string | null
           parse_confidence: number
+          pricing_type: string
+          raw_price: number | null
+          raw_text: string | null
           scraped_at: string
           scraped_price: number
           source_domain: string | null
@@ -241,11 +250,20 @@ export type Database = {
           treatment_type: string
         }
         Insert: {
+          base_price?: number | null
           clinic_name: string
+          country?: string | null
           currency?: string
+          detected_keywords?: string[]
+          extras_estimate?: number | null
           id?: string
+          medication_estimate?: number | null
+          normalization_rule?: string | null
           notes?: string | null
           parse_confidence?: number
+          pricing_type?: string
+          raw_price?: number | null
+          raw_text?: string | null
           scraped_at?: string
           scraped_price: number
           source_domain?: string | null
@@ -253,11 +271,20 @@ export type Database = {
           treatment_type: string
         }
         Update: {
+          base_price?: number | null
           clinic_name?: string
+          country?: string | null
           currency?: string
+          detected_keywords?: string[]
+          extras_estimate?: number | null
           id?: string
+          medication_estimate?: number | null
+          normalization_rule?: string | null
           notes?: string | null
           parse_confidence?: number
+          pricing_type?: string
+          raw_price?: number | null
+          raw_text?: string | null
           scraped_at?: string
           scraped_price?: number
           source_domain?: string | null
