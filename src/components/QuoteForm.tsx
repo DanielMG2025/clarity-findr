@@ -54,10 +54,9 @@ const QuoteForm = ({ onSubmitted }: { onSubmitted?: () => void }) => {
       return;
     }
     setSubmitting(true);
-    const { error } = await supabase.from("user_submitted_quotes").insert({
-      ...parsed.data,
-      is_verified: false,
-    });
+    const { error } = await supabase
+      .from("user_submitted_quotes")
+      .insert([{ ...parsed.data, is_verified: false }]);
     setSubmitting(false);
     if (error) {
       toast.error("Could not submit quote", { description: error.message });
