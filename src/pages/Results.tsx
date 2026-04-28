@@ -289,6 +289,7 @@ const Results = () => {
       setAggregated((ag ?? []) as AggregatedRow[]);
       setInsights((ins ?? []) as ClinicInsight[]);
       setLoading(false);
+      loadAiInsights();
     })();
   }, [navigate]);
 
