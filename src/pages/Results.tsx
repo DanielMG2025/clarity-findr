@@ -130,6 +130,12 @@ const ResultCard = ({
         : m.vs_country_avg_pct > 2
           ? `${m.vs_country_avg_pct}% above average`
           : "in line with average";
+
+  const normalizedDeltaPct =
+    m.price_source === "crowd" && m.listed_price > 0
+      ? Math.round(((m.estimated_price - m.listed_price) / m.listed_price) * 100)
+      : null;
+
   return (
     <Card
       className={`relative p-6 transition-smooth bg-gradient-card border-2 ${
@@ -177,12 +183,24 @@ const ResultCard = ({
 
       <div className="grid grid-cols-2 gap-4 mb-4">
         <div className="rounded-xl bg-primary-soft p-4 space-y-1.5">
-          <div className="text-xs text-muted-foreground uppercase tracking-wider">
-            Estimated total
+          <div className="flex items-center justify-between gap-2">
+            <div className="text-xs text-muted-foreground uppercase tracking-wider">
+              Estimated total
+            </div>
+            <DataSourceBadge source={m.price_source} sampleSize={m.sample_size} />
           </div>
           <div className="text-2xl font-bold text-primary tabular-nums leading-none">
             €{m.estimated_price.toLocaleString()}
           </div>
+          {normalizedDeltaPct !== null && Math.abs(normalizedDeltaPct) >= 3 && (
+            <div className="text-[11px] text-muted-foreground">
+              Normalized from real quotes —{" "}
+              <span className="font-semibold text-foreground">
+                {normalizedDeltaPct > 0 ? "+" : ""}
+                {normalizedDeltaPct}% vs €{m.listed_price.toLocaleString()} listed
+              </span>
+            </div>
+          )}
           {showRange ? (
             <div className="text-[11px] text-muted-foreground">
               Typical range:{" "}
