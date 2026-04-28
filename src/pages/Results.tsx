@@ -201,9 +201,23 @@ const ResultCard = ({
         </div>
       )}
 
-      <Button variant="outline" className="w-full">
-        See clinic details
-      </Button>
+      {aiExplanation ? (
+        <div className="rounded-xl border-2 border-primary/30 bg-primary-soft/50 p-4 text-sm space-y-1.5">
+          <div className="flex items-center gap-2 font-semibold text-primary text-xs uppercase tracking-wider">
+            <Sparkles className="size-3.5" /> AI explanation
+          </div>
+          <div className="whitespace-pre-line text-foreground/90 leading-relaxed">
+            {aiExplanation}
+          </div>
+        </div>
+      ) : aiError ? (
+        <div className="text-xs text-destructive bg-destructive/10 rounded-lg p-3">{aiError}</div>
+      ) : (
+        <Button variant="outline" className="w-full" onClick={fetchExplanation} disabled={aiLoading}>
+          <Sparkles className="size-4" />
+          {aiLoading ? "Generating…" : "Why this match? (AI)"}
+        </Button>
+      )}
     </Card>
   );
 };
