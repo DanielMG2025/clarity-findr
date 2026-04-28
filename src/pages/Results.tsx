@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Pencil, MapPin, Star, TrendingUp, Sparkles, Lock, Info, Activity, CheckCircle2, Globe2, Brain, RefreshCw } from "lucide-react";
+import { Pencil, MapPin, Star, TrendingUp, Sparkles, Lock, Info, Activity, CheckCircle2, Globe2, Brain, RefreshCw, Database, FileText, Users } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
@@ -36,6 +36,29 @@ const ConfidencePill = ({ confidence }: { confidence: MatchResult["confidence"] 
     </span>
   );
 };
+
+const DataSourceBadge = ({
+  source,
+  sampleSize,
+}: {
+  source: MatchResult["price_source"];
+  sampleSize: number;
+}) =>
+  source === "crowd" ? (
+    <span
+      className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-full font-semibold bg-primary/10 text-primary border border-primary/30"
+      title={`Normalized from ${sampleSize} community-submitted quote${sampleSize === 1 ? "" : "s"}`}
+    >
+      <Database className="size-3" /> Real market data
+    </span>
+  ) : (
+    <span
+      className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-full font-semibold bg-muted text-muted-foreground border border-border"
+      title="Estimated from clinic-published price lists. No community quotes yet."
+    >
+      <FileText className="size-3" /> Listed estimate
+    </span>
+  );
 
 const ResultCard = ({
   m,
