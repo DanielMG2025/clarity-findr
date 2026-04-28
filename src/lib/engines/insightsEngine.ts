@@ -79,8 +79,10 @@ export function insightsEngine(
   }
 
   // 7) Crowd-data backed pricing
-  if (pricing.source === "crowd" && pricing.sample_size >= 10) {
-    out.push(`Pricing backed by ${pricing.sample_size} community quotes.`);
+  if (pricing.source === "crowd") {
+    out.push(
+      `Pricing normalized from ${pricing.sample_size} real patient quote${pricing.sample_size === 1 ? "" : "s"}.`,
+    );
   }
 
   return Array.from(new Set(out)).slice(0, MAX_EXPLANATIONS);
