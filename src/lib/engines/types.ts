@@ -66,19 +66,26 @@ export interface ClinicInsight {
   sample_size: number;
 }
 
+export type PriceSource = "scraped" | "crowd" | "listed";
+
 /** Output of pricingEngine for a single clinic. */
 export interface PricingResult {
   expected: number;
   listed: number;
   price_min: number;
   price_max: number;
-  source: "crowd" | "listed";
+  source: PriceSource;
   /** % vs the country average for this treatment (negative = cheaper). null if no data. */
   vs_country_avg_pct: number | null;
   country_avg: number | null;
   volatility: number;
   sample_size: number;
   confidence: Confidence;
+  /** Present when source === "scraped". */
+  scraped_source_url?: string | null;
+  scraped_source_domain?: string | null;
+  scraped_parse_confidence?: number | null;
+  scraped_at?: string | null;
 }
 
 /** Output of matchingEngine for a single clinic. */
