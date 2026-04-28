@@ -342,6 +342,7 @@ const Results = () => {
   const [assessment, setAssessment] = useState<AssessmentData | null>(null);
   const [clinics, setClinics] = useState<Clinic[]>([]);
   const [aggregated, setAggregated] = useState<AggregatedRow[]>([]);
+  const [scraped, setScraped] = useState<ScrapedPricingRow[]>([]);
   const [insights, setInsights] = useState<ClinicInsight[]>([]);
   const [unlocked, setUnlocked] = useState(storage.isUnlocked());
   const [loading, setLoading] = useState(true);
