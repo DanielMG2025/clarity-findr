@@ -401,6 +401,51 @@ const Results = () => {
                 ))}
               </div>
 
+              <Card className="mt-10 p-6 shadow-card border-2 border-primary/20 bg-gradient-to-br from-primary-soft/40 to-card">
+                <div className="flex items-start justify-between gap-4 mb-4 flex-wrap">
+                  <div className="flex items-center gap-3">
+                    <div className="size-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <Brain className="size-5 text-primary" />
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-bold uppercase tracking-wider text-primary mb-0.5">
+                        Live AI analysis
+                      </div>
+                      <h2 className="text-xl font-bold leading-tight">What the data is telling us right now</h2>
+                    </div>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={loadAiInsights}
+                    disabled={aiInsightsLoading}
+                    className="gap-2"
+                  >
+                    <RefreshCw className={`size-3.5 ${aiInsightsLoading ? "animate-spin" : ""}`} />
+                    Refresh
+                  </Button>
+                </div>
+
+                {aiInsightsError ? (
+                  <div className="text-sm text-destructive">{aiInsightsError}</div>
+                ) : aiInsightsLoading && !aiInsights.length ? (
+                  <div className="space-y-2">
+                    {[0, 1, 2, 3].map((i) => (
+                      <div key={i} className="h-4 rounded bg-muted animate-pulse" style={{ width: `${70 + (i * 7) % 25}%` }} />
+                    ))}
+                  </div>
+                ) : (
+                  <ul className="space-y-2.5">
+                    {aiInsights.map((ins, i) => (
+                      <li key={i} className="flex items-start gap-3 text-sm">
+                        <span className="mt-1.5 size-1.5 rounded-full bg-primary shrink-0" />
+                        <span className="leading-relaxed">{ins}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </Card>
+
               {countryComparison.length > 1 && (
                 <Card className="mt-10 p-6 shadow-card bg-gradient-card border-2">
                   <div className="flex items-center gap-2 mb-1">
