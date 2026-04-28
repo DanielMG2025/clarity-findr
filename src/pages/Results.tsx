@@ -412,9 +412,15 @@ const Results = () => {
             <div className="text-center py-20 text-muted-foreground">Calculating matches…</div>
           ) : (
             <>
-              <div className="grid md:grid-cols-2 gap-6">
-                {matches.map((m) => (
-                  <ResultCard key={m.clinic.id} m={m} unlocked={unlocked} assessment={assessment!} />
+              <div className="grid md:grid-cols-2 gap-6 md:[&>*:first-child]:md:col-span-2">
+                {matches.map((m, i) => (
+                  <ResultCard
+                    key={m.clinic.id}
+                    m={m}
+                    unlocked={unlocked}
+                    assessment={assessment!}
+                    rank={i + 1}
+                  />
                 ))}
               </div>
 
