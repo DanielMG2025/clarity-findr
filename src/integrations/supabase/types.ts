@@ -14,13 +14,239 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      aggregated_pricing: {
+        Row: {
+          avg_price: number
+          clinic_name: string
+          id: string
+          max_price: number
+          min_price: number
+          sample_size: number
+          treatment_type: string
+          updated_at: string
+        }
+        Insert: {
+          avg_price: number
+          clinic_name: string
+          id?: string
+          max_price: number
+          min_price: number
+          sample_size: number
+          treatment_type: string
+          updated_at?: string
+        }
+        Update: {
+          avg_price?: number
+          clinic_name?: string
+          id?: string
+          max_price?: number
+          min_price?: number
+          sample_size?: number
+          treatment_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      clinics: {
+        Row: {
+          base_price_egg_donation: number | null
+          base_price_freezing: number | null
+          base_price_ivf: number | null
+          city: string | null
+          country: string
+          created_at: string
+          extras_estimate: number | null
+          id: string
+          medication_estimate: number | null
+          name: string
+          rating_score: number | null
+          success_rate_estimate: number | null
+          total_estimated_price: number | null
+          treatments_available: string[]
+        }
+        Insert: {
+          base_price_egg_donation?: number | null
+          base_price_freezing?: number | null
+          base_price_ivf?: number | null
+          city?: string | null
+          country?: string
+          created_at?: string
+          extras_estimate?: number | null
+          id?: string
+          medication_estimate?: number | null
+          name: string
+          rating_score?: number | null
+          success_rate_estimate?: number | null
+          total_estimated_price?: number | null
+          treatments_available?: string[]
+        }
+        Update: {
+          base_price_egg_donation?: number | null
+          base_price_freezing?: number | null
+          base_price_ivf?: number | null
+          city?: string | null
+          country?: string
+          created_at?: string
+          extras_estimate?: number | null
+          id?: string
+          medication_estimate?: number | null
+          name?: string
+          rating_score?: number | null
+          success_rate_estimate?: number | null
+          total_estimated_price?: number | null
+          treatments_available?: string[]
+        }
+        Relationships: []
+      }
+      matches: {
+        Row: {
+          clinic_id: string
+          created_at: string
+          estimated_price: number | null
+          explanation: string | null
+          id: string
+          match_score: number | null
+          user_id: string
+        }
+        Insert: {
+          clinic_id: string
+          created_at?: string
+          estimated_price?: number | null
+          explanation?: string | null
+          id?: string
+          match_score?: number | null
+          user_id: string
+        }
+        Update: {
+          clinic_id?: string
+          created_at?: string
+          estimated_price?: number | null
+          explanation?: string | null
+          id?: string
+          match_score?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "matches_clinic_id_fkey"
+            columns: ["clinic_id"]
+            isOneToOne: false
+            referencedRelation: "clinics"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          age: number | null
+          budget_range: string | null
+          country_preference: string
+          created_at: string
+          diagnosis: string[]
+          gender: string | null
+          id: string
+          previous_treatments: string[]
+          treatment_interest: string | null
+          trying_duration: string | null
+          updated_at: string
+        }
+        Insert: {
+          age?: number | null
+          budget_range?: string | null
+          country_preference?: string
+          created_at?: string
+          diagnosis?: string[]
+          gender?: string | null
+          id: string
+          previous_treatments?: string[]
+          treatment_interest?: string | null
+          trying_duration?: string | null
+          updated_at?: string
+        }
+        Update: {
+          age?: number | null
+          budget_range?: string | null
+          country_preference?: string
+          created_at?: string
+          diagnosis?: string[]
+          gender?: string | null
+          id?: string
+          previous_treatments?: string[]
+          treatment_interest?: string | null
+          trying_duration?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_submitted_quotes: {
+        Row: {
+          base_price: number
+          clinic_name: string
+          country: string
+          created_at: string
+          date_received: string | null
+          extras_cost: number
+          id: string
+          is_verified: boolean
+          medication_cost: number
+          notes: string | null
+          total_price: number | null
+          treatment_type: string
+          user_id: string | null
+        }
+        Insert: {
+          base_price: number
+          clinic_name: string
+          country: string
+          created_at?: string
+          date_received?: string | null
+          extras_cost?: number
+          id?: string
+          is_verified?: boolean
+          medication_cost?: number
+          notes?: string | null
+          total_price?: number | null
+          treatment_type: string
+          user_id?: string | null
+        }
+        Update: {
+          base_price?: number
+          clinic_name?: string
+          country?: string
+          created_at?: string
+          date_received?: string | null
+          extras_cost?: number
+          id?: string
+          is_verified?: boolean
+          medication_cost?: number
+          notes?: string | null
+          total_price?: number | null
+          treatment_type?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_submitted_quotes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      refresh_aggregated_pricing: { Args: never; Returns: undefined }
     }
     Enums: {
       [_ in never]: never
