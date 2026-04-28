@@ -92,7 +92,12 @@ export interface MatchResult {
   price_high: number;
   confidence: "low" | "medium" | "high";
   sample_size: number;
+  pricing_percentile: number; // 0 = cheapest among candidates, 100 = most expensive
+  vs_country_avg_pct: number | null; // negative = below average
+  volatility: number; // 0..1 coefficient of variation from crowdsourced data
+  composite_score: number; // overall clinic quality (0-100)
   agg?: AggregatedRow;
+  insight?: ClinicInsight;
   explanations: string[];
 }
 
@@ -107,25 +112,41 @@ function clinicTotalFor(clinic: Clinic, treatment: TreatmentInterest | ""): numb
   return base + (clinic.medication_estimate ?? 0) + (clinic.extras_estimate ?? 0);
 }
 
+export function computeCompositeScore(
+  clinic: Clinic,
+  insight: ClinicInsight | undefined,
+  pricingPercentile: number,
+): number {
+  // Success (35%) + price efficiency (25%) + rating (25%) + data confidence (15%)
+  const success = ((clinic.success_rate_estimate ?? 50) / 100) * 35;
+  const priceEff = ((100 - pricingPercentile) / 100) * 25;
+  const rating = ((clinic.rating_score ?? 4) / 5) * 25;
+  const conf =
+    (insight?.confidence_level === "high"
+      ? 1
+      : insight?.confidence_level === "medium"
+        ? 0.66
+        : 0.33) * 15;
+  return Math.round(success + priceEff + rating + conf);
+}
+
 export function runMatching(
   assessment: AssessmentData,
   clinics: Clinic[],
   aggregated: AggregatedRow[],
+  insights: ClinicInsight[] = [],
 ): MatchResult[] {
   const treatment = (assessment.treatment_interest || "IVF") as TreatmentInterest;
   const budgetCap = BUDGET_UPPER[assessment.budget_range || "unsure"];
 
-  // Age > 40 nudge: include egg donation candidates strongly
   const recommendEggDonation = assessment.age > 40 && treatment !== "Egg Donation";
 
-  // Filter: clinic must offer at least the treatment OR egg donation if nudging
   let candidates = clinics.filter((c) => {
     const offersTreatment = c.treatments_available.includes(treatment);
     const offersED = c.treatments_available.includes("Egg Donation");
     return offersTreatment || (recommendEggDonation && offersED);
   });
 
-  // Within budget
   candidates = candidates.filter((c) => clinicTotalFor(c, treatment) <= budgetCap);
   if (candidates.length === 0) candidates = [...clinics];
 
@@ -134,66 +155,77 @@ export function runMatching(
   const maxTotal = Math.max(...totals);
   const range = Math.max(maxTotal - minTotal, 1);
 
+  // Country average for the requested treatment
+  const treatmentAggs = aggregated.filter((a) => a.treatment_type === treatment);
+  const countryAvg =
+    treatmentAggs.length > 0
+      ? treatmentAggs.reduce((s, a) => s + a.avg_price, 0) / treatmentAggs.length
+      : 0;
+
   const results: MatchResult[] = candidates.map((c) => {
     const total = clinicTotalFor(c, treatment);
 
+    // Pricing percentile across candidates (0 = cheapest)
+    const pricing_percentile = Math.round(((total - minTotal) / range) * 100);
+
     // Price fit: 40 pts
     const priceFit = 40 * (1 - (total - minTotal) / range);
-
-    // Treatment fit: 30 pts
-    const treatmentFit = c.treatments_available.includes(treatment) ? 30 : 0;
-
+    // Treatment fit: 25 pts (prompt v2)
+    const treatmentFit = c.treatments_available.includes(treatment) ? 25 : 0;
     // Geography: 15 pts
     const geo = c.country === assessment.country_preference ? 15 : 0;
+    // Success rate: 10 pts
+    const successPts = ((c.success_rate_estimate ?? 50) / 100) * 10;
+    // Clinic quality (rating): 10 pts
+    const ratingPts = ((c.rating_score ?? 4) / 5) * 10;
 
-    // Quality: 15 pts (success_rate normalized 0-100, rating 0-5)
-    const qSuccess = ((c.success_rate_estimate ?? 50) / 100) * 10;
-    const qRating = ((c.rating_score ?? 4) / 5) * 5;
-    const quality = qSuccess + qRating;
-
-    let score = Math.round(priceFit + treatmentFit + geo + quality);
+    let score = Math.round(priceFit + treatmentFit + geo + successPts + ratingPts);
     if (recommendEggDonation && c.treatments_available.includes("Egg Donation")) {
       score = Math.min(100, score + 5);
     }
 
-    // Aggregated pricing for this clinic + treatment
     const agg = aggregated.find(
       (a) => a.clinic_name === c.name && a.treatment_type === treatment,
     );
+    const insight = insights.find((i) => i.clinic_name === c.name);
+
     const price_low = agg ? agg.min_price : Math.round(total * 0.85);
     const price_high = agg ? agg.max_price : Math.round(total * 1.15);
     const sample_size = agg?.sample_size ?? 0;
+    const volatility = agg?.price_volatility ?? 0;
     const confidence: MatchResult["confidence"] =
-      sample_size > 20 ? "high" : sample_size >= 5 ? "medium" : "low";
+      sample_size >= 8 ? "high" : sample_size >= 3 ? "medium" : "low";
 
-    // Explanations
+    const vs_country_avg_pct =
+      countryAvg > 0 && agg ? Math.round(((agg.avg_price - countryAvg) / countryAvg) * 100) : null;
+
+    const composite_score = computeCompositeScore(c, insight, pricing_percentile);
+
     const explanations: string[] = [];
-    const avgInCountry = aggregated
-      .filter((a) => a.treatment_type === treatment)
-      .map((a) => a.avg_price);
-    if (avgInCountry.length && agg) {
-      const countryAvg = avgInCountry.reduce((s, n) => s + n, 0) / avgInCountry.length;
-      const diff = Math.round(((agg.avg_price - countryAvg) / countryAvg) * 100);
-      if (Math.abs(diff) >= 3) {
+    if (vs_country_avg_pct !== null) {
+      if (Math.abs(vs_country_avg_pct) >= 3) {
         explanations.push(
-          diff < 0
-            ? `Price vs average: ${Math.abs(diff)}% below typical ${treatment} cost.`
-            : `Price vs average: ${diff}% above typical ${treatment} cost.`,
+          vs_country_avg_pct < 0
+            ? `${Math.abs(vs_country_avg_pct)}% below the typical ${treatment} cost.`
+            : `${vs_country_avg_pct}% above the typical ${treatment} cost.`,
         );
       } else {
-        explanations.push(`Price vs average: in line with typical ${treatment} cost.`);
+        explanations.push(`In line with the typical ${treatment} cost.`);
       }
     }
     if (treatmentFit > 0) {
-      explanations.push(`Treatment fit: offers ${treatment} as a core service.`);
+      explanations.push(`Offers ${treatment} as a core service.`);
     } else if (recommendEggDonation) {
       explanations.push(`Recommended given your age — strong Egg Donation program.`);
     }
     if (c.success_rate_estimate && c.success_rate_estimate >= 60) {
-      explanations.push(`Success record: reported pregnancy rate of ${c.success_rate_estimate}%.`);
+      explanations.push(`Reported success rate of ${c.success_rate_estimate}%.`);
     }
     if (geo > 0) {
       explanations.push(`Located in your preferred country (${c.country}).`);
+    }
+    if (volatility >= 0.15) {
+      explanations.push(`Price varies notably between patients (volatility ${(volatility * 100).toFixed(0)}%).`);
     }
 
     return {
@@ -204,7 +236,12 @@ export function runMatching(
       price_high,
       confidence,
       sample_size,
+      pricing_percentile,
+      vs_country_avg_pct,
+      volatility,
+      composite_score,
       agg,
+      insight,
       explanations,
     };
   });
