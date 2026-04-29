@@ -687,6 +687,37 @@ const Results = () => {
                 </Card>
               )}
 
+              {/* Step 3 + Step 5 cross-sell */}
+              <div className="grid md:grid-cols-2 gap-4 mt-8">
+                <Card className="p-6 border-2 border-primary/30 bg-gradient-card shadow-card">
+                  <div className="flex items-center gap-2 text-primary mb-2">
+                    <Dna className="size-5" />
+                    <span className="text-[10px] font-bold uppercase tracking-wider">Step 3 · Advanced</span>
+                  </div>
+                  <h3 className="font-bold text-lg">Sharper matches with deeper data</h3>
+                  <p className="text-sm text-muted-foreground mt-1 mb-4">
+                    Add the advanced questionnaire (€30), genetic matching or a home fertility kit
+                    — free with our partner products.
+                  </p>
+                  <Button asChild variant="outline">
+                    <Link to="/patient/advanced">Explore advanced modules <ArrowRight className="size-4" /></Link>
+                  </Button>
+                </Card>
+                <Card className="p-6 border-2 border-accent/30 bg-gradient-card shadow-card">
+                  <div className="flex items-center gap-2 text-accent mb-2">
+                    <Users className="size-5" />
+                    <span className="text-[10px] font-bold uppercase tracking-wider">Step 5 · Referral</span>
+                  </div>
+                  <h3 className="font-bold text-lg">Want us to connect you?</h3>
+                  <p className="text-sm text-muted-foreground mt-1 mb-4">
+                    Get a free, hand-picked introduction to your top-matched clinics. No spam, ever.
+                  </p>
+                  <Button asChild variant="outline" className="border-accent/40 text-accent hover:bg-accent-soft">
+                    <Link to="/patient/referral">Request free referral <ArrowRight className="size-4" /></Link>
+                  </Button>
+                </Card>
+              </div>
+
               <div className="mt-8 rounded-xl border border-border bg-muted/40 p-4 flex items-start gap-3 text-xs text-muted-foreground">
                 <Info className="size-4 mt-0.5 shrink-0" />
                 <p>
