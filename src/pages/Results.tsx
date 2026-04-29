@@ -245,9 +245,47 @@ const ResultCard = ({
         </div>
         <div className="text-center shrink-0">
           <div className="text-3xl font-extrabold bg-gradient-primary bg-clip-text text-transparent tabular-nums">
-            {m.match_score}%
+            {m.match_score}
           </div>
-          <div className="text-xs text-muted-foreground font-semibold">match</div>
+          <div className="text-xs text-muted-foreground font-semibold">/ 100 match</div>
+          <div className="mt-1.5 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-foreground/5 text-foreground/70" title="Data quality of this decision">
+            <ShieldCheck className="size-3" /> {m.scores.decision_confidence}
+          </div>
+        </div>
+      </div>
+
+      {/* Decision breakdown — Patient · Clinic Fit · Value */}
+      <div className="rounded-xl border-2 border-primary/20 bg-gradient-to-br from-primary-soft/30 to-card p-3 mb-4">
+        <div className="flex items-center justify-between mb-2.5">
+          <div className="text-[10px] font-bold uppercase tracking-wider text-foreground/70 flex items-center gap-1.5">
+            <Brain className="size-3.5 text-primary" /> Decision breakdown
+          </div>
+          <div className="text-[10px] text-muted-foreground">
+            weighted: patient 20% · fit 50% · value 30%
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          <ScoreBar
+            label="Patient"
+            value={m.scores.patient_score}
+            icon={User}
+            tone="primary"
+            reasons={m.scores.reasons.patient}
+          />
+          <ScoreBar
+            label="Clinic fit"
+            value={m.scores.clinic_fit_score}
+            icon={Building2}
+            tone="accent"
+            reasons={m.scores.reasons.clinic_fit}
+          />
+          <ScoreBar
+            label="Value"
+            value={m.scores.value_score}
+            icon={Wallet}
+            tone="warning"
+            reasons={m.scores.reasons.value}
+          />
         </div>
       </div>
 
