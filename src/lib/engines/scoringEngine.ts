@@ -292,7 +292,7 @@ export function scoreClinic(
   const v = valueScore(pricing);
 
   // Priority re-weighting: tilt the blend toward what the patient said matters most
-  let weights = { ...SCORE_WEIGHTS };
+  let weights: { patient: number; clinic_fit: number; value: number } = { ...SCORE_WEIGHTS };
   switch (assessment.priority) {
     case "cost":
       weights = { patient: 0.15, clinic_fit: 0.35, value: 0.5 };
@@ -301,7 +301,6 @@ export function scoreClinic(
       weights = { patient: 0.2, clinic_fit: 0.65, value: 0.15 };
       break;
     case "speed":
-      // speed favors availability (inside clinic_fit) and value (no waitlist surcharge)
       weights = { patient: 0.15, clinic_fit: 0.55, value: 0.3 };
       break;
     case "balanced":
