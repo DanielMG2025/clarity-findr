@@ -84,12 +84,16 @@ const ResultCard = ({
   namesUnlocked,
   assessment,
   rank,
+  communityAvg,
+  communitySamples,
 }: {
   m: MatchResult;
   unlocked: boolean;
   namesUnlocked: boolean;
   assessment: AssessmentData;
   rank: number;
+  communityAvg: number | null;
+  communitySamples: number;
 }) => {
   const isTop = rank === 1;
   const c = m.clinic;
