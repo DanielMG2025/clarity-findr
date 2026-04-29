@@ -13,6 +13,7 @@ import ClinicDashboard from "./pages/ClinicDashboard.tsx";
 import Partners from "./pages/Partners.tsx";
 import Community from "./pages/Community.tsx";
 import Assessment from "./pages/Assessment.tsx";
+import AssessmentAdvanced from "./pages/AssessmentAdvanced.tsx";
 import Results from "./pages/Results.tsx";
 import Insights from "./pages/Insights.tsx";
 import Import from "./pages/Import.tsx";
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/partners" element={<Partners />} />
           <Route path="/community" element={<Community />} />
           <Route path="/assessment" element={<Assessment />} />
+          <Route path="/assessment/advanced" element={<AssessmentAdvanced />} />
           <Route path="/results" element={<Results />} />
           <Route path="/insights" element={<Insights />} />
           <Route path="/admin" element={<Admin />} />

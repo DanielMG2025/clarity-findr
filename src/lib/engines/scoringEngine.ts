@@ -109,6 +109,21 @@ export function patientScore(a: AssessmentData): { score: number; reasons: strin
     reasons.push("Sparse questionnaire — consider the advanced module.");
   }
 
+  // Level 2 biomarkers further sharpen the patient score
+  const adv = a.advanced;
+  if (adv) {
+    if (typeof adv.amh === "number") {
+      s += 4;
+      if (adv.amh >= 1.5) reasons.push(`AMH ${adv.amh} ng/mL — solid ovarian reserve.`);
+      else if (adv.amh >= 0.8) reasons.push(`AMH ${adv.amh} — diminished reserve, protocols matter.`);
+      else reasons.push(`AMH ${adv.amh} — donor pathway worth comparing.`);
+    }
+    if (typeof adv.fsh === "number") s += 2;
+    if (adv.cycle_regularity === "regular") s += 2;
+    if (adv.smoker === false) s += 1;
+    if (adv.carrier_screening_done) s += 2;
+  }
+
   return { score: Math.round(clamp(s)), reasons: reasons.slice(0, 4) };
 }
 
@@ -250,7 +265,17 @@ export function decisionConfidence(
   ].filter(Boolean).length;
   if (filled >= 5) pts += 1;
 
-  if (pts >= 6) return "high";
+  // Level 2 advanced inputs strongly boost confidence
+  const adv = assessment.advanced;
+  if (adv) {
+    const advFilled = [adv.amh, adv.fsh, adv.cycle_regularity, adv.bmi_band, adv.donor_openness].filter(
+      (v) => v !== undefined && v !== null,
+    ).length;
+    if (advFilled >= 4) pts += 2;
+    else if (advFilled >= 2) pts += 1;
+  }
+
+  if (pts >= 7) return "high";
   if (pts >= 3) return "medium";
   return "low";
 }
@@ -266,10 +291,27 @@ export function scoreClinic(
   const cf = clinicFitScore(clinic, assessment, insight);
   const v = valueScore(pricing);
 
+  // Priority re-weighting: tilt the blend toward what the patient said matters most
+  let weights: { patient: number; clinic_fit: number; value: number } = { ...SCORE_WEIGHTS };
+  switch (assessment.priority) {
+    case "cost":
+      weights = { patient: 0.15, clinic_fit: 0.35, value: 0.5 };
+      break;
+    case "success":
+      weights = { patient: 0.2, clinic_fit: 0.65, value: 0.15 };
+      break;
+    case "speed":
+      weights = { patient: 0.15, clinic_fit: 0.55, value: 0.3 };
+      break;
+    case "balanced":
+    default:
+      break;
+  }
+
   const match = Math.round(
-    p.score * SCORE_WEIGHTS.patient +
-      cf.score * SCORE_WEIGHTS.clinic_fit +
-      v.score * SCORE_WEIGHTS.value,
+    p.score * weights.patient +
+      cf.score * weights.clinic_fit +
+      v.score * weights.value,
   );
 
   // Top-line explanations: pick the strongest signal from each dimension

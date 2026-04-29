@@ -216,15 +216,58 @@ const StepCountry = ({ data, set }: StepProps) => (
   </div>
 );
 
+const StepPregnancies = ({ data, set }: StepProps) => (
+  <div className="grid grid-cols-1 gap-2">
+    {(
+      [
+        ["none", "No previous pregnancies"],
+        ["miscarriage", "Pregnancy loss / miscarriage"],
+        ["live_birth", "At least one live birth"],
+        ["both", "Both — loss and live birth"],
+      ] as const
+    ).map(([k, label]) => (
+      <OptionPill
+        key={k}
+        active={data.previous_pregnancies === k}
+        onClick={() => set({ previous_pregnancies: k })}
+      >
+        {label}
+      </OptionPill>
+    ))}
+    <p className="text-xs text-muted-foreground mt-2">
+      No judgment here — this just helps calibrate your match, never to categorize you.
+    </p>
+  </div>
+);
+
+const StepPriority = ({ data, set }: StepProps) => (
+  <div className="grid grid-cols-1 gap-2">
+    {(
+      [
+        ["cost", "💶 Lowest possible cost"],
+        ["success", "🎯 Highest success probability"],
+        ["speed", "⚡ Start treatment as soon as possible"],
+        ["balanced", "⚖️ A balance of all three"],
+      ] as const
+    ).map(([k, label]) => (
+      <OptionPill key={k} active={data.priority === k} onClick={() => set({ priority: k })}>
+        {label}
+      </OptionPill>
+    ))}
+  </div>
+);
+
 const STEPS = [
   { title: "How old are you?", subtitle: "Age helps us tailor recommendations.", Comp: StepAge },
   { title: "Tell us about yourself", subtitle: "Who is the treatment for?", Comp: StepGender },
   { title: "How long have you been trying?", subtitle: "Optional context.", Comp: StepTrying },
+  { title: "Any previous pregnancies?", subtitle: "Helps us understand your history.", Comp: StepPregnancies },
   { title: "Previous treatments", subtitle: "Select all that apply.", Comp: StepPrev },
-  { title: "Any diagnoses?", subtitle: "Select all that apply.", Comp: StepDiag },
+  { title: "Any diagnoses?", subtitle: "Select all that apply — or skip.", Comp: StepDiag },
   { title: "Treatment of interest", subtitle: "We'll match clinics that specialize.", Comp: StepTreatment },
   { title: "What's your budget?", subtitle: "Total expected cost per cycle.", Comp: StepBudget },
   { title: "Where would you treat?", subtitle: "Country preference.", Comp: StepCountry },
+  { title: "What matters most to you?", subtitle: "We'll re-rank clinics around your priority.", Comp: StepPriority },
 ];
 
 const isStepValid = (i: number, d: AssessmentData) => {
@@ -233,10 +276,12 @@ const isStepValid = (i: number, d: AssessmentData) => {
       return !!d.gender;
     case 2:
       return !!d.trying_duration;
-    case 5:
-      return !!d.treatment_interest;
     case 6:
+      return !!d.treatment_interest;
+    case 7:
       return !!d.budget_range;
+    case 9:
+      return !!d.priority;
     default:
       return true;
   }

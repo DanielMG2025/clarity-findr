@@ -6,6 +6,34 @@ export type TreatmentInterest = "IVF" | "Egg Donation" | "Social Freezing" | "IC
 export type BudgetRange = "<5k" | "5k-8k" | "8k-12k" | ">12k" | "unsure";
 export type ClinicTier = "premium" | "mid" | "budget";
 export type Confidence = "low" | "medium" | "high";
+export type Priority = "cost" | "success" | "speed" | "balanced";
+export type PreviousPregnancies = "none" | "miscarriage" | "live_birth" | "both";
+export type TravelPreference = "home_only" | "regional" | "europe" | "global";
+
+export interface AdvancedAssessment {
+  // A — Reproductive history
+  cycle_regularity?: "regular" | "irregular" | "absent";
+  prior_cycles_count?: number;
+  prior_outcome?: "none" | "chemical" | "miscarriage" | "live_birth";
+  // B — Biomarkers
+  amh?: number; // ng/mL
+  fsh?: number; // mIU/mL
+  antral_follicle_count?: number;
+  partner_sperm_quality?: "normal" | "mild" | "severe" | "unknown";
+  // C — Health & lifestyle
+  bmi_band?: "under" | "normal" | "over" | "obese";
+  smoker?: boolean;
+  alcohol?: "none" | "light" | "moderate" | "heavy";
+  chronic_conditions?: string[];
+  // D — Genetic
+  family_history?: boolean;
+  carrier_screening_done?: boolean;
+  ethnicity_relevant?: boolean;
+  // E — Preferences
+  donor_openness?: "no" | "maybe" | "yes";
+  pgt_interest?: boolean;
+  language_pref?: string;
+}
 
 export interface AssessmentData {
   age: number;
@@ -16,6 +44,12 @@ export interface AssessmentData {
   treatment_interest: TreatmentInterest | "";
   budget_range: BudgetRange | "";
   country_preference: string;
+  // Level 1 additions
+  previous_pregnancies?: PreviousPregnancies;
+  priority?: Priority;
+  travel_preference?: TravelPreference;
+  // Level 2
+  advanced?: AdvancedAssessment;
 }
 
 export interface Clinic {

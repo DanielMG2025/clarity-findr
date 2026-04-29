@@ -115,7 +115,11 @@ const PatientAdvanced = () => {
             ? "Partner subsidy applied — advanced questionnaire is free."
             : "Free modules added to your profile.",
     });
-    navigate("/results?advanced=1");
+    if (selected.advanced_questionnaire) {
+      navigate("/assessment/advanced");
+    } else {
+      navigate("/results?advanced=1");
+    }
   };
 
   return (
