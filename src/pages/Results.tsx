@@ -429,6 +429,27 @@ const Results = () => {
     return runMatching(assessment, clinics, aggregated, insights, scraped);
   }, [assessment, clinics, aggregated, insights, scraped]);
 
+  // Community price aggregation per clinic for the chosen treatment
+  const communityByClinic = useMemo(() => {
+    const treatment = assessment?.treatment_interest || "";
+    const map = new Map<string, { avg: number; samples: number }>();
+    const groups = new Map<string, number[]>();
+    communityStories.forEach((s) => {
+      if (!s.clinic_name || !s.estimated_price) return;
+      if (treatment && s.treatment_type !== treatment) return;
+      const arr = groups.get(s.clinic_name) ?? [];
+      arr.push(s.estimated_price);
+      groups.set(s.clinic_name, arr);
+    });
+    groups.forEach((arr, name) => {
+      map.set(name, {
+        avg: Math.round(arr.reduce((a, b) => a + b, 0) / arr.length),
+        samples: arr.length,
+      });
+    });
+    return map;
+  }, [communityStories, assessment]);
+
   const countryComparison = useMemo(() => {
     if (!clinics.length) return [] as { country: string; avg: number; diff: number | null }[];
     const treatment = assessment?.treatment_interest || "IVF";
@@ -599,16 +620,21 @@ const Results = () => {
               )}
 
               <div className="grid md:grid-cols-2 gap-6 md:[&>*:first-child]:md:col-span-2">
-                {matches.map((m, i) => (
-                  <ResultCard
-                    key={m.clinic.id}
-                    m={m}
-                    unlocked={unlocked}
-                    namesUnlocked={namesUnlocked}
-                    assessment={assessment!}
-                    rank={i + 1}
-                  />
-                ))}
+                {matches.map((m, i) => {
+                  const cb = communityByClinic.get(m.clinic.name);
+                  return (
+                    <ResultCard
+                      key={m.clinic.id}
+                      m={m}
+                      unlocked={unlocked}
+                      namesUnlocked={namesUnlocked}
+                      assessment={assessment!}
+                      rank={i + 1}
+                      communityAvg={cb?.avg ?? null}
+                      communitySamples={cb?.samples ?? 0}
+                    />
+                  );
+                })}
               </div>
 
               <Card className="mt-10 p-6 shadow-card border-2 border-primary/20 bg-gradient-to-br from-primary-soft/40 to-card">
