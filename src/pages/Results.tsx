@@ -177,16 +177,21 @@ const ResultCard = ({
             <span className="inline-flex items-center justify-center size-6 rounded-md bg-foreground/5 text-foreground/70 text-xs font-bold tabular-nums">
               #{rank}
             </span>
-            <h3 className="text-xl font-bold">{c.name}</h3>
+            <h3 className="text-xl font-bold">{displayName}</h3>
             <span
               className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider border ${TIER_STYLE[c.tier]}`}
             >
               {c.tier}
             </span>
+            {!namesUnlocked && (
+              <span className="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider bg-muted text-muted-foreground border border-border inline-flex items-center gap-1">
+                <Lock className="size-3" /> Anonymized
+              </span>
+            )}
           </div>
           <div className="flex items-center gap-3 text-sm text-muted-foreground mt-1">
             <span className="inline-flex items-center gap-1">
-              <MapPin className="size-3.5" /> {c.city}, {c.country}
+              <MapPin className="size-3.5" /> {displayLocation}
             </span>
             {c.rating_score && (
               <span className="inline-flex items-center gap-1">
