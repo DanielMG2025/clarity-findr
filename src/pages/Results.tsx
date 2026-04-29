@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Pencil, MapPin, Star, TrendingUp, Sparkles, Lock, Info, Activity, CheckCircle2, Globe2, Brain, RefreshCw, Database, FileText, Users, Globe, ExternalLink, ArrowRight, Dna } from "lucide-react";
+import { Pencil, MapPin, Star, TrendingUp, Sparkles, Lock, Info, Activity, CheckCircle2, Globe2, Brain, RefreshCw, Database, FileText, Users, Globe, ExternalLink, ArrowRight, Dna, User, Building2, Wallet, ShieldCheck } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
@@ -35,6 +35,45 @@ const ConfidencePill = ({ confidence }: { confidence: MatchResult["confidence"] 
     <span className={`text-xs px-2.5 py-1 rounded-full font-semibold ${map[confidence].c}`}>
       {map[confidence].l}
     </span>
+  );
+};
+
+const ScoreBar = ({
+  label,
+  value,
+  icon: Icon,
+  tone,
+  reasons,
+}: {
+  label: string;
+  value: number;
+  icon: React.ComponentType<{ className?: string }>;
+  tone: "primary" | "accent" | "warning";
+  reasons: string[];
+}) => {
+  const toneMap = {
+    primary: { bar: "bg-primary", text: "text-primary", soft: "bg-primary-soft" },
+    accent: { bar: "bg-accent", text: "text-accent", soft: "bg-accent-soft" },
+    warning: { bar: "bg-warning", text: "text-warning", soft: "bg-warning/15" },
+  } as const;
+  const t = toneMap[tone];
+  return (
+    <div className={`rounded-lg p-3 ${t.soft}`} title={reasons.slice(0, 2).join(" · ")}>
+      <div className="flex items-center justify-between gap-2 mb-1.5">
+        <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-foreground/80">
+          <Icon className={`size-3.5 ${t.text}`} /> {label}
+        </div>
+        <div className={`text-base font-extrabold tabular-nums ${t.text}`}>{value}</div>
+      </div>
+      <div className="h-1.5 rounded-full bg-background/60 overflow-hidden">
+        <div className={`h-full ${t.bar} transition-all`} style={{ width: `${value}%` }} />
+      </div>
+      {reasons[0] && (
+        <div className="text-[10.5px] text-muted-foreground mt-1.5 leading-snug line-clamp-2">
+          {reasons[0]}
+        </div>
+      )}
+    </div>
   );
 };
 
@@ -206,9 +245,47 @@ const ResultCard = ({
         </div>
         <div className="text-center shrink-0">
           <div className="text-3xl font-extrabold bg-gradient-primary bg-clip-text text-transparent tabular-nums">
-            {m.match_score}%
+            {m.match_score}
           </div>
-          <div className="text-xs text-muted-foreground font-semibold">match</div>
+          <div className="text-xs text-muted-foreground font-semibold">/ 100 match</div>
+          <div className="mt-1.5 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-foreground/5 text-foreground/70" title="Data quality of this decision">
+            <ShieldCheck className="size-3" /> {m.scores.decision_confidence}
+          </div>
+        </div>
+      </div>
+
+      {/* Decision breakdown — Patient · Clinic Fit · Value */}
+      <div className="rounded-xl border-2 border-primary/20 bg-gradient-to-br from-primary-soft/30 to-card p-3 mb-4">
+        <div className="flex items-center justify-between mb-2.5">
+          <div className="text-[10px] font-bold uppercase tracking-wider text-foreground/70 flex items-center gap-1.5">
+            <Brain className="size-3.5 text-primary" /> Decision breakdown
+          </div>
+          <div className="text-[10px] text-muted-foreground">
+            weighted: patient 20% · fit 50% · value 30%
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          <ScoreBar
+            label="Patient"
+            value={m.scores.patient_score}
+            icon={User}
+            tone="primary"
+            reasons={m.scores.reasons.patient}
+          />
+          <ScoreBar
+            label="Clinic fit"
+            value={m.scores.clinic_fit_score}
+            icon={Building2}
+            tone="accent"
+            reasons={m.scores.reasons.clinic_fit}
+          />
+          <ScoreBar
+            label="Value"
+            value={m.scores.value_score}
+            icon={Wallet}
+            tone="warning"
+            reasons={m.scores.reasons.value}
+          />
         </div>
       </div>
 
@@ -489,9 +566,13 @@ const Results = () => {
           <div className="container py-12">
             <div className="flex items-end justify-between flex-wrap gap-4 mb-6">
               <div>
+                <div className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-primary/10 text-primary mb-2">
+                  <Brain className="size-3" /> Decision engine · 3-score model
+                </div>
                 <h1 className="text-3xl md:text-4xl font-bold">Your top matches</h1>
-                <p className="text-muted-foreground mt-1">
-                  Ranked by price fit, treatment match, geography and quality.
+                <p className="text-muted-foreground mt-1 max-w-2xl">
+                  Each clinic is scored on <strong>Patient fit</strong>, <strong>Clinic fit</strong> and{" "}
+                  <strong>Value</strong> — then blended into a single 0–100 Match Score with a data-quality confidence rating.
                 </p>
               </div>
               <Button variant="outline" asChild>
