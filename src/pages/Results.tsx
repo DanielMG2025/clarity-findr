@@ -566,9 +566,13 @@ const Results = () => {
           <div className="container py-12">
             <div className="flex items-end justify-between flex-wrap gap-4 mb-6">
               <div>
+                <div className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-primary/10 text-primary mb-2">
+                  <Brain className="size-3" /> Decision engine · 3-score model
+                </div>
                 <h1 className="text-3xl md:text-4xl font-bold">Your top matches</h1>
-                <p className="text-muted-foreground mt-1">
-                  Ranked by price fit, treatment match, geography and quality.
+                <p className="text-muted-foreground mt-1 max-w-2xl">
+                  Each clinic is scored on <strong>Patient fit</strong>, <strong>Clinic fit</strong> and{" "}
+                  <strong>Value</strong> — then blended into a single 0–100 Match Score with a data-quality confidence rating.
                 </p>
               </div>
               <Button variant="outline" asChild>
