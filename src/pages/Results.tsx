@@ -354,6 +354,7 @@ const Results = () => {
   const [scraped, setScraped] = useState<ScrapedPricingRow[]>([]);
   const [insights, setInsights] = useState<ClinicInsight[]>([]);
   const [unlocked, setUnlocked] = useState(storage.isUnlocked());
+  const [namesUnlocked, setNamesUnlocked] = useState(storage.areNamesUnlocked());
   const [loading, setLoading] = useState(true);
   const [aiInsights, setAiInsights] = useState<string[]>([]);
   const [aiInsightsLoading, setAiInsightsLoading] = useState(false);
