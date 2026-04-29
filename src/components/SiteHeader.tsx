@@ -5,10 +5,10 @@ const SiteHeader = () => {
   const { pathname } = useLocation();
   const links = [
     { to: "/", label: "Home" },
-    { to: "/assessment", label: "Assessment" },
+    { to: "/patient", label: "Patients" },
+    { to: "/clinic", label: "Clinics" },
     { to: "/insights", label: "Market insights" },
-    { to: "/egg-bank", label: "Egg Bank" },
-    { to: "/admin/import", label: "Bulk import" },
+    { to: "/admin/pricing-dashboard", label: "Admin" },
   ];
   return (
     <header className="sticky top-0 z-40 backdrop-blur-md bg-background/80 border-b">
