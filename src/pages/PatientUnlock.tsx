@@ -58,7 +58,7 @@ const PatientUnlock = () => {
           </p>
 
           <div className="grid md:grid-cols-2 gap-6 mt-10">
-            {/* Option A — Pay */}
+            {/* Option A — Pay (tiered) */}
             <Card className="p-8 shadow-elegant bg-gradient-card border-2 border-primary/30">
               <div className="size-12 rounded-xl bg-primary-soft grid place-items-center mb-4">
                 <Lock className="size-6 text-primary" />
@@ -66,36 +66,64 @@ const PatientUnlock = () => {
               <div className="text-xs font-bold uppercase tracking-wider text-primary mb-1">
                 Option A · Self-serve
               </div>
-              <h2 className="text-2xl font-bold mb-2">Unlock everything</h2>
-              <div className="flex items-baseline gap-2 mb-4">
-                <span className="text-5xl font-extrabold tabular-nums">€{UNLOCK_PRICE}</span>
-                <span className="text-sm text-muted-foreground">one-time</span>
+              <h2 className="text-2xl font-bold mb-2">Unlock clinic details</h2>
+              <p className="text-sm text-muted-foreground mb-5">
+                Two tiers — pay only for the depth you need.
+              </p>
+
+              {/* Tier 1 — Peek */}
+              <div className="rounded-xl border-2 border-border p-4 mb-3">
+                <div className="flex items-baseline justify-between mb-1">
+                  <span className="font-semibold">Reveal clinic names</span>
+                  <span className="text-xl font-extrabold tabular-nums">€{PEEK_PRICE}</span>
+                </div>
+                <p className="text-xs text-muted-foreground mb-3">
+                  Names, locations and basic ranking only.
+                </p>
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => handlePay("peek")}
+                  disabled={processing !== null}
+                >
+                  {processing === "pay" ? "Processing…" : `Unlock names · €${PEEK_PRICE}`}
+                </Button>
               </div>
-              <ul className="space-y-2 text-sm mb-6">
-                {[
-                  "Reveal all clinic names and locations",
-                  "Detailed price breakdown (base + meds + extras)",
-                  "Confidence level + price ranges per clinic",
-                  "Compare clinics side-by-side",
-                ].map((b) => (
-                  <li key={b} className="flex gap-2">
-                    <CheckCircle2 className="size-4 text-accent shrink-0 mt-0.5" />
-                    <span>{b}</span>
-                  </li>
-                ))}
-              </ul>
-              <Button
-                variant="hero"
-                size="lg"
-                className="w-full"
-                onClick={handlePay}
-                disabled={processing !== null}
-              >
-                {processing === "pay" ? "Processing…" : (
-                  <>Unlock for €{UNLOCK_PRICE} <ArrowRight className="size-4" /></>
-                )}
-              </Button>
-              <div className="text-[11px] text-muted-foreground mt-3 inline-flex items-center gap-1">
+
+              {/* Tier 2 — Full */}
+              <div className="rounded-xl border-2 border-primary/40 bg-primary-soft/40 p-4 mb-2 relative">
+                <div className="absolute -top-2.5 left-3 bg-gradient-primary text-primary-foreground text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">
+                  Recommended
+                </div>
+                <div className="flex items-baseline justify-between mb-1 mt-1">
+                  <span className="font-semibold">Full access</span>
+                  <span className="text-2xl font-extrabold tabular-nums">€{FULL_UNLOCK_PRICE}</span>
+                </div>
+                <ul className="space-y-1.5 text-xs mb-3">
+                  {[
+                    "Everything in Reveal",
+                    "Detailed price breakdown (base + meds + extras)",
+                    "Confidence + price ranges per clinic",
+                    "Side-by-side comparison",
+                  ].map((b) => (
+                    <li key={b} className="flex gap-2">
+                      <CheckCircle2 className="size-3.5 text-accent shrink-0 mt-0.5" />
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button
+                  variant="hero"
+                  className="w-full"
+                  onClick={() => handlePay("full")}
+                  disabled={processing !== null}
+                >
+                  {processing === "pay" ? "Processing…" : (
+                    <>Full access · €{FULL_UNLOCK_PRICE} <ArrowRight className="size-4" /></>
+                  )}
+                </Button>
+              </div>
+              <div className="text-[11px] text-muted-foreground mt-2 inline-flex items-center gap-1">
                 <ShieldCheck className="size-3" /> Demo mode — payment is simulated
               </div>
             </Card>
@@ -149,7 +177,7 @@ const PatientUnlock = () => {
               <Sparkles className="size-5 text-primary mt-1 shrink-0" />
               <div className="text-sm text-muted-foreground">
                 <span className="font-semibold text-foreground">How we make money — transparently. </span>
-                Either you pay €{UNLOCK_PRICE} to access everything yourself, or clinics pay us a referral
+                Either you pay €{PEEK_PRICE}–€{FULL_UNLOCK_PRICE} to access details yourself, or clinics pay us a referral
                 fee when you opt in to a free intro. Both paths give you the same data quality. We never
                 rank clinics by who pays the most.
               </div>
