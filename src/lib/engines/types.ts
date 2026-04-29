@@ -103,11 +103,25 @@ export interface MatchScore {
   };
 }
 
+/** Sub-scores from the scoring engine. */
+export interface ScoreBundle {
+  patient_score: number;
+  clinic_fit_score: number;
+  value_score: number;
+  decision_confidence: Confidence;
+  reasons: {
+    patient: string[];
+    clinic_fit: string[];
+    value: string[];
+  };
+}
+
 /** Final consolidated row consumed by the UI / dashboard. */
 export interface MatchResult {
   clinic: Clinic;
   match_score: number;
   composite_score: number;
+  scores: ScoreBundle;
   estimated_price: number;
   /** Clinic's own listed total (base + meds + extras), regardless of source. */
   listed_price: number;

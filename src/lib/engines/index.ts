@@ -8,6 +8,7 @@ import {
 } from "./pricingEngine";
 import { BUDGET_UPPER, matchingEngine } from "./matchingEngine";
 import { insightsEngine } from "./insightsEngine";
+import { scoreClinic } from "./scoringEngine";
 import type {
   AggregatedRow,
   AssessmentData,
