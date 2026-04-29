@@ -10,6 +10,7 @@ import PatientAdvanced from "./pages/PatientAdvanced.tsx";
 import PatientReferral from "./pages/PatientReferral.tsx";
 import ClinicLanding from "./pages/ClinicLanding.tsx";
 import ClinicDashboard from "./pages/ClinicDashboard.tsx";
+import Partners from "./pages/Partners.tsx";
 import Assessment from "./pages/Assessment.tsx";
 import Results from "./pages/Results.tsx";
 import Insights from "./pages/Insights.tsx";
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/patient/referral" element={<PatientReferral />} />
           <Route path="/clinic" element={<ClinicLanding />} />
           <Route path="/clinic/dashboard" element={<ClinicDashboard />} />
+          <Route path="/partners" element={<Partners />} />
           <Route path="/assessment" element={<Assessment />} />
           <Route path="/results" element={<Results />} />
           <Route path="/insights" element={<Insights />} />
