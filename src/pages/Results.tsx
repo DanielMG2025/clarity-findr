@@ -38,6 +38,45 @@ const ConfidencePill = ({ confidence }: { confidence: MatchResult["confidence"] 
   );
 };
 
+const ScoreBar = ({
+  label,
+  value,
+  icon: Icon,
+  tone,
+  reasons,
+}: {
+  label: string;
+  value: number;
+  icon: React.ComponentType<{ className?: string }>;
+  tone: "primary" | "accent" | "warning";
+  reasons: string[];
+}) => {
+  const toneMap = {
+    primary: { bar: "bg-primary", text: "text-primary", soft: "bg-primary-soft" },
+    accent: { bar: "bg-accent", text: "text-accent", soft: "bg-accent-soft" },
+    warning: { bar: "bg-warning", text: "text-warning", soft: "bg-warning/15" },
+  } as const;
+  const t = toneMap[tone];
+  return (
+    <div className={`rounded-lg p-3 ${t.soft}`} title={reasons.slice(0, 2).join(" · ")}>
+      <div className="flex items-center justify-between gap-2 mb-1.5">
+        <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-foreground/80">
+          <Icon className={`size-3.5 ${t.text}`} /> {label}
+        </div>
+        <div className={`text-base font-extrabold tabular-nums ${t.text}`}>{value}</div>
+      </div>
+      <div className="h-1.5 rounded-full bg-background/60 overflow-hidden">
+        <div className={`h-full ${t.bar} transition-all`} style={{ width: `${value}%` }} />
+      </div>
+      {reasons[0] && (
+        <div className="text-[10.5px] text-muted-foreground mt-1.5 leading-snug line-clamp-2">
+          {reasons[0]}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const DataSourceBadge = ({
   source,
   sampleSize,
