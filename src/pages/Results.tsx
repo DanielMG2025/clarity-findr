@@ -546,6 +546,32 @@ const Results = () => {
             <div className="text-center py-20 text-muted-foreground">Calculating matches…</div>
           ) : (
             <>
+              {!namesUnlocked && (
+                <Card className="mb-8 p-6 shadow-elegant bg-gradient-card border-2 border-primary/40">
+                  <div className="flex flex-wrap items-center gap-5 justify-between">
+                    <div className="flex items-start gap-3 min-w-0">
+                      <div className="size-11 rounded-xl bg-primary-soft grid place-items-center shrink-0">
+                        <Lock className="size-5 text-primary" />
+                      </div>
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-wider text-primary mb-0.5">
+                          Step 2 · Unlock
+                        </div>
+                        <h3 className="font-bold text-lg">Reveal clinic names & full pricing</h3>
+                        <p className="text-sm text-muted-foreground mt-0.5">
+                          €19 self-serve, or get a free intro via our referral team.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <Button asChild variant="hero">
+                        <Link to="/patient/unlock">See unlock options <ArrowRight className="size-4" /></Link>
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              )}
+
               <div className="grid md:grid-cols-2 gap-6 md:[&>*:first-child]:md:col-span-2">
                 {matches.map((m, i) => (
                   <ResultCard
