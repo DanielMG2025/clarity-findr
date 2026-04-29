@@ -140,6 +140,84 @@ export type Database = {
         }
         Relationships: []
       }
+      community_discussions: {
+        Row: {
+          age_band: string | null
+          category: string
+          country: string | null
+          created_at: string
+          flagged: boolean
+          id: string
+          prompt: string
+          reply: string
+        }
+        Insert: {
+          age_band?: string | null
+          category: string
+          country?: string | null
+          created_at?: string
+          flagged?: boolean
+          id?: string
+          prompt: string
+          reply: string
+        }
+        Update: {
+          age_band?: string | null
+          category?: string
+          country?: string | null
+          created_at?: string
+          flagged?: boolean
+          id?: string
+          prompt?: string
+          reply?: string
+        }
+        Relationships: []
+      }
+      community_stories: {
+        Row: {
+          age_band: string
+          clinic_name: string | null
+          country: string
+          created_at: string
+          estimated_price: number | null
+          flagged: boolean
+          id: string
+          is_verified: boolean
+          outcome: string | null
+          rating: number | null
+          story: string | null
+          treatment_type: string
+        }
+        Insert: {
+          age_band: string
+          clinic_name?: string | null
+          country: string
+          created_at?: string
+          estimated_price?: number | null
+          flagged?: boolean
+          id?: string
+          is_verified?: boolean
+          outcome?: string | null
+          rating?: number | null
+          story?: string | null
+          treatment_type: string
+        }
+        Update: {
+          age_band?: string
+          clinic_name?: string | null
+          country?: string
+          created_at?: string
+          estimated_price?: number | null
+          flagged?: boolean
+          id?: string
+          is_verified?: boolean
+          outcome?: string | null
+          rating?: number | null
+          story?: string | null
+          treatment_type?: string
+        }
+        Relationships: []
+      }
       matches: {
         Row: {
           clinic_id: string
