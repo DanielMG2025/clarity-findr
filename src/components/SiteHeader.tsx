@@ -10,7 +10,7 @@ const SiteHeader = () => {
     { to: "/partners", label: "Partners" },
     { to: "/community", label: "Community" },
     { to: "/insights", label: "Market insights" },
-    { to: "/admin/pricing-dashboard", label: "Admin" },
+    { to: "/admin", label: "Admin" },
   ];
   return (
     <header className="sticky top-0 z-40 backdrop-blur-md bg-background/80 border-b">

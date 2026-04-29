@@ -17,6 +17,7 @@ import Results from "./pages/Results.tsx";
 import Insights from "./pages/Insights.tsx";
 import Import from "./pages/Import.tsx";
 import AdminPricingDashboard from "./pages/AdminPricingDashboard.tsx";
+import Admin from "./pages/Admin.tsx";
 import EggBank from "./pages/EggBank.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
@@ -41,6 +42,7 @@ const App = () => (
           <Route path="/assessment" element={<Assessment />} />
           <Route path="/results" element={<Results />} />
           <Route path="/insights" element={<Insights />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="/admin/import" element={<Import />} />
           <Route path="/admin/pricing-dashboard" element={<AdminPricingDashboard />} />
           <Route path="/egg-bank" element={<EggBank />} />
