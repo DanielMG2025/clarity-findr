@@ -281,6 +281,20 @@ const ResultCard = ({
               </span>
             )}
           </div>
+          {communityAvg !== null && communitySamples > 0 && (
+            <div className="mt-1.5 text-[11px] text-foreground/80 inline-flex items-center gap-1.5">
+              <Users className="size-3 text-primary" />
+              <span>
+                Community avg:{" "}
+                <span className="font-bold text-foreground">
+                  €{communityAvg.toLocaleString()}
+                </span>{" "}
+                <span className="text-muted-foreground">
+                  ({communitySamples} stor{communitySamples === 1 ? "y" : "ies"})
+                </span>
+              </span>
+            </div>
+          )}
         </div>
         <div className="rounded-xl bg-accent-soft p-4">
           <div className="text-xs text-muted-foreground uppercase tracking-wider">
@@ -363,6 +377,9 @@ const Results = () => {
   const [aiInsights, setAiInsights] = useState<string[]>([]);
   const [aiInsightsLoading, setAiInsightsLoading] = useState(false);
   const [aiInsightsError, setAiInsightsError] = useState<string | null>(null);
+  const [communityStories, setCommunityStories] = useState<
+    { clinic_name: string | null; treatment_type: string; estimated_price: number | null }[]
+  >([]);
 
   const loadAiInsights = async () => {
     setAiInsightsLoading(true);
@@ -387,16 +404,21 @@ const Results = () => {
     }
     setAssessment(a);
     (async () => {
-      const [{ data: cs }, { data: ag }, { data: ins }, { data: sc }] = await Promise.all([
-        supabase.from("clinics").select("*"),
-        supabase.from("aggregated_pricing").select("*"),
-        supabase.from("clinic_insights").select("*"),
-        supabase.from("scraped_pricing").select("*"),
-      ]);
+      const [{ data: cs }, { data: ag }, { data: ins }, { data: sc }, { data: cstories }] =
+        await Promise.all([
+          supabase.from("clinics").select("*"),
+          supabase.from("aggregated_pricing").select("*"),
+          supabase.from("clinic_insights").select("*"),
+          supabase.from("scraped_pricing").select("*"),
+          supabase
+            .from("community_stories")
+            .select("clinic_name, treatment_type, estimated_price"),
+        ]);
       setClinics((cs ?? []) as Clinic[]);
       setAggregated((ag ?? []) as AggregatedRow[]);
       setInsights((ins ?? []) as ClinicInsight[]);
       setScraped((sc ?? []) as ScrapedPricingRow[]);
+      setCommunityStories((cstories ?? []) as typeof communityStories);
       setLoading(false);
       loadAiInsights();
     })();
