@@ -74,26 +74,26 @@ const PatientFlow = () => {
             />
             <Step
               n="2"
-              title="Unlock options"
-              text="Pay €19 to reveal clinic names, or get a free intro via our referral team."
+              title="Soft paywall"
+              text="Reveal names from €5 — or full access for €19. Or pick the free referral path."
               status="next"
             />
             <Step
               n="3"
-              title="Advanced services"
-              text="Optional: deeper questionnaire, genetic matching, home fertility kit."
+              title="Advanced modules"
+              text="Optional: deeper questionnaire (€30), free genetic matching, free home kit (partner-funded)."
               status="future"
             />
             <Step
               n="4"
               title="Decision dashboard"
-              text="Ranked clinics with explainability and confidence levels."
+              text="Detailed scoring, success likelihood, price-realism score, confidence indicator."
               status="future"
             />
             <Step
               n="5"
-              title="Referral"
-              text="If you want, we connect you to your top match — at no cost."
+              title="High-quality referral"
+              text="Want a direct intro? We flag you as a high-quality lead so clinics prioritize your case."
               status="future"
             />
           </div>
@@ -141,9 +141,9 @@ const PatientFlow = () => {
           <div className="mt-12 grid md:grid-cols-3 gap-4">
             <Card className="p-5 shadow-card">
               <Lock className="size-5 text-primary mb-2" />
-              <div className="font-semibold text-sm">Step 2 — €19 unlock</div>
+              <div className="font-semibold text-sm">Step 2 — From €5</div>
               <div className="text-xs text-muted-foreground mt-1">
-                Reveal clinic names, pricing breakdowns and detailed ranges.
+                Reveal names (€5) or unlock full pricing detail (€19).
               </div>
             </Card>
             <Card className="p-5 shadow-card">
@@ -157,7 +157,7 @@ const PatientFlow = () => {
               <BarChart3 className="size-5 text-primary mb-2" />
               <div className="font-semibold text-sm">Step 3+ — Advanced</div>
               <div className="text-xs text-muted-foreground mt-1">
-                Add deeper matching, genetic screening and at-home fertility tests.
+                Add deeper matching (€30), or free genetic + at-home tests via partners.
               </div>
             </Card>
           </div>
