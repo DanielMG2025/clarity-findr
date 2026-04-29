@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Pencil, MapPin, Star, TrendingUp, Sparkles, Lock, Info, Activity, CheckCircle2, Globe2, Brain, RefreshCw, Database, FileText, Users, Globe, ExternalLink } from "lucide-react";
+import { Pencil, MapPin, Star, TrendingUp, Sparkles, Lock, Info, Activity, CheckCircle2, Globe2, Brain, RefreshCw, Database, FileText, Users, Globe, ExternalLink, ArrowRight, Dna } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
@@ -81,17 +81,21 @@ const DataSourceBadge = ({
 const ResultCard = ({
   m,
   unlocked,
+  namesUnlocked,
   assessment,
   rank,
 }: {
   m: MatchResult;
   unlocked: boolean;
+  namesUnlocked: boolean;
   assessment: AssessmentData;
   rank: number;
 }) => {
   const isTop = rank === 1;
   const c = m.clinic;
   const showRange = unlocked && m.sample_size > 0;
+  const displayName = namesUnlocked ? c.name : `Clinic ${String.fromCharCode(64 + rank)}`;
+  const displayLocation = namesUnlocked ? `${c.city}, ${c.country}` : c.country;
   const [aiExplanation, setAiExplanation] = useState<string | null>(null);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
@@ -173,16 +177,21 @@ const ResultCard = ({
             <span className="inline-flex items-center justify-center size-6 rounded-md bg-foreground/5 text-foreground/70 text-xs font-bold tabular-nums">
               #{rank}
             </span>
-            <h3 className="text-xl font-bold">{c.name}</h3>
+            <h3 className="text-xl font-bold">{displayName}</h3>
             <span
               className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider border ${TIER_STYLE[c.tier]}`}
             >
               {c.tier}
             </span>
+            {!namesUnlocked && (
+              <span className="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider bg-muted text-muted-foreground border border-border inline-flex items-center gap-1">
+                <Lock className="size-3" /> Anonymized
+              </span>
+            )}
           </div>
           <div className="flex items-center gap-3 text-sm text-muted-foreground mt-1">
             <span className="inline-flex items-center gap-1">
-              <MapPin className="size-3.5" /> {c.city}, {c.country}
+              <MapPin className="size-3.5" /> {displayLocation}
             </span>
             {c.rating_score && (
               <span className="inline-flex items-center gap-1">
@@ -345,6 +354,7 @@ const Results = () => {
   const [scraped, setScraped] = useState<ScrapedPricingRow[]>([]);
   const [insights, setInsights] = useState<ClinicInsight[]>([]);
   const [unlocked, setUnlocked] = useState(storage.isUnlocked());
+  const [namesUnlocked, setNamesUnlocked] = useState(storage.areNamesUnlocked());
   const [loading, setLoading] = useState(true);
   const [aiInsights, setAiInsights] = useState<string[]>([]);
   const [aiInsightsLoading, setAiInsightsLoading] = useState(false);
@@ -536,12 +546,39 @@ const Results = () => {
             <div className="text-center py-20 text-muted-foreground">Calculating matches…</div>
           ) : (
             <>
+              {!namesUnlocked && (
+                <Card className="mb-8 p-6 shadow-elegant bg-gradient-card border-2 border-primary/40">
+                  <div className="flex flex-wrap items-center gap-5 justify-between">
+                    <div className="flex items-start gap-3 min-w-0">
+                      <div className="size-11 rounded-xl bg-primary-soft grid place-items-center shrink-0">
+                        <Lock className="size-5 text-primary" />
+                      </div>
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-wider text-primary mb-0.5">
+                          Step 2 · Unlock
+                        </div>
+                        <h3 className="font-bold text-lg">Reveal clinic names & full pricing</h3>
+                        <p className="text-sm text-muted-foreground mt-0.5">
+                          €19 self-serve, or get a free intro via our referral team.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <Button asChild variant="hero">
+                        <Link to="/patient/unlock">See unlock options <ArrowRight className="size-4" /></Link>
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              )}
+
               <div className="grid md:grid-cols-2 gap-6 md:[&>*:first-child]:md:col-span-2">
                 {matches.map((m, i) => (
                   <ResultCard
                     key={m.clinic.id}
                     m={m}
                     unlocked={unlocked}
+                    namesUnlocked={namesUnlocked}
                     assessment={assessment!}
                     rank={i + 1}
                   />
@@ -649,6 +686,37 @@ const Results = () => {
                   </Button>
                 </Card>
               )}
+
+              {/* Step 3 + Step 5 cross-sell */}
+              <div className="grid md:grid-cols-2 gap-4 mt-8">
+                <Card className="p-6 border-2 border-primary/30 bg-gradient-card shadow-card">
+                  <div className="flex items-center gap-2 text-primary mb-2">
+                    <Dna className="size-5" />
+                    <span className="text-[10px] font-bold uppercase tracking-wider">Step 3 · Advanced</span>
+                  </div>
+                  <h3 className="font-bold text-lg">Sharper matches with deeper data</h3>
+                  <p className="text-sm text-muted-foreground mt-1 mb-4">
+                    Add the advanced questionnaire (€30), genetic matching or a home fertility kit
+                    — free with our partner products.
+                  </p>
+                  <Button asChild variant="outline">
+                    <Link to="/patient/advanced">Explore advanced modules <ArrowRight className="size-4" /></Link>
+                  </Button>
+                </Card>
+                <Card className="p-6 border-2 border-accent/30 bg-gradient-card shadow-card">
+                  <div className="flex items-center gap-2 text-accent mb-2">
+                    <Users className="size-5" />
+                    <span className="text-[10px] font-bold uppercase tracking-wider">Step 5 · Referral</span>
+                  </div>
+                  <h3 className="font-bold text-lg">Want us to connect you?</h3>
+                  <p className="text-sm text-muted-foreground mt-1 mb-4">
+                    Get a free, hand-picked introduction to your top-matched clinics. No spam, ever.
+                  </p>
+                  <Button asChild variant="outline" className="border-accent/40 text-accent hover:bg-accent-soft">
+                    <Link to="/patient/referral">Request free referral <ArrowRight className="size-4" /></Link>
+                  </Button>
+                </Card>
+              </div>
 
               <div className="mt-8 rounded-xl border border-border bg-muted/40 p-4 flex items-start gap-3 text-xs text-muted-foreground">
                 <Info className="size-4 mt-0.5 shrink-0" />

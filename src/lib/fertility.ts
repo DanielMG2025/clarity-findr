@@ -37,6 +37,17 @@ export const COUNTRIES = ["Spain", "Portugal", "Germany", "UK", "Czech Republic"
 const ASSESSMENT_KEY = "fertility_assessment";
 const UNLOCK_KEY = "crowdsourcing_unlocked";
 const SUBMITTED_KEY = "quote_submitted";
+const NAMES_UNLOCKED_KEY = "clinic_names_unlocked";
+const ADVANCED_KEY = "advanced_modules";
+const REFERRAL_KEY = "referral_status";
+
+export type AdvancedModules = {
+  advanced_questionnaire: boolean;
+  genetic_matching: boolean;
+  home_kit: boolean;
+};
+
+export type ReferralStatus = "none" | "requested" | "matched";
 
 export const storage = {
   loadAssessment(): AssessmentData | null {
@@ -61,6 +72,36 @@ export const storage = {
   },
   markSubmitted() {
     localStorage.setItem(SUBMITTED_KEY, "true");
+  },
+  // ---- Names unlock (€19 paid OR referral path)
+  areNamesUnlocked() {
+    return localStorage.getItem(NAMES_UNLOCKED_KEY) === "true";
+  },
+  unlockNames() {
+    localStorage.setItem(NAMES_UNLOCKED_KEY, "true");
+  },
+  // ---- Advanced modules (Step 3)
+  loadAdvanced(): AdvancedModules {
+    try {
+      const raw = localStorage.getItem(ADVANCED_KEY);
+      if (raw) return JSON.parse(raw) as AdvancedModules;
+    } catch {}
+    return { advanced_questionnaire: false, genetic_matching: false, home_kit: false };
+  },
+  saveAdvanced(m: AdvancedModules) {
+    localStorage.setItem(ADVANCED_KEY, JSON.stringify(m));
+  },
+  // ---- Referral (Step 5)
+  getReferral(): ReferralStatus {
+    return (localStorage.getItem(REFERRAL_KEY) as ReferralStatus) || "none";
+  },
+  setReferral(s: ReferralStatus) {
+    localStorage.setItem(REFERRAL_KEY, s);
+  },
+  resetPatientFlow() {
+    [UNLOCK_KEY, SUBMITTED_KEY, NAMES_UNLOCKED_KEY, ADVANCED_KEY, REFERRAL_KEY].forEach((k) =>
+      localStorage.removeItem(k),
+    );
   },
 };
 
