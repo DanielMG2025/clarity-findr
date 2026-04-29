@@ -8,6 +8,7 @@ const SiteHeader = () => {
     { to: "/patient", label: "Patients" },
     { to: "/clinic", label: "Clinics" },
     { to: "/partners", label: "Partners" },
+    { to: "/community", label: "Community" },
     { to: "/insights", label: "Market insights" },
     { to: "/admin/pricing-dashboard", label: "Admin" },
   ];

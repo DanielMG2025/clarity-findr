@@ -84,12 +84,16 @@ const ResultCard = ({
   namesUnlocked,
   assessment,
   rank,
+  communityAvg,
+  communitySamples,
 }: {
   m: MatchResult;
   unlocked: boolean;
   namesUnlocked: boolean;
   assessment: AssessmentData;
   rank: number;
+  communityAvg: number | null;
+  communitySamples: number;
 }) => {
   const isTop = rank === 1;
   const c = m.clinic;
@@ -277,6 +281,20 @@ const ResultCard = ({
               </span>
             )}
           </div>
+          {communityAvg !== null && communitySamples > 0 && (
+            <div className="mt-1.5 text-[11px] text-foreground/80 inline-flex items-center gap-1.5">
+              <Users className="size-3 text-primary" />
+              <span>
+                Community avg:{" "}
+                <span className="font-bold text-foreground">
+                  €{communityAvg.toLocaleString()}
+                </span>{" "}
+                <span className="text-muted-foreground">
+                  ({communitySamples} stor{communitySamples === 1 ? "y" : "ies"})
+                </span>
+              </span>
+            </div>
+          )}
         </div>
         <div className="rounded-xl bg-accent-soft p-4">
           <div className="text-xs text-muted-foreground uppercase tracking-wider">
@@ -359,6 +377,9 @@ const Results = () => {
   const [aiInsights, setAiInsights] = useState<string[]>([]);
   const [aiInsightsLoading, setAiInsightsLoading] = useState(false);
   const [aiInsightsError, setAiInsightsError] = useState<string | null>(null);
+  const [communityStories, setCommunityStories] = useState<
+    { clinic_name: string | null; treatment_type: string; estimated_price: number | null }[]
+  >([]);
 
   const loadAiInsights = async () => {
     setAiInsightsLoading(true);
@@ -383,16 +404,21 @@ const Results = () => {
     }
     setAssessment(a);
     (async () => {
-      const [{ data: cs }, { data: ag }, { data: ins }, { data: sc }] = await Promise.all([
-        supabase.from("clinics").select("*"),
-        supabase.from("aggregated_pricing").select("*"),
-        supabase.from("clinic_insights").select("*"),
-        supabase.from("scraped_pricing").select("*"),
-      ]);
+      const [{ data: cs }, { data: ag }, { data: ins }, { data: sc }, { data: cstories }] =
+        await Promise.all([
+          supabase.from("clinics").select("*"),
+          supabase.from("aggregated_pricing").select("*"),
+          supabase.from("clinic_insights").select("*"),
+          supabase.from("scraped_pricing").select("*"),
+          supabase
+            .from("community_stories")
+            .select("clinic_name, treatment_type, estimated_price"),
+        ]);
       setClinics((cs ?? []) as Clinic[]);
       setAggregated((ag ?? []) as AggregatedRow[]);
       setInsights((ins ?? []) as ClinicInsight[]);
       setScraped((sc ?? []) as ScrapedPricingRow[]);
+      setCommunityStories((cstories ?? []) as typeof communityStories);
       setLoading(false);
       loadAiInsights();
     })();
@@ -402,6 +428,27 @@ const Results = () => {
     if (!assessment || !clinics.length) return [];
     return runMatching(assessment, clinics, aggregated, insights, scraped);
   }, [assessment, clinics, aggregated, insights, scraped]);
+
+  // Community price aggregation per clinic for the chosen treatment
+  const communityByClinic = useMemo(() => {
+    const treatment = assessment?.treatment_interest || "";
+    const map = new Map<string, { avg: number; samples: number }>();
+    const groups = new Map<string, number[]>();
+    communityStories.forEach((s) => {
+      if (!s.clinic_name || !s.estimated_price) return;
+      if (treatment && s.treatment_type !== treatment) return;
+      const arr = groups.get(s.clinic_name) ?? [];
+      arr.push(s.estimated_price);
+      groups.set(s.clinic_name, arr);
+    });
+    groups.forEach((arr, name) => {
+      map.set(name, {
+        avg: Math.round(arr.reduce((a, b) => a + b, 0) / arr.length),
+        samples: arr.length,
+      });
+    });
+    return map;
+  }, [communityStories, assessment]);
 
   const countryComparison = useMemo(() => {
     if (!clinics.length) return [] as { country: string; avg: number; diff: number | null }[];
@@ -573,16 +620,21 @@ const Results = () => {
               )}
 
               <div className="grid md:grid-cols-2 gap-6 md:[&>*:first-child]:md:col-span-2">
-                {matches.map((m, i) => (
-                  <ResultCard
-                    key={m.clinic.id}
-                    m={m}
-                    unlocked={unlocked}
-                    namesUnlocked={namesUnlocked}
-                    assessment={assessment!}
-                    rank={i + 1}
-                  />
-                ))}
+                {matches.map((m, i) => {
+                  const cb = communityByClinic.get(m.clinic.name);
+                  return (
+                    <ResultCard
+                      key={m.clinic.id}
+                      m={m}
+                      unlocked={unlocked}
+                      namesUnlocked={namesUnlocked}
+                      assessment={assessment!}
+                      rank={i + 1}
+                      communityAvg={cb?.avg ?? null}
+                      communitySamples={cb?.samples ?? 0}
+                    />
+                  );
+                })}
               </div>
 
               <Card className="mt-10 p-6 shadow-card border-2 border-primary/20 bg-gradient-to-br from-primary-soft/40 to-card">
