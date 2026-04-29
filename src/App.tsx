@@ -19,6 +19,10 @@ import Insights from "./pages/Insights.tsx";
 import Import from "./pages/Import.tsx";
 import AdminPricingDashboard from "./pages/AdminPricingDashboard.tsx";
 import Admin from "./pages/Admin.tsx";
+import AccountHub from "./pages/AccountHub.tsx";
+import AccountPatient from "./pages/AccountPatient.tsx";
+import AccountClinic from "./pages/AccountClinic.tsx";
+import AccountPartner from "./pages/AccountPartner.tsx";
 import EggBank from "./pages/EggBank.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
@@ -44,6 +48,10 @@ const App = () => (
           <Route path="/assessment/advanced" element={<AssessmentAdvanced />} />
           <Route path="/results" element={<Results />} />
           <Route path="/insights" element={<Insights />} />
+          <Route path="/account" element={<AccountHub />} />
+          <Route path="/account/patient" element={<AccountPatient />} />
+          <Route path="/account/clinic" element={<AccountClinic />} />
+          <Route path="/account/partner" element={<AccountPartner />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/import" element={<Import />} />
           <Route path="/admin/pricing-dashboard" element={<AdminPricingDashboard />} />

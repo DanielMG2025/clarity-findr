@@ -10,6 +10,7 @@ const SiteHeader = () => {
     { to: "/partners", label: "Partners" },
     { to: "/community", label: "Community" },
     { to: "/insights", label: "Market insights" },
+    { to: "/account", label: "My space" },
     { to: "/admin", label: "Admin" },
   ];
   return (
