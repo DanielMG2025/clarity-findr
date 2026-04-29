@@ -19,6 +19,8 @@ import {
   Lock,
   ShieldCheck,
   Sparkles,
+  TrendingUp,
+  Users,
   Wand2,
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
@@ -343,6 +345,141 @@ const AdminPricingDashboard = () => {
             </Card>
           </div>
         )}
+
+        {/* ---- Business performance (mock demo data) ---- */}
+        <section>
+          <SectionHeader
+            icon={TrendingUp}
+            title="Business Performance"
+            subtitle="Funnel conversion, revenue per user, and lead-quality distribution — mock data for demo."
+          />
+
+          {/* Funnel */}
+          <Card className="p-6 mb-4">
+            <p className="text-sm font-medium mb-4">Patient funnel (last 30 days)</p>
+            {(() => {
+              const funnel = [
+                { step: "Landing → Assessment", count: 4820, rate: 100 },
+                { step: "Assessment completed", count: 2640, rate: 55 },
+                { step: "Anonymized results viewed", count: 2510, rate: 52 },
+                { step: "Step 2 unlock (paid €5/€19)", count: 412, rate: 8.5 },
+                { step: "Step 2 free referral", count: 318, rate: 6.6 },
+                { step: "Advanced module activated", count: 184, rate: 3.8 },
+                { step: "High-quality lead → clinic", count: 256, rate: 5.3 },
+              ];
+              return (
+                <div className="space-y-2">
+                  {funnel.map((f, i) => (
+                    <div key={f.step} className="flex items-center gap-3">
+                      <div className="w-56 text-sm text-muted-foreground">{f.step}</div>
+                      <div className="flex-1 h-6 rounded-md bg-muted/60 overflow-hidden">
+                        <div
+                          className={`h-full ${i === 0 ? "bg-primary/30" : i < 3 ? "bg-primary/60" : "bg-gradient-primary"}`}
+                          style={{ width: `${f.rate}%` }}
+                        />
+                      </div>
+                      <div className="w-28 text-right text-sm tabular-nums font-semibold">
+                        {f.count.toLocaleString()}
+                      </div>
+                      <div className="w-16 text-right text-xs text-muted-foreground tabular-nums">
+                        {f.rate}%
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
+          </Card>
+
+          {/* Revenue + Lead quality */}
+          <div className="grid lg:grid-cols-2 gap-4">
+            <Card className="p-6">
+              <p className="text-sm font-medium mb-1">Revenue per user (€, last 30 days)</p>
+              <p className="text-xs text-muted-foreground mb-4">
+                Blended ARPU across patient unlocks, advanced modules, partner referrals and clinic fees.
+              </p>
+              <div className="h-64">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={[
+                      { source: "Patient unlock €5", value: 0.43 },
+                      { source: "Patient unlock €19", value: 1.62 },
+                      { source: "Advanced €30", value: 1.14 },
+                      { source: "Partner referrals", value: 2.05 },
+                      { source: "Clinic subscription", value: 4.80 },
+                      { source: "Clinic per-lead", value: 6.35 },
+                    ]}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+                    <XAxis dataKey="source" tick={{ fontSize: 10 }} interval={0} angle={-15} textAnchor="end" height={60} />
+                    <YAxis tick={{ fontSize: 11 }} />
+                    <Tooltip formatter={(v: number) => `€${v.toFixed(2)} / user`} />
+                    <Bar dataKey="value" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="mt-3 text-xs text-muted-foreground">
+                Blended ARPU: <span className="font-semibold text-foreground">€16.39</span> · primary monetization is clinic-side.
+              </div>
+            </Card>
+
+            <Card className="p-6">
+              <p className="text-sm font-medium mb-1">Lead quality distribution</p>
+              <p className="text-xs text-muted-foreground mb-4">
+                Quality is a function of completed assessment depth + referral opt-in + advanced module usage.
+              </p>
+              <div className="h-64">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={[
+                      { quality: "High", count: 142 },
+                      { quality: "Medium", count: 98 },
+                      { quality: "Low", count: 76 },
+                    ]}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+                    <XAxis dataKey="quality" />
+                    <YAxis tick={{ fontSize: 11 }} />
+                    <Tooltip />
+                    <Bar dataKey="count" radius={[8, 8, 0, 0]}>
+                      <Cell fill="hsl(var(--accent))" />
+                      <Cell fill="hsl(var(--warning))" />
+                      <Cell fill="hsl(var(--muted-foreground))" />
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="mt-3 grid grid-cols-3 gap-2 text-center">
+                <div>
+                  <div className="text-lg font-extrabold text-accent">45%</div>
+                  <div className="text-[11px] text-muted-foreground">High</div>
+                </div>
+                <div>
+                  <div className="text-lg font-extrabold text-warning">31%</div>
+                  <div className="text-[11px] text-muted-foreground">Medium</div>
+                </div>
+                <div>
+                  <div className="text-lg font-extrabold text-muted-foreground">24%</div>
+                  <div className="text-[11px] text-muted-foreground">Low</div>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Storytelling block */}
+          <Card className="mt-4 p-6 border-2 border-dashed bg-card">
+            <div className="flex items-start gap-3">
+              <Users className="size-5 text-primary mt-1 shrink-0" />
+              <div className="text-sm text-muted-foreground">
+                <span className="font-semibold text-foreground">
+                  Patients start free. Clinics pay for qualified demand. Partners subsidize the rest.
+                </span>{" "}
+                The platform combines real pricing intelligence (above) with a marketplace where the people
+                with the most to gain — clinics and partners — fund the experience.
+              </div>
+            </div>
+          </Card>
+        </section>
 
         {/* Filters */}
         <Card className="p-4">
