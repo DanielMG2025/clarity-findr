@@ -66,7 +66,7 @@ export function runDecisionPipeline(
   const candidateMinPrice = Math.min(...priced.map((p) => p.pricing.expected));
   const candidateMaxPrice = Math.max(...priced.map((p) => p.pricing.expected));
 
-  // 3. Matching engine + 4. Insights engine
+  // 3. Matching engine + 4. Scoring engine + 5. Insights engine
   const results: MatchResult[] = priced.map(({ clinic, agg, pricing }) => {
     const insight = insights.find((i) => i.clinic_name === clinic.name);
     const match = matchingEngine(clinic, assessment, pricing, {
@@ -74,12 +74,25 @@ export function runDecisionPipeline(
       candidateMaxPrice,
       insight,
     });
-    const explanations = insightsEngine(clinic, assessment, pricing, match);
+    const score = scoreClinic(clinic, assessment, pricing, insight);
+    const baseExplanations = insightsEngine(clinic, assessment, pricing, match);
+    // Score-engine summaries lead, classic insights follow as supporting detail.
+    const explanations = Array.from(
+      new Set([...score.explanations, ...baseExplanations]),
+    ).slice(0, 5);
 
     return {
       clinic,
-      match_score: match.match_score,
+      // Final Match Score uses the blended scoring engine output.
+      match_score: score.match_score,
       composite_score: match.composite_score,
+      scores: {
+        patient_score: score.patient_score,
+        clinic_fit_score: score.clinic_fit_score,
+        value_score: score.value_score,
+        decision_confidence: score.confidence,
+        reasons: score.reasons,
+      },
       pricing_percentile: match.pricing_percentile,
       estimated_price: pricing.expected,
       listed_price: pricing.listed,
@@ -106,3 +119,4 @@ export * from "./types";
 export { pricingEngine, buildCountryAverages, listedTotal } from "./pricingEngine";
 export { matchingEngine, computeCompositeScore, BUDGET_UPPER, WEIGHTS } from "./matchingEngine";
 export { insightsEngine } from "./insightsEngine";
+export { scoreClinic, patientScore, clinicFitScore, valueScore, decisionConfidence, SCORE_WEIGHTS } from "./scoringEngine";
