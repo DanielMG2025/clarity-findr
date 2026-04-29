@@ -81,17 +81,21 @@ const DataSourceBadge = ({
 const ResultCard = ({
   m,
   unlocked,
+  namesUnlocked,
   assessment,
   rank,
 }: {
   m: MatchResult;
   unlocked: boolean;
+  namesUnlocked: boolean;
   assessment: AssessmentData;
   rank: number;
 }) => {
   const isTop = rank === 1;
   const c = m.clinic;
   const showRange = unlocked && m.sample_size > 0;
+  const displayName = namesUnlocked ? c.name : `Clinic ${String.fromCharCode(64 + rank)}`;
+  const displayLocation = namesUnlocked ? `${c.city}, ${c.country}` : c.country;
   const [aiExplanation, setAiExplanation] = useState<string | null>(null);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
