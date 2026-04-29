@@ -8,19 +8,21 @@ import SiteFooter from "@/components/SiteFooter";
 import { storage } from "@/lib/fertility";
 import { toast } from "@/hooks/use-toast";
 
-const UNLOCK_PRICE = 19;
+const PEEK_PRICE = 5;       // Soft paywall — names + ranking only
+const FULL_UNLOCK_PRICE = 19; // Full access — pricing breakdown + ranges
 
 const PatientUnlock = () => {
   const navigate = useNavigate();
   const [processing, setProcessing] = useState<"pay" | "referral" | null>(null);
 
-  const handlePay = async () => {
+  const handlePay = async (tier: "peek" | "full") => {
     setProcessing("pay");
     await new Promise((r) => setTimeout(r, 900));
     storage.unlockNames();
+    if (tier === "full") storage.unlock();
     toast({
       title: "Unlock successful",
-      description: `€${UNLOCK_PRICE} simulated payment — clinic names are now visible.`,
+      description: `€${tier === "full" ? FULL_UNLOCK_PRICE : PEEK_PRICE} simulated payment — access granted.`,
     });
     navigate("/results");
   };
