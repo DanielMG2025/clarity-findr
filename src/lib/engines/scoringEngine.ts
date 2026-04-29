@@ -109,6 +109,21 @@ export function patientScore(a: AssessmentData): { score: number; reasons: strin
     reasons.push("Sparse questionnaire — consider the advanced module.");
   }
 
+  // Level 2 biomarkers further sharpen the patient score
+  const adv = a.advanced;
+  if (adv) {
+    if (typeof adv.amh === "number") {
+      s += 4;
+      if (adv.amh >= 1.5) reasons.push(`AMH ${adv.amh} ng/mL — solid ovarian reserve.`);
+      else if (adv.amh >= 0.8) reasons.push(`AMH ${adv.amh} — diminished reserve, protocols matter.`);
+      else reasons.push(`AMH ${adv.amh} — donor pathway worth comparing.`);
+    }
+    if (typeof adv.fsh === "number") s += 2;
+    if (adv.cycle_regularity === "regular") s += 2;
+    if (adv.smoker === false) s += 1;
+    if (adv.carrier_screening_done) s += 2;
+  }
+
   return { score: Math.round(clamp(s)), reasons: reasons.slice(0, 4) };
 }
 
