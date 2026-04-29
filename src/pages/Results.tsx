@@ -552,6 +552,7 @@ const Results = () => {
                     key={m.clinic.id}
                     m={m}
                     unlocked={unlocked}
+                    namesUnlocked={namesUnlocked}
                     assessment={assessment!}
                     rank={i + 1}
                   />
