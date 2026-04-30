@@ -18,6 +18,10 @@ import {
   storage,
 } from "@/lib/fertility";
 import QuoteForm from "@/components/QuoteForm";
+import { PersonalizedReasons } from "@/components/results/PersonalizedReasons";
+import { QualitativeInsights } from "@/components/results/QualitativeInsights";
+import { PricingBreakdown } from "@/components/results/PricingBreakdown";
+import { TreatmentSimulator } from "@/components/results/TreatmentSimulator";
 
 const TIER_STYLE: Record<string, string> = {
   premium: "bg-primary/10 text-primary border-primary/30",
