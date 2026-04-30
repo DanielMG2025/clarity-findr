@@ -6,6 +6,7 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { AIDiscoveryBlock } from "@/components/landing/AIDiscoveryBlock";
 
 const Index = () => {
   const [stats, setStats] = useState({ avg: 0, samples: 0, clinics: 0, quotes: 0 });
