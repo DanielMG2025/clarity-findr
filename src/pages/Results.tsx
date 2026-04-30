@@ -403,9 +403,14 @@ const ResultCard = ({
         ))}
       </div>
 
+      <PersonalizedReasons m={m} a={assessment} />
+      <PricingBreakdown m={m} />
+      <QualitativeInsights clinic={c} />
+      <TreatmentSimulator m={m} a={assessment} />
+
       <div className="rounded-xl border border-border bg-muted/30 p-4 mb-4">
         <div className="text-xs font-bold uppercase tracking-wider text-foreground/80 mb-2 flex items-center gap-1.5">
-          <CheckCircle2 className="size-3.5 text-accent" /> Why this clinic
+          <CheckCircle2 className="size-3.5 text-accent" /> Decision summary
         </div>
         <ul className="space-y-1.5 text-sm text-muted-foreground">
           {m.explanations.slice(0, 3).map((e, i) => (
