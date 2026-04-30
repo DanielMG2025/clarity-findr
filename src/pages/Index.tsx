@@ -187,6 +187,8 @@ const Index = () => {
         </div>
       </section>
 
+      <AIDiscoveryBlock />
+
       <SiteFooter />
     </div>
   );
