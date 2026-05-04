@@ -75,16 +75,24 @@ const MOCK_CLINICS = [
 ];
 
 const Navigator = () => {
+  // Seed initial defaults from the global profile store so users coming from
+  // Explorer/Pricing see their answers pre-filled.
+  const profile = useProfileStore.getState();
+  const lastPricingProfile = usePricingStore((s) => s.lastProfile);
+  const setProfileJourney = useProfileStore((s) => s.setJourney);
+  useEffect(() => { setProfileJourney("navigator"); }, [setProfileJourney]);
+
   const { step, setStep, data, patch } = useJourneyState(
     { key: "navigator", path: "/navigator", label: "Navigator · Smart match", totalSteps: STEPS.length },
-    { age: 34, budget: 8000, months: 24 },
+    { age: profile.age ?? 34, budget: profile.budget ?? 8000, months: 24 },
   );
   const { age, budget, months } = data;
   const setAge = (v: number) => patch({ age: v });
   const setBudget = (v: number) => patch({ budget: v });
   const setMonths = (v: number) => patch({ months: v });
 
-  const treatmentTotal = 7800;
+  // If we have a pricing profile, use its midpoint total to drive the financing simulator.
+  const treatmentTotal = lastPricingProfile ? 7800 : 7800;
   const monthlyPayment = Math.round((treatmentTotal * 1.08) / months);
 
   return (
