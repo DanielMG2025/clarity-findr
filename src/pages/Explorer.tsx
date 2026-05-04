@@ -277,9 +277,12 @@ const Explorer = () => {
                 <div className="font-semibold">Ready to see clinics?</div>
                 <div className="text-sm text-muted-foreground">We'll rank clinics that fit your range and explain why.</div>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <Button variant="outline" asChild>
                   <Link to="/community"><BookOpen className="size-4" /> Learn more</Link>
+                </Button>
+                <Button variant="outline" asChild>
+                  <Link to="/pricing-lab"><Sparkles className="size-4" /> Open Pricing Lab</Link>
                 </Button>
                 <Button onClick={() => nav("/results")}>
                   See my clinics <ArrowRight className="size-4" />
