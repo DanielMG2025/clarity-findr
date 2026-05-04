@@ -30,6 +30,7 @@ import AccountClinic from "./pages/AccountClinic.tsx";
 import AccountPartner from "./pages/AccountPartner.tsx";
 import EggBank from "./pages/EggBank.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import { JourneyResumeBanner } from "./components/shared/JourneyResumeBanner.tsx";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <JourneyResumeBanner />
         <Routes>
           <Route path="/" element={<HomeV2 />} />
           <Route path="/explorer" element={<Explorer />} />
