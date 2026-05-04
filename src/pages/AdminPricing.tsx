@@ -479,7 +479,9 @@ export default function AdminPricing() {
               </SelectContent>
             </Select>
             <StatusBadge status={selected.status} />
-            <ConfidenceBadge value={selected.confidence} />
+            <SourceTypeBadge value={selected.sourceType} />
+            <ConfidenceScore value={selected.confidenceScore} />
+            <span className="text-xs text-muted-foreground">Rule: <span className="font-mono">{selected.normalizationRule}</span></span>
           </div>
 
           <div className="grid md:grid-cols-2 gap-4">
