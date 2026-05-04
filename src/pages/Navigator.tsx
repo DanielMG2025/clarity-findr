@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useJourneyState } from "@/hooks/useJourneyState";
 import { Link } from "react-router-dom";
 import { ArrowRight, Calculator, Sparkles, Upload, Beaker, Dna, Search } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
@@ -72,10 +73,14 @@ const MOCK_CLINICS = [
 ];
 
 const Navigator = () => {
-  const [step, setStep] = useState(0);
-  const [age, setAge] = useState(34);
-  const [budget, setBudget] = useState(8000);
-  const [months, setMonths] = useState(24);
+  const { step, setStep, data, patch } = useJourneyState(
+    { key: "navigator", path: "/navigator", label: "Navigator · Smart match", totalSteps: STEPS.length },
+    { age: 34, budget: 8000, months: 24 },
+  );
+  const { age, budget, months } = data;
+  const setAge = (v: number) => patch({ age: v });
+  const setBudget = (v: number) => patch({ budget: v });
+  const setMonths = (v: number) => patch({ months: v });
 
   const treatmentTotal = 7800;
   const monthlyPayment = Math.round((treatmentTotal * 1.08) / months);

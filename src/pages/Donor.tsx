@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useJourneyState } from "@/hooks/useJourneyState";
 import { Link } from "react-router-dom";
 import { ArrowRight, ArrowLeft, HeartHandshake, ShieldCheck, CheckCircle2, AlertTriangle, Calendar, Euro } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
@@ -37,10 +38,18 @@ const COUNTRY_COMP = [
 ];
 
 const Donor = () => {
-  const [step, setStep] = useState(0);
-  const [checks, setChecks] = useState<Record<string, boolean>>({});
-  const [country, setCountry] = useState("Spain");
-  const [contact, setContact] = useState({ name: "", email: "", city: "" });
+  const { step, setStep, data, patch } = useJourneyState(
+    { key: "donor", path: "/donor", label: "Donor · Become an egg donor", totalSteps: STEPS.length },
+    {
+      checks: {} as Record<string, boolean>,
+      country: "Spain",
+      contact: { name: "", email: "", city: "" },
+    },
+  );
+  const { checks, country, contact } = data;
+  const setChecks = (next: Record<string, boolean>) => patch({ checks: next });
+  const setCountry = (v: string) => patch({ country: v });
+  const setContact = (next: typeof contact) => patch({ contact: next });
 
   const eligibleCount = Object.values(checks).filter(Boolean).length;
   const eligible = eligibleCount === ELIGIBILITY.length;
