@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Calculator, Sparkles, Upload, Beaker, Dna } from "lucide-react";
+import { ArrowRight, Calculator, Sparkles, Upload, Beaker, Dna, Search } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Card } from "@/components/ui/card";
@@ -84,7 +84,9 @@ const Navigator = () => {
     <div className="min-h-screen flex flex-col bg-background">
       <SiteHeader />
       <JourneyHeader
-        module="Navigator"
+        module="Navigator · Precision matching"
+        tone="navigator"
+        Icon={Search}
         title="Precision matching for your case"
         subtitle="You've already done research. We'll go deeper — and explain every recommendation."
         steps={STEPS}

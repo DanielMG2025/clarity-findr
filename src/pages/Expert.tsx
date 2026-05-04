@@ -35,6 +35,8 @@ const Expert = () => {
       <SiteHeader />
       <JourneyHeader
         module="Expert · Concierge"
+        tone="expert"
+        Icon={Headset}
         title="A senior advisor takes it from here"
         subtitle="We do the research, paperwork and intro calls. You decide."
         steps={STEPS}
