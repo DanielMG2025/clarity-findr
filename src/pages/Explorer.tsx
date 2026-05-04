@@ -49,6 +49,21 @@ const Explorer = () => {
     { age: 32, trying: "", treatment: "", budget: 8000, country: "Spain" },
   );
 
+  // Mirror Explorer answers into the global profile store so Pricing & Navigator
+  // pick them up automatically (the journey stage is set on entry too).
+  const setJourney = useProfileStore((s) => s.setJourney);
+  const profilePatch = useProfileStore((s) => s.patch);
+  useEffect(() => { setJourney("explorer"); }, [setJourney]);
+  useEffect(() => {
+    profilePatch({
+      age: data.age,
+      trying: data.trying,
+      treatment: data.treatment,
+      budget: data.budget,
+      country: data.country,
+    });
+  }, [data, profilePatch]);
+
   const next = () => setStep((s) => Math.min(s + 1, STEPS.length - 1));
   const prev = () => setStep((s) => Math.max(s - 1, 0));
 
