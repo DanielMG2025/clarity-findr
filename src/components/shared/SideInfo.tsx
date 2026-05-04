@@ -3,20 +3,19 @@ import { Info, Sparkles, Coins, Stethoscope } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { SIDE_INFO, type SideInfoKey } from "@/modules/patient-profile/content";
 
 export type SideInfoKind = "treatment" | "component" | "pricing";
 
 interface SideInfoProps {
+  /** Look up content from the centralized registry. If provided, other content props are optional. */
+  infoKey?: SideInfoKey;
   /** Short label users click on (e.g. "ICSI", "PGT-A"). */
-  term: string;
+  term?: string;
   kind?: SideInfoKind;
-  /** What it is — plain language. */
-  what: ReactNode;
-  /** When it is used / who needs it. */
+  what?: ReactNode;
   when?: ReactNode;
-  /** Impact on price — qualitative or numeric range. */
   priceImpact?: ReactNode;
-  /** Optional small helper link. */
   learnMoreHref?: string;
   className?: string;
 }
