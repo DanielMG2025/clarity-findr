@@ -17,6 +17,7 @@ import Insights from "./pages/Insights.tsx";
 import Import from "./pages/Import.tsx";
 import AdminPricingDashboard from "./pages/AdminPricingDashboard.tsx";
 import AdminPricing from "./pages/AdminPricing.tsx";
+import AdminClinicDiscovery from "./pages/AdminClinicDiscovery.tsx";
 import Admin from "./pages/Admin.tsx";
 import AccountPatient from "./pages/AccountPatient.tsx";
 import AccountClinic from "./pages/AccountClinic.tsx";
