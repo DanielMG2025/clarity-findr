@@ -93,7 +93,7 @@ export function blockProgress(
     case "medical": {
       const m = pp.medical;
       const fields = [m.amh, m.fsh, m.afc, m.bmi_band, m.cycle_regularity, m.diagnosis?.length, m.partner_sperm_quality];
-      const filled = fields.filter((x) => x !== undefined && x !== "" && x !== 0).length;
+      const filled = fields.filter((x) => x !== undefined && x !== 0).length;
       return Math.round((filled / fields.length) * 100);
     }
     case "history":
