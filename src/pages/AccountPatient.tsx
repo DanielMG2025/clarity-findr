@@ -52,8 +52,8 @@ const AccountPatient = () => {
             </p>
           </div>
           <div className="flex gap-2">
-            <Button asChild variant="outline" size="sm"><Link to="/results">View ranked clinics</Link></Button>
-            <Button asChild size="sm"><Link to="/assessment/advanced">Refine my profile</Link></Button>
+            <Button asChild variant="outline" size="sm"><Link to="/clinics">View ranked clinics</Link></Button>
+            <Button asChild size="sm"><Link to="/profile">Refine my profile</Link></Button>
           </div>
         </div>
 

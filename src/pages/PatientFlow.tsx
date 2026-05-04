@@ -194,12 +194,12 @@ const PatientFlow = () => {
                 </ul>
                 <div className="flex flex-wrap gap-3">
                   <Button asChild variant="hero" size="lg">
-                    <Link to="/assessment">
+                    <Link to="/profile">
                       Start free discovery <ArrowRight className="size-4" />
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="lg">
-                    <Link to="/results">I've done it — see results</Link>
+                    <Link to="/clinics">I've done it — see results</Link>
                   </Button>
                 </div>
               </div>

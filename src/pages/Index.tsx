@@ -68,7 +68,7 @@ const Index = () => {
             </ul>
             <div className="flex flex-wrap gap-3 pt-2">
               <Button asChild size="lg" variant="hero">
-                <Link to="/assessment">
+                <Link to="/profile">
                   Start my assessment <ArrowRight className="size-4" />
                 </Link>
               </Button>
@@ -178,7 +178,7 @@ const Index = () => {
         </div>
         <div className="text-center mt-10">
           <Button asChild size="lg" variant="hero">
-            <Link to="/assessment">
+            <Link to="/profile">
               Start my assessment <ArrowRight className="size-4" />
             </Link>
           </Button>

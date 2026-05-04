@@ -310,7 +310,7 @@ const Partners = () => (
 
           <div className="mt-10 flex flex-wrap gap-3">
             <Button asChild variant="hero">
-              <Link to="/patient/advanced">
+              <Link to="/partners">
                 See partner-funded modules <ArrowRight className="size-4" />
               </Link>
             </Button>

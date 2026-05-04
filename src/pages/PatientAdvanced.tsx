@@ -125,7 +125,7 @@ const PatientAdvanced = () => {
 
       <main className="flex-1 bg-gradient-hero">
         <div className="container max-w-5xl py-12 md:py-16">
-          <Link to="/results" className="text-sm text-muted-foreground hover:text-primary">
+          <Link to="/clinics" className="text-sm text-muted-foreground hover:text-primary">
             ← Back to results
           </Link>
           <div className="mt-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary bg-primary-soft px-3 py-1.5 rounded-full">

@@ -583,7 +583,7 @@ const Results = () => {
                 </p>
               </div>
               <Button variant="outline" asChild>
-                <Link to="/assessment">
+                <Link to="/profile">
                   <Pencil className="size-4" /> Edit assessment
                 </Link>
               </Button>
@@ -700,7 +700,7 @@ const Results = () => {
                     </div>
                     <div className="flex flex-wrap gap-2">
                       <Button asChild variant="hero">
-                        <Link to="/patient/unlock">See unlock options <ArrowRight className="size-4" /></Link>
+                        <Link to="/partners">See unlock options <ArrowRight className="size-4" /></Link>
                       </Button>
                     </div>
                   </div>
@@ -840,7 +840,7 @@ const Results = () => {
                     — free with our partner products.
                   </p>
                   <Button asChild variant="outline">
-                    <Link to="/patient/advanced">Explore advanced modules <ArrowRight className="size-4" /></Link>
+                    <Link to="/partners">Explore advanced modules <ArrowRight className="size-4" /></Link>
                   </Button>
                 </Card>
                 <Card className="p-6 border-2 border-accent/30 bg-gradient-card shadow-card">
@@ -853,7 +853,7 @@ const Results = () => {
                     Get a free, hand-picked introduction to your top-matched clinics. No spam, ever.
                   </p>
                   <Button asChild variant="outline" className="border-accent/40 text-accent hover:bg-accent-soft">
-                    <Link to="/patient/referral">Request free referral <ArrowRight className="size-4" /></Link>
+                    <Link to="/clinics">Request free referral <ArrowRight className="size-4" /></Link>
                   </Button>
                 </Card>
               </div>

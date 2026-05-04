@@ -102,7 +102,7 @@ const AssessmentAdvanced = () => {
 
       <main className="flex-1 bg-gradient-hero">
         <div className="container max-w-2xl py-12">
-          <Link to="/patient/advanced" className="text-sm text-muted-foreground hover:text-primary">
+          <Link to="/partners" className="text-sm text-muted-foreground hover:text-primary">
             ← Back to advanced modules
           </Link>
 
