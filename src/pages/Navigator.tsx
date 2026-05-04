@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { useJourneyState } from "@/hooks/useJourneyState";
 import { Link } from "react-router-dom";
 import { ArrowRight, Calculator, Sparkles, Upload, Beaker, Dna, Search } from "lucide-react";
@@ -14,8 +14,10 @@ import { JourneyHeader } from "@/components/shared/JourneyHeader";
 import { WhatIsThis } from "@/components/shared/WhatIsThis";
 import { TransparencyBlock } from "@/components/shared/TransparencyBlock";
 import { ClinicCardV2 } from "@/components/shared/ClinicCardV2";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { JourneyProgress, WhyYouSeeThis } from "@/modules/journey";
+import { useProfileStore } from "@/modules/profile/store";
+import { usePricingStore } from "@/modules/pricing/store";
 
 const STEPS = [
   { label: "Your profile" },
