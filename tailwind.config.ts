@@ -46,6 +46,31 @@ export default {
           foreground: "hsl(var(--accent-foreground))",
           soft: "hsl(var(--accent-soft))",
         },
+        expert: {
+          DEFAULT: "hsl(var(--expert))",
+          foreground: "hsl(var(--expert-foreground))",
+          soft: "hsl(var(--expert-soft))",
+        },
+        donor: {
+          DEFAULT: "hsl(var(--donor))",
+          foreground: "hsl(var(--donor-foreground))",
+          soft: "hsl(var(--donor-soft))",
+        },
+        freezing: {
+          DEFAULT: "hsl(var(--freezing))",
+          foreground: "hsl(var(--freezing-foreground))",
+          soft: "hsl(var(--freezing-soft))",
+        },
+        clinic: {
+          DEFAULT: "hsl(var(--clinic))",
+          foreground: "hsl(var(--clinic-foreground))",
+          soft: "hsl(var(--clinic-soft))",
+        },
+        partner: {
+          DEFAULT: "hsl(var(--partner))",
+          foreground: "hsl(var(--partner-foreground))",
+          soft: "hsl(var(--partner-soft))",
+        },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
