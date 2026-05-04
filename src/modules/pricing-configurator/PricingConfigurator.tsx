@@ -14,6 +14,9 @@ import { ClinicComparison } from "./components/ClinicComparison";
 import { FinancingSimulator } from "./components/FinancingSimulator";
 import { UploadQuoteCTA } from "./components/UploadQuoteCTA";
 import { ConfidenceBadge } from "./components/ConfidenceBadge";
+import { HiddenCosts } from "./components/HiddenCosts";
+import { DataSourcesWeights } from "./components/DataSourcesWeights";
+import { GuaranteeProgramDetail } from "./components/GuaranteeProgramDetail";
 import { toast } from "@/hooks/use-toast";
 import type { ScenarioKey } from "./logic/types";
 
@@ -85,17 +88,24 @@ export function PricingConfigurator() {
         </div>
       </section>
 
-      {/* PERSONALIZED + DATA SOURCES */}
+      {/* HIDDEN COSTS — calls out what published prices usually omit */}
+      <HiddenCosts />
+
+      {/* PERSONALIZED + DATA SOURCES (list) */}
       <section className="grid md:grid-cols-2 gap-6">
         <PersonalizedExplanation bundle={bundle} />
         <DataSourcesPanel />
       </section>
 
-      {/* GUARANTEE + WHAT AFFECTS */}
+      {/* DATA SOURCE WEIGHTS — visualizes how much each source drives the estimate */}
+      <DataSourcesWeights confidence={bundle.confidence} />
+
+      {/* GUARANTEE comparison + program detail + what affects price */}
       <section className="grid md:grid-cols-2 gap-6">
         <GuaranteeExplanation />
         <WhatAffectsPrice />
       </section>
+      <GuaranteeProgramDetail guarantee={bundle.scenarios.find(s => s.key === "guarantee")!} />
 
       {/* CLINICS */}
       <ClinicComparison />
