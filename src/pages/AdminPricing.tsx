@@ -763,6 +763,7 @@ function AddSourceForm({ onCreate }: { onCreate: (s: PricingSource) => void }) {
         const id = `src_${Date.now()}`;
         onCreate({
           id, clinic, treatment, type, url, status: "pending", confidence: "low",
+          sourceType: "pending_dossier", confidenceScore: 30, normalizationRule: "pendiente",
           updatedAt: new Date().toISOString().slice(0,10),
           rawText: notes || undefined,
         });
