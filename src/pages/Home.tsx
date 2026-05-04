@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useProfileStore } from "@/modules/profile/store";
 import { usePatientProfileStore } from "@/modules/patient-profile/store";
-import { computeOverallCompletion } from "@/modules/patient-profile/blocks";
+import { overallCompletion } from "@/modules/patient-profile/blocks";
 
 const ACTIONS = [
   { to: "/profile",     icon: User,            title: "Mi perfil",   desc: "Centraliza tus datos. Mejora cada estimación.", tone: "primary" },
@@ -19,7 +19,7 @@ const ACTIONS = [
 export default function Home() {
   const profile = useProfileStore();
   const pp = usePatientProfileStore();
-  const completion = computeOverallCompletion(profile, pp);
+  const completion = overallCompletion(profile, pp);
 
   return (
     <div className="container max-w-6xl py-10 space-y-10">
