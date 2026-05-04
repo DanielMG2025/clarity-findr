@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, LayoutGrid, Columns3, Save, Compass, Users } from "lucide-react";
+import { ArrowRight, LayoutGrid, Columns3, Save, User, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import { usePricingConfigurator } from "./hooks/usePricingConfigurator";
 import { ProfileEditor } from "./components/ProfileEditor";
 import { ScenarioCard } from "./components/ScenarioCard";
@@ -17,6 +19,10 @@ import { ConfidenceBadge } from "./components/ConfidenceBadge";
 import { HiddenCosts } from "./components/HiddenCosts";
 import { DataSourcesWeights } from "./components/DataSourcesWeights";
 import { GuaranteeProgramDetail } from "./components/GuaranteeProgramDetail";
+import { SideInfo } from "@/components/shared/SideInfo";
+import { useProfileStore } from "@/modules/profile/store";
+import { usePatientProfileStore } from "@/modules/patient-profile/store";
+import { overallCompletion, profileConfidence } from "@/modules/patient-profile/blocks";
 import { toast } from "@/hooks/use-toast";
 import type { ScenarioKey } from "./logic/types";
 
