@@ -90,7 +90,7 @@ const PatientProfile = () => {
                 <div className="text-xs text-muted-foreground">{canMatch ? "Ready" : "Complete basics to unlock"}</div>
               </div>
               <Button asChild size="sm" disabled={!canMatch} variant={canMatch ? "default" : "outline"}>
-                <Link to="/navigator">Open <ArrowRight className="size-3.5 ml-1" /></Link>
+                <Link to="/clinics">Open <ArrowRight className="size-3.5 ml-1" /></Link>
               </Button>
             </Card>
           </div>
