@@ -10,7 +10,7 @@ import { overallCompletion } from "@/modules/patient-profile/blocks";
 const ACTIONS = [
   { to: "/profile",     icon: User,            title: "My profile",  desc: "Centralize your data. Improves every estimate.",   tone: "primary" },
   { to: "/pricing-lab", icon: Calculator,      title: "Configurator",desc: "Estimate real cost: basic, premium or guarantee.", tone: "accent" },
-  { to: "/navigator",   icon: Building2,       title: "Clinics",     desc: "Compare clinics with normalized prices.",          tone: "primary" },
+  { to: "/clinics",     icon: Building2,       title: "Clinics",     desc: "Compare clinics with normalized prices.",          tone: "primary" },
   { to: "/partners",    icon: Briefcase,       title: "Services",    desc: "Genetics, financing, logistics and more.",         tone: "accent" },
   { to: "/community",   icon: Users,           title: "Community",   desc: "Real experiences and quotes from patients.",       tone: "primary" },
   { to: "/account",     icon: LayoutDashboard, title: "My space",    desc: "History, saved items and clinic leads.",           tone: "accent" },
