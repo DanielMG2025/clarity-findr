@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Compass, Search, Headset, HeartHandshake, Snowflake, ShieldCheck, MessagesSquare, Sparkles, Building2, Handshake } from "lucide-react";
+import { ArrowRight, ShieldCheck, MessagesSquare, Sparkles, Building2, Handshake } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TransparencyBlock } from "@/components/shared/TransparencyBlock";
+import { JourneySelector } from "@/modules/journey";
 
-const JOURNEYS = [
+const _UNUSED_JOURNEYS = [
   {
     id: "explorer",
     href: "/explorer",
