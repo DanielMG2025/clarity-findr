@@ -244,6 +244,31 @@ function ConfidenceBadge({ value }: { value: Confidence }) {
   );
 }
 
+const sourceTypeMeta: Record<SourceType, { label: string; className: string }> = {
+  official:        { label: "Fuente oficial",   className: "bg-emerald-500/10 text-emerald-700 border-emerald-200" },
+  benchmark:       { label: "Benchmark externo", className: "bg-blue-500/10 text-blue-700 border-blue-200" },
+  inferred:        { label: "Inferido",          className: "bg-violet-500/10 text-violet-700 border-violet-200" },
+  pending_dossier: { label: "Pendiente dossier", className: "bg-amber-500/10 text-amber-700 border-amber-200" },
+};
+
+function SourceTypeBadge({ value }: { value: SourceType }) {
+  const m = sourceTypeMeta[value];
+  return <Badge variant="outline" className={m.className}>{m.label}</Badge>;
+}
+
+function ConfidenceScore({ value }: { value: number }) {
+  const tone = value >= 75 ? "text-emerald-700" : value >= 50 ? "text-amber-700" : "text-rose-700";
+  const bar = value >= 75 ? "bg-emerald-500" : value >= 50 ? "bg-amber-500" : "bg-rose-500";
+  return (
+    <div className="flex items-center gap-2 min-w-[90px]">
+      <div className="h-1.5 w-16 rounded-full bg-muted overflow-hidden">
+        <div className={`h-full ${bar}`} style={{ width: `${value}%` }} />
+      </div>
+      <span className={`text-xs font-semibold tabular-nums ${tone}`}>{value}%</span>
+    </div>
+  );
+}
+
 /* ----------------------------- Page ----------------------------- */
 
 export default function AdminPricing() {
