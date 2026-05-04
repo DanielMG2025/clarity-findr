@@ -1,16 +1,12 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "./pages/Home.tsx";
 import Landing from "./pages/Landing.tsx";
-import HomeV2 from "./pages/HomeV2.tsx";
 import Clinics from "./pages/Clinics.tsx";
 import { AppLayout } from "./components/AppLayout.tsx";
-// Legacy journey pages (Explorer/Navigator/Expert) replaced by unified profile + clinics flow.
-import Donor from "./pages/Donor.tsx";
-import Freezing from "./pages/Freezing.tsx";
 import CommunityV2 from "./pages/CommunityV2.tsx";
 import PatientFlow from "./pages/PatientFlow.tsx";
 import PatientUnlock from "./pages/PatientUnlock.tsx";
@@ -35,7 +31,6 @@ import PricingLab from "./pages/PricingLab.tsx";
 import PatientProfile from "./pages/PatientProfile.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
-
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -45,43 +40,45 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AppLayout>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/dashboard" element={<Home />} />
-          <Route path="/home-legacy" element={<HomeV2 />} />
-          <Route path="/clinics" element={<Clinics />} />
-          {/* Legacy journey routes redirect into the unified profile */}
-          <Route path="/explorer" element={<PatientProfile />} />
-          <Route path="/navigator" element={<Clinics />} />
-          <Route path="/expert" element={<PatientProfile />} />
-          <Route path="/donor" element={<Donor />} />
-          <Route path="/freezing" element={<Freezing />} />
-          <Route path="/patient" element={<PatientFlow />} />
-          <Route path="/patient/unlock" element={<PatientUnlock />} />
-          <Route path="/patient/advanced" element={<PatientAdvanced />} />
-          <Route path="/patient/referral" element={<PatientReferral />} />
-          <Route path="/clinic" element={<ClinicLanding />} />
-          <Route path="/clinic/dashboard" element={<ClinicDashboard />} />
-          <Route path="/partners" element={<Partners />} />
-          <Route path="/community" element={<CommunityV2 />} />
-          <Route path="/assessment" element={<Assessment />} />
-          <Route path="/assessment/advanced" element={<AssessmentAdvanced />} />
-          <Route path="/results" element={<Results />} />
-          <Route path="/insights" element={<Insights />} />
-          <Route path="/account" element={<AccountHub />} />
-          <Route path="/account/patient" element={<AccountPatient />} />
-          <Route path="/account/clinic" element={<AccountClinic />} />
-          <Route path="/account/partner" element={<AccountPartner />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/admin/import" element={<Import />} />
-          <Route path="/admin/pricing-dashboard" element={<AdminPricingDashboard />} />
-          <Route path="/egg-bank" element={<EggBank />} />
-          <Route path="/pricing-lab" element={<PricingLab />} />
-          <Route path="/profile" element={<PatientProfile />} />
-          <Route path="/me" element={<PatientProfile />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/dashboard" element={<Home />} />
+            <Route path="/clinics" element={<Clinics />} />
+            <Route path="/profile" element={<PatientProfile />} />
+            <Route path="/me" element={<PatientProfile />} />
+            <Route path="/pricing-lab" element={<PricingLab />} />
+            <Route path="/community" element={<CommunityV2 />} />
+            <Route path="/partners" element={<Partners />} />
+            <Route path="/account" element={<AccountHub />} />
+            <Route path="/account/patient" element={<AccountPatient />} />
+            <Route path="/account/clinic" element={<AccountClinic />} />
+            <Route path="/account/partner" element={<AccountPartner />} />
+
+            {/* Legacy persona/journey routes — collapse to the unified flow */}
+            <Route path="/explorer"  element={<Navigate to="/profile" replace />} />
+            <Route path="/navigator" element={<Navigate to="/clinics" replace />} />
+            <Route path="/expert"    element={<Navigate to="/profile" replace />} />
+            <Route path="/donor"     element={<Navigate to="/profile" replace />} />
+            <Route path="/freezing"  element={<Navigate to="/profile" replace />} />
+            <Route path="/home-legacy" element={<Navigate to="/" replace />} />
+
+            <Route path="/patient" element={<PatientFlow />} />
+            <Route path="/patient/unlock" element={<PatientUnlock />} />
+            <Route path="/patient/advanced" element={<PatientAdvanced />} />
+            <Route path="/patient/referral" element={<PatientReferral />} />
+            <Route path="/clinic" element={<ClinicLanding />} />
+            <Route path="/clinic/dashboard" element={<ClinicDashboard />} />
+            <Route path="/assessment" element={<Assessment />} />
+            <Route path="/assessment/advanced" element={<AssessmentAdvanced />} />
+            <Route path="/results" element={<Results />} />
+            <Route path="/insights" element={<Insights />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/admin/import" element={<Import />} />
+            <Route path="/admin/pricing-dashboard" element={<AdminPricingDashboard />} />
+            <Route path="/egg-bank" element={<EggBank />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </AppLayout>
       </BrowserRouter>
     </TooltipProvider>
