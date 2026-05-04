@@ -34,7 +34,7 @@ import EggBank from "./pages/EggBank.tsx";
 import PricingLab from "./pages/PricingLab.tsx";
 import PatientProfile from "./pages/PatientProfile.tsx";
 import NotFound from "./pages/NotFound.tsx";
-import { JourneyResumeBanner } from "./components/shared/JourneyResumeBanner.tsx";
+
 
 const queryClient = new QueryClient();
 
