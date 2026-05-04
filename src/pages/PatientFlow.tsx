@@ -13,8 +13,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 
 type StepStatus = "free" | "decision" | "paid" | "modular" | "premium";
 
@@ -106,7 +104,7 @@ const STEPS: {
 const PatientFlow = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <SiteHeader />
+
       <main className="flex-1 bg-gradient-hero">
         <div className="container max-w-5xl py-12 md:py-16">
           <Link to="/" className="text-sm text-muted-foreground hover:text-primary">
@@ -196,12 +194,12 @@ const PatientFlow = () => {
                 </ul>
                 <div className="flex flex-wrap gap-3">
                   <Button asChild variant="hero" size="lg">
-                    <Link to="/assessment">
+                    <Link to="/profile">
                       Start free discovery <ArrowRight className="size-4" />
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="lg">
-                    <Link to="/results">I've done it — see results</Link>
+                    <Link to="/clinics">I've done it — see results</Link>
                   </Button>
                 </div>
               </div>
@@ -224,7 +222,7 @@ const PatientFlow = () => {
           </Card>
         </div>
       </main>
-      <SiteFooter />
+
     </div>
   );
 };

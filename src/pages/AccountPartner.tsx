@@ -1,4 +1,3 @@
-import SiteHeader from "@/components/SiteHeader";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -39,7 +38,7 @@ const payouts = [
 const AccountPartner = () => {
   return (
     <div className="min-h-screen bg-background">
-      <SiteHeader />
+
       <main className="container py-8 space-y-6">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>

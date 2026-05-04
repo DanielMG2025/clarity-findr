@@ -42,8 +42,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 import { toast } from "@/hooks/use-toast";
 
 // ---------------- Mock clinic identity ----------------
@@ -152,7 +150,7 @@ const ClinicDashboard = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SiteHeader />
+
       <main className="flex-1 bg-background">
         <div className="container max-w-7xl py-10 space-y-8">
           {/* Header */}
@@ -450,7 +448,7 @@ const ClinicDashboard = () => {
           </Tabs>
         </div>
       </main>
-      <SiteFooter />
+
     </div>
   );
 };

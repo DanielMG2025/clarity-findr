@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Pencil, MapPin, Star, TrendingUp, Sparkles, Lock, Info, Activity, CheckCircle2, Globe2, Brain, RefreshCw, Database, FileText, Users, Globe, ExternalLink, ArrowRight, Dna, User, Building2, Wallet, ShieldCheck } from "lucide-react";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -569,7 +567,7 @@ const Results = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SiteHeader />
+
       <main className="flex-1">
         <section className="bg-gradient-hero">
           <div className="container py-12">
@@ -585,7 +583,7 @@ const Results = () => {
                 </p>
               </div>
               <Button variant="outline" asChild>
-                <Link to="/assessment">
+                <Link to="/profile">
                   <Pencil className="size-4" /> Edit assessment
                 </Link>
               </Button>
@@ -702,7 +700,7 @@ const Results = () => {
                     </div>
                     <div className="flex flex-wrap gap-2">
                       <Button asChild variant="hero">
-                        <Link to="/patient/unlock">See unlock options <ArrowRight className="size-4" /></Link>
+                        <Link to="/partners">See unlock options <ArrowRight className="size-4" /></Link>
                       </Button>
                     </div>
                   </div>
@@ -842,7 +840,7 @@ const Results = () => {
                     — free with our partner products.
                   </p>
                   <Button asChild variant="outline">
-                    <Link to="/patient/advanced">Explore advanced modules <ArrowRight className="size-4" /></Link>
+                    <Link to="/partners">Explore advanced modules <ArrowRight className="size-4" /></Link>
                   </Button>
                 </Card>
                 <Card className="p-6 border-2 border-accent/30 bg-gradient-card shadow-card">
@@ -855,7 +853,7 @@ const Results = () => {
                     Get a free, hand-picked introduction to your top-matched clinics. No spam, ever.
                   </p>
                   <Button asChild variant="outline" className="border-accent/40 text-accent hover:bg-accent-soft">
-                    <Link to="/patient/referral">Request free referral <ArrowRight className="size-4" /></Link>
+                    <Link to="/clinics">Request free referral <ArrowRight className="size-4" /></Link>
                   </Button>
                 </Card>
               </div>
@@ -877,7 +875,7 @@ const Results = () => {
           <QuoteForm onSubmitted={refreshAggregated} />
         </section>
       </main>
-      <SiteFooter />
+
     </div>
   );
 };

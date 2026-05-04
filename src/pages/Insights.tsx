@@ -9,8 +9,6 @@ import {
   YAxis,
 } from "recharts";
 import { Sparkles, RefreshCw } from "lucide-react";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -82,7 +80,7 @@ const Insights = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SiteHeader />
+
       <main className="flex-1">
         <section className="bg-gradient-hero">
           <div className="container py-12">
@@ -235,7 +233,7 @@ const Insights = () => {
           </Card>
         </section>
       </main>
-      <SiteFooter />
+
     </div>
   );
 };

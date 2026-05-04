@@ -16,8 +16,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 
 type PartnerCategory = {
   icon: typeof Dna;
@@ -108,7 +106,7 @@ const PARTNERS: PartnerCategory[] = [
 
 const Partners = () => (
   <div className="min-h-screen flex flex-col">
-    <SiteHeader />
+
     <main className="flex-1">
       {/* Hero */}
       <section className="bg-gradient-hero">
@@ -312,7 +310,7 @@ const Partners = () => (
 
           <div className="mt-10 flex flex-wrap gap-3">
             <Button asChild variant="hero">
-              <Link to="/patient/advanced">
+              <Link to="/partners">
                 See partner-funded modules <ArrowRight className="size-4" />
               </Link>
             </Button>
@@ -336,7 +334,7 @@ const Partners = () => (
         </p>
       </section>
     </main>
-    <SiteFooter />
+
   </div>
 );
 

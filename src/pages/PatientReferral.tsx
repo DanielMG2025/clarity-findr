@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 import { storage } from "@/lib/fertility";
 import { toast } from "@/hooks/use-toast";
 
@@ -38,10 +36,10 @@ const PatientReferral = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SiteHeader />
+
       <main className="flex-1 bg-gradient-hero">
         <div className="container max-w-3xl py-12 md:py-16">
-          <Link to="/results" className="text-sm text-muted-foreground hover:text-primary">
+          <Link to="/clinics" className="text-sm text-muted-foreground hover:text-primary">
             ← Back to results
           </Link>
           <div className="mt-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-accent bg-accent-soft px-3 py-1.5 rounded-full">
@@ -72,10 +70,10 @@ const PatientReferral = () => {
                   </p>
                   <div className="flex flex-wrap gap-3">
                     <Button asChild variant="hero">
-                      <Link to="/results">Back to my dashboard <ArrowRight className="size-4" /></Link>
+                      <Link to="/clinics">Back to my dashboard <ArrowRight className="size-4" /></Link>
                     </Button>
                     <Button asChild variant="outline">
-                      <Link to="/patient/advanced">Add advanced matching</Link>
+                      <Link to="/partners">Add advanced matching</Link>
                     </Button>
                   </div>
                 </div>
@@ -133,7 +131,7 @@ const PatientReferral = () => {
           )}
         </div>
       </main>
-      <SiteFooter />
+
     </div>
   );
 };

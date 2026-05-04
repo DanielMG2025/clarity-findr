@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
@@ -306,7 +304,7 @@ const Assessment = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SiteHeader />
+
       <main className="flex-1 bg-gradient-hero">
         <div className="container max-w-2xl py-12">
           {/* Progress */}
@@ -355,7 +353,7 @@ const Assessment = () => {
           </Card>
         </div>
       </main>
-      <SiteFooter />
+
     </div>
   );
 };

@@ -1,4 +1,3 @@
-import SiteHeader from "@/components/SiteHeader";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -38,7 +37,7 @@ const tests = [
 const AccountPatient = () => {
   return (
     <div className="min-h-screen bg-background">
-      <SiteHeader />
+
       <main className="container py-8 space-y-6">
         {/* Header */}
         <div className="flex items-start justify-between gap-4 flex-wrap">
@@ -53,8 +52,8 @@ const AccountPatient = () => {
             </p>
           </div>
           <div className="flex gap-2">
-            <Button asChild variant="outline" size="sm"><Link to="/results">View ranked clinics</Link></Button>
-            <Button asChild size="sm"><Link to="/assessment/advanced">Refine my profile</Link></Button>
+            <Button asChild variant="outline" size="sm"><Link to="/clinics">View ranked clinics</Link></Button>
+            <Button asChild size="sm"><Link to="/profile">Refine my profile</Link></Button>
           </div>
         </div>
 

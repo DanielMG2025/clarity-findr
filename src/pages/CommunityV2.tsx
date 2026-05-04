@@ -1,6 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -139,7 +137,7 @@ const CommunityV2 = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <SiteHeader />
+
 
       <section className="bg-gradient-hero">
         <div className="container py-12 max-w-4xl">
@@ -294,7 +292,7 @@ const CommunityV2 = () => {
         </TransparencyBlock>
       </main>
 
-      <SiteFooter />
+
     </div>
   );
 };

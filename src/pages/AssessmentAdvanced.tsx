@@ -12,8 +12,6 @@ import {
   TestTube,
   CheckCircle2,
 } from "lucide-react";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -101,10 +99,10 @@ const AssessmentAdvanced = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SiteHeader />
+
       <main className="flex-1 bg-gradient-hero">
         <div className="container max-w-2xl py-12">
-          <Link to="/patient/advanced" className="text-sm text-muted-foreground hover:text-primary">
+          <Link to="/partners" className="text-sm text-muted-foreground hover:text-primary">
             ← Back to advanced modules
           </Link>
 
@@ -401,7 +399,7 @@ const AssessmentAdvanced = () => {
           </Card>
         </div>
       </main>
-      <SiteFooter />
+
     </div>
   );
 };

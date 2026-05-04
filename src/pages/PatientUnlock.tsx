@@ -13,8 +13,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 import { storage } from "@/lib/fertility";
 import { toast } from "@/hooks/use-toast";
 
@@ -52,10 +50,10 @@ const PatientUnlock = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SiteHeader />
+
       <main className="flex-1 bg-gradient-hero">
         <div className="container max-w-6xl py-12 md:py-16">
-          <Link to="/results" className="text-sm text-muted-foreground hover:text-primary">
+          <Link to="/clinics" className="text-sm text-muted-foreground hover:text-primary">
             ← Back to results
           </Link>
           <div className="mt-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary bg-primary-soft px-3 py-1.5 rounded-full">
@@ -214,7 +212,7 @@ const PatientUnlock = () => {
                   prioritize your file — faster replies, better fit, higher outcome odds.
                 </p>
                 <Button asChild variant="outline">
-                  <Link to="/patient/referral">
+                  <Link to="/clinics">
                     Explore premium referral <ArrowRight className="size-4" />
                   </Link>
                 </Button>
@@ -237,7 +235,7 @@ const PatientUnlock = () => {
           </Card>
         </div>
       </main>
-      <SiteFooter />
+
     </div>
   );
 };

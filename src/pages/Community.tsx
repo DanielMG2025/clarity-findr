@@ -13,8 +13,6 @@ import {
   Lock,
   Send,
 } from "lucide-react";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -256,7 +254,7 @@ const Community = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SiteHeader />
+
       <main className="flex-1">
         {/* SECTION 1 — Entry */}
         <section className="bg-gradient-hero">
@@ -633,7 +631,7 @@ const Community = () => {
           </div>
         </section>
       </main>
-      <SiteFooter />
+
     </div>
   );
 };

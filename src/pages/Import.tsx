@@ -9,8 +9,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 import {
   TARGET_FIELDS,
   TargetKey,
@@ -110,7 +108,7 @@ const Import = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SiteHeader />
+
       <main className="container py-12 flex-1">
         <div className="max-w-5xl mx-auto space-y-8">
           <header className="space-y-3">
@@ -254,7 +252,7 @@ const Import = () => {
           )}
         </div>
       </main>
-      <SiteFooter />
+
     </div>
   );
 };
