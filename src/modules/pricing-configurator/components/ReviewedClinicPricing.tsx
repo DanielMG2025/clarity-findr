@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ShieldCheck, Info, ArrowRight, MessageSquare, Calendar } from "lucide-react";
+import { ShieldCheck, Info, ArrowRight, MessageSquare, Calendar, AlertTriangle, Globe } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { usePatientProfileStore } from "@/modules/patient-profile/store";
 import { overallCompletion } from "@/modules/patient-profile/blocks";
 
 type Confidence = "low" | "medium" | "high";
+type SourceLabel = "reviewed" | "public" | "external" | "pending";
 
 interface ReviewedClinic {
   clinic: string;
@@ -21,11 +22,35 @@ interface ReviewedClinic {
   mayNotInclude: string[];
   confidence: Confidence;
   lastReview: string;
-  reviewed: boolean;
+  source: SourceLabel;
 }
 
-// Madrid IVF clinics — admin-approved sample data
+// Madrid IVF clinics — initial seed
 const MADRID_FIV: ReviewedClinic[] = [
+  {
+    clinic: "Fertility Madrid",
+    city: "Madrid",
+    published: 5400,
+    basicMin: 5400, basicMax: 6900,
+    premiumMin: 6900, premiumMax: 9200,
+    includes: ["Estimulación", "Punción", "Cultivo embrionario", "Transferencia"],
+    mayNotInclude: ["Medicación", "ICSI", "PGT-A"],
+    confidence: "high",
+    lastReview: "2026-04-30",
+    source: "reviewed",
+  },
+  {
+    clinic: "FIVMadrid",
+    city: "Madrid",
+    published: 5600,
+    basicMin: 5600, basicMax: 7100,
+    premiumMin: 7100, premiumMax: 9500,
+    includes: ["Estimulación", "Punción", "Cultivo", "Transferencia"],
+    mayNotInclude: ["Medicación", "ICSI", "Vitrificación"],
+    confidence: "high",
+    lastReview: "2026-04-28",
+    source: "reviewed",
+  },
   {
     clinic: "IVI Madrid",
     city: "Madrid",
@@ -34,9 +59,9 @@ const MADRID_FIV: ReviewedClinic[] = [
     premiumMin: 7400, premiumMax: 9800,
     includes: ["Estimulación", "Punción", "Cultivo embrionario", "Transferencia"],
     mayNotInclude: ["Medicación", "ICSI", "PGT-A", "Vitrificación"],
-    confidence: "high",
+    confidence: "medium",
     lastReview: "2026-04-29",
-    reviewed: true,
+    source: "public",
   },
   {
     clinic: "Instituto Bernabeu Madrid",
@@ -46,33 +71,21 @@ const MADRID_FIV: ReviewedClinic[] = [
     premiumMin: 7800, premiumMax: 10400,
     includes: ["Estimulación", "Punción", "ICSI", "Cultivo", "Transferencia"],
     mayNotInclude: ["Medicación", "PGT-A", "Anestesia"],
-    confidence: "high",
+    confidence: "medium",
     lastReview: "2026-04-22",
-    reviewed: true,
+    source: "external",
   },
   {
-    clinic: "Clínica Eugin Madrid",
+    clinic: "Clínica Tambre",
     city: "Madrid",
-    published: 5500,
-    basicMin: 5500, basicMax: 7200,
-    premiumMin: 7200, premiumMax: 9600,
+    published: 6100,
+    basicMin: 6100, basicMax: 7700,
+    premiumMin: 7700, premiumMax: 10200,
     includes: ["Estimulación", "Punción", "Cultivo", "Transferencia"],
-    mayNotInclude: ["Medicación", "ICSI", "Vitrificación de embriones"],
-    confidence: "medium",
-    lastReview: "2026-04-15",
-    reviewed: true,
-  },
-  {
-    clinic: "Vida Fertility Madrid",
-    city: "Madrid",
-    published: 6500,
-    basicMin: 6500, basicMax: 8100,
-    premiumMin: 8100, premiumMax: 10900,
-    includes: ["Estimulación", "Punción", "ICSI", "Cultivo blastocisto", "Transferencia"],
-    mayNotInclude: ["Medicación", "PGT-A"],
-    confidence: "medium",
-    lastReview: "2026-04-30",
-    reviewed: true,
+    mayNotInclude: ["Medicación", "ICSI", "PGT-A"],
+    confidence: "low",
+    lastReview: "2026-04-10",
+    source: "pending",
   },
   {
     clinic: "Ginefiv Madrid",
@@ -84,7 +97,7 @@ const MADRID_FIV: ReviewedClinic[] = [
     mayNotInclude: ["Medicación", "ICSI", "PGT-A"],
     confidence: "low",
     lastReview: "2026-03-28",
-    reviewed: false,
+    source: "pending",
   },
 ];
 
@@ -94,6 +107,29 @@ const confStyles: Record<Confidence, string> = {
   low:    "bg-rose-500/10 text-rose-700 border-rose-200",
 };
 const confLabel: Record<Confidence, string> = { high: "Alta", medium: "Media", low: "Baja" };
+
+const sourceMeta: Record<SourceLabel, { label: string; className: string; icon: React.ReactNode }> = {
+  reviewed: {
+    label: "Precio revisado",
+    className: "bg-emerald-500/10 text-emerald-700 border-emerald-200",
+    icon: <ShieldCheck className="size-3" />,
+  },
+  public: {
+    label: "Fuente pública de la clínica",
+    className: "bg-blue-500/10 text-blue-700 border-blue-200",
+    icon: <Globe className="size-3" />,
+  },
+  external: {
+    label: "Fuente externa · requiere revisión",
+    className: "bg-amber-500/10 text-amber-700 border-amber-200",
+    icon: <AlertTriangle className="size-3" />,
+  },
+  pending: {
+    label: "Estimación pendiente de validación",
+    className: "bg-muted text-muted-foreground border-border",
+    icon: <Info className="size-3" />,
+  },
+};
 
 const fmt = (n: number) => `€${n.toLocaleString()}`;
 
@@ -113,7 +149,7 @@ export function ReviewedClinicPricing() {
             </CardDescription>
           </div>
           <Badge variant="outline" className="bg-emerald-500/10 text-emerald-700 border-emerald-200 gap-1">
-            <ShieldCheck className="size-3.5" /> Precio revisado
+            <ShieldCheck className="size-3.5" /> Datos verificados
           </Badge>
         </div>
       </CardHeader>
@@ -129,85 +165,91 @@ export function ReviewedClinicPricing() {
           </div>
         )}
 
+        {/* Normalization explanation */}
+        <div className="rounded-lg border bg-primary-soft/30 px-3 py-2 text-sm flex items-start gap-2">
+          <Info className="size-4 mt-0.5 shrink-0 text-primary" />
+          <p>
+            No todos los precios publicados incluyen los mismos componentes. Por eso normalizamos
+            <b> medicación, laboratorio, vitrificación y posibles extras</b> para que puedas comparar clínicas con la misma base.
+          </p>
+        </div>
+
         <div className="grid gap-3">
-          {MADRID_FIV.map((c) => (
-            <div key={c.clinic} className="border rounded-xl p-4 hover:border-primary/40 transition-colors">
-              <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
-                <div>
-                  <div className="font-semibold">{c.clinic}</div>
-                  <div className="text-xs text-muted-foreground">{c.city}</div>
-                </div>
-                <div className="flex flex-wrap gap-1.5">
-                  {c.reviewed ? (
-                    <Badge variant="outline" className="bg-emerald-500/10 text-emerald-700 border-emerald-200 gap-1">
-                      <ShieldCheck className="size-3" /> Precio revisado
+          {MADRID_FIV.map((c) => {
+            const sm = sourceMeta[c.source];
+            return (
+              <div key={c.clinic} className="border rounded-xl p-4 hover:border-primary/40 transition-colors">
+                <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
+                  <div>
+                    <div className="font-semibold">{c.clinic}</div>
+                    <div className="text-xs text-muted-foreground">{c.city}</div>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    <Badge variant="outline" className={`${sm.className} gap-1`}>
+                      {sm.icon} {sm.label}
                     </Badge>
-                  ) : (
-                    <Badge variant="outline" className="bg-muted text-muted-foreground">
-                      Estimación orientativa
+                    <Badge variant="outline" className={confStyles[c.confidence]}>
+                      Confianza {confLabel[c.confidence]}
                     </Badge>
-                  )}
-                  <Badge variant="outline" className={confStyles[c.confidence]}>
-                    Confianza {confLabel[c.confidence]}
-                  </Badge>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3 gap-3 text-sm">
-                <div>
-                  <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Precio publicado</div>
-                  <div className="font-bold tabular-nums">{fmt(c.published)}</div>
-                </div>
-                <div>
-                  <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Normalizado básico</div>
-                  <div className="font-bold tabular-nums text-accent">{fmt(c.basicMin)}–{fmt(c.basicMax)}</div>
-                </div>
-                <div>
-                  <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Normalizado premium</div>
-                  <div className="font-bold tabular-nums text-primary">{fmt(c.premiumMin)}–{fmt(c.premiumMax)}</div>
-                </div>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-3 mt-3">
-                <div>
-                  <div className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1">Qué incluye</div>
-                  <div className="flex flex-wrap gap-1">
-                    {c.includes.map((i) => (
-                      <Badge key={i} variant="outline" className="text-[10px] bg-emerald-500/10 text-emerald-700 border-emerald-200">
-                        + {i}
-                      </Badge>
-                    ))}
                   </div>
                 </div>
-                <div>
-                  <div className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1">Qué puede no incluir</div>
-                  <div className="flex flex-wrap gap-1">
-                    {c.mayNotInclude.map((i) => (
-                      <Badge key={i} variant="outline" className="text-[10px] bg-amber-500/10 text-amber-700 border-amber-200">
-                        – {i}
-                      </Badge>
-                    ))}
+
+                <div className="grid grid-cols-3 gap-3 text-sm">
+                  <div>
+                    <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Precio publicado</div>
+                    <div className="font-bold tabular-nums">{fmt(c.published)}</div>
+                  </div>
+                  <div>
+                    <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Normalizado básico</div>
+                    <div className="font-bold tabular-nums text-accent">{fmt(c.basicMin)}–{fmt(c.basicMax)}</div>
+                  </div>
+                  <div>
+                    <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Normalizado premium</div>
+                    <div className="font-bold tabular-nums text-primary">{fmt(c.premiumMin)}–{fmt(c.premiumMax)}</div>
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-3 mt-3">
+                  <div>
+                    <div className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1">Qué incluye</div>
+                    <div className="flex flex-wrap gap-1">
+                      {c.includes.map((i) => (
+                        <Badge key={i} variant="outline" className="text-[10px] bg-emerald-500/10 text-emerald-700 border-emerald-200">
+                          + {i}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1">Qué puede no incluir</div>
+                    <div className="flex flex-wrap gap-1">
+                      {c.mayNotInclude.map((i) => (
+                        <Badge key={i} variant="outline" className="text-[10px] bg-amber-500/10 text-amber-700 border-amber-200">
+                          – {i}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between gap-3 mt-3 pt-3 border-t">
+                  <div className="text-xs text-muted-foreground inline-flex items-center gap-1">
+                    <Calendar className="size-3" /> Última revisión: {c.lastReview}
+                  </div>
+                  <div className="flex gap-2">
+                    <Button size="sm" variant="outline" asChild>
+                      <Link to="/clinics">Comparar clínicas</Link>
+                    </Button>
+                    <Button size="sm" asChild>
+                      <Link to={`/clinics?contact=${encodeURIComponent(c.clinic)}`}>
+                        <MessageSquare className="size-3.5 mr-1" /> Solicitar contacto
+                      </Link>
+                    </Button>
                   </div>
                 </div>
               </div>
-
-              <div className="flex items-center justify-between gap-3 mt-3 pt-3 border-t">
-                <div className="text-xs text-muted-foreground inline-flex items-center gap-1">
-                  <Calendar className="size-3" /> Última revisión: {c.lastReview}
-                </div>
-                <div className="flex gap-2">
-                  <Button size="sm" variant="outline" asChild>
-                    <Link to="/clinics">Comparar clínicas</Link>
-                  </Button>
-                  <Button size="sm" asChild>
-                    <Link to={`/clinics?contact=${encodeURIComponent(c.clinic)}`}>
-                      <MessageSquare className="size-3.5 mr-1" /> Solicitar contacto
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Explanation */}
