@@ -1,6 +1,7 @@
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { PricingConfigurator } from "@/modules/pricing-configurator";
+import { JourneyProgress } from "@/modules/journey";
 
 const PricingLab = () => {
   return (
@@ -8,7 +9,8 @@ const PricingLab = () => {
       <SiteHeader />
       {/* Tone stripe to align with the other journeys */}
       <div className="h-1.5 w-full bg-gradient-to-r from-primary to-accent" />
-      <main className="container max-w-6xl py-10 pb-20">
+      <main className="container max-w-6xl py-10 pb-20 space-y-6">
+        <JourneyProgress current="price" />
         <PricingConfigurator />
       </main>
       <SiteFooter />
