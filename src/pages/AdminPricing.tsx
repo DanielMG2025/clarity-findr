@@ -403,8 +403,9 @@ export default function AdminPricing() {
                   <TableRow>
                     <TableHead>Clinic</TableHead>
                     <TableHead>Treatment</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Source</TableHead>
+                    <TableHead>Source type</TableHead>
+                    <TableHead>Raw source</TableHead>
+                    <TableHead>Normalization rule</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Confidence</TableHead>
                     <TableHead>Updated</TableHead>
@@ -416,14 +417,22 @@ export default function AdminPricing() {
                     <TableRow key={s.id}>
                       <TableCell className="font-medium">{s.clinic}</TableCell>
                       <TableCell>{s.treatment}</TableCell>
-                      <TableCell>{s.type}</TableCell>
-                      <TableCell className="max-w-[180px] truncate text-xs text-muted-foreground">
-                        {s.url ? (
-                          <span className="inline-flex items-center gap-1"><LinkIcon className="size-3" />{s.url}</span>
-                        ) : "—"}
+                      <TableCell><SourceTypeBadge value={s.sourceType} /></TableCell>
+                      <TableCell className="max-w-[220px] text-xs text-muted-foreground">
+                        <div className="line-clamp-2" title={s.rawText ?? ""}>
+                          {s.rawText ?? "—"}
+                        </div>
+                        {s.url && (
+                          <span className="inline-flex items-center gap-1 mt-1 text-[10px]">
+                            <LinkIcon className="size-3" />{s.url}
+                          </span>
+                        )}
+                      </TableCell>
+                      <TableCell className="max-w-[180px] text-xs">
+                        <span className="font-mono text-[11px] bg-muted px-1.5 py-0.5 rounded">{s.normalizationRule}</span>
                       </TableCell>
                       <TableCell><StatusBadge status={s.status} /></TableCell>
-                      <TableCell><ConfidenceBadge value={s.confidence} /></TableCell>
+                      <TableCell><ConfidenceScore value={s.confidenceScore} /></TableCell>
                       <TableCell className="text-xs text-muted-foreground">{s.updatedAt}</TableCell>
                       <TableCell className="text-right">
                         <Button size="sm" variant="outline" onClick={() => setSelectedId(s.id)}>
