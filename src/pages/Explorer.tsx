@@ -98,7 +98,7 @@ const Explorer = () => {
                 min={18}
                 max={55}
                 value={data.age}
-                onChange={(e) => setData({ ...data, age: Number(e.target.value) })}
+                onChange={(e) => patch({ age: Number(e.target.value) })}
                 className="w-28 text-lg font-bold"
               />
               <span className="text-muted-foreground">years</span>
@@ -119,7 +119,7 @@ const Explorer = () => {
                 </WhatIsThis>
               </p>
             </div>
-            <RadioGroup value={data.trying} onValueChange={(v) => setData({ ...data, trying: v as ExplorerData["trying"] })}>
+            <RadioGroup value={data.trying} onValueChange={(v) => patch({ trying: v as ExplorerData["trying"] })}>
               {[
                 ["<6m", "Less than 6 months"],
                 ["6-12m", "6–12 months"],
@@ -154,7 +154,7 @@ const Explorer = () => {
               ].map(([v, l]) => (
                 <button
                   key={v}
-                  onClick={() => setData({ ...data, treatment: v as ExplorerData["treatment"] })}
+                  onClick={() => patch({ treatment: v as ExplorerData["treatment"] })}
                   className={`text-left p-4 rounded-xl border-2 transition-smooth ${
                     data.treatment === v ? "border-primary bg-primary-soft" : "border-border hover:border-primary/40"
                   }`}
@@ -187,7 +187,7 @@ const Explorer = () => {
                 min={2000}
                 max={20000}
                 step={500}
-                onValueChange={([v]) => setData({ ...data, budget: v })}
+                onValueChange={([v]) => patch({ budget: v })}
               />
               <div className="flex justify-between text-xs text-muted-foreground tabular-nums">
                 <span>€2,000</span><span>€20,000</span>
@@ -207,7 +207,7 @@ const Explorer = () => {
               {["Spain", "Czech Republic", "Portugal", "Greece", "UK", "Other"].map((c) => (
                 <button
                   key={c}
-                  onClick={() => setData({ ...data, country: c })}
+                  onClick={() => patch({ country: c })}
                   className={`p-3 rounded-lg border-2 text-sm font-medium transition-smooth ${
                     data.country === c ? "border-primary bg-primary-soft" : "border-border hover:border-primary/40"
                   }`}
