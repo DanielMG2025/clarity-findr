@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { JourneyHeader } from "@/components/shared/JourneyHeader";
 import { TransparencyBlock } from "@/components/shared/TransparencyBlock";
 import { useState } from "react";
+import { useJourneyState } from "@/hooks/useJourneyState";
 import { toast } from "sonner";
 
 const STEPS = [
@@ -28,7 +29,10 @@ const TIMELINE = [
 ];
 
 const Expert = () => {
-  const [step, setStep] = useState(0);
+  const { step, setStep } = useJourneyState(
+    { key: "expert", path: "/expert", label: "Expert · Concierge", totalSteps: STEPS.length },
+    {},
+  );
 
   return (
     <div className="min-h-screen flex flex-col bg-background">

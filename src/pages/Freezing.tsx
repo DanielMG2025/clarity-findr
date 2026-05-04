@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useJourneyState } from "@/hooks/useJourneyState";
 import { Link } from "react-router-dom";
 import { ArrowRight, ArrowLeft, Snowflake, CalendarClock, Calculator, Sparkles } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
@@ -38,11 +39,15 @@ function eggsPerCycle(age: number) {
 }
 
 const Freezing = () => {
-  const [step, setStep] = useState(0);
-  const [age, setAge] = useState(32);
-  const [cycles, setCycles] = useState(1);
-  const [storageYears, setStorageYears] = useState(5);
-  const [country, setCountry] = useState("Spain");
+  const { step, setStep, data, patch } = useJourneyState(
+    { key: "freezing", path: "/freezing", label: "Egg Freezing · Plan your cycle", totalSteps: STEPS.length },
+    { age: 32, cycles: 1, storageYears: 5, country: "Spain" },
+  );
+  const { age, cycles, storageYears, country } = data;
+  const setAge = (v: number) => patch({ age: v });
+  const setCycles = (v: number) => patch({ cycles: v });
+  const setStorageYears = (v: number) => patch({ storageYears: v });
+  const setCountry = (v: string) => patch({ country: v });
 
   const epc = eggsPerCycle(age);
   const totalEggs = epc * cycles;
