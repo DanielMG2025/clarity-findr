@@ -110,24 +110,63 @@ const HomeV2 = () => {
         </div>
       </section>
 
-      {/* INTENT SELECTOR */}
-      <section className="container -mt-8 md:-mt-12 pb-16">
+      {/* INTENT SELECTOR — patients */}
+      <section className="container -mt-8 md:-mt-12 pb-8">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {JOURNEYS.map((j) => {
             const Icon = j.icon;
+            const t = TONE_STYLES[j.tone];
             return (
               <Link key={j.id} to={j.href} className="group">
-                <Card className="p-6 h-full hover:shadow-elegant hover:border-primary/40 transition-smooth border-2 bg-gradient-card">
+                <Card className={`p-6 h-full hover:shadow-elegant transition-smooth border-2 bg-gradient-card ${t.border} relative overflow-hidden`}>
+                  {/* tone stripe */}
+                  <div className={`absolute inset-x-0 top-0 h-1 ${t.soft}`} />
                   <div className="flex items-start justify-between mb-4">
-                    <div className={`size-12 rounded-2xl grid place-items-center ${j.color === "primary" ? "bg-primary-soft" : "bg-accent-soft"}`}>
-                      <Icon className={`size-6 ${j.color === "primary" ? "text-primary" : "text-accent"}`} />
+                    <div className={`size-12 rounded-2xl grid place-items-center ${t.soft}`}>
+                      <Icon className={`size-6 ${t.text}`} />
                     </div>
                     <Badge variant="secondary" className="text-xs">{j.time}</Badge>
                   </div>
+                  <Badge variant="outline" className={`mb-2 text-[10px] uppercase tracking-wider ${t.text} border-current/30`}>
+                    {j.tone}
+                  </Badge>
                   <h3 className="text-lg font-bold mb-1.5">{j.label}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed mb-4">{j.description}</p>
-                  <div className="text-sm font-semibold text-primary inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+                  <div className={`text-sm font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all ${t.text}`}>
                     Start this path <ArrowRight className="size-4" />
+                  </div>
+                </Card>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* PRO PORTALS */}
+      <section className="container pb-16">
+        <div className="flex items-end justify-between mb-4">
+          <div>
+            <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground">For professionals</div>
+            <h2 className="text-xl font-bold mt-1">Are you a clinic or a partner?</h2>
+          </div>
+        </div>
+        <div className="grid md:grid-cols-2 gap-5">
+          {PRO_PORTALS.map((p) => {
+            const Icon = p.icon;
+            const t = TONE_STYLES[p.tone];
+            return (
+              <Link key={p.id} to={p.href} className="group">
+                <Card className={`p-6 h-full transition-smooth border-2 hover:shadow-elegant ${t.border} relative overflow-hidden`}>
+                  <div className={`absolute inset-x-0 top-0 h-1 ${t.soft}`} />
+                  <div className="flex items-center gap-4">
+                    <div className={`size-12 rounded-2xl grid place-items-center ${t.soft}`}>
+                      <Icon className={`size-6 ${t.text}`} />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold">{p.label}</h3>
+                      <p className="text-sm text-muted-foreground">{p.description}</p>
+                    </div>
+                    <ArrowRight className={`size-5 ${t.text} transition-transform group-hover:translate-x-1`} />
                   </div>
                 </Card>
               </Link>
