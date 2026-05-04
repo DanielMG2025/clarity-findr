@@ -8,9 +8,7 @@ import Landing from "./pages/Landing.tsx";
 import HomeV2 from "./pages/HomeV2.tsx";
 import Clinics from "./pages/Clinics.tsx";
 import { AppLayout } from "./components/AppLayout.tsx";
-import Explorer from "./pages/Explorer.tsx";
-import Navigator from "./pages/Navigator.tsx";
-import Expert from "./pages/Expert.tsx";
+// Legacy journey pages (Explorer/Navigator/Expert) replaced by unified profile + clinics flow.
 import Donor from "./pages/Donor.tsx";
 import Freezing from "./pages/Freezing.tsx";
 import CommunityV2 from "./pages/CommunityV2.tsx";
