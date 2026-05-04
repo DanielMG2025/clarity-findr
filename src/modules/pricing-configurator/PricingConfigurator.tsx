@@ -164,14 +164,13 @@ export function PricingConfigurator() {
       <section className="rounded-2xl border border-border bg-gradient-to-br from-primary-soft/40 to-accent-soft/30 p-6 md:p-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h3 className="text-xl font-bold">¿Próximo paso?</h3>
-            <p className="text-sm text-muted-foreground">Te enseñamos qué clínicas encajan con tu rango y tu caso, con la misma transparencia.</p>
+            <h3 className="text-xl font-bold">Next step?</h3>
+            <p className="text-sm text-muted-foreground">We'll show you which clinics fit your range and your case — with the same transparency.</p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" onClick={saveEstimate} className="gap-1.5"><Save className="size-4" /> Guardar estimación</Button>
-            <Button variant="outline" asChild className="gap-1.5"><Link to="/community"><Users className="size-4" /> Ver experiencias</Link></Button>
-            <Button variant="outline" asChild className="gap-1.5"><Link to="/explorer"><Compass className="size-4" /> Volver a Explorer</Link></Button>
-            <Button asChild className="gap-1.5"><Link to="/navigator">Ver clínicas que encajan <ArrowRight className="size-4" /></Link></Button>
+            <Button variant="outline" onClick={saveEstimate} className="gap-1.5"><Save className="size-4" /> Save estimate</Button>
+            <Button variant="outline" asChild className="gap-1.5"><Link to="/community"><Users className="size-4" /> See experiences</Link></Button>
+            <Button asChild className="gap-1.5"><Link to="/clinics">See matching clinics <ArrowRight className="size-4" /></Link></Button>
           </div>
         </div>
       </section>
