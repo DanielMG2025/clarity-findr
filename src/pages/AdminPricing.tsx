@@ -40,12 +40,16 @@ import { toast } from "@/hooks/use-toast";
 
 type SourceStatus = "pending" | "extracted" | "in_review" | "approved" | "rejected";
 type Confidence = "low" | "medium" | "high";
+type SourceType = "official" | "benchmark" | "inferred" | "pending_dossier";
 
 interface PricingSource {
   id: string;
   clinic: string;
   treatment: string;
   type: "Clinic website" | "PDF brochure" | "Patient quote" | "Email" | "Phone";
+  sourceType: SourceType;
+  confidenceScore: number; // 0-100
+  normalizationRule: string;
   url?: string;
   status: SourceStatus;
   confidence: Confidence;
@@ -89,6 +93,9 @@ const initialSources: PricingSource[] = [
     clinic: "IVI Madrid",
     treatment: "IVF",
     type: "Clinic website",
+    sourceType: "official",
+    confidenceScore: 88,
+    normalizationRule: "base + medicación + ICSI (obligatorio si edad>35)",
     url: "https://ivi.es/precios",
     status: "extracted",
     confidence: "high",
@@ -117,29 +124,41 @@ const initialSources: PricingSource[] = [
     clinic: "Clínica Eugin",
     treatment: "Egg donation",
     type: "PDF brochure",
+    sourceType: "pending_dossier",
+    confidenceScore: 35,
+    normalizationRule: "pendiente — falta dossier 2026",
     url: "eugin-prices-2026.pdf",
     status: "pending",
     confidence: "low",
     updatedAt: "2026-05-01",
+    rawText: "Pendiente de recepción del dossier oficial 2026.",
   },
   {
     id: "src_03",
     clinic: "Vida Fertility",
     treatment: "ICSI",
     type: "Patient quote",
+    sourceType: "inferred",
+    confidenceScore: 58,
+    normalizationRule: "media de 3 presupuestos pacientes + ajuste medicación",
     status: "in_review",
     confidence: "medium",
     updatedAt: "2026-05-02",
+    rawText: "Inferido a partir de 3 presupuestos de pacientes (rango €6.800–€8.200).",
   },
   {
     id: "src_04",
     clinic: "Instituto Bernabeu",
     treatment: "IVF",
     type: "Clinic website",
+    sourceType: "benchmark",
+    confidenceScore: 72,
+    normalizationRule: "benchmark sector Madrid + componentes declarados",
     url: "https://institutobernabeu.com",
     status: "approved",
     confidence: "high",
     updatedAt: "2026-04-22",
+    rawText: "Comparado con benchmark sector privado Madrid (n=8 clínicas).",
   },
 ];
 
@@ -222,6 +241,31 @@ function ConfidenceBadge({ value }: { value: Confidence }) {
     <Badge variant="outline" className={confidenceVariant[value]}>
       {value} confidence
     </Badge>
+  );
+}
+
+const sourceTypeMeta: Record<SourceType, { label: string; className: string }> = {
+  official:        { label: "Fuente oficial",   className: "bg-emerald-500/10 text-emerald-700 border-emerald-200" },
+  benchmark:       { label: "Benchmark externo", className: "bg-blue-500/10 text-blue-700 border-blue-200" },
+  inferred:        { label: "Inferido",          className: "bg-violet-500/10 text-violet-700 border-violet-200" },
+  pending_dossier: { label: "Pendiente dossier", className: "bg-amber-500/10 text-amber-700 border-amber-200" },
+};
+
+function SourceTypeBadge({ value }: { value: SourceType }) {
+  const m = sourceTypeMeta[value];
+  return <Badge variant="outline" className={m.className}>{m.label}</Badge>;
+}
+
+function ConfidenceScore({ value }: { value: number }) {
+  const tone = value >= 75 ? "text-emerald-700" : value >= 50 ? "text-amber-700" : "text-rose-700";
+  const bar = value >= 75 ? "bg-emerald-500" : value >= 50 ? "bg-amber-500" : "bg-rose-500";
+  return (
+    <div className="flex items-center gap-2 min-w-[90px]">
+      <div className="h-1.5 w-16 rounded-full bg-muted overflow-hidden">
+        <div className={`h-full ${bar}`} style={{ width: `${value}%` }} />
+      </div>
+      <span className={`text-xs font-semibold tabular-nums ${tone}`}>{value}%</span>
+    </div>
   );
 }
 
@@ -359,8 +403,9 @@ export default function AdminPricing() {
                   <TableRow>
                     <TableHead>Clinic</TableHead>
                     <TableHead>Treatment</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Source</TableHead>
+                    <TableHead>Source type</TableHead>
+                    <TableHead>Raw source</TableHead>
+                    <TableHead>Normalization rule</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Confidence</TableHead>
                     <TableHead>Updated</TableHead>
@@ -372,14 +417,22 @@ export default function AdminPricing() {
                     <TableRow key={s.id}>
                       <TableCell className="font-medium">{s.clinic}</TableCell>
                       <TableCell>{s.treatment}</TableCell>
-                      <TableCell>{s.type}</TableCell>
-                      <TableCell className="max-w-[180px] truncate text-xs text-muted-foreground">
-                        {s.url ? (
-                          <span className="inline-flex items-center gap-1"><LinkIcon className="size-3" />{s.url}</span>
-                        ) : "—"}
+                      <TableCell><SourceTypeBadge value={s.sourceType} /></TableCell>
+                      <TableCell className="max-w-[220px] text-xs text-muted-foreground">
+                        <div className="line-clamp-2" title={s.rawText ?? ""}>
+                          {s.rawText ?? "—"}
+                        </div>
+                        {s.url && (
+                          <span className="inline-flex items-center gap-1 mt-1 text-[10px]">
+                            <LinkIcon className="size-3" />{s.url}
+                          </span>
+                        )}
+                      </TableCell>
+                      <TableCell className="max-w-[180px] text-xs">
+                        <span className="font-mono text-[11px] bg-muted px-1.5 py-0.5 rounded">{s.normalizationRule}</span>
                       </TableCell>
                       <TableCell><StatusBadge status={s.status} /></TableCell>
-                      <TableCell><ConfidenceBadge value={s.confidence} /></TableCell>
+                      <TableCell><ConfidenceScore value={s.confidenceScore} /></TableCell>
                       <TableCell className="text-xs text-muted-foreground">{s.updatedAt}</TableCell>
                       <TableCell className="text-right">
                         <Button size="sm" variant="outline" onClick={() => setSelectedId(s.id)}>
@@ -426,7 +479,9 @@ export default function AdminPricing() {
               </SelectContent>
             </Select>
             <StatusBadge status={selected.status} />
-            <ConfidenceBadge value={selected.confidence} />
+            <SourceTypeBadge value={selected.sourceType} />
+            <ConfidenceScore value={selected.confidenceScore} />
+            <span className="text-xs text-muted-foreground">Rule: <span className="font-mono">{selected.normalizationRule}</span></span>
           </div>
 
           <div className="grid md:grid-cols-2 gap-4">
@@ -744,6 +799,7 @@ function AddSourceForm({ onCreate }: { onCreate: (s: PricingSource) => void }) {
         const id = `src_${Date.now()}`;
         onCreate({
           id, clinic, treatment, type, url, status: "pending", confidence: "low",
+          sourceType: "pending_dossier", confidenceScore: 30, normalizationRule: "pendiente",
           updatedAt: new Date().toISOString().slice(0,10),
           rawText: notes || undefined,
         });
