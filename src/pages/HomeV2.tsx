@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Compass, Search, Headset, HeartHandshake, Snowflake, ShieldCheck, MessagesSquare, Sparkles } from "lucide-react";
+import { ArrowRight, Compass, Search, Headset, HeartHandshake, Snowflake, ShieldCheck, MessagesSquare, Sparkles, Building2, Handshake } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Card } from "@/components/ui/card";
@@ -14,7 +14,7 @@ const JOURNEYS = [
     label: "I'm just starting",
     description: "You're learning what fertility care is and what it costs. We'll guide you step by step.",
     time: "~5 min",
-    color: "primary",
+    tone: "explorer" as const,
   },
   {
     id: "navigator",
@@ -23,7 +23,7 @@ const JOURNEYS = [
     label: "I've already researched",
     description: "You know some terms. Get precise matching, side-by-side comparisons and financing.",
     time: "~10 min",
-    color: "accent",
+    tone: "navigator" as const,
   },
   {
     id: "expert",
@@ -32,16 +32,16 @@ const JOURNEYS = [
     label: "I want direct help",
     description: "A guided concierge service. We help you build a shortlist and prepare your file.",
     time: "Personal",
-    color: "primary",
+    tone: "expert" as const,
   },
   {
     id: "donor",
     href: "/donor",
     icon: HeartHandshake,
     label: "I want to donate eggs",
-    description: "Learn what donation means, eligibility, and how to safely connect with clinics.",
+    description: "Learn what donation means, eligibility, compensation and how to safely connect with clinics.",
     time: "~3 min",
-    color: "accent",
+    tone: "donor" as const,
   },
   {
     id: "freezing",
@@ -50,9 +50,40 @@ const JOURNEYS = [
     label: "I want to freeze my eggs",
     description: "Understand timing, costs and what to expect — without medical pressure.",
     time: "~5 min",
-    color: "primary",
+    tone: "freezing" as const,
   },
 ];
+
+const PRO_PORTALS = [
+  {
+    id: "clinic",
+    href: "/clinic",
+    icon: Building2,
+    label: "I'm a clinic",
+    description: "Access qualified leads, manage your profile and track conversion analytics.",
+    cta: "Open clinic portal",
+    tone: "clinic" as const,
+  },
+  {
+    id: "partner",
+    href: "/partners",
+    icon: Handshake,
+    label: "I'm a partner",
+    description: "Refer patients, track commissions and manage your payout schedule.",
+    cta: "Open partner portal",
+    tone: "partner" as const,
+  },
+];
+
+const TONE_STYLES: Record<string, { soft: string; text: string; border: string }> = {
+  explorer:  { soft: "bg-primary-soft",  text: "text-primary",  border: "hover:border-primary/40" },
+  navigator: { soft: "bg-accent-soft",   text: "text-accent",   border: "hover:border-accent/40" },
+  expert:    { soft: "bg-expert-soft",   text: "text-expert",   border: "hover:border-expert/40" },
+  donor:     { soft: "bg-donor-soft",    text: "text-donor",    border: "hover:border-donor/40" },
+  freezing:  { soft: "bg-freezing-soft", text: "text-freezing", border: "hover:border-freezing/40" },
+  clinic:    { soft: "bg-clinic-soft",   text: "text-clinic",   border: "hover:border-clinic/40" },
+  partner:   { soft: "bg-partner-soft",  text: "text-partner-foreground", border: "hover:border-partner/40" },
+};
 
 const HomeV2 = () => {
   return (
