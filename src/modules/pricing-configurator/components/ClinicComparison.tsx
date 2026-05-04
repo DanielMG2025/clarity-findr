@@ -14,11 +14,10 @@ interface Row {
   why: string;
 }
 
-// Mocked sample rows — in production these come from the matchingEngine output.
 const SAMPLE: Row[] = [
-  { clinic: "IVI Madrid",        country: "Spain",          published: 5800, patient_quotes_avg: 6900, basic_norm: 7200,  premium_norm: 11500, includes: ["Base IVF", "Lab"], excludes: ["Medicación", "ICSI"], why: "Precio publicado bajo, pero medicación y extras se facturan aparte." },
-  { clinic: "Reprofit",          country: "Czech Republic", published: 3200, patient_quotes_avg: 4100, basic_norm: 4900,  premium_norm: 7800,  includes: ["Base IVF", "Lab", "Vitrificación"], excludes: ["Viaje"], why: "Mercado más barato; conviene sumar viaje y alojamiento." },
-  { clinic: "Ginefiv Barcelona", country: "Spain",          published: 6300, patient_quotes_avg: 7400, basic_norm: 7800,  premium_norm: 12200, includes: ["Base IVF", "Lab", "ICSI"], excludes: ["PGT-A"], why: "Incluye ICSI por defecto; PGT-A se factura aparte." },
+  { clinic: "IVI Madrid",        country: "Spain",          published: 5800, patient_quotes_avg: 6900, basic_norm: 7200,  premium_norm: 11500, includes: ["Base IVF", "Lab"], excludes: ["Medication", "ICSI"], why: "Low headline price, but medication and extras are billed separately." },
+  { clinic: "Reprofit",          country: "Czech Republic", published: 3200, patient_quotes_avg: 4100, basic_norm: 4900,  premium_norm: 7800,  includes: ["Base IVF", "Lab", "Vitrification"], excludes: ["Travel"], why: "Cheaper market overall; remember to add travel and accommodation." },
+  { clinic: "Ginefiv Barcelona", country: "Spain",          published: 6300, patient_quotes_avg: 7400, basic_norm: 7800,  premium_norm: 12200, includes: ["Base IVF", "Lab", "ICSI"], excludes: ["PGT-A"], why: "Includes ICSI by default; PGT-A is billed separately." },
 ];
 
 const fmt = (n: number | null) => (n == null ? "—" : `€${n.toLocaleString()}`);
@@ -26,23 +25,23 @@ const fmt = (n: number | null) => (n == null ? "—" : `€${n.toLocaleString()}
 export function ClinicComparison() {
   return (
     <Card className="p-6">
-      <h3 className="text-lg font-bold mb-1">Comparativa por clínicas</h3>
+      <h3 className="text-lg font-bold mb-1">Side-by-side clinics</h3>
       <p className="text-sm text-muted-foreground mb-4">
-        Comparamos el precio publicado, lo que han pagado realmente otros pacientes y nuestros precios normalizados.{" "}
-        <WhatIsThis title="¿Qué es precio normalizado?">
-          Es el precio ajustado para que todas las clínicas incluyan los mismos conceptos (base + medicación + extras frecuentes). Así puedes comparar manzanas con manzanas.
+        We compare the published price, what other patients have actually paid and our normalized prices.{" "}
+        <WhatIsThis title="What is a normalized price?">
+          The price adjusted so every clinic includes the same items (base + medication + common extras). That way you can compare apples to apples.
         </WhatIsThis>
       </p>
       <div className="overflow-x-auto -mx-6 px-6">
         <table className="w-full text-sm border-separate border-spacing-y-2">
           <thead className="text-[11px] uppercase tracking-wider text-muted-foreground">
             <tr>
-              <th className="text-left">Clínica</th>
-              <th className="text-right">Publicado</th>
-              <th className="text-right">Pacientes</th>
-              <th className="text-right">Básico</th>
+              <th className="text-left">Clinic</th>
+              <th className="text-right">Published</th>
+              <th className="text-right">Patients</th>
+              <th className="text-right">Basic</th>
               <th className="text-right">Premium</th>
-              <th className="text-left pl-3">Por qué cambia</th>
+              <th className="text-left pl-3">Why it changes</th>
             </tr>
           </thead>
           <tbody>

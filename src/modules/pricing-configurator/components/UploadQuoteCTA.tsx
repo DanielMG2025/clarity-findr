@@ -17,7 +17,7 @@ export function UploadQuoteCTA({ defaultCountry = "Spain", defaultTreatment = "I
 
   const submit = async () => {
     if (!clinic || !base || Number(base) < 100) {
-      toast({ title: "Falta información", description: "Indica al menos clínica y precio base." });
+      toast({ title: "Missing information", description: "Please add at least the clinic and the base price." });
       return;
     }
     setSubmitting(true);
@@ -31,10 +31,10 @@ export function UploadQuoteCTA({ defaultCountry = "Spain", defaultTreatment = "I
     });
     setSubmitting(false);
     if (error) {
-      toast({ title: "No hemos podido guardarlo", description: error.message, variant: "destructive" });
+      toast({ title: "We couldn't save it", description: error.message, variant: "destructive" });
       return;
     }
-    toast({ title: "¡Gracias!", description: "Tu presupuesto ayuda a otras pacientes a tener mejores estimaciones." });
+    toast({ title: "Thank you!", description: "Your quote helps other patients get better estimates." });
     setOpen(false);
     setClinic(""); setBase(""); setMeds(0); setExtras(0);
   };
@@ -46,26 +46,26 @@ export function UploadQuoteCTA({ defaultCountry = "Spain", defaultTreatment = "I
           <MessageSquareQuote className="size-5 text-accent" />
         </div>
         <div className="flex-1">
-          <h3 className="font-bold">Pacientes como tú han compartido</h3>
+          <h3 className="font-bold">Patients like you have shared</h3>
           <p className="text-sm text-muted-foreground mt-1 mb-3">
-            Cada presupuesto que se sube hace que las estimaciones sean más precisas para la siguiente persona. 100% anónimo.
+            Every quote uploaded makes the estimates more accurate for the next person. 100% anonymous.
           </p>
           {!open ? (
             <Button variant="outline" size="sm" onClick={() => setOpen(true)} className="gap-1.5">
-              <Upload className="size-4" /> Subir mi presupuesto
+              <Upload className="size-4" /> Upload my quote
             </Button>
           ) : (
             <div className="grid sm:grid-cols-2 gap-3 mt-2">
               <div>
-                <Label className="text-xs">Clínica</Label>
-                <Input value={clinic} onChange={(e) => setClinic(e.target.value)} placeholder="Ej. IVI Madrid" />
+                <Label className="text-xs">Clinic</Label>
+                <Input value={clinic} onChange={(e) => setClinic(e.target.value)} placeholder="e.g. IVI Madrid" />
               </div>
               <div>
-                <Label className="text-xs">Precio base (€)</Label>
+                <Label className="text-xs">Base price (€)</Label>
                 <Input type="number" value={base} onChange={(e) => setBase(e.target.value === "" ? "" : Number(e.target.value))} />
               </div>
               <div>
-                <Label className="text-xs">Medicación (€)</Label>
+                <Label className="text-xs">Medication (€)</Label>
                 <Input type="number" value={meds} onChange={(e) => setMeds(e.target.value === "" ? "" : Number(e.target.value))} />
               </div>
               <div>
@@ -73,9 +73,9 @@ export function UploadQuoteCTA({ defaultCountry = "Spain", defaultTreatment = "I
                 <Input type="number" value={extras} onChange={(e) => setExtras(e.target.value === "" ? "" : Number(e.target.value))} />
               </div>
               <div className="sm:col-span-2 flex justify-end gap-2">
-                <Button variant="ghost" size="sm" onClick={() => setOpen(false)}>Cancelar</Button>
+                <Button variant="ghost" size="sm" onClick={() => setOpen(false)}>Cancel</Button>
                 <Button size="sm" onClick={submit} disabled={submitting} className="gap-1.5">
-                  <Send className="size-4" /> Enviar
+                  <Send className="size-4" /> Send
                 </Button>
               </div>
             </div>
