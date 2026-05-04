@@ -40,7 +40,12 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={<HomeV2 />} />
+          <Route path="/explorer" element={<Explorer />} />
+          <Route path="/navigator" element={<Navigator />} />
+          <Route path="/expert" element={<Expert />} />
+          <Route path="/donor" element={<Donor />} />
+          <Route path="/freezing" element={<Freezing />} />
           <Route path="/patient" element={<PatientFlow />} />
           <Route path="/patient/unlock" element={<PatientUnlock />} />
           <Route path="/patient/advanced" element={<PatientAdvanced />} />
@@ -48,7 +53,7 @@ const App = () => (
           <Route path="/clinic" element={<ClinicLanding />} />
           <Route path="/clinic/dashboard" element={<ClinicDashboard />} />
           <Route path="/partners" element={<Partners />} />
-          <Route path="/community" element={<Community />} />
+          <Route path="/community" element={<CommunityV2 />} />
           <Route path="/assessment" element={<Assessment />} />
           <Route path="/assessment/advanced" element={<AssessmentAdvanced />} />
           <Route path="/results" element={<Results />} />
