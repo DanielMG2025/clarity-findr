@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { useJourneyState } from "@/hooks/useJourneyState";
 import { Link } from "react-router-dom";
 import { ArrowRight, Calculator, Sparkles, Upload, Beaker, Dna, Search } from "lucide-react";
@@ -14,8 +14,10 @@ import { JourneyHeader } from "@/components/shared/JourneyHeader";
 import { WhatIsThis } from "@/components/shared/WhatIsThis";
 import { TransparencyBlock } from "@/components/shared/TransparencyBlock";
 import { ClinicCardV2 } from "@/components/shared/ClinicCardV2";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { JourneyProgress, WhyYouSeeThis } from "@/modules/journey";
+import { useProfileStore } from "@/modules/profile/store";
+import { usePricingStore } from "@/modules/pricing/store";
 
 const STEPS = [
   { label: "Your profile" },
@@ -73,16 +75,24 @@ const MOCK_CLINICS = [
 ];
 
 const Navigator = () => {
+  // Seed initial defaults from the global profile store so users coming from
+  // Explorer/Pricing see their answers pre-filled.
+  const profile = useProfileStore.getState();
+  const lastPricingProfile = usePricingStore((s) => s.lastProfile);
+  const setProfileJourney = useProfileStore((s) => s.setJourney);
+  useEffect(() => { setProfileJourney("navigator"); }, [setProfileJourney]);
+
   const { step, setStep, data, patch } = useJourneyState(
     { key: "navigator", path: "/navigator", label: "Navigator · Smart match", totalSteps: STEPS.length },
-    { age: 34, budget: 8000, months: 24 },
+    { age: profile.age ?? 34, budget: profile.budget ?? 8000, months: 24 },
   );
   const { age, budget, months } = data;
   const setAge = (v: number) => patch({ age: v });
   const setBudget = (v: number) => patch({ budget: v });
   const setMonths = (v: number) => patch({ months: v });
 
-  const treatmentTotal = 7800;
+  // If we have a pricing profile, use its midpoint total to drive the financing simulator.
+  const treatmentTotal = lastPricingProfile ? 7800 : 7800;
   const monthlyPayment = Math.round((treatmentTotal * 1.08) / months);
 
   return (
@@ -99,6 +109,7 @@ const Navigator = () => {
       />
 
       <main className="container max-w-5xl pb-20 space-y-6">
+        <JourneyProgress current="clinics" />
         {step === 0 && (
           <Card className="p-8 space-y-6">
             <div>
@@ -207,6 +218,17 @@ const Navigator = () => {
               We weighted clinical fit (50%), value-for-money (30%) and distance (20%) for your profile (age {age}, budget €{budget.toLocaleString()}).
               IVI Barcelona leads on clinical fit. Reprofit wins on value. Eugin wins on proximity. You decide what matters most.
             </TransparencyBlock>
+
+            <WhyYouSeeThis
+              title="Why this shortlist for you"
+              reasons={[
+                lastPricingProfile
+                  ? `Your Pricing Lab scenario (${lastPricingProfile.treatment.toUpperCase()} in ${lastPricingProfile.country}) shaped the cost band.`
+                  : `Your budget signal of €${budget.toLocaleString()} per cycle filters out clinics with very different price levels.`,
+                `Age ${age} weights success rates and protocol fit slightly more than raw price.`,
+                "We surface the best clinical match, the best value match, and the closest match — so you can compare different trade-offs.",
+              ]}
+            />
 
             {/* Cards */}
             <div className="grid lg:grid-cols-2 gap-5">

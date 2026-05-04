@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Sparkles, BookOpen, Compass } from "lucide-react";
+import { ArrowLeft, ArrowRight, Sparkles, BookOpen, Compass, Calculator } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Card } from "@/components/ui/card";
@@ -14,6 +14,8 @@ import { WhatIsThis } from "@/components/shared/WhatIsThis";
 import { TransparencyBlock } from "@/components/shared/TransparencyBlock";
 import { Badge } from "@/components/ui/badge";
 import { useJourneyState } from "@/hooks/useJourneyState";
+import { JourneyProgress, WhyYouSeeThis } from "@/modules/journey";
+import { useProfileStore } from "@/modules/profile/store";
 
 type ExplorerData = {
   age: number;
@@ -47,6 +49,21 @@ const Explorer = () => {
     { age: 32, trying: "", treatment: "", budget: 8000, country: "Spain" },
   );
 
+  // Mirror Explorer answers into the global profile store so Pricing & Navigator
+  // pick them up automatically (the journey stage is set on entry too).
+  const setJourney = useProfileStore((s) => s.setJourney);
+  const profilePatch = useProfileStore((s) => s.patch);
+  useEffect(() => { setJourney("explorer"); }, [setJourney]);
+  useEffect(() => {
+    profilePatch({
+      age: data.age,
+      trying: data.trying,
+      treatment: data.treatment,
+      budget: data.budget,
+      country: data.country,
+    });
+  }, [data, profilePatch]);
+
   const next = () => setStep((s) => Math.min(s + 1, STEPS.length - 1));
   const prev = () => setStep((s) => Math.max(s - 1, 0));
 
@@ -79,6 +96,7 @@ const Explorer = () => {
       />
 
       <main className="container max-w-3xl pb-20 space-y-6">
+        <JourneyProgress current="explore" />
         {/* STEP 0 — Age */}
         {step === 0 && (
           <Card className="p-8 space-y-6">
@@ -272,20 +290,28 @@ const Explorer = () => {
               in real reports — not a single sticker price.
             </TransparencyBlock>
 
+            <WhyYouSeeThis
+              reasons={[
+                `Treatment "${data.treatment || "unsure"}" in ${data.country} typically costs in this range.`,
+                `Your age (${data.age}) shifts the range slightly because of expected medication and lab work.`,
+                `Budget signal: €${data.budget.toLocaleString()} per cycle — we'll flag clinics inside this range.`,
+              ]}
+            />
+
             <Card className="p-6 flex flex-wrap items-center justify-between gap-4">
               <div>
-                <div className="font-semibold">Ready to see clinics?</div>
-                <div className="text-sm text-muted-foreground">We'll rank clinics that fit your range and explain why.</div>
+                <div className="font-semibold">Next: open the Pricing Lab</div>
+                <div className="text-sm text-muted-foreground">Compare basic, premium and guarantee scenarios with full breakdowns. Then we'll show clinics that fit.</div>
               </div>
               <div className="flex flex-wrap gap-2">
                 <Button variant="outline" asChild>
                   <Link to="/community"><BookOpen className="size-4" /> Learn more</Link>
                 </Button>
-                <Button variant="outline" asChild>
-                  <Link to="/pricing-lab"><Sparkles className="size-4" /> Open Pricing Lab</Link>
+                <Button variant="outline" onClick={() => nav("/navigator")}>
+                  Skip to clinics <ArrowRight className="size-4" />
                 </Button>
-                <Button onClick={() => nav("/results")}>
-                  See my clinics <ArrowRight className="size-4" />
+                <Button onClick={() => nav("/pricing-lab")}>
+                  <Calculator className="size-4" /> Open Pricing Lab <ArrowRight className="size-4" />
                 </Button>
               </div>
             </Card>
