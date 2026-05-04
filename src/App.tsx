@@ -30,6 +30,7 @@ import AccountClinic from "./pages/AccountClinic.tsx";
 import AccountPartner from "./pages/AccountPartner.tsx";
 import EggBank from "./pages/EggBank.tsx";
 import PricingLab from "./pages/PricingLab.tsx";
+import PatientProfile from "./pages/PatientProfile.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { JourneyResumeBanner } from "./components/shared/JourneyResumeBanner.tsx";
 
@@ -70,6 +71,8 @@ const App = () => (
           <Route path="/admin/pricing-dashboard" element={<AdminPricingDashboard />} />
           <Route path="/egg-bank" element={<EggBank />} />
           <Route path="/pricing-lab" element={<PricingLab />} />
+          <Route path="/profile" element={<PatientProfile />} />
+          <Route path="/me" element={<PatientProfile />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

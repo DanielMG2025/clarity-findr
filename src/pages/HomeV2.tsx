@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, ShieldCheck, MessagesSquare, Sparkles, Building2, Handshake } from "lucide-react";
+import { ArrowRight, ShieldCheck, MessagesSquare, Sparkles, Building2, Handshake, UserCircle2 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { TransparencyBlock } from "@/components/shared/TransparencyBlock";
 import { JourneySelector } from "@/modules/journey";
+import { useProfileStore } from "@/modules/profile/store";
+import { usePatientProfileStore, overallCompletion } from "@/modules/patient-profile";
 
 const PRO_PORTALS = [
   {
@@ -54,9 +58,12 @@ const HomeV2 = () => {
         </div>
       </section>
 
+      {/* PATIENT PROFILE HUB */}
+      <ProfileHub />
+
       {/* INTENT SELECTOR */}
-      <section className="container -mt-8 md:-mt-12 pb-8">
-        <JourneySelector heading="Where are you in your journey?" />
+      <section className="container pb-8">
+        <JourneySelector heading="Or pick a guided journey" />
       </section>
 
       {/* PRO PORTALS */}
@@ -131,3 +138,43 @@ const HomeV2 = () => {
 };
 
 export default HomeV2;
+
+function ProfileHub() {
+  const profile = useProfileStore();
+  const pp = usePatientProfileStore();
+  const completion = overallCompletion(profile, pp);
+  const started = completion > 0;
+  return (
+    <section className="container -mt-8 md:-mt-12 pb-8">
+      <Card className="p-6 md:p-7 border-2 bg-gradient-card shadow-elegant">
+        <div className="flex flex-col md:flex-row md:items-center gap-5">
+          <div className="size-14 rounded-2xl bg-primary text-primary-foreground grid place-items-center shrink-0 shadow-glow">
+            <UserCircle2 className="size-7" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="text-xs font-bold uppercase tracking-wider text-primary">Your patient profile</div>
+            <h2 className="text-xl md:text-2xl font-bold mt-0.5">
+              {started
+                ? `${completion}% complete — keep improving your results`
+                : "Start with your master profile"}
+            </h2>
+            <p className="text-sm text-muted-foreground mt-1 max-w-2xl">
+              One profile that powers pricing, clinic matching and recommendations across every journey.
+              Add only what you want — features unlock as you go.
+            </p>
+            <div className="mt-3 flex items-center gap-3">
+              <Progress value={Math.max(completion, 4)} className="h-2 flex-1 max-w-md" />
+              <span className="text-xs font-semibold tabular-nums w-10 text-right">{completion}%</span>
+            </div>
+          </div>
+          <Button asChild size="lg" className="shrink-0">
+            <Link to="/profile">
+              {started ? "Continue profile" : "Build my profile"} <ArrowRight className="size-4 ml-2" />
+            </Link>
+          </Button>
+        </div>
+      </Card>
+    </section>
+  );
+}
+

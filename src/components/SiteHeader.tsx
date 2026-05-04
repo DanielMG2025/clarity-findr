@@ -5,9 +5,10 @@ const SiteHeader = () => {
   const { pathname } = useLocation();
   const links = [
     { to: "/", label: "Home" },
+    { to: "/profile", label: "My profile" },
     { to: "/explorer", label: "Explorer" },
     { to: "/navigator", label: "Navigator" },
-    { to: "/expert", label: "Expert" },
+    { to: "/pricing-lab", label: "Pricing" },
     { to: "/community", label: "Community" },
     { to: "/clinic", label: "For clinics" },
     { to: "/partners", label: "For partners" },
