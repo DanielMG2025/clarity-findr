@@ -14,12 +14,12 @@ import {
 } from "@/components/ui/sidebar";
 
 const items = [
-  { title: "Mi perfil",   url: "/profile",     icon: User,            desc: "Tus datos y bloques" },
-  { title: "Configurador", url: "/pricing-lab", icon: Calculator,     desc: "Estimaciones de coste" },
-  { title: "Clínicas",     url: "/navigator",   icon: Building2,      desc: "Compara y contacta" },
-  { title: "Servicios",    url: "/partners",    icon: Briefcase,      desc: "Partners y servicios" },
-  { title: "Comunidad",    url: "/community",   icon: Users,          desc: "Experiencias reales" },
-  { title: "Mi espacio",   url: "/account",     icon: LayoutDashboard,desc: "Historial y guardados" },
+  { title: "My profile",   url: "/profile",     icon: User,            desc: "Your data & blocks" },
+  { title: "Configurator", url: "/pricing-lab", icon: Calculator,      desc: "Cost estimates" },
+  { title: "Clinics",      url: "/navigator",   icon: Building2,       desc: "Compare & contact" },
+  { title: "Services",     url: "/partners",    icon: Briefcase,       desc: "Partners & services" },
+  { title: "Community",    url: "/community",   icon: Users,           desc: "Real experiences" },
+  { title: "My space",     url: "/account",     icon: LayoutDashboard, desc: "History & saved" },
 ];
 
 export function AppSidebar() {
@@ -41,7 +41,7 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          {!collapsed && <SidebarGroupLabel>Navegación</SidebarGroupLabel>}
+          {!collapsed && <SidebarGroupLabel>Navigation</SidebarGroupLabel>}
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
