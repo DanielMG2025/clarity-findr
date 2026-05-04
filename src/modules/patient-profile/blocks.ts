@@ -101,7 +101,7 @@ export function blockProgress(
     case "preferences": {
       const p = pp.preferences;
       const fields = [p.priority, p.travel, p.language, p.donor_openness, p.pgt_interest];
-      const filled = fields.filter((x) => x !== undefined && x !== "").length;
+      const filled = fields.filter((x) => x !== undefined).length;
       return Math.round((filled / fields.length) * 100);
     }
     case "documents":
