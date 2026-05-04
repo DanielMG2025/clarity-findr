@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, ShieldCheck, MessagesSquare, Sparkles, Building2, Handshake } from "lucide-react";
+import { ArrowRight, ShieldCheck, MessagesSquare, Sparkles, Building2, Handshake, UserCircle2 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { TransparencyBlock } from "@/components/shared/TransparencyBlock";
 import { JourneySelector } from "@/modules/journey";
+import { useProfileStore } from "@/modules/profile/store";
+import { usePatientProfileStore, overallCompletion } from "@/modules/patient-profile";
 
 const PRO_PORTALS = [
   {
@@ -54,9 +58,12 @@ const HomeV2 = () => {
         </div>
       </section>
 
+      {/* PATIENT PROFILE HUB */}
+      <ProfileHub />
+
       {/* INTENT SELECTOR */}
-      <section className="container -mt-8 md:-mt-12 pb-8">
-        <JourneySelector heading="Where are you in your journey?" />
+      <section className="container pb-8">
+        <JourneySelector heading="Or pick a guided journey" />
       </section>
 
       {/* PRO PORTALS */}
