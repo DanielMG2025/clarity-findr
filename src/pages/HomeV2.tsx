@@ -3,57 +3,8 @@ import { ArrowRight, ShieldCheck, MessagesSquare, Sparkles, Building2, Handshake
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { TransparencyBlock } from "@/components/shared/TransparencyBlock";
 import { JourneySelector } from "@/modules/journey";
-
-const _UNUSED_JOURNEYS = [
-  {
-    id: "explorer",
-    href: "/explorer",
-    icon: Compass,
-    label: "I'm just starting",
-    description: "You're learning what fertility care is and what it costs. We'll guide you step by step.",
-    time: "~5 min",
-    tone: "explorer" as const,
-  },
-  {
-    id: "navigator",
-    href: "/navigator",
-    icon: Search,
-    label: "I've already researched",
-    description: "You know some terms. Get precise matching, side-by-side comparisons and financing.",
-    time: "~10 min",
-    tone: "navigator" as const,
-  },
-  {
-    id: "expert",
-    href: "/expert",
-    icon: Headset,
-    label: "I want direct help",
-    description: "A guided concierge service. We help you build a shortlist and prepare your file.",
-    time: "Personal",
-    tone: "expert" as const,
-  },
-  {
-    id: "donor",
-    href: "/donor",
-    icon: HeartHandshake,
-    label: "I want to donate eggs",
-    description: "Learn what donation means, eligibility, compensation and how to safely connect with clinics.",
-    time: "~3 min",
-    tone: "donor" as const,
-  },
-  {
-    id: "freezing",
-    href: "/freezing",
-    icon: Snowflake,
-    label: "I want to freeze my eggs",
-    description: "Understand timing, costs and what to expect — without medical pressure.",
-    time: "~5 min",
-    tone: "freezing" as const,
-  },
-];
 
 const PRO_PORTALS = [
   {
@@ -62,7 +13,6 @@ const PRO_PORTALS = [
     icon: Building2,
     label: "I'm a clinic",
     description: "Access qualified leads, manage your profile and track conversion analytics.",
-    cta: "Open clinic portal",
     tone: "clinic" as const,
   },
   {
@@ -71,19 +21,13 @@ const PRO_PORTALS = [
     icon: Handshake,
     label: "I'm a partner",
     description: "Refer patients, track commissions and manage your payout schedule.",
-    cta: "Open partner portal",
     tone: "partner" as const,
   },
 ];
 
 const TONE_STYLES: Record<string, { soft: string; text: string; border: string }> = {
-  explorer:  { soft: "bg-primary-soft",  text: "text-primary",  border: "hover:border-primary/40" },
-  navigator: { soft: "bg-accent-soft",   text: "text-accent",   border: "hover:border-accent/40" },
-  expert:    { soft: "bg-expert-soft",   text: "text-expert",   border: "hover:border-expert/40" },
-  donor:     { soft: "bg-donor-soft",    text: "text-donor",    border: "hover:border-donor/40" },
-  freezing:  { soft: "bg-freezing-soft", text: "text-freezing", border: "hover:border-freezing/40" },
-  clinic:    { soft: "bg-clinic-soft",   text: "text-clinic",   border: "hover:border-clinic/40" },
-  partner:   { soft: "bg-partner-soft",  text: "text-partner-foreground", border: "hover:border-partner/40" },
+  clinic:  { soft: "bg-clinic-soft",  text: "text-clinic",            border: "hover:border-clinic/40" },
+  partner: { soft: "bg-partner-soft", text: "text-partner-foreground", border: "hover:border-partner/40" },
 };
 
 const HomeV2 = () => {
@@ -107,40 +51,12 @@ const HomeV2 = () => {
             Clear language. Real prices. Personalized guidance. Choose where you are right now —
             we'll take it from there.
           </p>
-          <div className="text-sm font-semibold text-foreground pt-2">Where are you in your journey?</div>
         </div>
       </section>
 
-      {/* INTENT SELECTOR — patients */}
+      {/* INTENT SELECTOR */}
       <section className="container -mt-8 md:-mt-12 pb-8">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {JOURNEYS.map((j) => {
-            const Icon = j.icon;
-            const t = TONE_STYLES[j.tone];
-            return (
-              <Link key={j.id} to={j.href} className="group">
-                <Card className={`p-6 h-full hover:shadow-elegant transition-smooth border-2 bg-gradient-card ${t.border} relative overflow-hidden`}>
-                  {/* tone stripe */}
-                  <div className={`absolute inset-x-0 top-0 h-1 ${t.soft}`} />
-                  <div className="flex items-start justify-between mb-4">
-                    <div className={`size-12 rounded-2xl grid place-items-center ${t.soft}`}>
-                      <Icon className={`size-6 ${t.text}`} />
-                    </div>
-                    <Badge variant="secondary" className="text-xs">{j.time}</Badge>
-                  </div>
-                  <Badge variant="outline" className={`mb-2 text-[10px] uppercase tracking-wider ${t.text} border-current/30`}>
-                    {j.tone}
-                  </Badge>
-                  <h3 className="text-lg font-bold mb-1.5">{j.label}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">{j.description}</p>
-                  <div className={`text-sm font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all ${t.text}`}>
-                    Start this path <ArrowRight className="size-4" />
-                  </div>
-                </Card>
-              </Link>
-            );
-          })}
-        </div>
+        <JourneySelector heading="Where are you in your journey?" />
       </section>
 
       {/* PRO PORTALS */}
