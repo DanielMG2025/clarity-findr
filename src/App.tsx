@@ -45,7 +45,6 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AppLayout>
-        <JourneyResumeBanner />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home-legacy" element={<HomeV2 />} />
