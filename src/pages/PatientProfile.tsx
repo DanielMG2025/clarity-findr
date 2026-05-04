@@ -1,0 +1,131 @@
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
+import { TransparencyBlock } from "@/components/shared/TransparencyBlock";
+import { useProfileStore } from "@/modules/profile/store";
+import {
+  usePatientProfileStore,
+  BLOCKS,
+  blockProgress,
+  overallCompletion,
+  profileConfidence,
+  FEATURES,
+  ProfileCompletion,
+  UnlockedFeatures,
+  ProfileBlock,
+  BasicInfoBlock,
+  MedicalContextBlock,
+  TreatmentHistoryBlock,
+  PreferencesBlock,
+  DocumentsBlock,
+  SharedQuotesBlock,
+} from "@/modules/patient-profile";
+import { Calculator, Building2, ArrowRight } from "lucide-react";
+
+const BLOCK_RENDERERS = {
+  basic: <BasicInfoBlock />,
+  medical: <MedicalContextBlock />,
+  history: <TreatmentHistoryBlock />,
+  preferences: <PreferencesBlock />,
+  documents: <DocumentsBlock />,
+  quotes: <SharedQuotesBlock />,
+};
+
+const PatientProfile = () => {
+  const profile = useProfileStore();
+  const pp = usePatientProfileStore();
+  const completion = overallCompletion(profile, pp);
+  const confidence = profileConfidence(completion);
+  const unlockedCount = FEATURES.filter((f) => completion >= f.threshold).length;
+
+  const canPrice = completion >= 15;
+  const canMatch = completion >= 25;
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <SiteHeader />
+
+      <section className="bg-gradient-hero">
+        <div className="container py-10 md:py-14 max-w-5xl space-y-2">
+          <div className="text-xs font-semibold uppercase tracking-wider text-primary">Patient master profile</div>
+          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+            Your fertility profile, in one place.
+          </h1>
+          <p className="text-muted-foreground max-w-2xl">
+            Complete the blocks that feel useful to you. Each one improves how accurate your pricing, clinic matching and recommendations get — at your own pace.
+          </p>
+        </div>
+      </section>
+
+      <div className="container max-w-6xl py-8 grid lg:grid-cols-[1fr_320px] gap-6">
+        <div className="space-y-5">
+          <ProfileCompletion
+            completion={completion}
+            confidence={confidence}
+            unlockedCount={unlockedCount}
+            totalFeatures={FEATURES.length}
+          />
+
+          <div className="grid sm:grid-cols-2 gap-3">
+            <Card className={`p-4 flex items-center gap-3 ${canPrice ? "" : "opacity-60"}`}>
+              <div className="size-10 rounded-xl bg-primary-soft text-primary grid place-items-center">
+                <Calculator className="size-5" />
+              </div>
+              <div className="flex-1">
+                <div className="font-semibold text-sm">Pricing estimate</div>
+                <div className="text-xs text-muted-foreground">{canPrice ? "Ready" : "Complete basics to unlock"}</div>
+              </div>
+              <Button asChild size="sm" disabled={!canPrice} variant={canPrice ? "default" : "outline"}>
+                <Link to="/pricing-lab">Open <ArrowRight className="size-3.5 ml-1" /></Link>
+              </Button>
+            </Card>
+            <Card className={`p-4 flex items-center gap-3 ${canMatch ? "" : "opacity-60"}`}>
+              <div className="size-10 rounded-xl bg-accent-soft text-accent grid place-items-center">
+                <Building2 className="size-5" />
+              </div>
+              <div className="flex-1">
+                <div className="font-semibold text-sm">Clinic matching</div>
+                <div className="text-xs text-muted-foreground">{canMatch ? "Ready" : "Complete basics to unlock"}</div>
+              </div>
+              <Button asChild size="sm" disabled={!canMatch} variant={canMatch ? "default" : "outline"}>
+                <Link to="/navigator">Open <ArrowRight className="size-3.5 ml-1" /></Link>
+              </Button>
+            </Card>
+          </div>
+
+          <div className="space-y-3">
+            {BLOCKS.map((b) => (
+              <ProfileBlock
+                key={b.key}
+                icon={b.icon}
+                title={b.title}
+                subtitle={b.subtitle}
+                required={b.required}
+                progress={blockProgress(b.key, profile, pp)}
+                unlocks={b.unlocks}
+                defaultOpen={b.key === "basic" && blockProgress("basic", profile, pp) < 80}
+              >
+                {BLOCK_RENDERERS[b.key]}
+              </ProfileBlock>
+            ))}
+          </div>
+
+          <TransparencyBlock variant="method">
+            Your profile is stored locally on your device. We use it to compute estimates and to explain
+            why each clinic appears in your shortlist. You can reset it any time from your account.
+          </TransparencyBlock>
+        </div>
+
+        <aside className="space-y-5 lg:sticky lg:top-20 self-start">
+          <UnlockedFeatures completion={completion} />
+        </aside>
+      </div>
+
+      <SiteFooter />
+    </div>
+  );
+};
+
+export default PatientProfile;
