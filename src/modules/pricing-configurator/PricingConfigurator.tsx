@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { usePricingConfigurator } from "./hooks/usePricingConfigurator";
-import { ProfileEditor } from "./components/ProfileEditor";
+import { ProfileSnapshot } from "./components/ProfileSnapshot";
 import { ScenarioCard } from "./components/ScenarioCard";
 import { PriceBreakdown } from "./components/PriceBreakdown";
 import { DataSourcesPanel } from "./components/DataSourcesPanel";
@@ -95,7 +95,7 @@ export function PricingConfigurator() {
 
       {/* PROFILE + SCENARIOS */}
       <section className="grid lg:grid-cols-[320px_1fr] gap-6">
-        <ProfileEditor profile={profile} patch={patch} />
+        <ProfileSnapshot profile={profile} patch={patch} />
 
         <div className="space-y-4">
           <div className="flex items-center justify-between">
