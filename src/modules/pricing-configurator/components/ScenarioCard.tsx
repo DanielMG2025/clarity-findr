@@ -48,7 +48,7 @@ export function ScenarioCard({ scenario, selected, onSelect, compact }: Props) {
         <div className="text-3xl font-bold tabular-nums tracking-tight">
           €{scenario.total_min.toLocaleString()} – €{scenario.total_max.toLocaleString()}
         </div>
-        <div className="text-xs text-muted-foreground">Rango estimado total · todo incluido</div>
+        <div className="text-xs text-muted-foreground">Estimated total range · all-in</div>
       </div>
 
       <Badge variant="outline" className={cn("gap-1.5", RISK_CLS[scenario.riskLabel])}>
@@ -66,7 +66,7 @@ export function ScenarioCard({ scenario, selected, onSelect, compact }: Props) {
             </div>
           ))}
           {scenario.components.length > 4 && (
-            <div className="text-[11px] text-muted-foreground italic">+ {scenario.components.length - 4} conceptos más en el desglose</div>
+            <div className="text-[11px] text-muted-foreground italic">+ {scenario.components.length - 4} more items in the breakdown</div>
           )}
         </div>
       )}
@@ -74,7 +74,7 @@ export function ScenarioCard({ scenario, selected, onSelect, compact }: Props) {
       {onSelect && (
         <Button variant={selected ? "default" : "outline"} size="sm" className="mt-4 w-full gap-1.5">
           <Sparkles className="size-3.5" />
-          {selected ? "Seleccionado" : "Ver desglose"}
+          {selected ? "Selected" : "View breakdown"}
         </Button>
       )}
     </Card>

@@ -7,7 +7,7 @@ export function PriceBreakdown({ scenario }: { scenario: Scenario }) {
   return (
     <Card className="p-6">
       <div className="flex items-baseline justify-between mb-4">
-        <h3 className="text-lg font-bold">Desglose detallado · {scenario.label}</h3>
+        <h3 className="text-lg font-bold">Detailed breakdown · {scenario.label}</h3>
         <div className="text-sm font-semibold tabular-nums text-primary">
           €{scenario.total_min.toLocaleString()} – €{scenario.total_max.toLocaleString()}
         </div>
@@ -36,7 +36,7 @@ export function PriceBreakdown({ scenario }: { scenario: Scenario }) {
         })}
       </div>
       <p className="text-[11px] text-muted-foreground mt-4 leading-relaxed">
-        Las barras muestran el rango entre el precio mínimo y máximo observado para cada componente. La parte sólida es el mínimo; la zona difuminada, hasta el máximo.
+        Bars show the range between the minimum and maximum price observed for each item. The solid section is the minimum; the faded section extends to the maximum.
       </p>
     </Card>
   );

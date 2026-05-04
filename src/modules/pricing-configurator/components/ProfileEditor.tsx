@@ -6,12 +6,12 @@ import { WhatIsThis } from "@/components/shared/WhatIsThis";
 import type { PricingProfile, TreatmentKey } from "../logic/types";
 
 const TREATMENTS: { v: TreatmentKey; l: string }[] = [
-  { v: "ivf",      l: "FIV / IVF" },
+  { v: "ivf",      l: "IVF" },
   { v: "icsi",     l: "ICSI" },
-  { v: "donor",    l: "Ovodonación" },
-  { v: "freezing", l: "Vitrificación social" },
-  { v: "iui",      l: "Inseminación artificial" },
-  { v: "study",    l: "Estudio inicial" },
+  { v: "donor",    l: "Egg donation" },
+  { v: "freezing", l: "Egg freezing" },
+  { v: "iui",      l: "IUI" },
+  { v: "study",    l: "Initial workup" },
 ];
 
 const COUNTRIES = ["Spain", "Czech Republic", "Portugal", "Greece", "UK", "Germany", "France", "Italy"];
@@ -25,7 +25,7 @@ export function ProfileEditor({ profile, patch }: Props) {
   return (
     <Card className="p-5 space-y-5">
       <div>
-        <Label className="text-sm font-semibold">Tratamiento</Label>
+        <Label className="text-sm font-semibold">Treatment</Label>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
           {TREATMENTS.map(t => (
             <button
@@ -43,11 +43,11 @@ export function ProfileEditor({ profile, patch }: Props) {
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <Label className="text-sm font-semibold">Edad</Label>
+          <Label className="text-sm font-semibold">Age</Label>
           <Input type="number" min={18} max={55} value={profile.age} onChange={(e) => patch({ age: Number(e.target.value) })} />
         </div>
         <div>
-          <Label className="text-sm font-semibold">País</Label>
+          <Label className="text-sm font-semibold">Country</Label>
           <select
             className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
             value={profile.country}
@@ -59,34 +59,34 @@ export function ProfileEditor({ profile, patch }: Props) {
       </div>
 
       <div className="space-y-3 pt-1">
-        <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Extras opcionales</div>
+        <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Optional extras</div>
 
         <Toggle
-          label="Necesito ICSI"
-          tooltip="ICSI es una técnica donde se inyecta un espermatozoide en cada óvulo. Se usa en casos de factor masculino."
+          label="I need ICSI"
+          tooltip="ICSI is a technique where a single sperm is injected into each egg. Used for male-factor infertility."
           checked={!!profile.needs_icsi}
           onChange={(v) => patch({ needs_icsi: v })}
         />
         <Toggle
-          label="Test genético embrionario (PGT-A)"
-          tooltip="PGT-A analiza el número de cromosomas de los embriones antes de transferirlos."
+          label="Embryo genetic testing (PGT-A)"
+          tooltip="PGT-A screens embryos for chromosomal abnormalities before transfer."
           checked={!!profile.needs_pgt}
           onChange={(v) => patch({ needs_pgt: v })}
         />
         <Toggle
-          label="Vitrificación de embriones / óvulos"
-          tooltip="Congelación rápida para usarlos en el futuro."
+          label="Embryo / egg vitrification"
+          tooltip="Flash-freezing to use them in the future."
           checked={!!profile.needs_vitrification}
           onChange={(v) => patch({ needs_vitrification: v })}
         />
 
         <div className="grid grid-cols-2 gap-3 pt-1">
           <div>
-            <Label className="text-xs">Años de mantenimiento</Label>
+            <Label className="text-xs">Years of storage</Label>
             <Input type="number" min={0} max={10} value={profile.storage_years ?? 1} onChange={(e) => patch({ storage_years: Number(e.target.value) })} />
           </div>
           <div>
-            <Label className="text-xs">Ciclos previos sin éxito</Label>
+            <Label className="text-xs">Previous failed cycles</Label>
             <Input type="number" min={0} max={10} value={profile.prior_failed_cycles ?? 0} onChange={(e) => patch({ prior_failed_cycles: Number(e.target.value) })} />
           </div>
         </div>

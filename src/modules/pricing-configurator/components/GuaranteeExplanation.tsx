@@ -4,24 +4,24 @@ import { Card } from "@/components/ui/card";
 export function GuaranteeExplanation() {
   const cols = [
     {
-      title: "Pago por ciclo",
+      title: "Pay-per-cycle",
       tone: "border-primary/30 bg-primary-soft/30",
-      pros: ["Menor coste inicial", "Flexibilidad si decides parar", "Más control sobre la clínica en cada intento"],
-      cons: ["Riesgo acumulado si necesitas varios ciclos", "Sin reembolso si no hay embarazo"],
+      pros: ["Lower upfront cost", "Flexibility if you decide to stop", "More control over which clinic to use each attempt"],
+      cons: ["Compounding risk if you need several cycles", "No refund if pregnancy isn't achieved"],
     },
     {
-      title: "Programa garantía / multiciclo",
+      title: "Guarantee / multi-cycle program",
       tone: "border-expert/30 bg-expert-soft/30",
-      pros: ["Coste total predecible", "Reembolso parcial o total si no hay embarazo", "Cobertura para varios intentos"],
-      cons: ["Mayor coste inicial", "Criterios de elegibilidad (edad, AMH, etc.)", "Te ata a una clínica concreta"],
+      pros: ["Predictable total cost", "Partial or full refund if pregnancy isn't achieved", "Coverage for several attempts"],
+      cons: ["Higher upfront cost", "Eligibility criteria (age, AMH, etc.)", "Locks you in with a single clinic"],
     },
   ];
 
   return (
     <Card className="p-6">
-      <h3 className="text-lg font-bold mb-1">Otra forma de pagar tu tratamiento</h3>
+      <h3 className="text-lg font-bold mb-1">Another way to pay for treatment</h3>
       <p className="text-sm text-muted-foreground mb-5">
-        Algunas clínicas ofrecen <strong>programas con garantía</strong>: pagas un precio cerrado por varios intentos y recibes un reembolso si no hay embarazo. No siempre compensa — depende de tu perfil.
+        Some clinics offer <strong>guarantee programs</strong>: you pay a fixed price for several attempts and get a refund if pregnancy isn't achieved. They don't always pay off — it depends on your profile.
       </p>
       <div className="grid md:grid-cols-2 gap-4">
         {cols.map((c) => (

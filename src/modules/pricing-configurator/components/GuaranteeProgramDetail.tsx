@@ -8,10 +8,6 @@ interface Props {
   guarantee: Scenario;
 }
 
-/**
- * Detailed view of the multi-cycle guarantee program:
- * how many cycles included, transfers, refund logic, cost per attempt.
- */
 export function GuaranteeProgramDetail({ guarantee }: Props) {
   const cyclesIncluded = 3;
   const transfersIncluded = 4;
@@ -21,23 +17,23 @@ export function GuaranteeProgramDetail({ guarantee }: Props) {
   const refundAmount = Math.round(totalMid * (refundPct / 100));
 
   const stats = [
-    { Icon: Repeat,      label: "Ciclos incluidos",      value: `Hasta ${cyclesIncluded}`,           hint: "Número máximo de estimulaciones ováricas cubiertas por el programa." },
-    { Icon: ShieldCheck, label: "Transferencias",        value: `Hasta ${transfersIncluded}`,         hint: "Incluye transferencias en fresco y de embriones congelados." },
-    { Icon: Banknote,    label: "Reembolso si no hay embarazo", value: `${refundPct}%`,              hint: "Si tras agotar todos los intentos no hay embarazo, te devuelven este porcentaje." },
-    { Icon: Wallet,      label: "Coste medio por intento", value: `€${costPerAttempt.toLocaleString()}`, hint: "Coste total del programa dividido entre los intentos incluidos." },
+    { Icon: Repeat,      label: "Cycles included",            value: `Up to ${cyclesIncluded}`,           hint: "Maximum number of ovarian stimulations covered by the program." },
+    { Icon: ShieldCheck, label: "Transfers",                  value: `Up to ${transfersIncluded}`,         hint: "Includes both fresh and frozen embryo transfers." },
+    { Icon: Banknote,    label: "Refund if no pregnancy",     value: `${refundPct}%`,                       hint: "If you don't achieve pregnancy after using all attempts, you get this percentage back." },
+    { Icon: Wallet,      label: "Average cost per attempt",   value: `€${costPerAttempt.toLocaleString()}`, hint: "Total program cost divided by the number of included attempts." },
   ];
 
   return (
     <Card className="p-6 border-expert/30 bg-expert-soft/20">
       <div className="flex items-center gap-2 mb-1">
         <ShieldCheck className="size-5 text-expert" />
-        <h3 className="text-lg font-bold">Detalle del programa garantía</h3>
+        <h3 className="text-lg font-bold">Guarantee program detail</h3>
         <Badge variant="outline" className="bg-expert-soft text-expert border-expert/30 ml-1">
           €{guarantee.total_min.toLocaleString()} – €{guarantee.total_max.toLocaleString()}
         </Badge>
       </div>
       <p className="text-sm text-muted-foreground mb-5">
-        Pagas un precio cerrado por varios intentos. Si no hay embarazo, recibes un reembolso parcial. Útil cuando hay incertidumbre sobre cuántos ciclos van a ser necesarios.
+        You pay a fixed price for several attempts. If pregnancy isn't achieved, you receive a partial refund. Useful when it's unclear how many cycles will be needed.
       </p>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
@@ -55,17 +51,17 @@ export function GuaranteeProgramDetail({ guarantee }: Props) {
 
       <div className="rounded-xl bg-background border border-border p-4">
         <div className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold mb-2">
-          Si el programa termina sin embarazo
+          If the program ends without pregnancy
         </div>
         <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-          <div className="text-sm">Pagaste:</div>
+          <div className="text-sm">You paid:</div>
           <div className="text-lg font-bold tabular-nums">€{totalMid.toLocaleString()}</div>
-          <div className="text-sm text-muted-foreground">→ recuperas hasta</div>
+          <div className="text-sm text-muted-foreground">→ you get back up to</div>
           <div className="text-lg font-bold tabular-nums text-accent">€{refundAmount.toLocaleString()}</div>
-          <div className="text-sm text-muted-foreground">({refundPct}% de reembolso)</div>
+          <div className="text-sm text-muted-foreground">({refundPct}% refund)</div>
         </div>
         <p className="text-[11px] text-muted-foreground mt-2 italic">
-          Las condiciones exactas (porcentaje, ciclos, criterios de elegibilidad por edad o AMH) varían por clínica. Pide siempre el contrato detallado antes de firmar.
+          Exact terms (percentage, cycles, eligibility by age or AMH) vary by clinic. Always request the detailed contract before signing.
         </p>
       </div>
     </Card>

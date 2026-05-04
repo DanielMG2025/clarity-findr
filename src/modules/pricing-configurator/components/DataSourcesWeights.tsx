@@ -5,17 +5,11 @@ import type { Confidence } from "../logic/types";
 interface SourceWeight {
   Icon: typeof Globe;
   title: string;
-  weight: number; // 0-100
+  weight: number;
   desc: string;
   tone: string;
 }
 
-/**
- * Weights are calibrated by current data confidence:
- * - low:    we lean more on listed prices and statistical estimates
- * - medium: balanced
- * - high:   crowd quotes and scraped data dominate
- */
 function buildSources(confidence: Confidence): SourceWeight[] {
   const w = {
     low:    { scraped: 35, crowd: 10, community: 10, stats: 35, profile: 10 },
@@ -24,11 +18,11 @@ function buildSources(confidence: Confidence): SourceWeight[] {
   }[confidence];
 
   return [
-    { Icon: Globe,          title: "Precios publicados",           weight: w.scraped,   desc: "Tarifas extraídas de webs oficiales de clínicas.", tone: "bg-primary" },
-    { Icon: Users,          title: "Cotizaciones de pacientes",    weight: w.crowd,     desc: "Presupuestos reales que usuarios han compartido.", tone: "bg-accent" },
-    { Icon: MessagesSquare, title: "Comunidad y foros",            weight: w.community, desc: "Conversaciones públicas sobre experiencias reales.", tone: "bg-expert" },
-    { Icon: Calculator,     title: "Estimaciones estadísticas",    weight: w.stats,     desc: "Modelos que ajustan medicación, lab y extras.", tone: "bg-primary-glow" },
-    { Icon: UserCircle2,    title: "Ajustes por tu perfil",        weight: w.profile,   desc: "Edad, país y opciones modulan los rangos.", tone: "bg-freezing" },
+    { Icon: Globe,          title: "Published prices",            weight: w.scraped,   desc: "Rates pulled from official clinic websites.",                       tone: "bg-primary" },
+    { Icon: Users,          title: "Patient quotes",              weight: w.crowd,     desc: "Real quotes shared by other patients.",                             tone: "bg-accent" },
+    { Icon: MessagesSquare, title: "Community & forums",          weight: w.community, desc: "Public conversations about real treatment experiences.",           tone: "bg-expert" },
+    { Icon: Calculator,     title: "Statistical estimates",       weight: w.stats,     desc: "Models that adjust for medication, lab work and add-ons.",         tone: "bg-primary-glow" },
+    { Icon: UserCircle2,    title: "Profile-based adjustments",   weight: w.profile,   desc: "Age, country and your selections fine-tune the ranges.",           tone: "bg-freezing" },
   ];
 }
 
@@ -36,9 +30,9 @@ export function DataSourcesWeights({ confidence }: { confidence: Confidence }) {
   const sources = buildSources(confidence);
   return (
     <Card className="p-6">
-      <h3 className="text-lg font-bold mb-1">Cómo pesan las fuentes en tu estimación</h3>
+      <h3 className="text-lg font-bold mb-1">How each source weighs in your estimate</h3>
       <p className="text-sm text-muted-foreground mb-5">
-        Combinamos varias fuentes y ajustamos su peso según los datos disponibles para tu caso. Cuantos más datos, más se apoya el cálculo en evidencia real.
+        We blend several sources and re-weight them based on the data available for your case. The more data we have, the more the estimate leans on real-world evidence.
       </p>
       <div className="space-y-3">
         {sources.map(({ Icon, title, weight, desc, tone }) => (
@@ -62,7 +56,7 @@ export function DataSourcesWeights({ confidence }: { confidence: Confidence }) {
         ))}
       </div>
       <p className="text-[11px] text-muted-foreground mt-4 italic">
-        Estos pesos se recalculan automáticamente según la cantidad de datos disponibles para tu tratamiento y país.
+        These weights are recalculated automatically based on how much data is available for your treatment and country.
       </p>
     </Card>
   );

@@ -4,9 +4,9 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import type { Confidence } from "../logic/types";
 
 const MAP: Record<Confidence, { label: string; cls: string; Icon: typeof Shield; hint: string }> = {
-  high:   { label: "Confianza alta",   cls: "bg-accent-soft text-accent border-accent/30",      Icon: ShieldCheck, hint: "Tenemos suficientes datos (precios reales + cotizaciones de pacientes) para esta estimación." },
-  medium: { label: "Confianza media",  cls: "bg-primary-soft text-primary border-primary/30",   Icon: Shield,      hint: "Mezclamos datos públicos y estimaciones. Cuanto más completes tu perfil, más precisa será." },
-  low:    { label: "Confianza baja",   cls: "bg-warning/15 text-warning-foreground border-warning/30", Icon: ShieldAlert, hint: "Aún tenemos pocos datos. Considera el rango como orientativo." },
+  high:   { label: "High confidence",   cls: "bg-accent-soft text-accent border-accent/30",            Icon: ShieldCheck, hint: "We have enough data (real prices + patient quotes) to back this estimate." },
+  medium: { label: "Medium confidence", cls: "bg-primary-soft text-primary border-primary/30",         Icon: Shield,      hint: "We mix public data with model estimates. The more you complete your profile, the sharper it gets." },
+  low:    { label: "Low confidence",    cls: "bg-warning/15 text-warning-foreground border-warning/30", Icon: ShieldAlert, hint: "We still have limited data. Treat the range as indicative." },
 };
 
 export function ConfidenceBadge({ level }: { level: Confidence }) {
