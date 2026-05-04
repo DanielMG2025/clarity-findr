@@ -3,7 +3,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import Home from "./pages/Home.tsx";
 import HomeV2 from "./pages/HomeV2.tsx";
+import { AppLayout } from "./components/AppLayout.tsx";
 import Explorer from "./pages/Explorer.tsx";
 import Navigator from "./pages/Navigator.tsx";
 import Expert from "./pages/Expert.tsx";
@@ -42,9 +44,11 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <AppLayout>
         <JourneyResumeBanner />
         <Routes>
-          <Route path="/" element={<HomeV2 />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/home-legacy" element={<HomeV2 />} />
           <Route path="/explorer" element={<Explorer />} />
           <Route path="/navigator" element={<Navigator />} />
           <Route path="/expert" element={<Expert />} />
@@ -76,6 +80,7 @@ const App = () => (
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </AppLayout>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
