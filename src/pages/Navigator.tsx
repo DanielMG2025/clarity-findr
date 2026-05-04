@@ -109,6 +109,7 @@ const Navigator = () => {
       />
 
       <main className="container max-w-5xl pb-20 space-y-6">
+        <JourneyProgress current="clinics" />
         {step === 0 && (
           <Card className="p-8 space-y-6">
             <div>
@@ -217,6 +218,17 @@ const Navigator = () => {
               We weighted clinical fit (50%), value-for-money (30%) and distance (20%) for your profile (age {age}, budget €{budget.toLocaleString()}).
               IVI Barcelona leads on clinical fit. Reprofit wins on value. Eugin wins on proximity. You decide what matters most.
             </TransparencyBlock>
+
+            <WhyYouSeeThis
+              title="Why this shortlist for you"
+              reasons={[
+                lastPricingProfile
+                  ? `Your Pricing Lab scenario (${lastPricingProfile.treatment.toUpperCase()} in ${lastPricingProfile.country}) shaped the cost band.`
+                  : `Your budget signal of €${budget.toLocaleString()} per cycle filters out clinics with very different price levels.`,
+                `Age ${age} weights success rates and protocol fit slightly more than raw price.`,
+                "We surface the best clinical match, the best value match, and the closest match — so you can compare different trade-offs.",
+              ]}
+            />
 
             {/* Cards */}
             <div className="grid lg:grid-cols-2 gap-5">
