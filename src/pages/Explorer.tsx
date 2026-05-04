@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Sparkles, BookOpen, Compass } from "lucide-react";
+import { ArrowLeft, ArrowRight, Sparkles, BookOpen, Compass, Calculator } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Card } from "@/components/ui/card";
@@ -14,6 +14,8 @@ import { WhatIsThis } from "@/components/shared/WhatIsThis";
 import { TransparencyBlock } from "@/components/shared/TransparencyBlock";
 import { Badge } from "@/components/ui/badge";
 import { useJourneyState } from "@/hooks/useJourneyState";
+import { JourneyProgress, WhyYouSeeThis } from "@/modules/journey";
+import { useProfileStore } from "@/modules/profile/store";
 
 type ExplorerData = {
   age: number;
