@@ -13,6 +13,7 @@ import { GuaranteeExplanation } from "./components/GuaranteeExplanation";
 import { WhatAffectsPrice } from "./components/WhatAffectsPrice";
 import { PersonalizedExplanation } from "./components/PersonalizedExplanation";
 import { ClinicComparison } from "./components/ClinicComparison";
+import { ReviewedClinicPricing } from "./components/ReviewedClinicPricing";
 import { FinancingSimulator } from "./components/FinancingSimulator";
 import { UploadQuoteCTA } from "./components/UploadQuoteCTA";
 import { ConfidenceBadge } from "./components/ConfidenceBadge";
@@ -142,7 +143,8 @@ export function PricingConfigurator() {
       </section>
       <GuaranteeProgramDetail guarantee={bundle.scenarios.find(s => s.key === "guarantee")!} />
 
-      {/* CLINICS */}
+      {/* CLINICS — reviewed pricing (FIV Madrid) */}
+      {profile.treatment === "ivf" && <ReviewedClinicPricing />}
       <ClinicComparison />
 
       {/* FINANCING + COMMUNITY */}
