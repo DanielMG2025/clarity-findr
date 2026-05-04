@@ -31,7 +31,14 @@ const KIND_META: Record<SideInfoKind, { label: string; icon: typeof Info }> = {
  * terminology. Always presents three sections: what it is, when it's used,
  * and how it impacts price — so users never have to guess.
  */
-export function SideInfo({ term, kind = "treatment", what, when, priceImpact, learnMoreHref, className }: SideInfoProps) {
+export function SideInfo(props: SideInfoProps) {
+  const entry = props.infoKey ? SIDE_INFO[props.infoKey] : undefined;
+  const term = props.term ?? entry?.term ?? "Info";
+  const kind = props.kind ?? entry?.kind ?? "treatment";
+  const what = props.what ?? entry?.what;
+  const when = props.when ?? entry?.when;
+  const priceImpact = props.priceImpact ?? entry?.priceImpact;
+  const { learnMoreHref, className } = props;
   const meta = KIND_META[kind];
   const Icon = meta.icon;
   return (
