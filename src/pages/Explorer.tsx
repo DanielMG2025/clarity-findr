@@ -13,6 +13,7 @@ import { JourneyHeader } from "@/components/shared/JourneyHeader";
 import { WhatIsThis } from "@/components/shared/WhatIsThis";
 import { TransparencyBlock } from "@/components/shared/TransparencyBlock";
 import { Badge } from "@/components/ui/badge";
+import { useJourneyState } from "@/hooks/useJourneyState";
 
 type ExplorerData = {
   age: number;
@@ -41,14 +42,10 @@ const TREATMENT_INFO: Record<string, string> = {
 
 const Explorer = () => {
   const nav = useNavigate();
-  const [step, setStep] = useState(0);
-  const [data, setData] = useState<ExplorerData>({
-    age: 32,
-    trying: "",
-    treatment: "",
-    budget: 8000,
-    country: "Spain",
-  });
+  const { step, setStep, data, patch } = useJourneyState<ExplorerData>(
+    { key: "explorer", path: "/explorer", label: "Explorer · Quick start", totalSteps: STEPS.length },
+    { age: 32, trying: "", treatment: "", budget: 8000, country: "Spain" },
+  );
 
   const next = () => setStep((s) => Math.min(s + 1, STEPS.length - 1));
   const prev = () => setStep((s) => Math.max(s - 1, 0));
