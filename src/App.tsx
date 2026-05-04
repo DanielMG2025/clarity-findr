@@ -16,6 +16,7 @@ import Partners from "./pages/Partners.tsx";
 import Insights from "./pages/Insights.tsx";
 import Import from "./pages/Import.tsx";
 import AdminPricingDashboard from "./pages/AdminPricingDashboard.tsx";
+import AdminPricing from "./pages/AdminPricing.tsx";
 import Admin from "./pages/Admin.tsx";
 import AccountPatient from "./pages/AccountPatient.tsx";
 import AccountClinic from "./pages/AccountClinic.tsx";
@@ -86,6 +87,7 @@ const App = () => (
             <Route path="/admin" element={<Admin />} />
             <Route path="/admin/import" element={<Import />} />
             <Route path="/admin/pricing-dashboard" element={<AdminPricingDashboard />} />
+            <Route path="/admin/pricing" element={<AdminPricing />} />
             <Route path="/egg-bank" element={<EggBank />} />
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
