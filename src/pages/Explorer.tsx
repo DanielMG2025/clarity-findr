@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Sparkles, BookOpen } from "lucide-react";
+import { ArrowLeft, ArrowRight, Sparkles, BookOpen, Compass } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Card } from "@/components/ui/card";
@@ -72,7 +72,9 @@ const Explorer = () => {
     <div className="min-h-screen flex flex-col bg-background">
       <SiteHeader />
       <JourneyHeader
-        module="Explorer"
+        module="Explorer · Quick start"
+        tone="explorer"
+        Icon={Compass}
         title="Let's understand where you are"
         subtitle="A few quick questions. No medical jargon. You can stop any time."
         steps={STEPS}
