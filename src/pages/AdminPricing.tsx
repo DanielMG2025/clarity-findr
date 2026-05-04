@@ -40,12 +40,16 @@ import { toast } from "@/hooks/use-toast";
 
 type SourceStatus = "pending" | "extracted" | "in_review" | "approved" | "rejected";
 type Confidence = "low" | "medium" | "high";
+type SourceType = "official" | "benchmark" | "inferred" | "pending_dossier";
 
 interface PricingSource {
   id: string;
   clinic: string;
   treatment: string;
   type: "Clinic website" | "PDF brochure" | "Patient quote" | "Email" | "Phone";
+  sourceType: SourceType;
+  confidenceScore: number; // 0-100
+  normalizationRule: string;
   url?: string;
   status: SourceStatus;
   confidence: Confidence;
