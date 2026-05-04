@@ -38,6 +38,23 @@
     --warning: 38 92% 50%;
     --warning-foreground: 30 50% 15%;
 
+    /* Module tones — distinct identity per journey */
+    --expert: 268 55% 52%;
+    --expert-foreground: 0 0% 100%;
+    --expert-soft: 268 60% 95%;
+    --donor: 340 70% 55%;
+    --donor-foreground: 0 0% 100%;
+    --donor-soft: 340 70% 96%;
+    --freezing: 200 80% 50%;
+    --freezing-foreground: 0 0% 100%;
+    --freezing-soft: 200 80% 95%;
+    --clinic: 220 50% 35%;
+    --clinic-foreground: 0 0% 100%;
+    --clinic-soft: 220 50% 95%;
+    --partner: 35 90% 50%;
+    --partner-foreground: 30 50% 15%;
+    --partner-soft: 35 90% 95%;
+
     --destructive: 0 75% 55%;
     --destructive-foreground: 0 0% 100%;
 
