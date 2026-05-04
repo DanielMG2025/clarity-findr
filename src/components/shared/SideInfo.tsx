@@ -3,20 +3,19 @@ import { Info, Sparkles, Coins, Stethoscope } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { SIDE_INFO, type SideInfoKey } from "@/modules/patient-profile/content";
 
 export type SideInfoKind = "treatment" | "component" | "pricing";
 
 interface SideInfoProps {
+  /** Look up content from the centralized registry. If provided, other content props are optional. */
+  infoKey?: SideInfoKey;
   /** Short label users click on (e.g. "ICSI", "PGT-A"). */
-  term: string;
+  term?: string;
   kind?: SideInfoKind;
-  /** What it is — plain language. */
-  what: ReactNode;
-  /** When it is used / who needs it. */
+  what?: ReactNode;
   when?: ReactNode;
-  /** Impact on price — qualitative or numeric range. */
   priceImpact?: ReactNode;
-  /** Optional small helper link. */
   learnMoreHref?: string;
   className?: string;
 }
@@ -32,7 +31,14 @@ const KIND_META: Record<SideInfoKind, { label: string; icon: typeof Info }> = {
  * terminology. Always presents three sections: what it is, when it's used,
  * and how it impacts price — so users never have to guess.
  */
-export function SideInfo({ term, kind = "treatment", what, when, priceImpact, learnMoreHref, className }: SideInfoProps) {
+export function SideInfo(props: SideInfoProps) {
+  const entry = props.infoKey ? SIDE_INFO[props.infoKey] : undefined;
+  const term = props.term ?? entry?.term ?? "Info";
+  const kind = props.kind ?? entry?.kind ?? "treatment";
+  const what = props.what ?? entry?.what;
+  const when = props.when ?? entry?.when;
+  const priceImpact = props.priceImpact ?? entry?.priceImpact;
+  const { learnMoreHref, className } = props;
   const meta = KIND_META[kind];
   const Icon = meta.icon;
   return (

@@ -1,13 +1,20 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
+/**
+ * Base patient profile used by every module. The richer medical / preferences /
+ * documents live in `@/modules/patient-profile/store`. This store keeps only
+ * the baseline identity and intent — no journey/persona state.
+ */
+
 export type TryingDuration = "" | "<6m" | "6-12m" | "1-2y" | ">2y";
 export type TreatmentInterest = "" | "ivf" | "icsi" | "freezing" | "donor" | "iui" | "study" | "unsure";
-export type JourneyKind = "explorer" | "navigator" | "expert" | "donor" | "freezing";
+
+// Kept as a deprecated alias for backwards-compatibility with any leftover
+// references; new code should not use it.
+export type JourneyKind = never;
 
 export interface ProfileState {
-  /** Which patient journey the user picked (drives UI tone & order). */
-  journey: JourneyKind | null;
   age: number;
   trying: TryingDuration;
   treatment: TreatmentInterest;
@@ -16,13 +23,11 @@ export interface ProfileState {
   amh?: number;
   diagnosis?: string;
   priorFailedCycles?: number;
-  setJourney: (j: JourneyKind | null) => void;
-  patch: (partial: Partial<Omit<ProfileState, "patch" | "reset" | "setJourney">>) => void;
+  patch: (partial: Partial<Omit<ProfileState, "patch" | "reset">>) => void;
   reset: () => void;
 }
 
 const DEFAULTS = {
-  journey: null as JourneyKind | null,
   age: 32,
   trying: "" as TryingDuration,
   treatment: "" as TreatmentInterest,
@@ -37,14 +42,13 @@ export const useProfileStore = create<ProfileState>()(
   persist(
     (set) => ({
       ...DEFAULTS,
-      setJourney: (journey) => set({ journey }),
       patch: (partial) => set((s) => ({ ...s, ...partial })),
       reset: () => set({ ...DEFAULTS }),
     }),
     {
       name: "fc:profile",
       storage: createJSONStorage(() => localStorage),
-      version: 1,
+      version: 2,
     },
   ),
 );

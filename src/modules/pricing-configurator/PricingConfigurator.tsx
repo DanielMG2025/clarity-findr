@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { usePricingConfigurator } from "./hooks/usePricingConfigurator";
-import { ProfileEditor } from "./components/ProfileEditor";
+import { ProfileSnapshot } from "./components/ProfileSnapshot";
 import { ScenarioCard } from "./components/ScenarioCard";
 import { PriceBreakdown } from "./components/PriceBreakdown";
 import { DataSourcesPanel } from "./components/DataSourcesPanel";
@@ -55,16 +55,7 @@ export function PricingConfigurator() {
         <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Here's what you could really expect to pay</h1>
         <p className="text-muted-foreground">
           Based on real clinic and patient data. Tap any underlined term — like{" "}
-          <SideInfo term="ICSI" kind="treatment"
-            what="A variation of IVF where a single sperm is injected into each egg."
-            when="Used when sperm quality is low, or after a previous IVF with poor fertilization."
-            priceImpact="Adds roughly €800–€1,500 on top of a base IVF cycle."
-          />{" "}or{" "}
-          <SideInfo term="PGT-A" kind="component"
-            what="Pre-implantation genetic testing for chromosomal abnormalities in embryos."
-            when="Often considered after age 38, recurrent miscarriage or failed transfers."
-            priceImpact="Typically €2,000–€3,500 per cycle, depending on number of embryos."
-          />{" "}— for a quick explainer.
+          <SideInfo infoKey="icsi" /> or <SideInfo infoKey="pgt_a" /> — for a quick explainer.
         </p>
         <div className="flex items-center justify-center gap-2 pt-1">
           <ConfidenceBadge level={bundle.confidence} />
@@ -95,7 +86,7 @@ export function PricingConfigurator() {
 
       {/* PROFILE + SCENARIOS */}
       <section className="grid lg:grid-cols-[320px_1fr] gap-6">
-        <ProfileEditor profile={profile} patch={patch} />
+        <ProfileSnapshot profile={profile} patch={patch} />
 
         <div className="space-y-4">
           <div className="flex items-center justify-between">
