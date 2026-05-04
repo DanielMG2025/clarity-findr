@@ -47,10 +47,9 @@ const Donor = () => {
     },
   );
   const { checks, country, contact } = data;
-  const setChecks = (updater: (c: Record<string, boolean>) => Record<string, boolean>) =>
-    patch({ checks: updater(checks) });
+  const setChecks = (next: Record<string, boolean>) => patch({ checks: next });
   const setCountry = (v: string) => patch({ country: v });
-  const setContact = (updater: (c: typeof contact) => typeof contact) => patch({ contact: updater(contact) });
+  const setContact = (next: typeof contact) => patch({ contact: next });
 
   const eligibleCount = Object.values(checks).filter(Boolean).length;
   const eligible = eligibleCount === ELIGIBILITY.length;
