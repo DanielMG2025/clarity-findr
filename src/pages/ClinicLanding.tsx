@@ -16,13 +16,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 
 const ClinicLanding = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <SiteHeader />
+
       <main className="flex-1">
         {/* HERO */}
         <section className="bg-gradient-hero">
@@ -343,7 +341,7 @@ const ClinicLanding = () => {
           </div>
         </section>
       </main>
-      <SiteFooter />
+
     </div>
   );
 };

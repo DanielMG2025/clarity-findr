@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 import { TransparencyBlock } from "@/components/shared/TransparencyBlock";
 import { useProfileStore } from "@/modules/profile/store";
 import {
@@ -45,7 +43,7 @@ const PatientProfile = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SiteHeader />
+
 
       <section className="bg-gradient-hero">
         <div className="container py-10 md:py-14 max-w-5xl space-y-2">
@@ -123,7 +121,7 @@ const PatientProfile = () => {
         </aside>
       </div>
 
-      <SiteFooter />
+
     </div>
   );
 };

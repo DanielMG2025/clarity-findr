@@ -2,8 +2,6 @@ import { Link } from "react-router-dom";
 import { ArrowRight, ShieldCheck, TrendingUp, Users, Database, BarChart3, Globe2, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AIDiscoveryBlock } from "@/components/landing/AIDiscoveryBlock";
@@ -42,7 +40,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SiteHeader />
+
 
       {/* HERO */}
       <section className="bg-gradient-hero relative overflow-hidden">
@@ -189,7 +187,7 @@ const Index = () => {
 
       <AIDiscoveryBlock />
 
-      <SiteFooter />
+
     </div>
   );
 };

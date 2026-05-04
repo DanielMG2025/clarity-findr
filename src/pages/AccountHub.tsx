@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import SiteHeader from "@/components/SiteHeader";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Heart, Building2, Handshake, ArrowRight, Lock } from "lucide-react";
@@ -37,7 +36,7 @@ const portals = [
 const AccountHub = () => {
   return (
     <div className="min-h-screen bg-background">
-      <SiteHeader />
+
       <main className="container py-12">
         <div className="max-w-2xl mb-10">
           <Badge variant="outline" className="mb-3">Private spaces</Badge>

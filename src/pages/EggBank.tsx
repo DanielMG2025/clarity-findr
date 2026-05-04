@@ -1,7 +1,5 @@
 import { useMemo, useState } from "react";
 import { Search, Egg, Building2, Globe, Sparkles, ShieldCheck } from "lucide-react";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -54,7 +52,7 @@ const EggBank = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SiteHeader />
+
 
       {/* HERO */}
       <section className="bg-gradient-hero">
@@ -197,7 +195,7 @@ const EggBank = () => {
         </div>
       </section>
 
-      <SiteFooter />
+
     </div>
   );
 };

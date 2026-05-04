@@ -15,8 +15,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 
 import OverviewTab from "@/components/admin/OverviewTab";
 import PatientsTab from "@/components/admin/PatientsTab";
@@ -42,7 +40,7 @@ const TABS = [
 const Admin = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <SiteHeader />
+
       <main className="flex-1 bg-background">
         <div className="container max-w-7xl py-8 md:py-10 space-y-6">
           {/* Header */}
@@ -121,7 +119,7 @@ const Admin = () => {
           </Tabs>
         </div>
       </main>
-      <SiteFooter />
+
     </div>
   );
 };

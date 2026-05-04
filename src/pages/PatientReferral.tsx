@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 import { storage } from "@/lib/fertility";
 import { toast } from "@/hooks/use-toast";
 
@@ -38,7 +36,7 @@ const PatientReferral = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SiteHeader />
+
       <main className="flex-1 bg-gradient-hero">
         <div className="container max-w-3xl py-12 md:py-16">
           <Link to="/results" className="text-sm text-muted-foreground hover:text-primary">
@@ -133,7 +131,7 @@ const PatientReferral = () => {
           )}
         </div>
       </main>
-      <SiteFooter />
+
     </div>
   );
 };

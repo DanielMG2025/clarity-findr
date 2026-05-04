@@ -23,8 +23,6 @@ import {
   Users,
   Wand2,
 } from "lucide-react";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -288,16 +286,16 @@ const AdminPricingDashboard = () => {
   if (!unlocked) {
     return (
       <div className="min-h-screen bg-background">
-        <SiteHeader />
+
         <AdminGate onUnlock={() => setUnlocked(true)} />
-        <SiteFooter />
+
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <SiteHeader />
+
       <main className="container max-w-7xl mx-auto px-4 py-10 space-y-10">
         {/* Hero */}
         <div className="space-y-3">
@@ -1012,7 +1010,7 @@ const AdminPricingDashboard = () => {
           </Button>
         </div>
       </main>
-      <SiteFooter />
+
     </div>
   );
 };
