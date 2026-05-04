@@ -16,7 +16,7 @@ import {
 const items = [
   { title: "My profile",   url: "/profile",     icon: User,            desc: "Your data & blocks" },
   { title: "Configurator", url: "/pricing-lab", icon: Calculator,      desc: "Cost estimates" },
-  { title: "Clinics",      url: "/navigator",   icon: Building2,       desc: "Compare & contact" },
+  { title: "Clinics",      url: "/clinics",     icon: Building2,       desc: "Compare & contact" },
   { title: "Services",     url: "/partners",    icon: Briefcase,       desc: "Partners & services" },
   { title: "Community",    url: "/community",   icon: Users,           desc: "Real experiences" },
   { title: "My space",     url: "/account",     icon: LayoutDashboard, desc: "History & saved" },

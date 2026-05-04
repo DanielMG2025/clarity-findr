@@ -4,11 +4,11 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "./pages/Home.tsx";
+import Landing from "./pages/Landing.tsx";
 import HomeV2 from "./pages/HomeV2.tsx";
+import Clinics from "./pages/Clinics.tsx";
 import { AppLayout } from "./components/AppLayout.tsx";
-import Explorer from "./pages/Explorer.tsx";
-import Navigator from "./pages/Navigator.tsx";
-import Expert from "./pages/Expert.tsx";
+// Legacy journey pages (Explorer/Navigator/Expert) replaced by unified profile + clinics flow.
 import Donor from "./pages/Donor.tsx";
 import Freezing from "./pages/Freezing.tsx";
 import CommunityV2 from "./pages/CommunityV2.tsx";
@@ -46,11 +46,14 @@ const App = () => (
       <BrowserRouter>
         <AppLayout>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="/dashboard" element={<Home />} />
           <Route path="/home-legacy" element={<HomeV2 />} />
-          <Route path="/explorer" element={<Explorer />} />
-          <Route path="/navigator" element={<Navigator />} />
-          <Route path="/expert" element={<Expert />} />
+          <Route path="/clinics" element={<Clinics />} />
+          {/* Legacy journey routes redirect into the unified profile */}
+          <Route path="/explorer" element={<PatientProfile />} />
+          <Route path="/navigator" element={<Clinics />} />
+          <Route path="/expert" element={<PatientProfile />} />
           <Route path="/donor" element={<Donor />} />
           <Route path="/freezing" element={<Freezing />} />
           <Route path="/patient" element={<PatientFlow />} />

@@ -6,12 +6,10 @@ const SiteHeader = () => {
   const links = [
     { to: "/", label: "Home" },
     { to: "/profile", label: "My profile" },
-    { to: "/explorer", label: "Explorer" },
-    { to: "/navigator", label: "Navigator" },
-    { to: "/pricing-lab", label: "Pricing" },
+    { to: "/pricing-lab", label: "Configurator" },
+    { to: "/clinics", label: "Clinics" },
+    { to: "/partners", label: "Services" },
     { to: "/community", label: "Community" },
-    { to: "/clinic", label: "For clinics" },
-    { to: "/partners", label: "For partners" },
     { to: "/account", label: "My space" },
   ];
   return (
@@ -23,7 +21,7 @@ const SiteHeader = () => {
           </span>
           Fertility Compass
         </Link>
-        <nav className="hidden md:flex items-center gap-8 text-sm">
+        <nav className="hidden md:flex items-center gap-6 text-sm">
           {links.map((l) => (
             <Link
               key={l.to}
