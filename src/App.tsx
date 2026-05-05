@@ -9,6 +9,9 @@ import Landing from "./pages/Landing.tsx";
 import Clinics from "./pages/Clinics.tsx";
 import { AppLayout } from "./components/AppLayout.tsx";
 import { PublicLayout } from "./components/PublicLayout.tsx";
+import { WidgetLayout } from "./components/WidgetLayout.tsx";
+import WidgetFivMadrid from "./pages/widgets/WidgetFivMadrid.tsx";
+import AdminPartners from "./pages/AdminPartners.tsx";
 import CommunityV2 from "./pages/CommunityV2.tsx";
 import ClinicLanding from "./pages/ClinicLanding.tsx";
 import ClinicDashboard from "./pages/ClinicDashboard.tsx";
@@ -35,6 +38,9 @@ const PUBLIC_PATHS = new Set<string>(["/"]);
 
 function LayoutSwitch({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
+  if (pathname.startsWith("/widgets/")) {
+    return <WidgetLayout>{children}</WidgetLayout>;
+  }
   if (PUBLIC_PATHS.has(pathname)) {
     return <PublicLayout>{children}</PublicLayout>;
   }
@@ -94,6 +100,10 @@ const App = () => (
             <Route path="/admin/clinic-discovery" element={<AdminClinicDiscovery />} />
             <Route path="/admin/data-import" element={<AdminDataImport />} />
             <Route path="/admin/pricing-sources" element={<AdminPricingSources />} />
+            <Route path="/admin/partners" element={<AdminPartners />} />
+
+            {/* Embeddable widgets — chromeless layout for iframe distribution */}
+            <Route path="/widgets/fiv-madrid" element={<WidgetFivMadrid />} />
             <Route path="/egg-bank" element={<EggBank />} />
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
