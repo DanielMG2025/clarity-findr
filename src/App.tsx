@@ -12,6 +12,12 @@ import { PublicLayout } from "./components/PublicLayout.tsx";
 import { WidgetLayout } from "./components/WidgetLayout.tsx";
 import WidgetFivMadrid from "./pages/widgets/WidgetFivMadrid.tsx";
 import AdminPartners from "./pages/AdminPartners.tsx";
+import AdminMvp from "./pages/AdminMvp.tsx";
+import AdminUpload from "./pages/AdminUpload.tsx";
+import AdminNormalizePrices from "./pages/AdminNormalizePrices.tsx";
+import AdminPatientPreview from "./pages/AdminPatientPreview.tsx";
+import AdminDemo from "./pages/AdminDemo.tsx";
+import { AdminModeButton } from "./components/AdminModeButton.tsx";
 import CommunityV2 from "./pages/CommunityV2.tsx";
 import ClinicLanding from "./pages/ClinicLanding.tsx";
 import ClinicDashboard from "./pages/ClinicDashboard.tsx";
@@ -41,10 +47,22 @@ function LayoutSwitch({ children }: { children: ReactNode }) {
   if (pathname.startsWith("/widgets/")) {
     return <WidgetLayout>{children}</WidgetLayout>;
   }
-  if (PUBLIC_PATHS.has(pathname)) {
-    return <PublicLayout>{children}</PublicLayout>;
+  // Admin Command Center pages render their own shell (no patient sidebar)
+  if (
+    pathname === "/admin/mvp" ||
+    pathname === "/admin/upload" ||
+    pathname === "/admin/normalize-prices" ||
+    pathname === "/admin/patient-preview" ||
+    pathname === "/admin/demo" ||
+    pathname === "/admin/pricing-sources" ||
+    pathname === "/admin/clinic-discovery"
+  ) {
+    return <>{children}<AdminModeButton /></>;
   }
-  return <AppLayout>{children}</AppLayout>;
+  if (PUBLIC_PATHS.has(pathname)) {
+    return <><PublicLayout>{children}</PublicLayout><AdminModeButton /></>;
+  }
+  return <><AppLayout>{children}</AppLayout><AdminModeButton /></>;
 }
 
 const App = () => (
@@ -101,6 +119,11 @@ const App = () => (
             <Route path="/admin/data-import" element={<AdminDataImport />} />
             <Route path="/admin/pricing-sources" element={<AdminPricingSources />} />
             <Route path="/admin/partners" element={<AdminPartners />} />
+            <Route path="/admin/mvp" element={<AdminMvp />} />
+            <Route path="/admin/upload" element={<AdminUpload />} />
+            <Route path="/admin/normalize-prices" element={<AdminNormalizePrices />} />
+            <Route path="/admin/patient-preview" element={<AdminPatientPreview />} />
+            <Route path="/admin/demo" element={<AdminDemo />} />
 
             {/* Embeddable widgets — chromeless layout for iframe distribution */}
             <Route path="/widgets/fiv-madrid" element={<WidgetFivMadrid />} />
