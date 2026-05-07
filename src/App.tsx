@@ -13,6 +13,13 @@ import { WidgetLayout } from "./components/WidgetLayout.tsx";
 import WidgetFivMadrid from "./pages/widgets/WidgetFivMadrid.tsx";
 import AdminPartners from "./pages/AdminPartners.tsx";
 import AdminMvp from "./pages/AdminMvp.tsx";
+import { AdminLayout } from "./components/admin/AdminLayout.tsx";
+import AdminDataIntelligence from "./pages/admin/AdminDataIntelligence.tsx";
+import AdminPatientOps from "./pages/admin/AdminPatientOps.tsx";
+import AdminClinicOps from "./pages/admin/AdminClinicOps.tsx";
+import AdminWidgetPartners from "./pages/admin/AdminWidgetPartners.tsx";
+import AdminServicePartners from "./pages/admin/AdminServicePartners.tsx";
+import AdminSettings from "./pages/admin/AdminSettings.tsx";
 import AdminUpload from "./pages/AdminUpload.tsx";
 import AdminNormalizePrices from "./pages/AdminNormalizePrices.tsx";
 import AdminPatientPreview from "./pages/AdminPatientPreview.tsx";
@@ -47,17 +54,9 @@ function LayoutSwitch({ children }: { children: ReactNode }) {
   if (pathname.startsWith("/widgets/")) {
     return <WidgetLayout>{children}</WidgetLayout>;
   }
-  // Admin Command Center pages render their own shell (no patient sidebar)
-  if (
-    pathname === "/admin/mvp" ||
-    pathname === "/admin/upload" ||
-    pathname === "/admin/normalize-prices" ||
-    pathname === "/admin/patient-preview" ||
-    pathname === "/admin/demo" ||
-    pathname === "/admin/pricing-sources" ||
-    pathname === "/admin/clinic-discovery"
-  ) {
-    return <>{children}<AdminModeButton /></>;
+  // Admin Operating System owns its own chrome (sidebar + topbar) via <AdminLayout>
+  if (pathname.startsWith("/admin")) {
+    return <>{children}</>;
   }
   if (PUBLIC_PATHS.has(pathname)) {
     return <><PublicLayout>{children}</PublicLayout><AdminModeButton /></>;
@@ -111,19 +110,45 @@ const App = () => (
             <Route path="/clinic" element={<ClinicLanding />} />
             <Route path="/clinic/dashboard" element={<ClinicDashboard />} />
             <Route path="/insights" element={<Insights />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/admin/import" element={<Import />} />
-            <Route path="/admin/pricing-dashboard" element={<AdminPricingDashboard />} />
-            <Route path="/admin/pricing" element={<AdminPricing />} />
-            <Route path="/admin/clinic-discovery" element={<AdminClinicDiscovery />} />
-            <Route path="/admin/data-import" element={<AdminDataImport />} />
-            <Route path="/admin/pricing-sources" element={<AdminPricingSources />} />
-            <Route path="/admin/partners" element={<AdminPartners />} />
-            <Route path="/admin/mvp" element={<AdminMvp />} />
-            <Route path="/admin/upload" element={<AdminUpload />} />
-            <Route path="/admin/normalize-prices" element={<AdminNormalizePrices />} />
-            <Route path="/admin/patient-preview" element={<AdminPatientPreview />} />
-            <Route path="/admin/demo" element={<AdminDemo />} />
+            {/* Admin Operating System — nested under persistent AdminLayout */}
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminMvp />} />
+              <Route path="mvp" element={<AdminMvp />} />
+              <Route path="legacy" element={<Admin />} />
+
+              {/* Data Intelligence */}
+              <Route path="data" element={<AdminDataIntelligence />} />
+              <Route path="data/imports" element={<AdminUpload />} />
+              <Route path="upload" element={<AdminUpload />} />
+              <Route path="data-import" element={<AdminDataImport />} />
+              <Route path="import" element={<Import />} />
+              <Route path="pricing-sources" element={<AdminPricingSources />} />
+              <Route path="normalize-prices" element={<AdminNormalizePrices />} />
+              <Route path="patient-preview" element={<AdminPatientPreview />} />
+              <Route path="pricing-dashboard" element={<AdminPricingDashboard />} />
+              <Route path="pricing" element={<AdminPricing />} />
+
+              {/* Patient Operations */}
+              <Route path="patients" element={<AdminPatientOps />} />
+              <Route path="patients/:tab" element={<AdminPatientOps />} />
+
+              {/* Clinic Operations */}
+              <Route path="clinics" element={<AdminClinicOps />} />
+              <Route path="clinic-discovery" element={<AdminClinicDiscovery />} />
+              <Route path="clinics/:tab" element={<AdminClinicOps />} />
+
+              {/* Widget Partners */}
+              <Route path="widget-partners" element={<AdminWidgetPartners />} />
+              <Route path="widget-partners/:tab" element={<AdminWidgetPartners />} />
+              <Route path="partners" element={<AdminPartners />} />
+
+              {/* Service Partners */}
+              <Route path="service-partners" element={<AdminServicePartners />} />
+              <Route path="service-partners/:tab" element={<AdminServicePartners />} />
+
+              <Route path="demo" element={<AdminDemo />} />
+              <Route path="settings" element={<AdminSettings />} />
+            </Route>
 
             {/* Embeddable widgets — chromeless layout for iframe distribution */}
             <Route path="/widgets/fiv-madrid" element={<WidgetFivMadrid />} />
