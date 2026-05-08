@@ -93,7 +93,7 @@ const PatientProfile = () => {
                 <div className="text-xs text-muted-foreground">{canMatch ? "Listo" : "Comparte lo básico para activar"}</div>
               </div>
               <Button asChild size="sm" disabled={!canMatch} variant={canMatch ? "default" : "outline"}>
-                <Link to="/clinics">Open <ArrowRight className="size-3.5 ml-1" /></Link>
+                <Link to="/clinics">Abrir <ArrowRight className="size-3.5 ml-1" /></Link>
               </Button>
             </Card>
           </div>
