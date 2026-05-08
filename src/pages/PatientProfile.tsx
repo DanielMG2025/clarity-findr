@@ -47,12 +47,17 @@ const PatientProfile = () => {
 
       <section className="bg-gradient-hero">
         <div className="container py-10 md:py-14 max-w-5xl space-y-2">
-          <div className="text-xs font-semibold uppercase tracking-wider text-primary">Patient master profile</div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-primary">Mi situación</div>
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
-            Your fertility profile, in one place.
+            Tu historia de fertilidad, en un solo lugar.
           </h1>
           <p className="text-muted-foreground max-w-2xl">
-            Complete the blocks that feel useful to you. Each one improves how accurate your pricing, clinic matching and recommendations get — at your own pace.
+            Completa los bloques que te resulten útiles, a tu ritmo. Cada uno mejora la orientación
+            sobre costes, factores de éxito y clínicas que pueden encajar contigo.
+          </p>
+          <p className="text-xs text-muted-foreground max-w-2xl pt-1">
+            Tus datos son tuyos. Los usamos para explicarte tus opciones — no sustituyen una
+            consulta médica.
           </p>
         </div>
       </section>
