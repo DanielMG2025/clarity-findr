@@ -26,10 +26,15 @@ export default function Clinics() {
   return (
     <div className="container max-w-6xl py-10 space-y-6">
       <header className="space-y-2 max-w-2xl">
-        <Badge variant="secondary" className="text-[11px]">Clinics</Badge>
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Clinics that fit your case</h1>
+        <Badge variant="secondary" className="text-[11px]">Clínicas</Badge>
+        <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Clínicas que pueden encajar con tu caso</h1>
         <p className="text-muted-foreground">
-          Normalized prices, clinical fit and geography — ranked with a transparent reason for each one.
+          Precios normalizados, encaje clínico y cercanía — con un <em>por qué</em> transparente
+          para cada sugerencia. Tú decides si contactas, y cuándo.
+        </p>
+        <p className="text-xs text-muted-foreground">
+          Esto no es una recomendación médica. Es información orientativa para preparar mejores
+          conversaciones con cada clínica.
         </p>
       </header>
 
@@ -37,11 +42,11 @@ export default function Clinics() {
         <Card className="p-5 bg-primary-soft/30 border-primary/20">
           <div className="flex items-center justify-between gap-4 mb-3">
             <div>
-              <div className="text-xs font-bold uppercase tracking-wider text-primary">Profile depth</div>
-              <div className="font-semibold">Add more info to refine this shortlist (currently {confidence} confidence)</div>
+              <div className="text-xs font-bold uppercase tracking-wider text-primary">Cuánto sabemos de ti</div>
+              <div className="font-semibold">Comparte un poco más para afinar esta lista (confianza actual: {confidence})</div>
             </div>
             <Button asChild size="sm" variant="outline">
-              <Link to="/profile">Improve profile <ArrowRight className="size-3.5 ml-1" /></Link>
+              <Link to="/profile">Completar mi situación <ArrowRight className="size-3.5 ml-1" /></Link>
             </Button>
           </div>
           <Progress value={completion} className="h-2" />
@@ -52,11 +57,11 @@ export default function Clinics() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Clinic</TableHead>
-              <TableHead className="text-right">Match</TableHead>
-              <TableHead className="text-right">Est. price</TableHead>
-              <TableHead className="text-right">Success</TableHead>
-              <TableHead className="text-right">Distance</TableHead>
+              <TableHead>Clínica</TableHead>
+              <TableHead className="text-right">Encaje</TableHead>
+              <TableHead className="text-right">Precio orientativo</TableHead>
+              <TableHead className="text-right">Éxito reportado</TableHead>
+              <TableHead className="text-right">Distancia</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -76,9 +81,10 @@ export default function Clinics() {
         </Table>
       </Card>
 
-      <TransparencyBlock variant="method" title="Why these clinics, in this order">
-        We weight clinical fit (50%), value-for-money (30%) and distance (20%) for your profile
-        (age {profile.age}, budget €{profile.budget.toLocaleString()}). You decide what matters most.
+      <TransparencyBlock variant="method" title="Por qué estas clínicas, en este orden">
+        Ponderamos encaje clínico (50%), relación calidad-precio (30%) y cercanía (20%) según tu
+        situación (edad {profile.age}, presupuesto €{profile.budget.toLocaleString()}). Tú decides
+        qué pesa más para ti.
       </TransparencyBlock>
 
       <div className="grid lg:grid-cols-2 gap-5">
@@ -89,11 +95,11 @@ export default function Clinics() {
         <div className="flex items-center gap-2">
           <Sparkles className="size-5 text-primary" />
           <div>
-            <div className="font-semibold">Want a tighter shortlist?</div>
-            <div className="text-sm text-muted-foreground">Complete your medical context to unlock high-confidence matching.</div>
+            <div className="font-semibold">¿Quieres una lista más afinada?</div>
+            <div className="text-sm text-muted-foreground">Completa tu contexto médico para mejorar el encaje. Solo lo que quieras compartir.</div>
           </div>
         </div>
-        <Button asChild><Link to="/profile">Open my profile <ArrowRight className="size-4 ml-1" /></Link></Button>
+        <Button asChild><Link to="/profile">Abrir mi situación <ArrowRight className="size-4 ml-1" /></Link></Button>
       </Card>
     </div>
   );
