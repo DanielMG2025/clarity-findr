@@ -39,11 +39,11 @@ const AccountHub = () => {
 
       <main className="container py-12">
         <div className="max-w-2xl mb-10">
-          <Badge variant="outline" className="mb-3">Private spaces</Badge>
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Your private workspace</h1>
+          <Badge variant="outline" className="mb-3">Espacios privados</Badge>
+          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Tu espacio privado</h1>
           <p className="text-muted-foreground mt-3">
-            Every actor on the platform — patients, clinics and partners — has their own space to track activity,
-            interactions, interests and money flow. Pick yours.
+            Cada persona en Fertility Compass — pacientes, clínicas y partners — tiene su propio
+            espacio confidencial para seguir su actividad, conversaciones y decisiones. Elige el tuyo.
           </p>
         </div>
 
