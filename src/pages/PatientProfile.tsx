@@ -77,11 +77,11 @@ const PatientProfile = () => {
                 <Calculator className="size-5" />
               </div>
               <div className="flex-1">
-                <div className="font-semibold text-sm">Pricing estimate</div>
-                <div className="text-xs text-muted-foreground">{canPrice ? "Ready" : "Complete basics to unlock"}</div>
+                <div className="font-semibold text-sm">Costes orientativos</div>
+                <div className="text-xs text-muted-foreground">{canPrice ? "Listo" : "Comparte lo básico para activar"}</div>
               </div>
               <Button asChild size="sm" disabled={!canPrice} variant={canPrice ? "default" : "outline"}>
-                <Link to="/pricing-lab">Open <ArrowRight className="size-3.5 ml-1" /></Link>
+                <Link to="/pricing-lab">Abrir <ArrowRight className="size-3.5 ml-1" /></Link>
               </Button>
             </Card>
             <Card className={`p-4 flex items-center gap-3 ${canMatch ? "" : "opacity-60"}`}>
@@ -89,8 +89,8 @@ const PatientProfile = () => {
                 <Building2 className="size-5" />
               </div>
               <div className="flex-1">
-                <div className="font-semibold text-sm">Clinic matching</div>
-                <div className="text-xs text-muted-foreground">{canMatch ? "Ready" : "Complete basics to unlock"}</div>
+                <div className="font-semibold text-sm">Clínicas que pueden encajar</div>
+                <div className="text-xs text-muted-foreground">{canMatch ? "Listo" : "Comparte lo básico para activar"}</div>
               </div>
               <Button asChild size="sm" disabled={!canMatch} variant={canMatch ? "default" : "outline"}>
                 <Link to="/clinics">Open <ArrowRight className="size-3.5 ml-1" /></Link>
