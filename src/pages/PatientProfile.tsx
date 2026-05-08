@@ -116,8 +116,9 @@ const PatientProfile = () => {
           </div>
 
           <TransparencyBlock variant="method">
-            Your profile is stored locally on your device. We use it to compute estimates and to explain
-            why each clinic appears in your shortlist. You can reset it any time from your account.
+            Tu información se guarda localmente en tu dispositivo. La usamos para calcular
+            estimaciones y explicarte por qué cada clínica aparece en tu lista. Puedes borrarla
+            cuando quieras desde tu espacio. No sustituye una consulta médica.
           </TransparencyBlock>
         </div>
 
