@@ -112,38 +112,38 @@ const Partners = () => (
       <section className="bg-gradient-hero">
         <div className="container py-16 md:py-20 max-w-5xl">
           <Link to="/" className="text-sm text-muted-foreground hover:text-primary">
-            ← Back
+            ← Volver
           </Link>
           <div className="mt-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary bg-primary-soft px-3 py-1.5 rounded-full">
-            Decision layer · Partner ecosystem
+            Asesoramiento experto · Servicios complementarios
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold mt-3 leading-[1.05]">
-            Better data in →
+            Cuando necesitas
             <span className="block bg-gradient-primary bg-clip-text text-transparent">
-              better decisions out.
+              una segunda opinión.
             </span>
           </h1>
           <p className="text-lg text-muted-foreground mt-4 max-w-2xl">
-            Partners are not a marketplace. Each one plugs into the matching engine and makes
-            your personalized clinic ranking measurably more accurate.
+            Profesionales y servicios independientes que pueden aportarte claridad — desde pruebas
+            hormonales hasta asesoramiento financiero. Tú decides cuándo y cómo usarlos.
           </p>
 
-          {/* Data integration banner */}
+          {/* Trust banner */}
           <div className="mt-8 rounded-2xl border-2 border-primary/30 bg-card/80 backdrop-blur p-5 flex flex-wrap items-center gap-4">
             <div className="size-10 rounded-xl bg-primary/10 grid place-items-center shrink-0">
               <Database className="size-5 text-primary" />
             </div>
             <div className="flex-1 min-w-[260px]">
               <div className="text-[10px] font-bold uppercase tracking-wider text-primary mb-0.5">
-                Data integration
+                Información orientativa, nunca prescriptiva
               </div>
               <p className="text-sm text-foreground/90 leading-snug">
-                Results from every partner feed directly into your personalized clinic matching —
-                in real time, on the same scoring engine you already use.
+                Estos servicios complementan tu propia investigación y tus conversaciones médicas.
+                No sustituyen una consulta clínica.
               </p>
             </div>
             <Badge variant="secondary" className="rounded-full">
-              <Zap className="size-3 mr-1" /> Live integration
+              <Zap className="size-3 mr-1" /> Confidencial
             </Badge>
           </div>
         </div>
@@ -152,10 +152,10 @@ const Partners = () => (
       {/* Partner cards */}
       <section className="container py-16">
         <div className="max-w-3xl mb-10">
-          <h2 className="text-2xl md:text-3xl font-bold">Four ways to upgrade your matching</h2>
+          <h2 className="text-2xl md:text-3xl font-bold">Cuatro formas de ganar claridad</h2>
           <p className="text-muted-foreground mt-2">
-            Each partner adds a specific signal to the decision engine. Pick the ones that match
-            where you are in your journey.
+            Cada partner aporta una pieza concreta: datos médicos, opinión experta o ayuda
+            financiera. Elige las que encajen con dónde estás en tu camino.
           </p>
         </div>
 
