@@ -4,13 +4,14 @@ import { Sparkles } from "lucide-react";
 const SiteHeader = () => {
   const { pathname } = useLocation();
   const links = [
-    { to: "/", label: "Home" },
-    { to: "/profile", label: "My profile" },
-    { to: "/pricing-lab", label: "Configurator" },
-    { to: "/clinics", label: "Clinics" },
-    { to: "/partners", label: "Services" },
-    { to: "/community", label: "Community" },
-    { to: "/account", label: "My space" },
+    { to: "/", label: "Inicio" },
+    { to: "/profile", label: "Mi situación" },
+    { to: "/clarity-assessment", label: "Probabilidad orientativa" },
+    { to: "/pricing-lab", label: "Costes" },
+    { to: "/clinics", label: "Clínicas" },
+    { to: "/partners", label: "Asesoramiento" },
+    { to: "/community", label: "Comunidad" },
+    { to: "/account", label: "Mi espacio" },
   ];
   return (
     <header className="sticky top-0 z-40 backdrop-blur-md bg-background/80 border-b">
@@ -21,7 +22,7 @@ const SiteHeader = () => {
           </span>
           Fertility Compass
         </Link>
-        <nav className="hidden md:flex items-center gap-6 text-sm">
+        <nav className="hidden md:flex items-center gap-5 text-sm">
           {links.map((l) => (
             <Link
               key={l.to}

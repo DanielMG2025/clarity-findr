@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { User, Calculator, Building2, Briefcase, Users, LayoutDashboard, Sparkles } from "lucide-react";
+import { Heart, Sparkles, Compass, Wallet, Building2, Stethoscope, Users, LayoutDashboard } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -14,12 +14,13 @@ import {
 } from "@/components/ui/sidebar";
 
 const items = [
-  { title: "Mi perfil",    url: "/profile",     icon: User,            desc: "Tus datos y bloques" },
-  { title: "Configurador", url: "/pricing-lab", icon: Calculator,      desc: "Estimaciones de coste" },
-  { title: "Clínicas",     url: "/clinics",     icon: Building2,       desc: "Comparar y contactar" },
-  { title: "Servicios",    url: "/partners",    icon: Briefcase,       desc: "Partners y servicios" },
-  { title: "Comunidad",    url: "/community",   icon: Users,           desc: "Experiencias reales" },
-  { title: "Mi espacio",   url: "/account",     icon: LayoutDashboard, desc: "Historial y guardados" },
+  { title: "Mi situación",         url: "/profile",            icon: Heart,        desc: "Tu historia y datos" },
+  { title: "Probabilidad orientativa", url: "/clarity-assessment", icon: Compass,  desc: "Factores que pueden influir" },
+  { title: "Costes",               url: "/pricing-lab",        icon: Wallet,       desc: "Rangos de precio explicados" },
+  { title: "Clínicas",             url: "/clinics",            icon: Building2,    desc: "Opciones que pueden encajar" },
+  { title: "Asesoramiento experto",url: "/partners",           icon: Stethoscope,  desc: "Profesionales y servicios" },
+  { title: "Comunidad",            url: "/community",          icon: Users,        desc: "Experiencias reales" },
+  { title: "Mi espacio",           url: "/account",            icon: LayoutDashboard, desc: "Historial y guardados" },
 ];
 
 export function AppSidebar() {
@@ -41,7 +42,7 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          {!collapsed && <SidebarGroupLabel>Navigation</SidebarGroupLabel>}
+          {!collapsed && <SidebarGroupLabel>Tu camino</SidebarGroupLabel>}
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
