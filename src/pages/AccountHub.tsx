@@ -66,7 +66,7 @@ const AccountHub = () => {
                   ))}
                 </ul>
                 <div className="mt-5 flex items-center justify-between text-sm font-medium text-primary">
-                  Open space <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                  Abrir espacio <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                 </div>
               </Card>
             </Link>
@@ -76,8 +76,8 @@ const AccountHub = () => {
         <Card className="mt-8 p-4 flex items-start gap-3 bg-muted/30 border-dashed">
           <Lock className="size-4 text-muted-foreground mt-0.5" />
           <p className="text-xs text-muted-foreground">
-            Demo mode — these workspaces are read-only previews seeded with sample activity. In production each space
-            sits behind authentication and shows only data tied to the signed-in account.
+            Modo demo — estos espacios son vistas de ejemplo. En producción, cada espacio está
+            protegido y solo muestra la información asociada a tu cuenta.
           </p>
         </Card>
       </main>
