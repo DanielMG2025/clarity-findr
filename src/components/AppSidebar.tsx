@@ -14,13 +14,13 @@ import {
 } from "@/components/ui/sidebar";
 
 const items = [
-  { title: "Mi situación",         url: "/profile",            icon: Heart,        desc: "Tu historia y datos" },
-  { title: "Probabilidad orientativa", url: "/clarity-assessment", icon: Compass,  desc: "Factores que pueden influir" },
-  { title: "Costes",               url: "/pricing-lab",        icon: Wallet,       desc: "Rangos de precio explicados" },
-  { title: "Clínicas",             url: "/clinics",            icon: Building2,    desc: "Opciones que pueden encajar" },
-  { title: "Asesoramiento experto",url: "/partners",           icon: Stethoscope,  desc: "Profesionales y servicios" },
-  { title: "Comunidad",            url: "/community",          icon: Users,        desc: "Experiencias reales" },
-  { title: "Mi espacio",           url: "/account",            icon: LayoutDashboard, desc: "Historial y guardados" },
+  { title: "My situation",        url: "/profile",            icon: Heart,        desc: "Your story and data" },
+  { title: "Success orientation", url: "/clarity-assessment", icon: Compass,      desc: "Factors that may influence" },
+  { title: "Costs",               url: "/pricing-lab",        icon: Wallet,       desc: "Price ranges explained" },
+  { title: "Clinics",             url: "/clinics",            icon: Building2,    desc: "Options that may fit" },
+  { title: "Expert guidance",     url: "/partners",           icon: Stethoscope,  desc: "Professionals and services" },
+  { title: "Community",           url: "/community",          icon: Users,        desc: "Real experiences" },
+  { title: "My space",            url: "/account",            icon: LayoutDashboard, desc: "History and saved items" },
 ];
 
 export function AppSidebar() {
@@ -42,7 +42,7 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          {!collapsed && <SidebarGroupLabel>Tu camino</SidebarGroupLabel>}
+          {!collapsed && <SidebarGroupLabel>Your journey</SidebarGroupLabel>}
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
