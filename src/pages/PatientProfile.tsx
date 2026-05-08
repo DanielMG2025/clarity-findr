@@ -47,17 +47,17 @@ const PatientProfile = () => {
 
       <section className="bg-gradient-hero">
         <div className="container py-10 md:py-14 max-w-5xl space-y-2">
-          <div className="text-xs font-semibold uppercase tracking-wider text-primary">Mi situación</div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-primary">My situation</div>
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
-            Tu historia de fertilidad, en un solo lugar.
+            Your fertility story, all in one place.
           </h1>
           <p className="text-muted-foreground max-w-2xl">
-            Completa los bloques que te resulten útiles, a tu ritmo. Cada uno mejora la orientación
-            sobre costes, factores de éxito y clínicas que pueden encajar contigo.
+            Fill in the blocks that feel useful, at your own pace. Each one improves the orientation
+            on costs, success factors and clinics that may fit you.
           </p>
           <p className="text-xs text-muted-foreground max-w-2xl pt-1">
-            Tus datos son tuyos. Los usamos para explicarte tus opciones — no sustituyen una
-            consulta médica.
+            Your data is yours. We use it to explain your options — it doesn't replace a medical
+            consultation.
           </p>
         </div>
       </section>
@@ -77,11 +77,11 @@ const PatientProfile = () => {
                 <Calculator className="size-5" />
               </div>
               <div className="flex-1">
-                <div className="font-semibold text-sm">Costes orientativos</div>
-                <div className="text-xs text-muted-foreground">{canPrice ? "Listo" : "Comparte lo básico para activar"}</div>
+                <div className="font-semibold text-sm">Cost orientation</div>
+                <div className="text-xs text-muted-foreground">{canPrice ? "Ready" : "Share the basics to unlock"}</div>
               </div>
               <Button asChild size="sm" disabled={!canPrice} variant={canPrice ? "default" : "outline"}>
-                <Link to="/pricing-lab">Abrir <ArrowRight className="size-3.5 ml-1" /></Link>
+                <Link to="/pricing-lab">Open <ArrowRight className="size-3.5 ml-1" /></Link>
               </Button>
             </Card>
             <Card className={`p-4 flex items-center gap-3 ${canMatch ? "" : "opacity-60"}`}>
@@ -89,11 +89,11 @@ const PatientProfile = () => {
                 <Building2 className="size-5" />
               </div>
               <div className="flex-1">
-                <div className="font-semibold text-sm">Clínicas que pueden encajar</div>
-                <div className="text-xs text-muted-foreground">{canMatch ? "Listo" : "Comparte lo básico para activar"}</div>
+                <div className="font-semibold text-sm">Clinics that may fit</div>
+                <div className="text-xs text-muted-foreground">{canMatch ? "Ready" : "Share the basics to unlock"}</div>
               </div>
               <Button asChild size="sm" disabled={!canMatch} variant={canMatch ? "default" : "outline"}>
-                <Link to="/clinics">Abrir <ArrowRight className="size-3.5 ml-1" /></Link>
+                <Link to="/clinics">Open <ArrowRight className="size-3.5 ml-1" /></Link>
               </Button>
             </Card>
           </div>
@@ -116,9 +116,9 @@ const PatientProfile = () => {
           </div>
 
           <TransparencyBlock variant="method">
-            Tu información se guarda localmente en tu dispositivo. La usamos para calcular
-            estimaciones y explicarte por qué cada clínica aparece en tu lista. Puedes borrarla
-            cuando quieras desde tu espacio. No sustituye una consulta médica.
+            Your information is stored locally on your device. We use it to compute estimates and
+            explain why each clinic appears on your list. You can delete it any time from your
+            space. It does not replace a medical consultation.
           </TransparencyBlock>
         </div>
 

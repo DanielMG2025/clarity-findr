@@ -26,15 +26,15 @@ export default function Clinics() {
   return (
     <div className="container max-w-6xl py-10 space-y-6">
       <header className="space-y-2 max-w-2xl">
-        <Badge variant="secondary" className="text-[11px]">Clínicas</Badge>
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Clínicas que pueden encajar con tu caso</h1>
+        <Badge variant="secondary" className="text-[11px]">Clinics</Badge>
+        <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Clinics that may fit your case</h1>
         <p className="text-muted-foreground">
-          Precios normalizados, encaje clínico y cercanía — con un <em>por qué</em> transparente
-          para cada sugerencia. Tú decides si contactas, y cuándo.
+          Normalized prices, clinical fit and proximity — with a transparent <em>why</em> for every
+          suggestion. You decide whether and when to reach out.
         </p>
         <p className="text-xs text-muted-foreground">
-          Esto no es una recomendación médica. Es información orientativa para preparar mejores
-          conversaciones con cada clínica.
+          This is not a medical recommendation. It's orientation to help you have better
+          conversations with each clinic.
         </p>
       </header>
 
@@ -42,11 +42,11 @@ export default function Clinics() {
         <Card className="p-5 bg-primary-soft/30 border-primary/20">
           <div className="flex items-center justify-between gap-4 mb-3">
             <div>
-              <div className="text-xs font-bold uppercase tracking-wider text-primary">Cuánto sabemos de ti</div>
-              <div className="font-semibold">Comparte un poco más para afinar esta lista (confianza actual: {confidence})</div>
+              <div className="text-xs font-bold uppercase tracking-wider text-primary">How much we know about you</div>
+              <div className="font-semibold">Share a little more to refine this list (current confidence: {confidence})</div>
             </div>
             <Button asChild size="sm" variant="outline">
-              <Link to="/profile">Completar mi situación <ArrowRight className="size-3.5 ml-1" /></Link>
+              <Link to="/profile">Complete my situation <ArrowRight className="size-3.5 ml-1" /></Link>
             </Button>
           </div>
           <Progress value={completion} className="h-2" />
@@ -57,11 +57,11 @@ export default function Clinics() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Clínica</TableHead>
-              <TableHead className="text-right">Encaje</TableHead>
-              <TableHead className="text-right">Precio orientativo</TableHead>
-              <TableHead className="text-right">Éxito reportado</TableHead>
-              <TableHead className="text-right">Distancia</TableHead>
+              <TableHead>Clinic</TableHead>
+              <TableHead className="text-right">Fit</TableHead>
+              <TableHead className="text-right">Indicative price</TableHead>
+              <TableHead className="text-right">Reported success</TableHead>
+              <TableHead className="text-right">Distance</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -81,10 +81,10 @@ export default function Clinics() {
         </Table>
       </Card>
 
-      <TransparencyBlock variant="method" title="Por qué estas clínicas, en este orden">
-        Ponderamos encaje clínico (50%), relación calidad-precio (30%) y cercanía (20%) según tu
-        situación (edad {profile.age}, presupuesto €{profile.budget.toLocaleString()}). Tú decides
-        qué pesa más para ti.
+      <TransparencyBlock variant="method" title="Why these clinics, in this order">
+        We weight clinical fit (50%), value for money (30%) and proximity (20%) based on your
+        situation (age {profile.age}, budget €{profile.budget.toLocaleString()}). You decide what
+        matters most.
       </TransparencyBlock>
 
       <div className="grid lg:grid-cols-2 gap-5">
@@ -95,11 +95,11 @@ export default function Clinics() {
         <div className="flex items-center gap-2">
           <Sparkles className="size-5 text-primary" />
           <div>
-            <div className="font-semibold">¿Quieres una lista más afinada?</div>
-            <div className="text-sm text-muted-foreground">Completa tu contexto médico para mejorar el encaje. Solo lo que quieras compartir.</div>
+            <div className="font-semibold">Want a more tailored shortlist?</div>
+            <div className="text-sm text-muted-foreground">Complete your medical context to improve the fit. Only what you want to share.</div>
           </div>
         </div>
-        <Button asChild><Link to="/profile">Abrir mi situación <ArrowRight className="size-4 ml-1" /></Link></Button>
+        <Button asChild><Link to="/profile">Open my situation <ArrowRight className="size-4 ml-1" /></Link></Button>
       </Card>
     </div>
   );

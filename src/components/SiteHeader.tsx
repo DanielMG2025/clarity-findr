@@ -4,14 +4,14 @@ import { Sparkles } from "lucide-react";
 const SiteHeader = () => {
   const { pathname } = useLocation();
   const links = [
-    { to: "/", label: "Inicio" },
-    { to: "/profile", label: "Mi situación" },
-    { to: "/clarity-assessment", label: "Probabilidad orientativa" },
-    { to: "/pricing-lab", label: "Costes" },
-    { to: "/clinics", label: "Clínicas" },
-    { to: "/partners", label: "Asesoramiento" },
-    { to: "/community", label: "Comunidad" },
-    { to: "/account", label: "Mi espacio" },
+    { to: "/", label: "Home" },
+    { to: "/profile", label: "My situation" },
+    { to: "/clarity-assessment", label: "Success orientation" },
+    { to: "/pricing-lab", label: "Costs" },
+    { to: "/clinics", label: "Clinics" },
+    { to: "/partners", label: "Guidance" },
+    { to: "/community", label: "Community" },
+    { to: "/account", label: "My space" },
   ];
   return (
     <header className="sticky top-0 z-40 backdrop-blur-md bg-background/80 border-b">

@@ -112,20 +112,20 @@ const Partners = () => (
       <section className="bg-gradient-hero">
         <div className="container py-16 md:py-20 max-w-5xl">
           <Link to="/" className="text-sm text-muted-foreground hover:text-primary">
-            ← Volver
+            ← Back
           </Link>
           <div className="mt-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary bg-primary-soft px-3 py-1.5 rounded-full">
-            Asesoramiento experto · Servicios complementarios
+            Expert guidance · Complementary services
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold mt-3 leading-[1.05]">
-            Cuando necesitas
+            When you need
             <span className="block bg-gradient-primary bg-clip-text text-transparent">
-              una segunda opinión.
+              a second opinion.
             </span>
           </h1>
           <p className="text-lg text-muted-foreground mt-4 max-w-2xl">
-            Profesionales y servicios independientes que pueden aportarte claridad — desde pruebas
-            hormonales hasta asesoramiento financiero. Tú decides cuándo y cómo usarlos.
+            Independent professionals and services that can give you clarity — from hormonal tests
+            to financial advice. You decide when and how to use them.
           </p>
 
           {/* Trust banner */}
@@ -135,15 +135,15 @@ const Partners = () => (
             </div>
             <div className="flex-1 min-w-[260px]">
               <div className="text-[10px] font-bold uppercase tracking-wider text-primary mb-0.5">
-                Información orientativa, nunca prescriptiva
+                Orientation, never prescription
               </div>
               <p className="text-sm text-foreground/90 leading-snug">
-                Estos servicios complementan tu propia investigación y tus conversaciones médicas.
-                No sustituyen una consulta clínica.
+                These services complement your own research and your medical conversations. They
+                don't replace a clinical consultation.
               </p>
             </div>
             <Badge variant="secondary" className="rounded-full">
-              <Zap className="size-3 mr-1" /> Confidencial
+              <Zap className="size-3 mr-1" /> Confidential
             </Badge>
           </div>
         </div>
@@ -152,10 +152,10 @@ const Partners = () => (
       {/* Partner cards */}
       <section className="container py-16">
         <div className="max-w-3xl mb-10">
-          <h2 className="text-2xl md:text-3xl font-bold">Cuatro formas de ganar claridad</h2>
+          <h2 className="text-2xl md:text-3xl font-bold">Four ways to gain clarity</h2>
           <p className="text-muted-foreground mt-2">
-            Cada partner aporta una pieza concreta: datos médicos, opinión experta o ayuda
-            financiera. Elige las que encajen con dónde estás en tu camino.
+            Each partner adds a concrete piece: medical data, expert opinion, or financial help.
+            Pick the ones that fit where you are on your journey.
           </p>
         </div>
 
