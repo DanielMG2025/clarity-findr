@@ -43,6 +43,7 @@ import AccountPartner from "./pages/AccountPartner.tsx";
 import EggBank from "./pages/EggBank.tsx";
 import PricingLab from "./pages/PricingLab.tsx";
 import PatientProfile from "./pages/PatientProfile.tsx";
+import ClarityAssessment from "./pages/ClarityAssessment.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -77,6 +78,9 @@ const App = () => (
 
             {/* Core 6 modules */}
             <Route path="/profile" element={<PatientProfile />} />
+            <Route path="/clarity-assessment" element={<ClarityAssessment />} />
+            <Route path="/situacion" element={<Navigate to="/profile" replace />} />
+            <Route path="/orientacion" element={<Navigate to="/clarity-assessment" replace />} />
             <Route path="/pricing-lab" element={<PricingLab />} />
             <Route path="/clinics" element={<Clinics />} />
             <Route path="/partners" element={<Partners />} />
