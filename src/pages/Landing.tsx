@@ -3,29 +3,39 @@ import {
   ArrowRight,
   Sparkles,
   ShieldCheck,
-  Calculator,
+  Compass,
+  Wallet,
   Building2,
-  User,
-  Search,
-  EyeOff,
+  Heart,
+  Stethoscope,
+  Lock,
+  Lightbulb,
   HeartHandshake,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { TransparencyBlock } from "@/components/shared/TransparencyBlock";
 
-const STEPS = [
-  { n: 1, title: "Build your profile",   desc: "Add only what you want. Each block unlocks more accuracy.",            icon: User },
-  { n: 2, title: "See your real cost",   desc: "Transparent ranges with what's included — and what isn't.",           icon: Calculator },
-  { n: 3, title: "Compare clinics",      desc: "Side-by-side, normalized prices and clinical fit, ranked for you.",   icon: Building2 },
-  { n: 4, title: "Decide with clarity",  desc: "Save, share, or contact clinics on your terms — never pushed.",       icon: HeartHandshake },
+const HELP = [
+  { icon: Lightbulb,   title: "Qué factores pueden influir",      desc: "Edad, reserva ovárica, historial y diagnóstico explicados sin tecnicismos." },
+  { icon: Stethoscope, title: "Qué tratamientos suelen valorarse", desc: "Opciones que personas con perfiles similares suelen considerar." },
+  { icon: Wallet,      title: "Cuánto podría costar",              desc: "Rangos normalizados con lo que está incluido — y lo que no." },
+  { icon: Building2,   title: "Qué clínicas pueden encajar",       desc: "Comparativa transparente, ordenada según tus prioridades." },
+  { icon: HeartHandshake, title: "Cuándo hablar con un experto",   desc: "Te indicamos cuándo una segunda opinión médica puede aportar claridad." },
 ];
 
-const PROBLEMS = [
-  { icon: EyeOff,   title: "Opaque pricing",     desc: "Headline prices hide medication, lab work and add-ons that often double the bill." },
-  { icon: Search,   title: "Endless research",   desc: "Forums, ads and clinic websites contradict each other. There is no neutral ground." },
-  { icon: ShieldCheck, title: "No clear path",   desc: "Every clinic pushes its own protocol. You're left to compare apples and oranges alone." },
+const STEPS = [
+  { n: 1, title: "Completa tu situación",          desc: "Comparte solo lo que quieras. Cada bloque mejora la orientación." },
+  { n: 2, title: "Recibe una orientación explicada", desc: "Una lectura aproximada de los factores que pueden influir." },
+  { n: 3, title: "Explora costes normalizados",     desc: "Rangos reales por escenario, con lo que suele estar incluido." },
+  { n: 4, title: "Compara clínicas",                desc: "Opciones que pueden encajar con tu caso y prioridades." },
+  { n: 5, title: "Decide los próximos pasos",       desc: "Asesoramiento experto o contacto con clínicas, solo si tú quieres." },
+];
+
+const TRUST = [
+  { icon: Lock,        title: "Información confidencial", desc: "Tus datos son tuyos. Tú decides qué compartir y con quién." },
+  { icon: ShieldCheck, title: "No sustituye a un médico", desc: "Es información orientativa, no un diagnóstico ni una recomendación clínica." },
+  { icon: Lightbulb,   title: "Explicamos cada resultado",desc: "Siempre verás por qué ves lo que ves y qué datos lo influyen." },
 ];
 
 export default function Landing() {
@@ -35,138 +45,132 @@ export default function Landing() {
       <section className="relative bg-gradient-hero overflow-hidden">
         <div className="container max-w-5xl py-20 md:py-28 text-center space-y-6">
           <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary bg-primary-soft px-3 py-1.5 rounded-full">
-            <Sparkles className="size-3" /> Fertility, finally clear
+            <Compass className="size-3" /> De la incertidumbre a la claridad
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold leading-[1.05] tracking-tight">
-            Understand your fertility care.
+            De la incertidumbre a la claridad
             <span className="block bg-gradient-primary bg-clip-text text-transparent">
-              Then decide with confidence.
+              en tu camino de fertilidad.
             </span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            One profile. Transparent prices. Clinics that actually fit your case — explained
-            in plain language, with no pressure to convert.
+            Fertility Compass te ayuda a entender tus opciones, estimar costes reales, valorar
+            factores que pueden influir en el éxito de un tratamiento y encontrar apoyo experto o
+            clínicas que encajen con tus necesidades.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <Button asChild size="lg" className="gap-2">
-              <Link to="/profile">Build my profile <ArrowRight className="size-4" /></Link>
+              <Link to="/clarity-assessment">Empezar mi evaluación <ArrowRight className="size-4" /></Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="gap-2">
-              <Link to="/pricing-lab"><Calculator className="size-4" /> Try the configurator</Link>
+              <Link to="#como-funciona">Ver cómo funciona</Link>
             </Button>
           </div>
+          <p className="text-xs text-muted-foreground pt-2 max-w-xl mx-auto">
+            Información orientativa basada en datos públicos y en lo que tú decides compartir. No sustituye una consulta médica.
+          </p>
         </div>
       </section>
 
-      {/* PROBLEM */}
-      <section className="container max-w-6xl py-16 md:py-20">
-        <div className="max-w-2xl mb-10">
-          <Badge variant="secondary" className="mb-3">The problem</Badge>
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-            Fertility care is too important to be this confusing.
-          </h2>
-        </div>
-        <div className="grid md:grid-cols-3 gap-5">
-          {PROBLEMS.map((p) => (
-            <Card key={p.title} className="p-6">
-              <p.icon className="size-7 text-muted-foreground mb-3" />
-              <h3 className="font-bold mb-1">{p.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
-            </Card>
-          ))}
-        </div>
+      {/* EMOTIONAL PROBLEM */}
+      <section className="container max-w-4xl py-16 md:py-20 text-center">
+        <Badge variant="secondary" className="mb-3">Lo que sentimos muchas personas</Badge>
+        <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+          Buscar información sobre fertilidad puede ser confuso, solitario y agotador.
+        </h2>
+        <p className="text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+          Foros, anuncios y webs de clínicas dicen cosas distintas. Es difícil saber qué es relevante
+          para tu caso, qué preguntas hacer y qué esperar — emocional y económicamente.
+        </p>
       </section>
 
-      {/* SOLUTION */}
+      {/* WHAT WE HELP YOU UNDERSTAND */}
       <section className="bg-muted/40 border-y">
-        <div className="container max-w-6xl py-16 md:py-20 grid lg:grid-cols-2 gap-10 items-center">
-          <div>
-            <Badge variant="secondary" className="mb-3">The solution</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-              A single profile that powers everything.
+        <div className="container max-w-6xl py-16 md:py-20">
+          <div className="max-w-2xl mb-10">
+            <Badge variant="secondary" className="mb-3">En qué te ayudamos</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+              Te acompañamos a entender, no a decidir por ti.
             </h2>
-            <p className="text-muted-foreground mb-6 leading-relaxed">
-              Instead of forcing you down a funnel, we give you a personal profile that grows over
-              time. The more you share, the more accurate your pricing, your clinic shortlist and
-              your recommendations get — at your own pace.
-            </p>
-            <ul className="space-y-3 text-sm">
-              {[
-                "No medical jargon — every term has a plain-language explainer.",
-                "Real prices from real patients, normalized across countries.",
-                "Clinic ranking with a transparent 'why you see this' reason.",
-                "Your data stays yours. Nothing is shared without your say-so.",
-              ].map((t) => (
-                <li key={t} className="flex gap-2"><span className="text-primary">•</span><span>{t}</span></li>
-              ))}
-            </ul>
           </div>
-          <Card className="p-6 bg-gradient-card border-2 shadow-elegant">
-            <div className="text-xs font-bold uppercase tracking-wider text-primary mb-2">Patient profile</div>
-            <div className="text-2xl font-bold mb-4">Your fertility, in one place</div>
-            <div className="space-y-2 text-sm">
-              {[
-                ["Basic info",        "Required · Unlocks pricing"],
-                ["Medical context",   "Optional · Sharper estimates"],
-                ["Treatment history", "Optional · Avoid repeating mistakes"],
-                ["Preferences",       "Optional · Personalised ranking"],
-                ["Documents & quotes","Optional · Crowd-validated prices"],
-              ].map(([t, d]) => (
-                <div key={t} className="flex items-center justify-between rounded-lg border p-3">
-                  <span className="font-medium">{t}</span>
-                  <span className="text-xs text-muted-foreground">{d}</span>
-                </div>
-              ))}
-            </div>
-            <Button asChild className="w-full mt-5">
-              <Link to="/profile">Start my profile <ArrowRight className="size-4 ml-1" /></Link>
-            </Button>
-          </Card>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {HELP.map((h) => (
+              <Card key={h.title} className="p-6">
+                <h.icon className="size-7 text-primary mb-3" />
+                <h3 className="font-bold mb-1">{h.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{h.desc}</p>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="container max-w-6xl py-16 md:py-20">
+      <section id="como-funciona" className="container max-w-6xl py-16 md:py-20">
         <div className="max-w-2xl mb-10">
-          <Badge variant="secondary" className="mb-3">How it works</Badge>
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Four steps. Zero pressure.</h2>
+          <Badge variant="secondary" className="mb-3">Cómo funciona</Badge>
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Cinco pasos, a tu ritmo.</h2>
+          <p className="text-muted-foreground mt-3">
+            Sin presión y sin caminos forzados. Puedes parar, volver y completar cuando quieras.
+          </p>
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-5">
           {STEPS.map((s) => (
             <Card key={s.n} className="p-6 relative">
               <div className="absolute -top-3 left-6 size-7 rounded-full bg-primary text-primary-foreground text-xs font-bold grid place-items-center">{s.n}</div>
-              <s.icon className="size-7 text-primary mt-2 mb-3" />
-              <h3 className="font-bold mb-1">{s.title}</h3>
+              <h3 className="font-bold mb-1 mt-2">{s.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
             </Card>
           ))}
         </div>
       </section>
 
-      {/* TRANSPARENCY */}
-      <section className="container max-w-5xl pb-16">
-        <TransparencyBlock variant="method" title="How we stay neutral">
-          We combine real clinic prices with anonymous patient reports. Our matching engine always
-          explains its reasoning. We don't sell your data, and clinics only hear from you when you
-          choose to reach out.
-        </TransparencyBlock>
+      {/* TRUST & SAFETY */}
+      <section className="bg-muted/40 border-y">
+        <div className="container max-w-6xl py-16 md:py-20">
+          <div className="max-w-2xl mb-10">
+            <Badge variant="secondary" className="mb-3">Confianza y privacidad</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+              Confidencial, transparente y respetuoso.
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-5">
+            {TRUST.map((t) => (
+              <Card key={t.title} className="p-6">
+                <t.icon className="size-7 text-primary mb-3" />
+                <h3 className="font-bold mb-1">{t.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{t.desc}</p>
+              </Card>
+            ))}
+          </div>
+          <Card className="p-5 mt-6 bg-background/60 border-dashed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              <strong className="text-foreground">Aviso importante:</strong> Fertility Compass ofrece
+              información orientativa basada en datos públicos, modelos estadísticos y la información
+              que tú decides compartir. No sustituye una consulta médica, diagnóstico ni recomendación
+              de tratamiento.
+            </p>
+          </Card>
+        </div>
       </section>
 
       {/* CTA */}
       <section className="bg-gradient-primary text-primary-foreground">
         <div className="container max-w-4xl py-16 text-center space-y-5">
+          <Heart className="size-8 mx-auto opacity-90" />
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-            Ready to see what your fertility journey could really look like?
+            Da el primer paso hacia tu claridad.
           </h2>
           <p className="opacity-90 max-w-2xl mx-auto">
-            Build your profile in under 2 minutes. No account required to get started.
+            Información, herramientas y orientación para tomar decisiones de fertilidad con más
+            confianza, transparencia y confidencialidad.
           </p>
           <div className="flex flex-wrap justify-center gap-3 pt-2">
             <Button asChild size="lg" variant="secondary" className="gap-2">
-              <Link to="/profile">Build my profile <ArrowRight className="size-4" /></Link>
+              <Link to="/clarity-assessment">Empezar mi evaluación <ArrowRight className="size-4" /></Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="gap-2 bg-transparent border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10">
-              <Link to="/pricing-lab">Try the configurator</Link>
+              <Link to="/pricing-lab"><Sparkles className="size-4" /> Explorar costes</Link>
             </Button>
           </div>
         </div>
