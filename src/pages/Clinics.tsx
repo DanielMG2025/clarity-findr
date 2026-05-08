@@ -57,11 +57,11 @@ export default function Clinics() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Clinic</TableHead>
-              <TableHead className="text-right">Match</TableHead>
-              <TableHead className="text-right">Est. price</TableHead>
-              <TableHead className="text-right">Success</TableHead>
-              <TableHead className="text-right">Distance</TableHead>
+              <TableHead>Clínica</TableHead>
+              <TableHead className="text-right">Encaje</TableHead>
+              <TableHead className="text-right">Precio orientativo</TableHead>
+              <TableHead className="text-right">Éxito reportado</TableHead>
+              <TableHead className="text-right">Distancia</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -81,9 +81,10 @@ export default function Clinics() {
         </Table>
       </Card>
 
-      <TransparencyBlock variant="method" title="Why these clinics, in this order">
-        We weight clinical fit (50%), value-for-money (30%) and distance (20%) for your profile
-        (age {profile.age}, budget €{profile.budget.toLocaleString()}). You decide what matters most.
+      <TransparencyBlock variant="method" title="Por qué estas clínicas, en este orden">
+        Ponderamos encaje clínico (50%), relación calidad-precio (30%) y cercanía (20%) según tu
+        situación (edad {profile.age}, presupuesto €{profile.budget.toLocaleString()}). Tú decides
+        qué pesa más para ti.
       </TransparencyBlock>
 
       <div className="grid lg:grid-cols-2 gap-5">
@@ -94,11 +95,11 @@ export default function Clinics() {
         <div className="flex items-center gap-2">
           <Sparkles className="size-5 text-primary" />
           <div>
-            <div className="font-semibold">Want a tighter shortlist?</div>
-            <div className="text-sm text-muted-foreground">Complete your medical context to unlock high-confidence matching.</div>
+            <div className="font-semibold">¿Quieres una lista más afinada?</div>
+            <div className="text-sm text-muted-foreground">Completa tu contexto médico para mejorar el encaje. Solo lo que quieras compartir.</div>
           </div>
         </div>
-        <Button asChild><Link to="/profile">Open my profile <ArrowRight className="size-4 ml-1" /></Link></Button>
+        <Button asChild><Link to="/profile">Abrir mi situación <ArrowRight className="size-4 ml-1" /></Link></Button>
       </Card>
     </div>
   );
