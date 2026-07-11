@@ -13,7 +13,9 @@ export type SourceKind =
   | "aggregator"
   | "public_report"
   | "crowd"
-  | "b2b";
+  | "b2b"
+  // Curated, human-reviewed scientific datasets/guidelines (evidence layer).
+  | "scientific";
 
 // Trust weight per source kind. The patient never sees "scraping"; these weights
 // decide how much each observation pulls the estimate.
@@ -23,6 +25,7 @@ export const SOURCE_WEIGHT: Record<SourceKind, number> = {
   public_report: 0.5,
   crowd: 0.6,
   b2b: 0.9,
+  scientific: 0.9,
 };
 
 // What a captured price is known to include. "unknown" is honest and lowers the
@@ -48,8 +51,12 @@ export interface Source {
   as_of?: string | null;
   weight: number;
   usage_note?: string | null;
-  /** Hard guardrail: nothing is crawled while this is false. */
-  allowlisted: boolean;
+  /**
+   * Hard guardrail for crawl sources: nothing is crawled while this is falsy.
+   * Optional because non-crawl sources (e.g. curated scientific datasets) are
+   * never fetched by the pipeline — the guard treats `undefined` as not-allowlisted.
+   */
+  allowlisted?: boolean;
   reviewed_by?: string | null;
 }
 
@@ -94,4 +101,75 @@ export interface PriceEstimate {
   citations: Citation[];
   /** True when there were no usable observations — callers should fall back. */
   empty: boolean;
+}
+
+// ---------------------------------------------------------------------------
+// Evidence layer — the same provenance philosophy applied to published science.
+// Curated statistics/guidelines mapped to patient segments, always cited and
+// orientative. Never a diagnosis; figures come only from the cited sources.
+// ---------------------------------------------------------------------------
+
+/** A curated statistic keyed by (metric, patient segment). */
+export interface EvidenceObservation {
+  id: string;
+  /** e.g. "live_birth_rate_per_cycle_own_eggs". */
+  metric: string;
+  /** "any" matches every patient in that dimension. */
+  segment: { age_band: string; reserve: string };
+  value_min: number;
+  value_max: number;
+  unit: string;
+  source_id: string;
+}
+
+export interface EvidenceCitation {
+  source_id: string;
+  label: string;
+  url?: string | null;
+  as_of?: string | null;
+  /** Exact locator within the source (table + year), for traceability. */
+  locator: string;
+}
+
+/** A cited, orientative statement derived from one EvidenceObservation. */
+export interface EvidenceStatement {
+  metric: string;
+  segment: { age_band: string; reserve: string };
+  value_min: number;
+  value_max: number;
+  unit: string;
+  citation: EvidenceCitation;
+  /**
+   * True while the curated figures are placeholders (not yet filled by a
+   * clinical reviewer). The UI MUST NOT present provisional figures as real.
+   */
+  provisional: boolean;
+  disclaimer: string;
+}
+
+/** Turn a curated observation into a cited statement. Does not invent numbers. */
+export function toEvidenceStatement(
+  o: EvidenceObservation,
+  sources: Map<string, Source>,
+  locator: string,
+): EvidenceStatement {
+  const s = sources.get(o.source_id);
+  return {
+    metric: o.metric,
+    segment: o.segment,
+    value_min: o.value_min,
+    value_max: o.value_max,
+    unit: o.unit,
+    citation: {
+      source_id: o.source_id,
+      label: s?.label ?? o.source_id,
+      url: s?.url ?? null,
+      as_of: s?.as_of ?? null,
+      locator,
+    },
+    // Placeholder figures (max <= 0) are provisional until a reviewer fills them.
+    provisional: !(o.value_max > 0),
+    disclaimer:
+      "Orientative statistic from a published source — not a diagnosis or a personal prediction.",
+  };
 }
