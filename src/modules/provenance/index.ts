@@ -8,3 +8,4 @@ export * from "./currency";
 export * from "./fromScrapedRow";
 export * from "./aggregate";
 export * from "./pipeline";
+export * from "./seedPrices";

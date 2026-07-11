@@ -61,6 +61,8 @@ export interface Source {
 }
 
 export interface PriceObservation {
+  /** Optional stable id (e.g. DB row id or a seed key) for traceability/dedup. */
+  id?: string;
   treatment: TreatmentKey;
   market: string;
   amount_eur: number;
@@ -75,6 +77,9 @@ export interface PriceObservation {
 }
 
 export type EstimateConfidence = "low" | "medium" | "high";
+
+/** Alias used across modules that talk about confidence generically. */
+export type Confidence = EstimateConfidence;
 
 // A single traceable data point behind an estimate. This is what powers the
 // patient-facing "where your price comes from" — never the raw table.
