@@ -1,6 +1,6 @@
 import { Globe, Users, MessagesSquare, Calculator, UserCircle2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import type { Citation, SourceKind } from "@/modules/provenance";
+import type { Citation, PriceEstimate, SourceKind } from "@/modules/provenance";
 
 const SOURCES = [
   { Icon: Globe,          title: "Public clinic prices",        desc: "Official price lists and fee pages from European clinic websites." },
@@ -18,8 +18,15 @@ const KIND_LABEL: Record<SourceKind, string> = {
   b2b: "Clinic rate card",
 };
 
-export function DataSourcesPanel({ citations }: { citations?: Citation[] }) {
+export function DataSourcesPanel({
+  citations,
+  estimate,
+}: {
+  citations?: Citation[];
+  estimate?: PriceEstimate | null;
+}) {
   const hasCitations = !!citations && citations.length > 0;
+  const hasRange = !!estimate && !estimate.empty;
   return (
     <Card className="p-6 bg-primary-soft/30 border-primary/15">
       <h3 className="text-lg font-bold mb-1">How do we calculate this?</h3>
@@ -40,8 +47,25 @@ export function DataSourcesPanel({ citations }: { citations?: Citation[] }) {
         ))}
       </ul>
 
-      {hasCitations && (
+      {hasRange && (
         <div className="mt-4 pt-4 border-t border-primary/15">
+          <div className="flex items-baseline justify-between gap-3 flex-wrap">
+            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              Published range for your market
+            </span>
+            <span className="text-sm font-bold tabular-nums">
+              €{estimate!.range_min.toLocaleString()}–€{estimate!.range_max.toLocaleString()}
+            </span>
+          </div>
+          <p className="text-[11px] text-muted-foreground mt-0.5">
+            Central estimate €{estimate!.expected.toLocaleString()} · {estimate!.confidence} confidence ·
+            from published market guides (per cycle, usually excl. medication).
+          </p>
+        </div>
+      )}
+
+      {hasCitations && (
+        <div className={`${hasRange ? "mt-3" : "mt-4 pt-4 border-t border-primary/15"}`}>
           <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
             Sources behind your range
           </div>

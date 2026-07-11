@@ -5,6 +5,7 @@ import {
   toPriceObservations,
   seedRange,
   seedEstimate,
+  seedEstimateForProfile,
 } from "./seedPrices";
 import { aggregatePrices } from "./aggregate";
 import { TREATMENT_KEYS } from "./taxonomy";
@@ -62,5 +63,20 @@ describe("seedEstimate", () => {
 
   it("returns null for an unknown treatment/market", () => {
     expect(seedEstimate("ivf", "ZZ")).toBeNull();
+  });
+});
+
+describe("seedEstimateForProfile (configurator bridge)", () => {
+  it("maps canonical country labels to the seed and returns a range", () => {
+    const es = seedEstimateForProfile("ivf", "Spain")!;
+    expect(es.range_min).toBe(4000);
+    expect(es.range_max).toBe(6000);
+    expect(es.confidence).toBe("medium");
+    expect(seedEstimateForProfile("donor", "Czech Republic")).not.toBeNull();
+  });
+
+  it("returns null for treatments/markets outside the seed", () => {
+    expect(seedEstimateForProfile("icsi", "Spain")).toBeNull(); // not a seed treatment
+    expect(seedEstimateForProfile("ivf", "Germany")).toBeNull(); // not a seed market
   });
 });

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { PriceEstimate } from "@/modules/provenance";
+import { seedEstimateForProfile, type PriceEstimate } from "@/modules/provenance";
 import type { PricingProfile } from "../logic/types";
 import { fetchProvenanceEstimate } from "../logic/provenanceSource";
 
@@ -21,12 +21,14 @@ export function useProvenanceEstimate(profile: PricingProfile): PriceEstimate | 
       return;
     }
     let cancelled = false;
+    // Fall back to the cited seed snapshot when the server has no data yet.
+    const seed = () => seedEstimateForProfile(profile.treatment, profile.country);
     fetchProvenanceEstimate(profile.treatment, profile.country)
       .then((e) => {
-        if (!cancelled) setEstimate(e);
+        if (!cancelled) setEstimate(e ?? seed());
       })
       .catch(() => {
-        if (!cancelled) setEstimate(null);
+        if (!cancelled) setEstimate(seed());
       });
     return () => {
       cancelled = true;

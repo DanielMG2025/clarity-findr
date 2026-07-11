@@ -137,3 +137,22 @@ export function seedEstimate(treatment: SeedTreatment, market: string): PriceEst
     empty: false,
   };
 }
+
+// Bridge for the configurator, which speaks TreatmentKey + canonical country
+// labels ("Spain") rather than the seed's ISO-ish codes ("ES").
+const SEED_MARKET_CODE_BY_LABEL: Record<string, string> = {
+  Spain: "ES",
+  "Czech Republic": "CZ",
+  Greece: "GR",
+  Portugal: "PT",
+  Denmark: "DK",
+  Cyprus: "CY",
+};
+const SEED_TREATMENTS = new Set<string>(["ivf", "donor", "freezing"]);
+
+/** Seed estimate for a configurator profile (TreatmentKey + country label). */
+export function seedEstimateForProfile(treatment: string, country: string): PriceEstimate | null {
+  if (!SEED_TREATMENTS.has(treatment)) return null;
+  const code = SEED_MARKET_CODE_BY_LABEL[country] ?? country;
+  return seedEstimate(treatment as SeedTreatment, code);
+}
