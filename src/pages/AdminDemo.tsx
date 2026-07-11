@@ -3,6 +3,7 @@ import { ArrowRight, User, Calculator, Building2, Sliders, Layout, Briefcase, Tr
 import { AdminShell } from "@/components/admin/AdminShell";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { DemoPatientPicker } from "@/components/admin/DemoPatientPicker";
 
 const DEMOS = [
   { icon: User, title: "Patient profile demo", route: "/profile",
@@ -27,6 +28,9 @@ const AdminDemo = () => {
       title="Demo Center"
       subtitle="Atajos a las vistas clave del producto para presentaciones, pruebas e inversores."
     >
+      <DemoPatientPicker />
+
+      <h2 className="text-lg font-bold mt-8 mb-3">Product views</h2>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {DEMOS.map((d) => (
           <Card key={d.route} className="hover:border-primary/40 transition-colors">
