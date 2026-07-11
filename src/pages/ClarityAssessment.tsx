@@ -8,6 +8,7 @@ import { useProfileStore } from "@/modules/profile/store";
 import { usePatientProfileStore } from "@/modules/patient-profile/store";
 import { overallCompletion, BLOCKS, blockProgress } from "@/modules/patient-profile/blocks";
 import { SuccessOrientationCard } from "@/components/patient/SuccessOrientationCard";
+import { EvidenceBasePanel } from "@/components/patient/EvidenceBasePanel";
 
 function ExplainBlock({
   why,
@@ -160,6 +161,9 @@ export default function ClarityAssessment() {
           </Card>
         </div>
       </div>
+
+      {/* Evidence base — cited, orientative statistics and typical routes */}
+      <EvidenceBasePanel />
 
       {/* Disclaimer */}
       <Card className="p-5 bg-muted/30 border-dashed">
