@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { Heart, Sparkles, Compass, Wallet, Building2, Stethoscope, Users, LayoutDashboard } from "lucide-react";
+import { Heart, Sparkles, Compass, Wallet, Building2, Stethoscope, Users, BookOpen, LayoutDashboard } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -20,6 +20,7 @@ const items = [
   { title: "Clinics",             url: "/clinics",            icon: Building2,    desc: "Options that may fit" },
   { title: "Guidance",            url: "/partners",           icon: Stethoscope,  desc: "Professionals and services" },
   { title: "Community",           url: "/community",          icon: Users,        desc: "Real experiences" },
+  { title: "Learn",               url: "/aprende",            icon: BookOpen,     desc: "Fertility, explained simply" },
   { title: "My space",            url: "/account",            icon: LayoutDashboard, desc: "History and saved items" },
 ];
 

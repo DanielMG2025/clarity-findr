@@ -44,6 +44,8 @@ import EggBank from "./pages/EggBank.tsx";
 import PricingLab from "./pages/PricingLab.tsx";
 import PatientProfile from "./pages/PatientProfile.tsx";
 import ClarityAssessment from "./pages/ClarityAssessment.tsx";
+import LearnIndex from "./pages/LearnIndex.tsx";
+import LearnArticle from "./pages/LearnArticle.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -89,6 +91,10 @@ const App = () => (
             <Route path="/clinics" element={<Clinics />} />
             <Route path="/partners" element={<Partners />} />
             <Route path="/community" element={<CommunityV2 />} />
+            <Route path="/aprende" element={<LearnIndex />} />
+            <Route path="/aprende/:slug" element={<LearnArticle />} />
+            <Route path="/learn" element={<LearnIndex />} />
+            <Route path="/learn/:slug" element={<LearnArticle />} />
             <Route path="/account" element={<AccountPatient />} />
 
             {/* Aliases */}
