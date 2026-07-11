@@ -37,13 +37,13 @@ const PARTNERS: PartnerCategory[] = [
     description:
       "Carrier screening + PGT-A panel ordered through partner labs. Results sync into your match profile.",
     why_matters:
-      "1 in 4 couples carry a recessive condition without knowing. Genetic data changes which treatment and which clinic actually fits you.",
+      "Some people carry a recessive condition without knowing it. Genetic information can help you and your doctor understand which options may suit your situation.",
     when_to_use:
-      "Before starting IVF or egg donation, or if you've had a previous failed cycle or miscarriage.",
+      "Often considered before starting IVF or egg donation, or after a previous cycle that didn't work.",
     impact: [
-      "Improves matching accuracy",
-      "Avoids unnecessary treatments",
-      "Surfaces clinics with the right lab capabilities",
+      "Helps ground the orientation in real data",
+      "Informs conversations about which treatments to consider",
+      "Highlights clinics with the relevant lab capabilities",
     ],
     cta_target: "/patient/advanced",
     color: "primary",
@@ -55,13 +55,13 @@ const PARTNERS: PartnerCategory[] = [
     description:
       "Lab-grade hormonal panel sent to your home. Results feed back into the decision engine within 7 days.",
     why_matters:
-      "Without real hormone data we can only estimate your ovarian reserve. With it, your match score becomes ~30% more accurate.",
+      "Without hormone data, any read on ovarian reserve is only an estimate. Real results give you and your clinic something more concrete to talk about.",
     when_to_use:
-      "Anytime before clinic conversations — especially if you're 35+, or considering social freezing.",
+      "Anytime before clinic conversations — some people consider it when thinking about social freezing.",
     impact: [
       "Reduces uncertainty before clinic visits",
-      "Sharper match scores for your top clinics",
-      "Helps clinics quote a realistic treatment plan",
+      "A more grounded picture before clinic conversations",
+      "Helps clinics discuss a realistic treatment plan",
     ],
     cta_target: "/patient/advanced",
     color: "accent",
@@ -73,13 +73,13 @@ const PARTNERS: PartnerCategory[] = [
     description:
       "Partner financing for IVF cycles and medication, integrated at the unlock step — no out-of-pocket required to apply.",
     why_matters:
-      "Cost is the #1 reason patients delay treatment. Spreading it makes the right clinic possible, not just the cheapest one.",
+      "Cost weighs heavily on fertility decisions. Spreading it over time can leave room to choose a clinic that fits you, not only the least expensive one.",
     when_to_use:
-      "Once you've shortlisted clinics and need to compare real monthly cost rather than sticker price.",
+      "Once you've shortlisted clinics and want to compare monthly cost rather than the sticker price.",
     impact: [
-      "Removes price as the deciding factor",
-      "Unlocks higher-success clinics that were previously out of reach",
-      "Lets you choose on quality, not on what you can pay this month",
+      "Lets cost weigh less heavily in your choice",
+      "Helps keep more clinics within reach",
+      "Supports choosing on fit, not only this month's budget",
     ],
     cta_target: "/patient/unlock",
     color: "primary",
@@ -89,15 +89,15 @@ const PARTNERS: PartnerCategory[] = [
     category: "Expert consultation",
     examples: "Independent fertility doctors · 30-min video",
     description:
-      "Unbiased second opinion from a fertility specialist who doesn't work for any clinic in your shortlist.",
+      "An independent second opinion from a fertility specialist with no ties to the clinics on your list.",
     why_matters:
-      "Clinics each pitch their own protocol. An independent expert reads your data and tells you which path actually fits.",
+      "Each clinic tends to favour its own protocol. An independent professional can look at your situation and help you weigh the options calmly.",
     when_to_use:
-      "When two or three clinics are giving you very different recommendations or quotes.",
+      "Helpful when two or three clinics are suggesting very different paths or quotes.",
     impact: [
-      "Confirms or challenges the engine's top match",
-      "Catches red flags before you commit",
-      "Reduces decision regret",
+      "Offers a second perspective on your options",
+      "Helps you ask the right questions before deciding",
+      "Can bring more confidence to your decision",
     ],
     cta_target: "/patient/advanced",
     color: "accent",
@@ -193,7 +193,7 @@ const Partners = () => (
                         : "bg-accent text-accent-foreground"
                     }`}
                   >
-                    Covered by partner
+                    Partner-funded
                   </span>
                 </div>
 
@@ -247,13 +247,12 @@ const Partners = () => (
                 <div className="mt-auto space-y-3">
                   <Button asChild variant="hero" className="w-full">
                     <Link to={p.cta_target}>
-                      Use this to improve your results
+                      Learn more about this option
                       <ArrowRight className="size-4" />
                     </Link>
                   </Button>
                   <p className="text-[11px] text-muted-foreground text-center leading-snug">
-                    Partners subsidize this service and pay a referral fee — you pay nothing
-                    extra.
+                    Funded by our partners — no extra cost to you, and always disclosed.
                   </p>
                 </div>
               </Card>
@@ -274,9 +273,9 @@ const Partners = () => (
                 Why partners are part of the platform
               </h2>
               <p className="text-muted-foreground mt-2 max-w-3xl">
-                A fertility decision is too important — and too expensive — to make on guesswork.
-                Partners exist on this platform because they make that decision measurably better
-                while removing cost from the patient.
+                A fertility decision deserves good information. These partners are here because
+                they can add something concrete — data, an expert view, or a little financial
+                breathing room — while keeping the cost off you.
               </p>
             </div>
           </div>
@@ -292,18 +291,18 @@ const Partners = () => (
             </Card>
             <Card className="p-6">
               <Database className="size-5 text-primary mb-3" />
-              <div className="font-bold mb-1">Improves decision quality</div>
+              <div className="font-bold mb-1">Adds real information</div>
               <p className="text-sm text-muted-foreground">
-                Each partner adds a real data signal — hormone levels, genetic carrier status,
-                independent expert opinion — that sharpens your match.
+                Each partner can add something concrete — hormone levels, genetic carrier status,
+                an independent expert opinion — that helps ground your decision.
               </p>
             </Card>
             <Card className="p-6">
               <HeartPulse className="size-5 text-accent mb-3" />
-              <div className="font-bold mb-1">Enables better outcomes</div>
+              <div className="font-bold mb-1">Supports a calmer decision</div>
               <p className="text-sm text-muted-foreground">
-                Patients who use 2+ partner inputs pick clinics with measurably higher reported
-                success rates and fewer additional cycles.
+                Having more of the picture — hormones, genetics, an independent view — can make
+                the next steps feel clearer and less overwhelming.
               </p>
             </Card>
           </div>
@@ -325,12 +324,11 @@ const Partners = () => (
       <section className="container py-16 max-w-3xl text-center">
         <Sparkles className="size-8 text-primary mx-auto mb-4" />
         <h2 className="text-2xl md:text-3xl font-bold">
-          A decision engine funded by who benefits.
+          Funded by those who benefit — not by you alone.
         </h2>
         <p className="text-muted-foreground mt-3">
-          You pay only for what's purely for you (€5–€19 unlocks, advanced questionnaires).
-          Everything that also benefits a clinic or a partner — they pay for. Always disclosed,
-          never hidden.
+          You only pay for what's purely for you. Anything that also benefits a clinic or a
+          partner is funded by them — always disclosed, never hidden.
         </p>
       </section>
     </main>
