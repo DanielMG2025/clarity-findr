@@ -81,6 +81,10 @@ const App = () => (
             <Route path="/clarity-assessment" element={<ClarityAssessment />} />
             <Route path="/situacion" element={<Navigate to="/profile" replace />} />
             <Route path="/orientacion" element={<Navigate to="/clarity-assessment" replace />} />
+            <Route path="/costes" element={<Navigate to="/pricing-lab" replace />} />
+            <Route path="/clinicas" element={<Navigate to="/clinics" replace />} />
+            <Route path="/asesoramiento" element={<Navigate to="/partners" replace />} />
+            <Route path="/comunidad" element={<Navigate to="/community" replace />} />
             <Route path="/pricing-lab" element={<PricingLab />} />
             <Route path="/clinics" element={<Clinics />} />
             <Route path="/partners" element={<Partners />} />

@@ -18,7 +18,7 @@ const items = [
   { title: "Success orientation", url: "/clarity-assessment", icon: Compass,      desc: "Factors that may influence" },
   { title: "Costs",               url: "/pricing-lab",        icon: Wallet,       desc: "Price ranges explained" },
   { title: "Clinics",             url: "/clinics",            icon: Building2,    desc: "Options that may fit" },
-  { title: "Expert guidance",     url: "/partners",           icon: Stethoscope,  desc: "Professionals and services" },
+  { title: "Guidance",            url: "/partners",           icon: Stethoscope,  desc: "Professionals and services" },
   { title: "Community",           url: "/community",          icon: Users,        desc: "Real experiences" },
   { title: "My space",            url: "/account",            icon: LayoutDashboard, desc: "History and saved items" },
 ];
