@@ -36,7 +36,7 @@ describe("content library", () => {
 
 describe("getArticle", () => {
   it("finds by slug and returns undefined for unknowns", () => {
-    expect(getArticle("fiv-paso-a-paso")?.title).toBe("La FIV, paso a paso");
+    expect(getArticle("fiv-paso-a-paso")?.title).toBe("IVF, step by step");
     expect(getArticle("does-not-exist")).toBeUndefined();
   });
 });

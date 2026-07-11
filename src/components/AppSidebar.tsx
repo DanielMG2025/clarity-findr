@@ -20,7 +20,7 @@ const items = [
   { title: "Clinics",             url: "/clinics",            icon: Building2,    desc: "Options that may fit" },
   { title: "Guidance",            url: "/partners",           icon: Stethoscope,  desc: "Professionals and services" },
   { title: "Community",           url: "/community",          icon: Users,        desc: "Real experiences" },
-  { title: "Learn",               url: "/aprende",            icon: BookOpen,     desc: "Fertility, explained simply" },
+  { title: "Learn",               url: "/learn",              icon: BookOpen,     desc: "Fertility, explained simply" },
   { title: "My space",            url: "/account",            icon: LayoutDashboard, desc: "History and saved items" },
 ];
 

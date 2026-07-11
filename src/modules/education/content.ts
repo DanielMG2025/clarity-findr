@@ -1,4 +1,4 @@
-// Educational content library — "Aprende" / puerta de entrada divulgativa
+// Educational content library — "Learn" / divulgative entry point
 // ---------------------------------------------------------------------------
 // Purpose: give someone who knows NOTHING about fertility a simple, step-by-step
 // understanding — what each treatment is, how it differs, and what the patient /
@@ -13,7 +13,7 @@
 // YouTube/Instagram — the social top-of-funnel — without rewriting anything.
 
 export const CONTENT_DISCLAIMER =
-  "Contenido informativo y divulgativo. No es consejo médico ni sustituye la valoración de un profesional. Las cifras son orientativas y varían según cada caso.";
+  "Informational and educational content. Not medical advice and not a substitute for a professional's assessment. Figures are orientative and vary from case to case.";
 
 export interface Source {
   label: string;
@@ -44,317 +44,317 @@ export interface Article {
 
 // Shared sources (composed from concordant clinical/educational materials)
 const S = {
-  eshre: { label: "ESHRE — información al paciente", url: "https://www.eshre.eu/" },
+  eshre: { label: "ESHRE — patient information", url: "https://www.eshre.eu/" },
   hfea: { label: "HFEA — treatments and processes", url: "https://www.hfea.gov.uk/" },
   urmc: { label: "URMC Strong Fertility — IVF step by step", url: "https://www.urmc.rochester.edu/" },
   ccrm: { label: "CCRM — IVF process day by day", url: "https://www.ccrmivf.com/" },
   monash: { label: "Monash IVF — the IVF process", url: "https://monashivf.com/" },
-  sef: { label: "Sociedad Española de Fertilidad (SEF)", url: "https://www.sefertilidad.net/" },
+  sef: { label: "Spanish Fertility Society (SEF)", url: "https://www.sefertilidad.net/" },
 };
 
 // ---------------------------------------------------------------------------
-// 1) GLOSARIO — respuestas de 20 segundos ("¿qué es un ICSI?")
+// 1) GLOSSARY — 20-second answers ("what is ICSI?")
 // ---------------------------------------------------------------------------
 export const GLOSSARY: Article[] = [
   {
     slug: "que-es-fiv",
     kind: "glosario",
-    title: "¿Qué es la FIV?",
-    hook: "Unir óvulo y espermatozoide en el laboratorio, no en el cuerpo.",
+    title: "What is IVF?",
+    hook: "Joining egg and sperm in the lab, not in the body.",
     summary:
-      "La fecundación in vitro (FIV) consiste en extraer óvulos, fecundarlos en el laboratorio y transferir el embrión resultante al útero. Es el tratamiento de reproducción asistida más habitual.",
+      "In vitro fertilisation (IVF) means retrieving eggs, fertilising them in the lab and transferring the resulting embryo to the uterus. It's the most common assisted-reproduction treatment.",
     reading_time_min: 1,
     disclaimer: CONTENT_DISCLAIMER,
     sources: [S.eshre, S.monash],
-    tags: ["fiv", "básico"],
+    tags: ["ivf", "basics"],
   },
   {
     slug: "que-es-icsi",
     kind: "glosario",
-    title: "¿Qué es la ICSI?",
-    hook: "Una FIV en la que se inyecta un solo espermatozoide dentro del óvulo.",
+    title: "What is ICSI?",
+    hook: "An IVF where a single sperm is injected into the egg.",
     summary:
-      "La ICSI (inyección intracitoplasmática) es una variante de la FIV en la que el embriólogo inyecta un único espermatozoide directamente en cada óvulo maduro. Se suele usar cuando hay factor masculino o fallos de fecundación previos.",
+      "ICSI (intracytoplasmic sperm injection) is a variant of IVF in which the embryologist injects a single sperm directly into each mature egg. It's typically used for male-factor infertility or previous fertilisation failures.",
     reading_time_min: 1,
-    differences: [{ vs: "FIV convencional", note: "En la FIV clásica se dejan óvulos y espermatozoides juntos; en la ICSI se inyecta uno seleccionado." }],
+    differences: [{ vs: "conventional IVF", note: "In classic IVF, eggs and sperm are left together; in ICSI a selected sperm is injected." }],
     disclaimer: CONTENT_DISCLAIMER,
     sources: [S.urmc, S.ccrm],
-    tags: ["icsi", "factor-masculino"],
+    tags: ["icsi", "male-factor"],
   },
   {
     slug: "que-es-iui",
     kind: "glosario",
-    title: "¿Qué es la IUI (inseminación)?",
-    hook: "Depositar semen preparado dentro del útero en el momento de ovular.",
+    title: "What is IUI (insemination)?",
+    hook: "Placing prepared semen inside the uterus at ovulation.",
     summary:
-      "La inseminación intrauterina (IUI) es un tratamiento más sencillo y menos invasivo que la FIV: se introduce el semen preparado en el útero coincidiendo con la ovulación. Suele ser un primer paso en casos leves.",
+      "Intrauterine insemination (IUI) is a simpler, less invasive treatment than IVF: prepared semen is placed in the uterus around ovulation. It's often a first step in mild cases.",
     reading_time_min: 1,
-    differences: [{ vs: "FIV", note: "En la IUI la fecundación ocurre dentro del cuerpo; no hay laboratorio de embriones." }],
+    differences: [{ vs: "IVF", note: "In IUI, fertilisation happens inside the body; there's no embryo lab." }],
     disclaimer: CONTENT_DISCLAIMER,
     sources: [S.eshre, S.monash],
-    tags: ["iui", "básico"],
+    tags: ["iui", "basics"],
   },
   {
     slug: "que-es-pgt-a",
     kind: "glosario",
-    title: "¿Qué es el PGT-A (test genético del embrión)?",
-    hook: "Analizar los cromosomas del embrión antes de transferirlo.",
+    title: "What is PGT-A (embryo genetic testing)?",
+    hook: "Checking the embryo's chromosomes before transferring it.",
     summary:
-      "El PGT-A (test genético preimplantacional para aneuploidías) analiza si el embrión tiene el número correcto de cromosomas. Se toman unas células del embrión en día 5–6, que se congela mientras llega el resultado.",
+      "PGT-A (preimplantation genetic testing for aneuploidy) checks whether the embryo has the correct number of chromosomes. A few cells are taken on day 5–6, and the embryo is frozen while the result comes back.",
     reading_time_min: 1,
-    differences: [{ vs: "PGT-M", note: "El PGT-A mira el número de cromosomas; el PGT-M busca una mutación concreta que los padres puedan portar." }],
+    differences: [{ vs: "PGT-M", note: "PGT-A looks at the number of chromosomes; PGT-M looks for a specific mutation the parents may carry." }],
     disclaimer: CONTENT_DISCLAIMER,
     sources: [S.ccrm, S.urmc],
-    tags: ["pgt", "genética"],
+    tags: ["pgt", "genetics"],
   },
   {
     slug: "que-es-ovodonacion",
     kind: "glosario",
-    title: "¿Qué es la ovodonación?",
-    hook: "Una FIV con óvulos de una donante en lugar de los propios.",
+    title: "What is egg donation?",
+    hook: "An IVF with a donor's eggs instead of your own.",
     summary:
-      "En la ovodonación se usan óvulos de una donante anónima (en España) para crear los embriones. Es una opción habitual cuando la reserva ovárica es muy baja o por edad avanzada.",
+      "In egg donation, eggs from an anonymous donor (in Spain) are used to create the embryos. It's a common option when ovarian reserve is very low or due to advanced age.",
     reading_time_min: 1,
     disclaimer: CONTENT_DISCLAIMER,
     sources: [S.sef, S.eshre],
-    tags: ["ovodonacion", "donante"],
+    tags: ["egg-donation", "donor"],
   },
   {
     slug: "que-es-vitrificacion",
     kind: "glosario",
-    title: "¿Qué es la vitrificación (congelación)?",
-    hook: "Congelar muy rápido óvulos o embriones para usarlos más adelante.",
+    title: "What is vitrification (freezing)?",
+    hook: "Freezing eggs or embryos very fast to use them later.",
     summary:
-      "La vitrificación es una congelación ultrarrápida que preserva óvulos o embriones sin dañarlos. Permite conservar la fertilidad o guardar embriones sobrantes de un ciclo.",
+      "Vitrification is an ultra-fast freezing that preserves eggs or embryos without damaging them. It lets you preserve fertility or store leftover embryos from a cycle.",
     reading_time_min: 1,
     disclaimer: CONTENT_DISCLAIMER,
     sources: [S.eshre, S.sef],
-    tags: ["congelacion", "vitrificacion"],
+    tags: ["freezing", "vitrification"],
   },
 ];
 
 // ---------------------------------------------------------------------------
-// 2) TRATAMIENTOS — el paso a paso
+// 2) TREATMENTS — step by step
 // ---------------------------------------------------------------------------
 export const TREATMENTS: Article[] = [
   {
     slug: "fiv-paso-a-paso",
     kind: "tratamiento",
-    title: "La FIV, paso a paso",
-    hook: "De la primera consulta al embrión en el útero, explicado sencillo.",
+    title: "IVF, step by step",
+    hook: "From the first consultation to the embryo in the uterus, explained simply.",
     summary:
-      "Un ciclo de FIV sigue casi siempre los mismos pasos. Aquí tienes el recorrido típico y cuánto suele durar cada fase — orientativo, tu clínica lo adapta a tu caso.",
+      "An IVF cycle almost always follows the same steps. Here's the typical journey and how long each phase usually takes — orientative; your clinic adapts it to your case.",
     reading_time_min: 3,
     steps: [
-      { title: "1. Estudio y plan", detail: "Pruebas iniciales (hormonas, ecografía, seminograma) y diseño del protocolo.", typical_duration: "1–2 semanas" },
-      { title: "2. Estimulación ovárica", detail: "Inyecciones diarias para que maduren varios óvulos, con controles ecográficos.", typical_duration: "8–12 días" },
-      { title: "3. Punción folicular", detail: "Extracción de los óvulos con sedación, procedimiento corto.", typical_duration: "1 día" },
-      { title: "4. Fecundación en el laboratorio", detail: "Los óvulos se fecundan con FIV clásica o ICSI. Al día siguiente se confirma cuántos han fecundado.", typical_duration: "1 día" },
-      { title: "5. Cultivo del embrión", detail: "Los embriones crecen en incubadora hasta día 3 o hasta blastocisto (día 5–6).", typical_duration: "3–6 días" },
-      { title: "6. Transferencia", detail: "Se coloca un embrión en el útero con un catéter fino, sin sedación. El resto puede vitrificarse.", typical_duration: "1 día" },
-      { title: "7. Espera y prueba de embarazo", detail: "Prueba de embarazo a los ~10–14 días.", typical_duration: "10–14 días" },
+      { title: "1. Assessment and plan", detail: "Initial tests (hormones, ultrasound, semen analysis) and protocol design.", typical_duration: "1–2 weeks" },
+      { title: "2. Ovarian stimulation", detail: "Daily injections so several eggs mature, with ultrasound monitoring.", typical_duration: "8–12 days" },
+      { title: "3. Egg retrieval (follicular puncture)", detail: "Retrieving the eggs under sedation, a short procedure.", typical_duration: "1 day" },
+      { title: "4. Fertilisation in the lab", detail: "Eggs are fertilised with classic IVF or ICSI. The next day, how many fertilised is confirmed.", typical_duration: "1 day" },
+      { title: "5. Embryo culture", detail: "Embryos grow in an incubator to day 3 or to blastocyst (day 5–6).", typical_duration: "3–6 days" },
+      { title: "6. Transfer", detail: "One embryo is placed in the uterus with a thin catheter, without sedation. The rest can be vitrified.", typical_duration: "1 day" },
+      { title: "7. Wait and pregnancy test", detail: "Pregnancy test after ~10–14 days.", typical_duration: "10–14 days" },
     ],
     differences: [
-      { vs: "IUI", note: "La FIV trabaja los embriones en el laboratorio; la IUI no." },
-      { vs: "Ovodonación", note: "La FIV usa óvulos propios; la ovodonación, de donante." },
+      { vs: "IUI", note: "IVF works the embryos in the lab; IUI doesn't." },
+      { vs: "Egg donation", note: "IVF uses your own eggs; egg donation uses a donor's." },
     ],
     faqs: [
-      { q: "¿Duele?", a: "La punción se hace con sedación; la transferencia no suele necesitarla." },
-      { q: "¿Cuántos embriones se transfieren?", a: "La práctica actual tiende a transferir uno para evitar embarazos múltiples." },
+      { q: "Does it hurt?", a: "The retrieval is done under sedation; the transfer usually doesn't need it." },
+      { q: "How many embryos are transferred?", a: "Current practice tends to transfer one to avoid multiple pregnancies." },
     ],
     disclaimer: CONTENT_DISCLAIMER,
     sources: [S.urmc, S.ccrm, S.monash],
-    tags: ["fiv", "journey"],
+    tags: ["ivf", "journey"],
   },
   {
     slug: "congelacion-ovulos-paso-a-paso",
     kind: "tratamiento",
-    title: "Congelar óvulos, paso a paso",
-    hook: "Preservar tu fertilidad hoy para tener opciones mañana.",
+    title: "Freezing eggs, step by step",
+    hook: "Preserve your fertility today to keep options open tomorrow.",
     summary:
-      "La congelación (vitrificación) de óvulos comparte el inicio con la FIV, pero se detiene tras extraer los óvulos: en lugar de fecundarlos, se congelan.",
+      "Egg freezing (vitrification) shares its start with IVF, but stops after the eggs are retrieved: instead of fertilising them, they're frozen.",
     reading_time_min: 2,
     steps: [
-      { title: "1. Valoración de reserva", detail: "Analítica (AMH) y ecografía (recuento de folículos) para estimar cuántos óvulos podrías obtener.", typical_duration: "1 semana" },
-      { title: "2. Estimulación ovárica", detail: "Igual que en la FIV: inyecciones y controles.", typical_duration: "8–12 días" },
-      { title: "3. Punción", detail: "Extracción de los óvulos con sedación.", typical_duration: "1 día" },
-      { title: "4. Vitrificación", detail: "Los óvulos maduros se congelan ultrarrápido y se almacenan.", typical_duration: "1 día" },
-      { title: "5. Almacenamiento", detail: "Se conservan hasta que decidas usarlos; hay un coste anual de almacenamiento.", typical_duration: "años" },
+      { title: "1. Reserve assessment", detail: "Blood test (AMH) and ultrasound (follicle count) to estimate how many eggs you might get.", typical_duration: "1 week" },
+      { title: "2. Ovarian stimulation", detail: "Same as IVF: injections and monitoring.", typical_duration: "8–12 days" },
+      { title: "3. Retrieval", detail: "Retrieving the eggs under sedation.", typical_duration: "1 day" },
+      { title: "4. Vitrification", detail: "Mature eggs are flash-frozen and stored.", typical_duration: "1 day" },
+      { title: "5. Storage", detail: "Kept until you decide to use them; there's an annual storage cost.", typical_duration: "years" },
     ],
     faqs: [
-      { q: "¿Cuál es la mejor edad?", a: "Cuanto antes, mejor: congelar antes de los 35 suele ofrecer más posibilidades." },
-      { q: "¿Garantiza un embarazo?", a: "No. Aumenta las opciones futuras, pero no es una garantía." },
+      { q: "What's the best age?", a: "The earlier the better: freezing before 35 usually offers better chances." },
+      { q: "Does it guarantee a pregnancy?", a: "No. It increases future options, but it's not a guarantee." },
     ],
     disclaimer: CONTENT_DISCLAIMER,
     sources: [S.eshre, S.sef],
-    tags: ["congelacion", "journey"],
+    tags: ["freezing", "journey"],
   },
 ];
 
 // ---------------------------------------------------------------------------
-// 3) JOURNEYS — paciente, donante, congelación (recorrido completo)
+// 3) JOURNEYS — patient, donor, freezing (full journey)
 // ---------------------------------------------------------------------------
 export const JOURNEYS: Article[] = [
   {
     slug: "patient-journey",
     kind: "journey",
-    title: "El recorrido del paciente",
-    hook: "Qué pasa desde que llegas a la clínica hasta el resultado.",
+    title: "The patient journey",
+    hook: "What happens from arriving at the clinic to the result.",
     summary:
-      "Una visión de conjunto de las etapas por las que pasa cualquier paciente de reproducción asistida, para saber qué esperar.",
+      "An overview of the stages any assisted-reproduction patient goes through, so you know what to expect.",
     reading_time_min: 3,
     steps: [
-      { title: "Primera consulta", detail: "Historia clínica, dudas y pruebas iniciales para ambos miembros de la pareja si la hay." },
-      { title: "Diagnóstico", detail: "Con los resultados se identifica la causa (o se etiqueta como no explicada) y se propone un plan." },
-      { title: "Elección de tratamiento", detail: "IUI, FIV/ICSI, ovodonación… según edad, diagnóstico y preferencias." },
-      { title: "Tratamiento", detail: "El ciclo elegido, con sus controles y procedimientos." },
-      { title: "Resultado y siguientes pasos", detail: "Prueba de embarazo; si no hay éxito, se revisa el plan (nuevo ciclo, cambio de enfoque)." },
+      { title: "First consultation", detail: "Medical history, questions and initial tests for both partners if there's a couple." },
+      { title: "Diagnosis", detail: "With the results, the cause is identified (or labelled unexplained) and a plan is proposed." },
+      { title: "Choosing treatment", detail: "IUI, IVF/ICSI, egg donation… depending on age, diagnosis and preferences." },
+      { title: "Treatment", detail: "The chosen cycle, with its monitoring and procedures." },
+      { title: "Result and next steps", detail: "Pregnancy test; if unsuccessful, the plan is reviewed (new cycle, change of approach)." },
     ],
     disclaimer: CONTENT_DISCLAIMER,
     sources: [S.eshre, S.hfea, S.sef],
-    tags: ["journey", "paciente"],
+    tags: ["journey", "patient"],
   },
   {
     slug: "donor-journey",
     kind: "journey",
-    title: "El recorrido de la donante de óvulos",
-    hook: "Qué implica ser donante: pasos, requisitos y qué NO implica.",
+    title: "The egg donor journey",
+    hook: "What being a donor involves: steps, requirements and what it does NOT involve.",
     summary:
-      "Ser donante de óvulos es un proceso regulado y altruista. Aquí se explica el recorrido y qué supone realmente, sin tecnicismos.",
+      "Being an egg donor is a regulated, altruistic process. Here's the journey and what it really means, without jargon.",
     reading_time_min: 3,
     steps: [
-      { title: "Requisitos y screening", detail: "Edad, buen estado de salud y una batería de pruebas médicas y genéticas." },
-      { title: "Estimulación", detail: "Igual que una paciente de FIV: medicación y controles durante ~10 días." },
-      { title: "Donación (punción)", detail: "Extracción de los óvulos con sedación." },
-      { title: "Compensación", detail: "En España la donación es altruista y anónima; existe una compensación económica regulada por las molestias." },
+      { title: "Requirements and screening", detail: "Age, good health and a battery of medical and genetic tests." },
+      { title: "Stimulation", detail: "Same as an IVF patient: medication and monitoring for ~10 days." },
+      { title: "Donation (retrieval)", detail: "Retrieving the eggs under sedation." },
+      { title: "Compensation", detail: "In Spain, donation is altruistic and anonymous; there's a regulated financial compensation for the inconvenience." },
     ],
     faqs: [
-      { q: "¿Es anónima?", a: "En España, sí: la donante y la receptora no conocen su identidad mutua." },
-      { q: "¿Afecta a mi fertilidad futura?", a: "Es una pregunta médica; debe responderla la clínica en tu valoración." },
+      { q: "Is it anonymous?", a: "In Spain, yes: the donor and the recipient don't know each other's identity." },
+      { q: "Does it affect my future fertility?", a: "That's a medical question; the clinic should answer it in your assessment." },
     ],
     disclaimer: CONTENT_DISCLAIMER,
     sources: [S.sef, S.eshre],
-    tags: ["journey", "donante"],
+    tags: ["journey", "donor"],
   },
   {
     slug: "freezing-journey",
     kind: "journey",
-    title: "El recorrido de la congelación",
-    hook: "Preservar la fertilidad: cuándo tiene sentido y cómo es.",
+    title: "The freezing journey",
+    hook: "Preserving fertility: when it makes sense and what it's like.",
     summary:
-      "Para quién puede tener sentido congelar óvulos, en qué momento y cómo encaja en la vida — una decisión de planificación, no de urgencia médica.",
+      "Who egg freezing may make sense for, when, and how it fits into life — a planning decision, not a medical emergency.",
     reading_time_min: 2,
     steps: [
-      { title: "¿Es para mí?", detail: "Motivos frecuentes: posponer la maternidad, antes de un tratamiento médico, o baja reserva detectada." },
-      { title: "Valoración", detail: "Analítica y ecografía para estimar el rendimiento esperable." },
-      { title: "Ciclo de congelación", detail: "Estimulación, punción y vitrificación (ver 'Congelar óvulos, paso a paso')." },
-      { title: "Uso futuro", detail: "Cuando decidas, los óvulos se descongelan y se fecundan mediante ICSI." },
+      { title: "Is it for me?", detail: "Common reasons: postponing motherhood, before a medical treatment, or low reserve detected." },
+      { title: "Assessment", detail: "Blood test and ultrasound to estimate the expected yield." },
+      { title: "Freezing cycle", detail: "Stimulation, retrieval and vitrification (see 'Freezing eggs, step by step')." },
+      { title: "Future use", detail: "When you decide, the eggs are thawed and fertilised via ICSI." },
     ],
     disclaimer: CONTENT_DISCLAIMER,
     sources: [S.eshre, S.sef],
-    tags: ["journey", "congelacion"],
+    tags: ["journey", "freezing"],
   },
 ];
 
 // ---------------------------------------------------------------------------
-// 4) CÓMO FUNCIONA ECONÓMICAMENTE (para el paciente / la donante)
-// Explica el MODELO que vive el paciente, no cómo monetizamos nosotros.
-// Rangos orientativos por mercado y, en donación, el matiz legal clave.
+// 4) HOW IT WORKS FINANCIALLY (for the patient / the donor)
+// Explains the MODEL the patient lives, not how we monetise.
+// Orientative ranges by market and, for donation, the key legal nuance.
 // ---------------------------------------------------------------------------
 const Ssrc = {
-  seen: { label: "Seen Fertility — Egg freezing in Spain (costes y almacenamiento)", url: "https://seenfertility.com/" },
+  seen: { label: "Seen Fertility — Egg freezing in Spain (costs and storage)", url: "https://seenfertility.com/" },
   freeze: { label: "Freeze.health — Egg freezing Spain (single cycle, storage)", url: "https://freeze.health/" },
   placid: { label: "PlacidWay — Cost of egg donation in Spain 2025", url: "https://www.placidway.com/" },
-  ivi: { label: "IVI — Cómo funciona la donación de óvulos en España", url: "https://ivi-fertility.com/" },
-  boe: { label: "BOE — Ley 14/2006 sobre técnicas de reproducción humana asistida" },
+  ivi: { label: "IVI — How egg donation works in Spain", url: "https://ivi-fertility.com/" },
+  boe: { label: "BOE — Law 14/2006 on assisted human reproduction techniques" },
 };
 
 export const ECONOMICS: Article[] = [
   {
     slug: "como-se-paga-congelacion",
     kind: "negocio",
-    title: "Cómo se paga una congelación de óvulos",
-    hook: "Un pago por el ciclo + una cuota anual para mantenerlos guardados.",
+    title: "How egg freezing is paid for",
+    hook: "A one-off payment for the cycle + an annual fee to keep them stored.",
     summary:
-      "El modelo económico de la congelación tiene dos partes: el ciclo (estimulación, punción, vitrificación) que se paga una vez, y el almacenamiento, que funciona como una suscripción anual mientras conservas los óvulos.",
+      "The economics of freezing have two parts: the cycle (stimulation, retrieval, vitrification) paid once, and storage, which works like an annual subscription while you keep the eggs.",
     reading_time_min: 2,
     body: [
-      "Piénsalo en dos bloques. Primero, el ciclo en sí: es un pago único que cubre la estimulación, la extracción y la congelación de los óvulos.",
-      "Segundo, el almacenamiento: una cuota anual para mantener tus óvulos conservados, año tras año, hasta que decidas usarlos. Este es el componente tipo suscripción, y es fácil olvidarlo al comparar precios.",
-      "Muchos paquetes incluyen los primeros 1–5 años de almacenamiento; después se paga la cuota anual. Y ojo: la medicación (~€1.000–1.400) suele ir aparte del precio anunciado.",
+      "Think of it in two blocks. First, the cycle itself: a one-off payment covering stimulation, retrieval and freezing of the eggs.",
+      "Second, storage: an annual fee to keep your eggs preserved, year after year, until you decide to use them. This is the subscription-like component, and it's easy to forget when comparing prices.",
+      "Many packages include the first 1–5 years of storage; after that you pay the annual fee. And note: medication (~€1,000–1,400) is usually separate from the advertised price.",
     ],
     steps: [
-      { title: "Ciclo (pago único)", detail: "Estimulación + punción + vitrificación.", typical_duration: "una vez" },
-      { title: "Almacenamiento (recurrente)", detail: "Cuota anual por mantener los óvulos guardados.", typical_duration: "cada año" },
-      { title: "Uso futuro (si lo hay)", detail: "Descongelación + fecundación (ICSI) + transferencia, con su propio coste.", typical_duration: "cuando decidas" },
+      { title: "Cycle (one-off)", detail: "Stimulation + retrieval + vitrification.", typical_duration: "once" },
+      { title: "Storage (recurring)", detail: "Annual fee to keep the eggs stored.", typical_duration: "each year" },
+      { title: "Future use (if any)", detail: "Thawing + fertilisation (ICSI) + transfer, with its own cost.", typical_duration: "when you decide" },
     ],
     faqs: [
-      { q: "¿Rango orientativo en España?", a: "El ciclo ronda ~€2.300–3.500 (sin medicación); el almacenamiento anual, ~€200–500/año. Cifras aproximadas por mercado y clínica." },
-      { q: "¿Y si no llego a usarlos?", a: "Seguirás pagando la cuota anual mientras los conserves, salvo que decidas dejarlos de almacenar." },
+      { q: "Orientative range in Spain?", a: "The cycle is around ~€2,300–3,500 (without medication); annual storage, ~€200–500/year. Approximate figures by market and clinic." },
+      { q: "What if I never use them?", a: "You'll keep paying the annual fee while you store them, unless you decide to stop storing them." },
     ],
     disclaimer: CONTENT_DISCLAIMER,
     sources: [Ssrc.seen, Ssrc.freeze],
-    tags: ["congelacion", "economia", "suscripcion"],
+    tags: ["freezing", "economics", "subscription"],
   },
   {
     slug: "compensacion-donante-ovulos",
     kind: "negocio",
-    title: "Ser donante: la compensación, explicada bien",
-    hook: "No te pagan por los óvulos —está prohibido—; se compensan las molestias.",
+    title: "Being a donor: the compensation, explained properly",
+    hook: "You're not paid for the eggs —that's prohibited—; the inconvenience is compensated.",
     summary:
-      "Este es el punto que más se malentiende. En España (y en la práctica en toda la UE) está legalmente prohibido pagar por los óvulos: sería comercializar gametos. Lo que existe es una compensación económica por las molestias, el tiempo y los desplazamientos.",
+      "This is the most misunderstood point. In Spain (and in practice across the EU) it's legally prohibited to pay for eggs: that would be commercialising gametes. What exists is a financial compensation for the inconvenience, time and travel.",
     reading_time_min: 2,
     body: [
-      "La donación debe ser, por ley, altruista, anónima y voluntaria (Ley 14/2006 en España). No es una venta.",
-      "Por eso no se habla de 'precio por óvulo', sino de una compensación fija y regulada que reconoce las molestias: la medicación, los desplazamientos, el tiempo (el proceso lleva unos 12–15 días con varias visitas) y las posibles ausencias del trabajo.",
-      "En España esa compensación suele situarse en el entorno de ~€800–1.100 por ciclo, un importe regulado, no negociable ni proporcional al número de óvulos.",
+      "Donation must, by law, be altruistic, anonymous and voluntary (Law 14/2006 in Spain). It's not a sale.",
+      "That's why it's not about a 'price per egg', but a fixed, regulated compensation recognising the inconvenience: medication, travel, time (the process takes about 12–15 days with several visits) and possible time off work.",
+      "In Spain that compensation is usually around ~€800–1,100 per cycle, a regulated amount, not negotiable nor proportional to the number of eggs.",
     ],
     differences: [
-      { vs: "un pago por óvulos", note: "Prohibido: convertiría la donación en comercio de gametos. La compensación es por las molestias, no por el material biológico." },
+      { vs: "a payment for eggs", note: "Prohibited: it would turn donation into trading gametes. The compensation is for the inconvenience, not for the biological material." },
     ],
     faqs: [
-      { q: "¿Es anónima?", a: "En España, sí: donante y receptora no conocen su identidad mutua, y la paciente que da a luz es la madre legal." },
-      { q: "¿Puedo donar por dinero?", a: "No como tal. La ley lo plantea como acto altruista; la compensación cubre molestias, no es un salario." },
+      { q: "Is it anonymous?", a: "In Spain, yes: donor and recipient don't know each other's identity, and the patient who gives birth is the legal mother." },
+      { q: "Can I donate for money?", a: "Not as such. The law frames it as an altruistic act; the compensation covers inconvenience, it's not a salary." },
     ],
     disclaimer: CONTENT_DISCLAIMER,
     sources: [Ssrc.ivi, Ssrc.placid, Ssrc.boe],
-    tags: ["donante", "ovodonacion", "economia", "legal"],
+    tags: ["donor", "egg-donation", "economics", "legal"],
   },
   {
     slug: "como-se-financia-un-tratamiento",
     kind: "negocio",
-    title: "Cómo se financia un tratamiento",
-    hook: "Pago por fases, paquetes multiciclo y financiación a plazos.",
+    title: "How a treatment is financed",
+    hook: "Payment in phases, multi-cycle packages and instalment financing.",
     summary:
-      "Los tratamientos rara vez se pagan de golpe. Conviene entender las modalidades habituales para comparar de verdad y evitar sorpresas.",
+      "Treatments are rarely paid all at once. It's worth understanding the common options to compare properly and avoid surprises.",
     reading_time_min: 2,
     body: [
-      "Pago por fases: muchas clínicas cobran en hitos (al iniciar, antes de la transferencia…), no todo por adelantado.",
-      "Paquetes multiciclo y programas con garantía/reembolso: pagas por adelantado varios intentos, a veces con devolución parcial o total si no hay recién nacido vivo. Bajan la incertidumbre a cambio de un desembolso mayor.",
-      "Financiación a plazos: algunas clínicas trabajan con financieras externas para repartir el coste en cuotas. Es un préstamo, con sus intereses; conviene mirar el coste total, no solo la cuota.",
+      "Payment in phases: many clinics charge at milestones (at the start, before the transfer…), not everything upfront.",
+      "Multi-cycle packages and guarantee/refund programmes: you pay several attempts upfront, sometimes with a partial or full refund if there's no live birth. They lower uncertainty in exchange for a larger outlay.",
+      "Instalment financing: some clinics work with external lenders to spread the cost into instalments. It's a loan, with its interest; look at the total cost, not just the monthly payment.",
     ],
     faqs: [
-      { q: "¿Qué suele quedar fuera del precio 'de cabecera'?", a: "Medicación, primera consulta, PGT-A, y la congelación/almacenamiento de embriones sobrantes. Pide siempre el desglose." },
+      { q: "What's usually left out of the 'headline' price?", a: "Medication, the first consultation, PGT-A, and freezing/storage of leftover embryos. Always ask for the breakdown." },
     ],
     disclaimer: CONTENT_DISCLAIMER,
     sources: [Ssrc.placid, Ssrc.seen],
-    tags: ["financiacion", "economia"],
+    tags: ["financing", "economics"],
   },
 ];
 
 // ---------------------------------------------------------------------------
-// Glosario ampliado (términos que aparecen sin explicar en toda clínica)
+// Extended glossary (terms that show up unexplained in every clinic)
 // ---------------------------------------------------------------------------
 export const GLOSSARY_EXTRA: Article[] = [
-  { slug: "reserva-ovarica", kind: "glosario", title: "¿Qué es la reserva ovárica?", hook: "La 'cantidad' de óvulos que te quedan, a grandes rasgos.", summary: "La reserva ovárica es una estimación de la cantidad de óvulos disponibles. Se valora sobre todo con la AMH y el recuento de folículos antrales, y desciende con la edad.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.eshre, S.sef], tags: ["reserva", "básico"] },
-  { slug: "amh", kind: "glosario", title: "¿Qué es la AMH?", hook: "Un análisis de sangre que orienta sobre tu reserva ovárica.", summary: "La hormona antimülleriana (AMH) es un marcador en sangre que ayuda a estimar la reserva ovárica. Valores bajos sugieren menos óvulos disponibles, pero no predicen por sí solos el éxito.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.sef, S.eshre], tags: ["amh", "reserva"] },
-  { slug: "recuento-folicular", kind: "glosario", title: "¿Qué es el recuento de folículos antrales (AFC)?", hook: "Contar por ecografía los folículos pequeños de tus ovarios.", summary: "El AFC es el número de folículos antrales que se ven por ecografía al inicio del ciclo. Junto con la AMH, ayuda a estimar cómo podrías responder a la estimulación.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.eshre], tags: ["afc", "reserva"] },
-  { slug: "blastocisto", kind: "glosario", title: "¿Qué es un blastocisto?", hook: "El embrión en día 5–6, con más opciones de implantar.", summary: "Un blastocisto es el estadio que alcanza el embrión hacia el día 5–6 de cultivo. Suele tener más posibilidades de implantación y es el momento habitual de la transferencia o del test genético.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.ccrm, S.urmc], tags: ["embrion", "laboratorio"] },
-  { slug: "transferencia-fresco-congelado", kind: "glosario", title: "Transferencia en fresco vs. congelado", hook: "Transferir el embrión en el mismo ciclo o descongelarlo después.", summary: "En la transferencia en fresco el embrión se coloca en el mismo ciclo; en la congelada (FET) se vitrifica y se transfiere en un ciclo posterior, preparando el útero. Ambas son habituales.", reading_time_min: 1, differences: [{ vs: "entre sí", note: "Fresco = mismo ciclo; congelado = ciclo posterior con endometrio preparado." }], disclaimer: CONTENT_DISCLAIMER, sources: [S.ccrm, S.monash], tags: ["transferencia", "fet"] },
-  { slug: "estimulacion-ovarica", kind: "glosario", title: "¿Qué es la estimulación ovárica?", hook: "Medicación para que maduren varios óvulos en un ciclo.", summary: "Son unos días de inyecciones hormonales para que los ovarios produzcan varios óvulos a la vez (en lugar de uno), con controles ecográficos. Es la primera fase de una FIV o una congelación.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.urmc, S.monash], tags: ["estimulacion", "fiv"] },
-  { slug: "puncion-folicular", kind: "glosario", title: "¿Qué es la punción folicular?", hook: "La extracción de los óvulos, con sedación y en poco tiempo.", summary: "La punción es el procedimiento por el que se recogen los óvulos de los ovarios, guiado por ecografía y con sedación. Es corto y ambulatorio.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.urmc, S.ccrm], tags: ["puncion", "fiv"] },
-  { slug: "ropa", kind: "glosario", title: "¿Qué es el método ROPA?", hook: "Maternidad compartida: una pone el óvulo y la otra gesta.", summary: "El método ROPA (Recepción de Óvulos de la Pareja) permite a una pareja de mujeres compartir la maternidad: una aporta los óvulos y la otra gesta el embarazo. Está regulado en España.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.sef], tags: ["ropa", "legal"] },
-  { slug: "ovodonacion-anonima", kind: "glosario", title: "¿Qué significa donación anónima?", hook: "Donante y receptora no conocen su identidad mutua.", summary: "En España la donación de óvulos es anónima por ley: ni la donante ni la receptora conocen su identidad, y solo se comparten datos como grupo sanguíneo y edad. En otros países la regulación difiere.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.sef, Ssrc.ivi], tags: ["donante", "legal"] },
+  { slug: "reserva-ovarica", kind: "glosario", title: "What is ovarian reserve?", hook: "Roughly, the 'quantity' of eggs you have left.", summary: "Ovarian reserve is an estimate of the quantity of available eggs. It's assessed mainly with AMH and the antral follicle count, and declines with age.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.eshre, S.sef], tags: ["reserve", "basics"] },
+  { slug: "amh", kind: "glosario", title: "What is AMH?", hook: "A blood test that gives a sense of your ovarian reserve.", summary: "Anti-Müllerian hormone (AMH) is a blood marker that helps estimate ovarian reserve. Low values suggest fewer available eggs, but don't predict success on their own.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.sef, S.eshre], tags: ["amh", "reserve"] },
+  { slug: "recuento-folicular", kind: "glosario", title: "What is the antral follicle count (AFC)?", hook: "Counting the small follicles in your ovaries by ultrasound.", summary: "The AFC is the number of antral follicles seen on ultrasound at the start of the cycle. Together with AMH, it helps estimate how you might respond to stimulation.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.eshre], tags: ["afc", "reserve"] },
+  { slug: "blastocisto", kind: "glosario", title: "What is a blastocyst?", hook: "The embryo at day 5–6, with better odds of implanting.", summary: "A blastocyst is the stage the embryo reaches around day 5–6 of culture. It usually has a better chance of implantation and is the usual moment for transfer or genetic testing.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.ccrm, S.urmc], tags: ["embryo", "lab"] },
+  { slug: "transferencia-fresco-congelado", kind: "glosario", title: "Fresh vs. frozen transfer", hook: "Transferring the embryo in the same cycle or thawing it later.", summary: "In a fresh transfer the embryo is placed in the same cycle; in a frozen one (FET) it's vitrified and transferred in a later cycle, preparing the uterus. Both are common.", reading_time_min: 1, differences: [{ vs: "each other", note: "Fresh = same cycle; frozen = later cycle with a prepared endometrium." }], disclaimer: CONTENT_DISCLAIMER, sources: [S.ccrm, S.monash], tags: ["transfer", "fet"] },
+  { slug: "estimulacion-ovarica", kind: "glosario", title: "What is ovarian stimulation?", hook: "Medication so several eggs mature in one cycle.", summary: "It's a few days of hormone injections so the ovaries produce several eggs at once (instead of one), with ultrasound monitoring. It's the first phase of an IVF or a freezing cycle.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.urmc, S.monash], tags: ["stimulation", "ivf"] },
+  { slug: "puncion-folicular", kind: "glosario", title: "What is egg retrieval (follicular puncture)?", hook: "Retrieving the eggs, under sedation and quickly.", summary: "The retrieval is the procedure that collects the eggs from the ovaries, ultrasound-guided and under sedation. It's short and outpatient.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.urmc, S.ccrm], tags: ["retrieval", "ivf"] },
+  { slug: "ropa", kind: "glosario", title: "What is the ROPA method?", hook: "Shared motherhood: one provides the egg, the other carries.", summary: "The ROPA method (Reception of Oocytes from the Partner) lets a female couple share motherhood: one provides the eggs and the other carries the pregnancy. It's regulated in Spain.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.sef], tags: ["ropa", "legal"] },
+  { slug: "ovodonacion-anonima", kind: "glosario", title: "What does anonymous donation mean?", hook: "Donor and recipient don't know each other's identity.", summary: "In Spain egg donation is anonymous by law: neither the donor nor the recipient knows the other's identity, and only data such as blood group and age are shared. In other countries the regulation differs.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.sef, Ssrc.ivi], tags: ["donor", "legal"] },
 ];
 
 export const ALL_ARTICLES: Article[] = [...GLOSSARY, ...GLOSSARY_EXTRA, ...TREATMENTS, ...JOURNEYS, ...ECONOMICS];
@@ -384,13 +384,13 @@ export function toVideoScript(a: Article): VideoScript {
     scenes.push({ voiceover: `${s.title}: ${s.detail}`, on_screen: s.title + (s.typical_duration ? ` · ${s.typical_duration}` : "") }),
   );
   (a.differences ?? []).forEach((d) =>
-    scenes.push({ voiceover: `Diferencia con ${d.vs}: ${d.note}`, on_screen: `vs ${d.vs}` }),
+    scenes.push({ voiceover: `Difference from ${d.vs}: ${d.note}`, on_screen: `vs ${d.vs}` }),
   );
   return {
     title: a.title,
     hook: a.hook,
     scenes,
-    cta: "Descúbrelo con tu situación en Fertility Compass.",
+    cta: "See it for your own situation on Fertility Compass.",
     disclaimer: a.disclaimer,
     sources: a.sources,
   };

@@ -22,7 +22,7 @@ export default function LearnArticle() {
         <h1 className="text-2xl font-bold">Article not found</h1>
         <p className="text-muted-foreground">This explainer doesn't exist or was moved.</p>
         <Button asChild variant="outline">
-          <Link to="/aprende"><ArrowLeft className="size-4 mr-1" /> Back to Learn</Link>
+          <Link to="/learn"><ArrowLeft className="size-4 mr-1" /> Back to Learn</Link>
         </Button>
       </div>
     );
@@ -32,7 +32,7 @@ export default function LearnArticle() {
 
   return (
     <article className="container max-w-2xl py-10 space-y-6">
-      <Link to="/aprende" className="text-sm text-muted-foreground hover:text-primary inline-flex items-center gap-1">
+      <Link to="/learn" className="text-sm text-muted-foreground hover:text-primary inline-flex items-center gap-1">
         <ArrowLeft className="size-4" /> Learn
       </Link>
 
