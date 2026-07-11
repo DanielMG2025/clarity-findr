@@ -45,9 +45,15 @@ export interface Scenario {
 
 export type Confidence = "low" | "medium" | "high";
 
+import type { Citation, PriceEstimate } from "@/modules/provenance";
+
 export interface ScenarioBundle {
   profile: PricingProfile;
   scenarios: Scenario[];
   confidence: Confidence;
   notes: string[];
+  /** Server-provided provenance estimate when available; null/absent in cold-start. */
+  estimate?: PriceEstimate | null;
+  /** Citations behind the provenance estimate, surfaced in the data-sources panel. */
+  citations?: Citation[];
 }

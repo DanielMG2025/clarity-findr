@@ -130,7 +130,7 @@ export function PricingConfigurator() {
       {/* PERSONALIZED + DATA SOURCES (list) */}
       <section className="grid md:grid-cols-2 gap-6">
         <PersonalizedExplanation bundle={bundle} />
-        <DataSourcesPanel />
+        <DataSourcesPanel citations={bundle.citations} />
       </section>
 
       {/* DATA SOURCE WEIGHTS — visualizes how much each source drives the estimate */}

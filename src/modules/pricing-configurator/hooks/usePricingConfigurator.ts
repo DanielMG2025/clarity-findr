@@ -1,6 +1,8 @@
 import { useEffect, useMemo } from "react";
 import { buildScenarios } from "../logic/scenarios";
+import { blendProvenance } from "../logic/blendProvenance";
 import type { PricingProfile, ScenarioBundle, TreatmentKey } from "../logic/types";
+import { useProvenanceEstimate } from "./useProvenanceEstimate";
 import { useProfileStore } from "@/modules/profile/store";
 import { usePricingStore } from "@/modules/pricing/store";
 
@@ -41,7 +43,13 @@ export function usePricingConfigurator() {
     pricing.storage_years,
   ]);
 
-  const bundle: ScenarioBundle = useMemo(() => buildScenarios(data), [data]);
+  // Server-provided provenance estimate (dormant unless enabled + data exists).
+  const estimate = useProvenanceEstimate(data);
+
+  const bundle: ScenarioBundle = useMemo(
+    () => blendProvenance(buildScenarios(data), estimate),
+    [data, estimate],
+  );
 
   // Patch helper: writes profile-level fields to the profile store and
   // pricing-extras to the pricing store so they remain the single sources of truth.
