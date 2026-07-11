@@ -117,14 +117,16 @@ export interface PriceEstimate {
 /** A curated statistic keyed by (metric, patient segment). */
 export interface EvidenceObservation {
   id: string;
-  /** e.g. "live_birth_rate_per_cycle_own_eggs". */
+  /** e.g. "clinical_pregnancy_per_transfer_own_eggs". */
   metric: string;
-  /** "any" matches every patient in that dimension. */
-  segment: { age_band: string; reserve: string };
+  /** "any" matches every patient in that dimension. reserve is optional. */
+  segment: { age_band: string; reserve?: string };
   value_min: number;
   value_max: number;
   unit: string;
   source_id: string;
+  /** Optional ISO date the figure is valid for. */
+  observed_at?: string;
 }
 
 export interface EvidenceCitation {
@@ -139,7 +141,7 @@ export interface EvidenceCitation {
 /** A cited, orientative statement derived from one EvidenceObservation. */
 export interface EvidenceStatement {
   metric: string;
-  segment: { age_band: string; reserve: string };
+  segment: { age_band: string; reserve?: string };
   value_min: number;
   value_max: number;
   unit: string;

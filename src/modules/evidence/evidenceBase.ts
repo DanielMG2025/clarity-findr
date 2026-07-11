@@ -16,6 +16,7 @@ import {
   type EvidenceObservation,
   type EvidenceStatement,
 } from "@/modules/provenance/types";
+import { EVIDENCE_SEED, EVIDENCE_SEED_SOURCES } from "./evidenceSeed";
 
 // ---------------------------------------------------------------------------
 // 1) Source catalogue — curated, versioned, human-reviewed
@@ -71,7 +72,11 @@ export const EVIDENCE_SOURCES: Source[] = [
   },
 ];
 
-export const EVIDENCE_SOURCE_MAP = new Map(EVIDENCE_SOURCES.map((s) => [s.id, s]));
+// Merge the base guideline sources with the seed's cited datasets so both
+// statement citations (SEF/ESHRE-EIM) and route citations (ESHRE/ASRM) resolve.
+export const EVIDENCE_SOURCE_MAP = new Map(
+  [...EVIDENCE_SOURCES, ...EVIDENCE_SEED_SOURCES].map((s) => [s.id, s]),
+);
 
 // ---------------------------------------------------------------------------
 // 2) Patient segmentation — how we bucket a patient to look up evidence
@@ -191,8 +196,10 @@ export interface EvidenceResult {
 export function buildEvidence(q: EvidenceQuery): EvidenceResult {
   const seg = { age: ageBand(q.age), reserve: reserveBand(q.amh, q.afc) };
 
-  // pick observations whose segment is compatible with the patient
-  const matched = EVIDENCE_OBSERVATIONS.filter((o) => {
+  // Pick observations whose segment is compatible with the patient. We source
+  // from the curated EVIDENCE_SEED (real, cited figures) rather than the
+  // placeholder EVIDENCE_OBSERVATIONS, so statements show true, traceable data.
+  const matched = EVIDENCE_SEED.filter((o) => {
     const ab = o.segment.age_band;
     return ab === "any" || ab === seg.age;
   });

@@ -1,10 +1,6 @@
 import { describe, it, expect } from "vitest";
-import {
-  ageBand,
-  reserveBand,
-  buildEvidence,
-  EVIDENCE_OBSERVATIONS,
-} from "./evidenceBase";
+import { ageBand, reserveBand, buildEvidence } from "./evidenceBase";
+import { EVIDENCE_SEED, EVIDENCE_SEED_SOURCES } from "./evidenceSeed";
 
 describe("segmentation", () => {
   it("buckets age into bands (and defaults when unknown)", () => {
@@ -44,12 +40,18 @@ describe("buildEvidence", () => {
     }
   });
 
-  it("GUARDRAIL: placeholder figures are all flagged provisional (no invented numbers shipped)", () => {
-    // Every seeded observation is a 0.0 placeholder until a reviewer fills it.
-    expect(EVIDENCE_OBSERVATIONS.every((o) => o.value_max === 0)).toBe(true);
-    const r = buildEvidence({ age: 39 });
+  it("surfaces the real (non-provisional) seed figures, labelled per transfer", () => {
+    const r = buildEvidence({ age: 39 }); // 38-40 band
     expect(r.statements.length).toBeGreaterThan(0);
-    expect(r.statements.every((s) => s.provisional)).toBe(true);
+    expect(r.statements.some((s) => !s.provisional)).toBe(true);
+    for (const s of r.statements) {
+      if (!s.provisional) {
+        expect(s.value_min).toBeGreaterThan(0);
+        expect(s.value_max).toBeLessThanOrEqual(1);
+        // Honest labelling: clinical pregnancy PER TRANSFER, not live birth/cycle.
+        expect(s.metric).toMatch(/per_transfer/);
+      }
+    }
   });
 
   it("surfaces donor + further-testing routes for an older, unassessed patient", () => {
@@ -73,5 +75,20 @@ describe("buildEvidence", () => {
     expect(r.report_intro).toMatch(/orientativo/i);
     expect(r.report_intro).toContain("<35");
     expect(r.report_intro).toContain("normal");
+  });
+});
+
+describe("evidence seed integrity", () => {
+  it("references only sources that exist", () => {
+    const known = new Set(EVIDENCE_SEED_SOURCES.map((s) => s.id));
+    for (const o of EVIDENCE_SEED) expect(known.has(o.source_id)).toBe(true);
+  });
+
+  it("holds real fractions in (0,1] with min <= max", () => {
+    for (const o of EVIDENCE_SEED) {
+      expect(o.value_min).toBeGreaterThan(0);
+      expect(o.value_max).toBeLessThanOrEqual(1);
+      expect(o.value_min).toBeLessThanOrEqual(o.value_max);
+    }
   });
 });

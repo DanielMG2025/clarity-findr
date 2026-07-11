@@ -23,6 +23,9 @@ const RESERVE_LABEL: Record<string, string> = {
 const METRIC_LABEL: Record<string, string> = {
   live_birth_rate_per_cycle_own_eggs: "Live birth rate per cycle (own eggs)",
   live_birth_rate_per_cycle_donor_eggs: "Live birth rate per cycle (donor eggs)",
+  clinical_pregnancy_per_transfer_own_eggs: "Clinical pregnancy per transfer (own eggs)",
+  clinical_pregnancy_per_transfer_donor_eggs: "Clinical pregnancy per transfer (donor eggs)",
+  clinical_pregnancy_per_transfer_europe_context: "European average per transfer (context)",
 };
 
 function humanizeMetric(metric: string): string {
