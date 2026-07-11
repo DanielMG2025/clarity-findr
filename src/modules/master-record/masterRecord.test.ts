@@ -27,9 +27,9 @@ describe("DEMO_PATIENTS", () => {
 
   it("covers the required data levels", () => {
     const levels = new Set(DEMO_PATIENTS.map((p) => p.data_level));
-    expect(levels).toContain("alto");
-    expect(levels).toContain("medio");
-    expect(levels).toContain("bajo");
+    expect(levels).toContain("high");
+    expect(levels).toContain("medium");
+    expect(levels).toContain("low");
   });
 });
 
@@ -59,9 +59,9 @@ describe("buildDemoRecord", () => {
 
 describe("completeness", () => {
   it("scores richer profiles higher than sparse ones", () => {
-    const alto = DEMO_PATIENTS.find((p) => p.data_level === "alto")!;
-    const bajo = DEMO_PATIENTS.find((p) => p.data_level === "bajo")!;
-    expect(completeness(alto)).toBeGreaterThan(completeness(bajo));
+    const high = DEMO_PATIENTS.find((p) => p.data_level === "high")!;
+    const low = DEMO_PATIENTS.find((p) => p.data_level === "low")!;
+    expect(completeness(high)).toBeGreaterThan(completeness(low));
   });
 
   it("returns 0..100", () => {
@@ -73,7 +73,7 @@ describe("completeness", () => {
   });
 
   it("counts an all-empty seed as low completeness", () => {
-    const bare = { key: "x", label: "x", data_level: "bajo", name: "x", age: 30, country: "ES" } as DemoPatientSeed;
+    const bare = { key: "x", label: "x", data_level: "low", name: "x", age: 30, country: "ES" } as DemoPatientSeed;
     // only age filled → 1/9
     expect(completeness(bare)).toBeLessThan(20);
   });

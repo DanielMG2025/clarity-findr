@@ -36,14 +36,14 @@ describe("content library", () => {
 
 describe("getArticle", () => {
   it("finds by slug and returns undefined for unknowns", () => {
-    expect(getArticle("fiv-paso-a-paso")?.title).toBe("IVF, step by step");
+    expect(getArticle("ivf-step-by-step")?.title).toBe("IVF, step by step");
     expect(getArticle("does-not-exist")).toBeUndefined();
   });
 });
 
 describe("toVideoScript", () => {
   it("builds a scene per summary + step + difference and keeps disclaimer/sources", () => {
-    const a = getArticle("fiv-paso-a-paso")!;
+    const a = getArticle("ivf-step-by-step")!;
     const v = toVideoScript(a);
     // 1 (summary) + steps + differences
     expect(v.scenes.length).toBe(1 + (a.steps?.length ?? 0) + (a.differences?.length ?? 0));
@@ -54,7 +54,7 @@ describe("toVideoScript", () => {
   });
 
   it("handles articles with no steps/differences (summary-only scene)", () => {
-    const v = toVideoScript(getArticle("amh")!);
+    const v = toVideoScript(getArticle("what-is-amh")!);
     expect(v.scenes).toHaveLength(1);
   });
 });

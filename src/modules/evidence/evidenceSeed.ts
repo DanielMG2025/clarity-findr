@@ -17,22 +17,22 @@ export const EVIDENCE_SEED_SOURCES: Source[] = [
   {
     id: "sef_2025",
     kind: "scientific",
-    label: "Sociedad Española de Fertilidad (SEF) — tasas por transferencia",
+    label: "Spanish Fertility Society (SEF) — rates per transfer",
     url: "https://www.sefertilidad.net/",
     market: "ES",
     as_of: "2025",
     weight: 0.9,
-    usage_note: "Tasa de embarazo clínico por transferencia. Citar como orientativo.",
+    usage_note: "Clinical pregnancy rate per transfer. Cite as orientative.",
   },
   {
     id: "eshre_eim_2023",
     kind: "scientific",
-    label: "ESHRE / EIM — ART in Europe (registro), datos 2023",
+    label: "ESHRE / EIM — ART in Europe (registry), 2023 data",
     url: "https://www.eshre.eu/",
     market: "EU",
     as_of: "2023",
     weight: 0.95,
-    usage_note: "PR por transferencia agregada Europa. No reproducir texto; citar tabla.",
+    usage_note: "Aggregate PR per transfer, Europe. Don't reproduce text; cite the table.",
   },
 ];
 
@@ -119,4 +119,4 @@ export const EVIDENCE_SEED: EvidenceObservation[] = [
 // birth can approach ~70% after several cycles. Kept separate to avoid mixing
 // per-transfer with cumulative figures.
 export const EVIDENCE_CUMULATIVE_NOTE =
-  "Contexto: la tasa acumulada de recién nacido vivo en <35 puede acercarse al ~70% tras varios ciclos (literatura europea). Es acumulada, no por transferencia.";
+  "Context: the cumulative live-birth rate under 35 can approach ~70% after several cycles (European literature). It's cumulative, not per transfer.";

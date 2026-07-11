@@ -221,9 +221,9 @@ export function buildEvidence(q: EvidenceQuery): EvidenceResult {
     statements,
     routes,
     report_intro:
-      `Este resumen es orientativo y educativo — no es un diagnóstico ni sustituye el criterio de un profesional. ` +
-      `Se basa en estadísticas publicadas y guías que puedes consultar directamente en las fuentes citadas. ` +
-      `Tu perfil se ha situado en el grupo de edad ${seg.age} y reserva ${translateReserve(seg.reserve)}.`,
+      `This summary is orientative and educational — it is not a diagnosis and does not replace a professional's judgement. ` +
+      `It is based on published statistics and guidelines you can consult directly in the cited sources. ` +
+      `Your profile has been placed in the ${seg.age} age group with ${translateReserve(seg.reserve)} reserve.`,
   };
 }
 
@@ -232,9 +232,9 @@ export function buildEvidence(q: EvidenceQuery): EvidenceResult {
 // ---------------------------------------------------------------------------
 
 function localeLocator(o: EvidenceObservation): string {
-  return `metric: ${o.metric} · segmento: ${Object.values(o.segment).join(", ")}`;
+  return `metric: ${o.metric} · segment: ${Object.values(o.segment).join(", ")}`;
 }
 
 function translateReserve(r: ReserveBand): string {
-  return { low: "baja", normal: "normal", high: "alta", unknown: "sin determinar" }[r];
+  return { low: "low", normal: "normal", high: "high", unknown: "undetermined" }[r];
 }

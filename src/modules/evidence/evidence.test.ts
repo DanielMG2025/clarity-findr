@@ -72,7 +72,7 @@ describe("buildEvidence", () => {
 
   it("writes an orientative intro naming the segment", () => {
     const r = buildEvidence({ age: 30, amh: 2.0 });
-    expect(r.report_intro).toMatch(/orientativo/i);
+    expect(r.report_intro).toMatch(/orientative/i);
     expect(r.report_intro).toContain("<35");
     expect(r.report_intro).toContain("normal");
   });

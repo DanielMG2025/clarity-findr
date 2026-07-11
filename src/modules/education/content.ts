@@ -57,7 +57,7 @@ const S = {
 // ---------------------------------------------------------------------------
 export const GLOSSARY: Article[] = [
   {
-    slug: "que-es-fiv",
+    slug: "what-is-ivf",
     kind: "glosario",
     title: "What is IVF?",
     hook: "Joining egg and sperm in the lab, not in the body.",
@@ -69,7 +69,7 @@ export const GLOSSARY: Article[] = [
     tags: ["ivf", "basics"],
   },
   {
-    slug: "que-es-icsi",
+    slug: "what-is-icsi",
     kind: "glosario",
     title: "What is ICSI?",
     hook: "An IVF where a single sperm is injected into the egg.",
@@ -82,7 +82,7 @@ export const GLOSSARY: Article[] = [
     tags: ["icsi", "male-factor"],
   },
   {
-    slug: "que-es-iui",
+    slug: "what-is-iui",
     kind: "glosario",
     title: "What is IUI (insemination)?",
     hook: "Placing prepared semen inside the uterus at ovulation.",
@@ -95,7 +95,7 @@ export const GLOSSARY: Article[] = [
     tags: ["iui", "basics"],
   },
   {
-    slug: "que-es-pgt-a",
+    slug: "what-is-pgt-a",
     kind: "glosario",
     title: "What is PGT-A (embryo genetic testing)?",
     hook: "Checking the embryo's chromosomes before transferring it.",
@@ -108,7 +108,7 @@ export const GLOSSARY: Article[] = [
     tags: ["pgt", "genetics"],
   },
   {
-    slug: "que-es-ovodonacion",
+    slug: "what-is-egg-donation",
     kind: "glosario",
     title: "What is egg donation?",
     hook: "An IVF with a donor's eggs instead of your own.",
@@ -120,7 +120,7 @@ export const GLOSSARY: Article[] = [
     tags: ["egg-donation", "donor"],
   },
   {
-    slug: "que-es-vitrificacion",
+    slug: "what-is-vitrification",
     kind: "glosario",
     title: "What is vitrification (freezing)?",
     hook: "Freezing eggs or embryos very fast to use them later.",
@@ -138,7 +138,7 @@ export const GLOSSARY: Article[] = [
 // ---------------------------------------------------------------------------
 export const TREATMENTS: Article[] = [
   {
-    slug: "fiv-paso-a-paso",
+    slug: "ivf-step-by-step",
     kind: "tratamiento",
     title: "IVF, step by step",
     hook: "From the first consultation to the embryo in the uterus, explained simply.",
@@ -167,7 +167,7 @@ export const TREATMENTS: Article[] = [
     tags: ["ivf", "journey"],
   },
   {
-    slug: "congelacion-ovulos-paso-a-paso",
+    slug: "egg-freezing-step-by-step",
     kind: "tratamiento",
     title: "Freezing eggs, step by step",
     hook: "Preserve your fertility today to keep options open tomorrow.",
@@ -271,7 +271,7 @@ const Ssrc = {
 
 export const ECONOMICS: Article[] = [
   {
-    slug: "como-se-paga-congelacion",
+    slug: "how-egg-freezing-is-paid",
     kind: "negocio",
     title: "How egg freezing is paid for",
     hook: "A one-off payment for the cycle + an annual fee to keep them stored.",
@@ -297,7 +297,7 @@ export const ECONOMICS: Article[] = [
     tags: ["freezing", "economics", "subscription"],
   },
   {
-    slug: "compensacion-donante-ovulos",
+    slug: "donor-compensation-explained",
     kind: "negocio",
     title: "Being a donor: the compensation, explained properly",
     hook: "You're not paid for the eggs —that's prohibited—; the inconvenience is compensated.",
@@ -321,7 +321,7 @@ export const ECONOMICS: Article[] = [
     tags: ["donor", "egg-donation", "economics", "legal"],
   },
   {
-    slug: "como-se-financia-un-tratamiento",
+    slug: "how-a-treatment-is-financed",
     kind: "negocio",
     title: "How a treatment is financed",
     hook: "Payment in phases, multi-cycle packages and instalment financing.",
@@ -346,15 +346,15 @@ export const ECONOMICS: Article[] = [
 // Extended glossary (terms that show up unexplained in every clinic)
 // ---------------------------------------------------------------------------
 export const GLOSSARY_EXTRA: Article[] = [
-  { slug: "reserva-ovarica", kind: "glosario", title: "What is ovarian reserve?", hook: "Roughly, the 'quantity' of eggs you have left.", summary: "Ovarian reserve is an estimate of the quantity of available eggs. It's assessed mainly with AMH and the antral follicle count, and declines with age.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.eshre, S.sef], tags: ["reserve", "basics"] },
-  { slug: "amh", kind: "glosario", title: "What is AMH?", hook: "A blood test that gives a sense of your ovarian reserve.", summary: "Anti-Müllerian hormone (AMH) is a blood marker that helps estimate ovarian reserve. Low values suggest fewer available eggs, but don't predict success on their own.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.sef, S.eshre], tags: ["amh", "reserve"] },
-  { slug: "recuento-folicular", kind: "glosario", title: "What is the antral follicle count (AFC)?", hook: "Counting the small follicles in your ovaries by ultrasound.", summary: "The AFC is the number of antral follicles seen on ultrasound at the start of the cycle. Together with AMH, it helps estimate how you might respond to stimulation.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.eshre], tags: ["afc", "reserve"] },
-  { slug: "blastocisto", kind: "glosario", title: "What is a blastocyst?", hook: "The embryo at day 5–6, with better odds of implanting.", summary: "A blastocyst is the stage the embryo reaches around day 5–6 of culture. It usually has a better chance of implantation and is the usual moment for transfer or genetic testing.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.ccrm, S.urmc], tags: ["embryo", "lab"] },
-  { slug: "transferencia-fresco-congelado", kind: "glosario", title: "Fresh vs. frozen transfer", hook: "Transferring the embryo in the same cycle or thawing it later.", summary: "In a fresh transfer the embryo is placed in the same cycle; in a frozen one (FET) it's vitrified and transferred in a later cycle, preparing the uterus. Both are common.", reading_time_min: 1, differences: [{ vs: "each other", note: "Fresh = same cycle; frozen = later cycle with a prepared endometrium." }], disclaimer: CONTENT_DISCLAIMER, sources: [S.ccrm, S.monash], tags: ["transfer", "fet"] },
-  { slug: "estimulacion-ovarica", kind: "glosario", title: "What is ovarian stimulation?", hook: "Medication so several eggs mature in one cycle.", summary: "It's a few days of hormone injections so the ovaries produce several eggs at once (instead of one), with ultrasound monitoring. It's the first phase of an IVF or a freezing cycle.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.urmc, S.monash], tags: ["stimulation", "ivf"] },
-  { slug: "puncion-folicular", kind: "glosario", title: "What is egg retrieval (follicular puncture)?", hook: "Retrieving the eggs, under sedation and quickly.", summary: "The retrieval is the procedure that collects the eggs from the ovaries, ultrasound-guided and under sedation. It's short and outpatient.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.urmc, S.ccrm], tags: ["retrieval", "ivf"] },
-  { slug: "ropa", kind: "glosario", title: "What is the ROPA method?", hook: "Shared motherhood: one provides the egg, the other carries.", summary: "The ROPA method (Reception of Oocytes from the Partner) lets a female couple share motherhood: one provides the eggs and the other carries the pregnancy. It's regulated in Spain.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.sef], tags: ["ropa", "legal"] },
-  { slug: "ovodonacion-anonima", kind: "glosario", title: "What does anonymous donation mean?", hook: "Donor and recipient don't know each other's identity.", summary: "In Spain egg donation is anonymous by law: neither the donor nor the recipient knows the other's identity, and only data such as blood group and age are shared. In other countries the regulation differs.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.sef, Ssrc.ivi], tags: ["donor", "legal"] },
+  { slug: "what-is-ovarian-reserve", kind: "glosario", title: "What is ovarian reserve?", hook: "Roughly, the 'quantity' of eggs you have left.", summary: "Ovarian reserve is an estimate of the quantity of available eggs. It's assessed mainly with AMH and the antral follicle count, and declines with age.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.eshre, S.sef], tags: ["reserve", "basics"] },
+  { slug: "what-is-amh", kind: "glosario", title: "What is AMH?", hook: "A blood test that gives a sense of your ovarian reserve.", summary: "Anti-Müllerian hormone (AMH) is a blood marker that helps estimate ovarian reserve. Low values suggest fewer available eggs, but don't predict success on their own.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.sef, S.eshre], tags: ["amh", "reserve"] },
+  { slug: "what-is-afc", kind: "glosario", title: "What is the antral follicle count (AFC)?", hook: "Counting the small follicles in your ovaries by ultrasound.", summary: "The AFC is the number of antral follicles seen on ultrasound at the start of the cycle. Together with AMH, it helps estimate how you might respond to stimulation.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.eshre], tags: ["afc", "reserve"] },
+  { slug: "what-is-blastocyst", kind: "glosario", title: "What is a blastocyst?", hook: "The embryo at day 5–6, with better odds of implanting.", summary: "A blastocyst is the stage the embryo reaches around day 5–6 of culture. It usually has a better chance of implantation and is the usual moment for transfer or genetic testing.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.ccrm, S.urmc], tags: ["embryo", "lab"] },
+  { slug: "fresh-vs-frozen-transfer", kind: "glosario", title: "Fresh vs. frozen transfer", hook: "Transferring the embryo in the same cycle or thawing it later.", summary: "In a fresh transfer the embryo is placed in the same cycle; in a frozen one (FET) it's vitrified and transferred in a later cycle, preparing the uterus. Both are common.", reading_time_min: 1, differences: [{ vs: "each other", note: "Fresh = same cycle; frozen = later cycle with a prepared endometrium." }], disclaimer: CONTENT_DISCLAIMER, sources: [S.ccrm, S.monash], tags: ["transfer", "fet"] },
+  { slug: "what-is-ovarian-stimulation", kind: "glosario", title: "What is ovarian stimulation?", hook: "Medication so several eggs mature in one cycle.", summary: "It's a few days of hormone injections so the ovaries produce several eggs at once (instead of one), with ultrasound monitoring. It's the first phase of an IVF or a freezing cycle.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.urmc, S.monash], tags: ["stimulation", "ivf"] },
+  { slug: "what-is-egg-retrieval", kind: "glosario", title: "What is egg retrieval (follicular puncture)?", hook: "Retrieving the eggs, under sedation and quickly.", summary: "The retrieval is the procedure that collects the eggs from the ovaries, ultrasound-guided and under sedation. It's short and outpatient.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.urmc, S.ccrm], tags: ["retrieval", "ivf"] },
+  { slug: "what-is-ropa-method", kind: "glosario", title: "What is the ROPA method?", hook: "Shared motherhood: one provides the egg, the other carries.", summary: "The ROPA method (Reception of Oocytes from the Partner) lets a female couple share motherhood: one provides the eggs and the other carries the pregnancy. It's regulated in Spain.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.sef], tags: ["ropa", "legal"] },
+  { slug: "anonymous-donation", kind: "glosario", title: "What does anonymous donation mean?", hook: "Donor and recipient don't know each other's identity.", summary: "In Spain egg donation is anonymous by law: neither the donor nor the recipient knows the other's identity, and only data such as blood group and age are shared. In other countries the regulation differs.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.sef, Ssrc.ivi], tags: ["donor", "legal"] },
 ];
 
 export const ALL_ARTICLES: Article[] = [...GLOSSARY, ...GLOSSARY_EXTRA, ...TREATMENTS, ...JOURNEYS, ...ECONOMICS];

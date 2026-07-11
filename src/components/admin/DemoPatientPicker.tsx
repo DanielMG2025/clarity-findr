@@ -9,9 +9,9 @@ import { useProfileStore } from "@/modules/profile/store";
 import { usePatientProfileStore } from "@/modules/patient-profile/store";
 
 const LEVEL_TONE: Record<DemoPatientSeed["data_level"], string> = {
-  alto: "bg-emerald-500/15 text-emerald-700 border-emerald-500/30",
-  medio: "bg-amber-500/15 text-amber-700 border-amber-500/30",
-  bajo: "bg-muted text-muted-foreground border-border",
+  high: "bg-emerald-500/15 text-emerald-700 border-emerald-500/30",
+  medium: "bg-amber-500/15 text-amber-700 border-amber-500/30",
+  low: "bg-muted text-muted-foreground border-border",
 };
 
 /** Replace the live stores with a demo seed, so the real engines react to it. */

@@ -7,26 +7,26 @@ import { DemoPatientPicker } from "@/components/admin/DemoPatientPicker";
 
 const DEMOS = [
   { icon: User, title: "Patient profile demo", route: "/profile",
-    desc: "Bloques de perfil del paciente: datos básicos, médicos, preferencias y documentos." },
+    desc: "Patient profile blocks: basic data, medical, preferences and documents." },
   { icon: Calculator, title: "Pricing configurator demo", route: "/pricing-lab",
-    desc: "Estimaciones por tratamiento, edad y país con escenarios básico/premium/garantía." },
+    desc: "Estimates by treatment, age and country with basic/premium/guarantee scenarios." },
   { icon: Building2, title: "Clinic comparison demo", route: "/clinics",
-    desc: "Comparador de clínicas con precios normalizados y señales de calidad." },
+    desc: "Clinic comparator with normalized prices and quality signals." },
   { icon: Sliders, title: "Pricing normalization demo", route: "/admin/normalize-prices",
-    desc: "Workbench de normalización: source → componentes → output." },
+    desc: "Normalization workbench: source → components → output." },
   { icon: Layout, title: "Widget demo", route: "/widgets/fiv-madrid?partner=demo&color=10b981",
-    desc: "Widget embebible FIV Madrid con co-branding por partner." },
+    desc: "Embeddable FIV Madrid widget with per-partner co-branding." },
   { icon: Briefcase, title: "Partner demo", route: "/admin/partners",
-    desc: "Panel de partners con métricas y generador de embed." },
+    desc: "Partner panel with metrics and an embed generator." },
   { icon: TrendingUp, title: "Investor demo", route: "/insights",
-    desc: "Insights de mercado y métricas agregadas para inversores." },
+    desc: "Market insights and aggregate metrics for investors." },
 ];
 
 const AdminDemo = () => {
   return (
     <AdminShell
       title="Demo Center"
-      subtitle="Atajos a las vistas clave del producto para presentaciones, pruebas e inversores."
+      subtitle="Shortcuts to the product's key views for presentations, testing and investors."
     >
       <DemoPatientPicker />
 
