@@ -35,9 +35,17 @@ export type Diagnosis =
 
 export type TreatmentOutcome = "none" | "miscarriage" | "live_birth" | "ongoing";
 
+// The MPR is the single superset store — it absorbs what the legacy profile /
+// patient-profile / pricing stores used to hold, so nothing else needs them.
+
+import type { FamilyStructure, RegulatoryOrientation } from "@/modules/regulatory";
+export type { FamilyStructure };
+
 export interface Identity {
   age?: number;
   country_of_residence?: string;
+  /** Regulatory-gate input (with country). */
+  family_structure?: FamilyStructure;
 }
 
 export interface Intent {
@@ -45,24 +53,59 @@ export interface Intent {
   treatment_interest?: TreatmentInterest;
   budget_eur?: number;
   donor_openness?: DonorOpenness;
+  // preferences
+  priority?: "cost" | "success" | "speed" | "balanced";
+  travel?: "home_only" | "regional" | "europe" | "global";
+  language?: string;
+  pgt_interest?: boolean;
+  // pricing add-ons
+  needs_icsi?: boolean;
+  needs_pgt?: boolean;
+  needs_vitrification?: boolean;
+  storage_years?: number;
 }
 
 export interface Clinical {
   amh?: number;
   afc?: number;
   fsh?: number;
+  bmi_band?: "under" | "normal" | "over" | "obese";
+  cycle_regularity?: "regular" | "irregular" | "absent";
   diagnosis?: Diagnosis[];
+  partner_sperm_quality?: "normal" | "mild" | "severe" | "unknown";
 }
 
 export interface HistoryItem {
   id: string;
   treatment: string;
   outcome: TreatmentOutcome;
+  year?: number;
+  clinic?: string;
+  notes?: string;
+}
+
+export interface ProfileDocument {
+  id: string;
+  name: string;
+  category: "quote" | "lab" | "report" | "other";
+  size?: number;
+  added_at: string;
+}
+
+export interface SharedQuote {
+  id: string;
+  clinic_name: string;
+  treatment_type: string;
+  total_price: number;
+  country?: string;
+  added_at: string;
 }
 
 export interface Derived {
   /** Profile completeness 0–100, drives the confidence story. */
   completion_score?: number;
+  /** Regulatory orientation result (step 2 legal half), cached for handoff. */
+  orientation?: RegulatoryOrientation | null;
 }
 
 export interface MasterPatientRecord {
@@ -71,6 +114,8 @@ export interface MasterPatientRecord {
   intent: Intent;
   clinical: Clinical;
   history: HistoryItem[];
+  documents: ProfileDocument[];
+  shared_quotes: SharedQuote[];
   derived: Derived;
 }
 
@@ -82,6 +127,8 @@ export function emptyRecord(): MasterPatientRecord {
     intent: {},
     clinical: {},
     history: [],
+    documents: [],
+    shared_quotes: [],
     derived: {},
   };
 }
