@@ -1,5 +1,3 @@
-import type { ProfileState } from "@/modules/profile/store";
-import type { PatientProfileState } from "./store";
 import type { MasterPatientRecord } from "@/modules/master-record";
 import { User2, Stethoscope, History, SlidersHorizontal, FileText, Receipt, type LucideIcon } from "lucide-react";
 
@@ -72,52 +70,6 @@ export const BLOCKS: BlockMeta[] = [
   },
 ];
 
-export function basicCompleted(p: ProfileState): boolean {
-  return !!(p.age && p.treatment && p.country && p.budget);
-}
-
-export function medicalCompleted(m: PatientProfileState["medical"]): boolean {
-  return Object.values(m).some((v) => v !== undefined && (Array.isArray(v) ? v.length > 0 : true));
-}
-
-export function blockProgress(
-  key: BlockKey,
-  profile: ProfileState,
-  pp: PatientProfileState,
-): number {
-  switch (key) {
-    case "basic": {
-      const fields = [profile.age, profile.treatment, profile.country, profile.budget, profile.trying];
-      const filled = fields.filter((x) => x !== "" && x !== undefined && x !== null && x !== 0).length;
-      return Math.round((filled / fields.length) * 100);
-    }
-    case "medical": {
-      const m = pp.medical;
-      const fields = [m.amh, m.fsh, m.afc, m.bmi_band, m.cycle_regularity, m.diagnosis?.length, m.partner_sperm_quality];
-      const filled = fields.filter((x) => x !== undefined && x !== 0).length;
-      return Math.round((filled / fields.length) * 100);
-    }
-    case "history":
-      return pp.history.length === 0 ? 0 : Math.min(100, pp.history.length * 50);
-    case "preferences": {
-      const p = pp.preferences;
-      const fields = [p.priority, p.travel, p.language, p.donor_openness, p.pgt_interest];
-      const filled = fields.filter((x) => x !== undefined).length;
-      return Math.round((filled / fields.length) * 100);
-    }
-    case "documents":
-      return pp.documents.length === 0 ? 0 : Math.min(100, pp.documents.length * 50);
-    case "quotes":
-      return pp.sharedQuotes.length === 0 ? 0 : Math.min(100, pp.sharedQuotes.length * 50);
-  }
-}
-
-export function overallCompletion(profile: ProfileState, pp: PatientProfileState): number {
-  const total = BLOCKS.reduce((sum, b) => sum + (blockProgress(b.key, profile, pp) / 100) * b.weight, 0);
-  return Math.round(total);
-}
-
-// --- Master Patient Record variants (the migration target) -----------------
 export function blockProgressMPR(key: BlockKey, mpr: MasterPatientRecord): number {
   switch (key) {
     case "basic": {

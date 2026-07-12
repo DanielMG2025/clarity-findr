@@ -178,7 +178,7 @@ export default function AdminDemoRun() {
               const a = getArticle(slug);
               return (
                 <Button key={slug} asChild size="sm" variant="outline" className="gap-1">
-                  <Link to={`/learn/${slug}`}>{a?.title ?? slug} <ArrowRight className="size-3" /></Link>
+                  <Link to={`/aprende/${slug}`}>{a?.title ?? slug} <ArrowRight className="size-3" /></Link>
                 </Button>
               );
             })}

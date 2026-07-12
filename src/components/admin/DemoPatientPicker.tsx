@@ -61,10 +61,10 @@ export function DemoPatientPicker() {
               <Button asChild size="sm" variant="secondary" className="gap-1">
                 <Link to={`/admin/demo/run/${p.key}`}><ListChecks className="size-3.5" /> Full run</Link>
               </Button>
-              <Button size="sm" variant="outline" className="gap-1" onClick={() => loadAndGo(p, "/clarity-assessment")}>
+              <Button size="sm" variant="outline" className="gap-1" onClick={() => loadAndGo(p, "/orientacion")}>
                 <Compass className="size-3.5" /> Orientation
               </Button>
-              <Button size="sm" variant="outline" className="gap-1" onClick={() => loadAndGo(p, "/pricing-lab")}>
+              <Button size="sm" variant="outline" className="gap-1" onClick={() => loadAndGo(p, "/costes")}>
                 <Wallet className="size-3.5" /> Pricing
               </Button>
             </div>

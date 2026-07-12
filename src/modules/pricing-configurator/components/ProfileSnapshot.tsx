@@ -16,7 +16,7 @@ interface Props {
 /**
  * Compact, read-mostly panel that surfaces the inputs the configurator is
  * currently using. The patient profile remains the single source of truth —
- * deeper edits are made on /profile.
+ * deeper edits are made on /situacion.
  */
 export function ProfileSnapshot({ profile, patch }: Props) {
   return (
@@ -32,7 +32,7 @@ export function ProfileSnapshot({ profile, patch }: Props) {
           </div>
         </div>
         <Button asChild size="sm" variant="outline" className="gap-1">
-          <Link to="/profile">Edit <ArrowRight className="size-3.5" /></Link>
+          <Link to="/situacion">Edit <ArrowRight className="size-3.5" /></Link>
         </Button>
       </div>
 

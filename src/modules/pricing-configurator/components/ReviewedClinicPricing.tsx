@@ -158,7 +158,7 @@ export function ReviewedClinicPricing() {
             <Info className="size-4 mt-0.5 shrink-0" />
             <div className="flex-1">
               Completa más datos de tu perfil para afinar esta estimación.
-              <Link to="/profile" className="underline ml-1 font-medium">Ir a mi perfil</Link>
+              <Link to="/situacion" className="underline ml-1 font-medium">Ir a mi perfil</Link>
             </div>
           </div>
         )}
@@ -236,10 +236,10 @@ export function ReviewedClinicPricing() {
                   </div>
                   <div className="flex gap-2">
                     <Button size="sm" variant="outline" asChild>
-                      <Link to="/clinics">Comparar clínicas</Link>
+                      <Link to="/clinicas">Comparar clínicas</Link>
                     </Button>
                     <Button size="sm" asChild>
-                      <Link to={`/clinics?contact=${encodeURIComponent(c.clinic)}`}>
+                      <Link to={`/clinicas?contact=${encodeURIComponent(c.clinic)}`}>
                         <MessageSquare className="size-3.5 mr-1" /> Solicitar contacto
                       </Link>
                     </Button>
@@ -266,10 +266,10 @@ export function ReviewedClinicPricing() {
 
         <div className="flex flex-wrap gap-2 justify-end">
           <Button variant="outline" asChild>
-            <Link to="/clinics">Comparar clínicas</Link>
+            <Link to="/clinicas">Comparar clínicas</Link>
           </Button>
           <Button asChild>
-            <Link to="/clinics?contact=1">
+            <Link to="/clinicas?contact=1">
               Solicitar contacto <ArrowRight className="size-4 ml-1" />
             </Link>
           </Button>

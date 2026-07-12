@@ -16,7 +16,7 @@ const CATEGORIES: { kind: Article["kind"]; label: string; blurb: string }[] = [
 function ArticleCard({ a }: { a: Article }) {
   return (
     <Card className="p-4 hover:border-primary/40 transition-smooth flex flex-col gap-2">
-      <Link to={`/learn/${a.slug}`} className="font-semibold hover:text-primary">
+      <Link to={`/aprende/${a.slug}`} className="font-semibold hover:text-primary">
         {a.title}
       </Link>
       <p className="text-sm text-muted-foreground leading-relaxed">{a.hook}</p>

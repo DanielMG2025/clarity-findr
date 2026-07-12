@@ -52,8 +52,8 @@ const AccountPatient = () => {
             </p>
           </div>
           <div className="flex gap-2">
-            <Button asChild variant="outline" size="sm"><Link to="/clinics">View ranked clinics</Link></Button>
-            <Button asChild size="sm"><Link to="/profile">Refine my profile</Link></Button>
+            <Button asChild variant="outline" size="sm"><Link to="/clinicas">View ranked clinics</Link></Button>
+            <Button asChild size="sm"><Link to="/situacion">Refine my profile</Link></Button>
           </div>
         </div>
 
@@ -134,7 +134,7 @@ const AccountPatient = () => {
             <Card className="p-4 bg-muted/30 border-dashed">
               <p className="text-sm">
                 Adding more biomarkers improves your match precision.{" "}
-                <Link to="/partners" className="text-primary font-medium underline-offset-4 hover:underline">
+                <Link to="/asesoramiento" className="text-primary font-medium underline-offset-4 hover:underline">
                   Browse recommended partners →
                 </Link>
               </p>

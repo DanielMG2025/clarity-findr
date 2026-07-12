@@ -60,7 +60,7 @@ export default function Landing() {
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <Button asChild size="lg" className="gap-2">
-              <Link to="/profile">Start my assessment <ArrowRight className="size-4" /></Link>
+              <Link to="/situacion">Start my assessment <ArrowRight className="size-4" /></Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="gap-2">
               <Link to="#how-it-works">See how it works</Link>
@@ -167,10 +167,10 @@ export default function Landing() {
           </p>
           <div className="flex flex-wrap justify-center gap-3 pt-2">
             <Button asChild size="lg" variant="secondary" className="gap-2">
-              <Link to="/profile">Start my assessment <ArrowRight className="size-4" /></Link>
+              <Link to="/situacion">Start my assessment <ArrowRight className="size-4" /></Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="gap-2 bg-transparent border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10">
-              <Link to="/pricing-lab"><Sparkles className="size-4" /> Explore costs</Link>
+              <Link to="/costes"><Sparkles className="size-4" /> Explore costs</Link>
             </Button>
           </div>
         </div>

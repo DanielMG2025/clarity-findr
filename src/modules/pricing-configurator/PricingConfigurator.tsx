@@ -81,7 +81,7 @@ export function PricingConfigurator() {
             </div>
           </div>
           <Button asChild size="sm" variant={completion < 70 ? "default" : "outline"}>
-            <Link to="/profile">Improve profile <ArrowRight className="size-3.5 ml-1" /></Link>
+            <Link to="/situacion">Improve profile <ArrowRight className="size-3.5 ml-1" /></Link>
           </Button>
         </div>
         <Progress value={Math.max(completion, 4)} className="h-2" />
@@ -165,7 +165,7 @@ export function PricingConfigurator() {
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" onClick={saveEstimate} className="gap-1.5"><Save className="size-4" /> Save estimate</Button>
             <Button variant="outline" asChild className="gap-1.5"><Link to="/community"><Users className="size-4" /> See experiences</Link></Button>
-            <Button asChild className="gap-1.5"><Link to="/clinics">See matching clinics <ArrowRight className="size-4" /></Link></Button>
+            <Button asChild className="gap-1.5"><Link to="/clinicas">See matching clinics <ArrowRight className="size-4" /></Link></Button>
           </div>
         </div>
       </section>

@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { DemoPatientPicker } from "@/components/admin/DemoPatientPicker";
 
 const DEMOS = [
-  { icon: User, title: "Patient profile demo", route: "/profile",
+  { icon: User, title: "Patient profile demo", route: "/situacion",
     desc: "Patient profile blocks: basic data, medical, preferences and documents." },
-  { icon: Calculator, title: "Pricing configurator demo", route: "/pricing-lab",
+  { icon: Calculator, title: "Pricing configurator demo", route: "/costes",
     desc: "Estimates by treatment, age and country with basic/premium/guarantee scenarios." },
-  { icon: Building2, title: "Clinic comparison demo", route: "/clinics",
+  { icon: Building2, title: "Clinic comparison demo", route: "/clinicas",
     desc: "Clinic comparator with normalized prices and quality signals." },
   { icon: Sliders, title: "Pricing normalization demo", route: "/admin/normalize-prices",
     desc: "Normalization workbench: source → components → output." },

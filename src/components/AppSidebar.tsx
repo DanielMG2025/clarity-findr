@@ -14,14 +14,14 @@ import {
 } from "@/components/ui/sidebar";
 
 const items = [
-  { title: "My situation",        url: "/profile",            icon: Heart,        desc: "Your story and data" },
-  { title: "Success orientation", url: "/clarity-assessment", icon: Compass,      desc: "Factors that may influence" },
-  { title: "Costs",               url: "/pricing-lab",        icon: Wallet,       desc: "Price ranges explained" },
-  { title: "Clinics",             url: "/clinics",            icon: Building2,    desc: "Options that may fit" },
-  { title: "Guidance",            url: "/partners",           icon: Stethoscope,  desc: "Professionals and services" },
-  { title: "Community",           url: "/community",          icon: Users,        desc: "Real experiences" },
-  { title: "Learn",               url: "/learn",              icon: BookOpen,     desc: "Fertility, explained simply" },
-  { title: "My space",            url: "/account",            icon: LayoutDashboard, desc: "History and saved items" },
+  { title: "My situation",        url: "/situacion",     icon: Heart,        desc: "Your story and data" },
+  { title: "Success orientation", url: "/orientacion",   icon: Compass,      desc: "Factors that may influence" },
+  { title: "Costs",               url: "/costes",        icon: Wallet,       desc: "Price ranges explained" },
+  { title: "Clinics",             url: "/clinicas",      icon: Building2,    desc: "Options that may fit" },
+  { title: "Guidance",            url: "/asesoramiento", icon: Stethoscope,  desc: "Professionals and services" },
+  { title: "Community",           url: "/community",     icon: Users,        desc: "Real experiences" },
+  { title: "Learn",               url: "/aprende",       icon: BookOpen,     desc: "Fertility, explained simply" },
+  { title: "My space",            url: "/account",       icon: LayoutDashboard, desc: "History and saved items" },
 ];
 
 export function AppSidebar() {
