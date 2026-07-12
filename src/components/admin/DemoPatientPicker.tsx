@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Compass, Wallet, ListChecks } from "lucide-react";
-import { DEMO_PATIENTS, completeness, demoPatientToRecord, useMasterRecord, type DemoPatientSeed } from "@/modules/master-record";
+import { DEMO_PATIENTS, completeness, loadDemoPatient, type DemoPatientSeed } from "@/modules/master-record";
 
 const LEVEL_TONE: Record<DemoPatientSeed["data_level"], string> = {
   high: "bg-emerald-500/15 text-emerald-700 border-emerald-500/30",
@@ -11,22 +11,11 @@ const LEVEL_TONE: Record<DemoPatientSeed["data_level"], string> = {
   low: "bg-muted text-muted-foreground border-border",
 };
 
-/** Replace the live Master Patient Record with a demo seed, so the real engines react to it. */
-function loadPatient(seed: DemoPatientSeed) {
-  const m = demoPatientToRecord(seed);
-  const mpr = useMasterRecord.getState();
-  mpr.reset();
-  mpr.patchIdentity(m.identity);
-  mpr.patchIntent(m.intent);
-  mpr.patchClinical(m.clinical);
-  for (const h of m.history) mpr.addHistory(h);
-}
-
 export function DemoPatientPicker() {
   const navigate = useNavigate();
 
   const loadAndGo = (seed: DemoPatientSeed, to: string) => {
-    loadPatient(seed);
+    loadDemoPatient(seed);
     navigate(to);
   };
 

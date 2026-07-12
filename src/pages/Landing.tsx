@@ -69,6 +69,11 @@ export default function Landing() {
           <p className="text-xs text-muted-foreground pt-2 max-w-xl mx-auto">
             Orientation based on public data and on what you choose to share. It does not replace a medical consultation.
           </p>
+          <p className="text-xs pt-1">
+            <Link to="/demo" className="text-muted-foreground/70 hover:text-primary underline underline-offset-4">
+              Running a live demo? Load a sample patient →
+            </Link>
+          </p>
         </div>
       </section>
 

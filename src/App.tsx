@@ -23,11 +23,12 @@ import ClarityAssessment from "./pages/ClarityAssessment.tsx";
 import { GlossaryProvider } from "@/modules/education";
 import LearnIndex from "./pages/LearnIndex.tsx";
 import LearnArticle from "./pages/LearnArticle.tsx";
+import DemoRoom from "./pages/DemoRoom.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
 
-const PUBLIC_PATHS = new Set<string>(["/"]);
+const PUBLIC_PATHS = new Set<string>(["/", "/demo"]);
 
 function LayoutSwitch({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
@@ -55,8 +56,9 @@ const App = () => (
         <WithGlossary>
         <LayoutSwitch>
           <Routes>
-            {/* Public landing */}
+            {/* Public landing + demo room */}
             <Route path="/" element={<Landing />} />
+            <Route path="/demo" element={<DemoRoom />} />
 
             {/* Patient journey — the core modules */}
             <Route path="/situacion" element={<PatientProfile />} />
