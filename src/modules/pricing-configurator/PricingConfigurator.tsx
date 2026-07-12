@@ -22,9 +22,8 @@ import { HiddenCosts } from "./components/HiddenCosts";
 import { DataSourcesWeights } from "./components/DataSourcesWeights";
 import { GuaranteeProgramDetail } from "./components/GuaranteeProgramDetail";
 import { SideInfo } from "@/components/shared/SideInfo";
-import { useProfileStore } from "@/modules/profile/store";
-import { usePatientProfileStore } from "@/modules/patient-profile/store";
-import { overallCompletion, profileConfidence } from "@/modules/patient-profile/blocks";
+import { useMasterRecord } from "@/modules/master-record";
+import { overallCompletionMPR, profileConfidence } from "@/modules/patient-profile/blocks";
 import { toast } from "@/hooks/use-toast";
 import type { ScenarioKey } from "./logic/types";
 
@@ -32,9 +31,8 @@ export function PricingConfigurator() {
   const { profile, patch, bundle } = usePricingConfigurator();
   const [selected, setSelected] = useState<ScenarioKey>("premium");
   const [view, setView] = useState<"single" | "compare">("single");
-  const userProfile = useProfileStore();
-  const pp = usePatientProfileStore();
-  const completion = overallCompletion(userProfile, pp);
+  const mpr = useMasterRecord();
+  const completion = overallCompletionMPR(mpr);
   const confidence = profileConfidence(completion);
 
   const active = bundle.scenarios.find(s => s.key === selected) ?? bundle.scenarios[1];

@@ -3,9 +3,8 @@ import { ShieldCheck, Info, ArrowRight, MessageSquare, Calendar, AlertTriangle, 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useProfileStore } from "@/modules/profile/store";
-import { usePatientProfileStore } from "@/modules/patient-profile/store";
-import { overallCompletion } from "@/modules/patient-profile/blocks";
+import { useMasterRecord } from "@/modules/master-record";
+import { overallCompletionMPR } from "@/modules/patient-profile/blocks";
 
 type Confidence = "low" | "medium" | "high";
 type SourceLabel = "reviewed" | "public" | "external" | "pending";
@@ -134,9 +133,8 @@ const sourceMeta: Record<SourceLabel, { label: string; className: string; icon: 
 const fmt = (n: number) => `€${n.toLocaleString()}`;
 
 export function ReviewedClinicPricing() {
-  const userProfile = useProfileStore();
-  const pp = usePatientProfileStore();
-  const completion = overallCompletion(userProfile, pp);
+  const mpr = useMasterRecord();
+  const completion = overallCompletionMPR(mpr);
 
   return (
     <Card className="overflow-hidden">

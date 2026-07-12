@@ -2,9 +2,8 @@ import { useMemo } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, ExternalLink, FlaskConical, Route, ShieldCheck } from "lucide-react";
-import { useProfileStore } from "@/modules/profile/store";
-import { usePatientProfileStore } from "@/modules/patient-profile/store";
-import { buildEvidence, type RouteHint } from "@/modules/evidence";
+import { usePatientJourney } from "@/modules/master-record";
+import type { RouteHint } from "@/modules/evidence";
 
 const ROUTE_LABEL: Record<RouteHint["route"], string> = {
   ivf_own: "IVF with your own eggs",
@@ -36,19 +35,8 @@ function humanizeMetric(metric: string): string {
 }
 
 export function EvidenceBasePanel() {
-  const profile = useProfileStore();
-  const pp = usePatientProfileStore();
-
-  const evidence = useMemo(
-    () =>
-      buildEvidence({
-        age: profile.age,
-        amh: pp.medical.amh,
-        afc: pp.medical.afc,
-        prior_cycles: profile.priorFailedCycles ?? pp.history.length,
-      }),
-    [profile.age, pp.medical.amh, pp.medical.afc, profile.priorFailedCycles, pp.history.length],
-  );
+  // Same evidence the shared journey engine computes (buildEvidence under the hood).
+  const evidence = usePatientJourney().step2_orientation.evidence;
 
   // Distinct sources cited across statements + routes, for a references footer.
   const sources = useMemo(() => {

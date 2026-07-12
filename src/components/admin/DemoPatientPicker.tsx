@@ -3,10 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Compass, Wallet, ListChecks } from "lucide-react";
-import { DEMO_PATIENTS, completeness, type DemoPatientSeed } from "@/modules/master-record";
-import { demoPatientMapping } from "@/modules/master-record/toStores";
-import { useProfileStore } from "@/modules/profile/store";
-import { usePatientProfileStore } from "@/modules/patient-profile/store";
+import { DEMO_PATIENTS, completeness, demoPatientToRecord, useMasterRecord, type DemoPatientSeed } from "@/modules/master-record";
 
 const LEVEL_TONE: Record<DemoPatientSeed["data_level"], string> = {
   high: "bg-emerald-500/15 text-emerald-700 border-emerald-500/30",
@@ -14,18 +11,15 @@ const LEVEL_TONE: Record<DemoPatientSeed["data_level"], string> = {
   low: "bg-muted text-muted-foreground border-border",
 };
 
-/** Replace the live stores with a demo seed, so the real engines react to it. */
+/** Replace the live Master Patient Record with a demo seed, so the real engines react to it. */
 function loadPatient(seed: DemoPatientSeed) {
-  const m = demoPatientMapping(seed);
-  const profile = useProfileStore.getState();
-  profile.reset();
-  profile.patch(m.profile);
-
-  const pp = usePatientProfileStore.getState();
-  pp.reset();
-  pp.patchMedical(m.medical);
-  pp.patchPreferences(m.preferences);
-  for (const h of m.history) pp.addHistory(h);
+  const m = demoPatientToRecord(seed);
+  const mpr = useMasterRecord.getState();
+  mpr.reset();
+  mpr.patchIdentity(m.identity);
+  mpr.patchIntent(m.intent);
+  mpr.patchClinical(m.clinical);
+  for (const h of m.history) mpr.addHistory(h);
 }
 
 export function DemoPatientPicker() {

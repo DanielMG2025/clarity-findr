@@ -3,3 +3,5 @@ export * from "./types";
 export * from "./store";
 export * from "./demoPatients";
 export * from "./runDemo";
+export * from "./usePatientJourney";
+export * from "./toRecord";

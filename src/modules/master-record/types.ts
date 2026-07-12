@@ -42,6 +42,7 @@ import type { FamilyStructure, RegulatoryOrientation } from "@/modules/regulator
 export type { FamilyStructure };
 
 export interface Identity {
+  name?: string;
   age?: number;
   country_of_residence?: string;
   /** Regulatory-gate input (with country). */

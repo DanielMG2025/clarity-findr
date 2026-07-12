@@ -1,12 +1,11 @@
-// Demonstrator engine — walks a patient through the 7 steps, end-to-end
+// Patient-journey engine — the shared golden-path core
 // ---------------------------------------------------------------------------
-// Takes a patient (one of the 10 demo seeds or entered by hand) and produces
-// the EXPLAINABLE output of each golden-path step. It's the heart of the
-// demonstrator: one call -> everything to render.
+// computeJourney() produces the EXPLAINABLE output of each step from a normalized
+// JourneyInput. Both the demonstrator (runDemo, from a seed) and the real patient
+// pages (usePatientJourney, from the MPR) use it — one source of truth, no dupes.
 //
 // Golden rule throughout: no diagnosis, no personalised success percentages,
-// no "you should do X". Orientation + sources + the honest acknowledgement of
-// what we do NOT know.
+// no "you should do X". Orientation + sources + honest "what we don't know".
 
 import { estimate, IMPROVEMENT_PATH, type Plan, type Estimate } from "@/modules/component-pricing";
 import { buildEvidence, reserveBand, type EvidenceResult } from "@/modules/evidence";
@@ -16,10 +15,26 @@ import {
   type Need,
   type RegulatoryOrientation,
 } from "@/modules/regulatory";
+import type { Diagnosis, TreatmentInterest } from "./types";
 import { type DemoPatientSeed, completeness } from "./demoPatients";
 
 export const MEDICAL_DISCLAIMER =
   "This orientation is informational and does not constitute a diagnosis or replace a medical professional's judgement.";
+
+/** Normalized inputs the journey engine needs (from a seed OR the MPR). */
+export interface JourneyInput {
+  name?: string;
+  age?: number;
+  amh?: number;
+  afc?: number;
+  fsh?: number;
+  diagnosis?: Diagnosis[];
+  prior_ivf?: number;
+  prior_iui?: number;
+  treatment_interest?: TreatmentInterest;
+  family_structure?: FamilyStructure;
+  country?: string;
+}
 
 // --- Step 2: Orientation ----------------------------------------------------
 export type FactorKind = "favorable" | "attention" | "missing";
@@ -40,13 +55,13 @@ export interface Orientation {
   disclaimer: string;
 }
 
-function buildOrientation(p: DemoPatientSeed): Orientation {
+function buildOrientation(p: JourneyInput, completenessScore: number): Orientation {
   const factors: Factor[] = [];
   const age = p.age;
   const reserve = reserveBand(p.amh, p.afc);
 
   // --- favorable
-  if (age < 35) {
+  if (age != null && age < 35) {
     factors.push({ kind: "favorable", title: "Favorable age", why: `At ${age}, age is on your side: it's the factor that most influences outcomes.` });
   }
   if (reserve === "normal" || reserve === "high") {
@@ -58,10 +73,10 @@ function buildOrientation(p: DemoPatientSeed): Orientation {
   factors.push({ kind: "favorable", title: "You've started informing yourself early", why: "Seeking orientation proactively helps you decide with more room to manoeuvre." });
 
   // --- to keep in mind
-  if (age >= 38 && age <= 40) {
+  if (age != null && age >= 38 && age <= 40) {
     factors.push({ kind: "attention", title: "Age to keep in mind", why: `At ${age}, per-transfer rates decline compared with younger ages.`, needs_professional: true });
   }
-  if (age > 40) {
+  if (age != null && age > 40) {
     factors.push({ kind: "attention", title: "Advanced age for own eggs", why: `At ${age}, options with your own eggs narrow and egg donation often enters the conversation.`, needs_professional: true });
   }
   if (reserve === "low") {
@@ -93,7 +108,7 @@ function buildOrientation(p: DemoPatientSeed): Orientation {
   if (p.fsh == null) factors.push({ kind: "missing", title: "Hormone panel (FSH, estradiol)", why: "Helps complete the baseline hormonal assessment." });
   if (!p.diagnosis?.length) factors.push({ kind: "missing", title: "Confirmed diagnosis", why: "Without a diagnosis, the orientation is necessarily more generic." });
 
-  const c = completeness(p);
+  const c = completenessScore;
   const confidence = c >= 75 ? "high" : c >= 45 ? "medium" : "low";
   const missing = factors.filter((f) => f.kind === "missing").length;
   const confidence_reason =
@@ -113,17 +128,18 @@ function buildOrientation(p: DemoPatientSeed): Orientation {
 
 // --- Steps 3/4: routes and costs -------------------------------------------
 /** Plans to explore (NEVER a recommendation: they're cited options). */
-function suggestPlans(p: DemoPatientSeed): Plan[] {
+function suggestPlans(p: JourneyInput): Plan[] {
   const reserve = reserveBand(p.amh, p.afc);
   const plans: Plan[] = [];
 
   if (p.treatment_interest === "social_freezing") return ["egg_freezing"];
   if (p.treatment_interest === "egg_donation") return ["egg_donation", "ivf_icsi"];
 
-  if (p.age <= 42 && reserve !== "low") plans.push("ivf");
+  const age = p.age ?? 35;
+  if (age <= 42 && reserve !== "low") plans.push("ivf");
   if (p.diagnosis?.includes("male_factor") || (p.prior_ivf ?? 0) > 0) plans.push("ivf_icsi");
-  if (p.age >= 38 || (p.prior_ivf ?? 0) >= 2) plans.push("ivf_icsi_pgt");
-  if (p.age >= 41 || reserve === "low") plans.push("egg_donation");
+  if (age >= 38 || (p.prior_ivf ?? 0) >= 2) plans.push("ivf_icsi_pgt");
+  if (age >= 41 || reserve === "low") plans.push("egg_donation");
 
   if (!plans.length) plans.push("ivf");
   return [...new Set(plans)].slice(0, 3);
@@ -144,12 +160,11 @@ export interface ClinicFit {
 }
 
 /**
- * Anonymized REFERENCE clinics for the demonstrator — generic labels, never
- * real clinic names or tariffs. Fit is explained, not ranked opaquely. The
- * cheaper-market option is only offered when the patient's family structure is
- * legally eligible there (honesty over a "cheap but blocked" trap).
+ * Anonymized REFERENCE clinics — generic labels, never real clinic names or
+ * tariffs. Fit is explained, not ranked opaquely. The cheaper-market option is
+ * only offered when the family structure is legally eligible there.
  */
-function pickClinics(p: DemoPatientSeed): ClinicFit[] {
+function pickClinics(p: JourneyInput): ClinicFit[] {
   const donor = p.treatment_interest === "egg_donation";
   const heteroEligibleAbroad = (p.family_structure ?? "hetero_couple") === "hetero_couple";
 
@@ -187,7 +202,7 @@ function pickClinics(p: DemoPatientSeed): ClinicFit[] {
 
 // --- Step 0: regulatory gate ------------------------------------------------
 /** Derive the legal "needs" from the patient's intent + family structure. */
-function patientNeeds(p: DemoPatientSeed): Need[] {
+function patientNeeds(p: JourneyInput): Need[] {
   const fam = p.family_structure ?? "hetero_couple";
   const donorSperm = fam === "single_woman" || fam === "female_couple";
   switch (p.treatment_interest) {
@@ -205,9 +220,8 @@ function patientNeeds(p: DemoPatientSeed): Need[] {
   }
 }
 
-// --- Full result ------------------------------------------------------------
-export interface DemoRun {
-  patient: DemoPatientSeed;
+// --- The journey ------------------------------------------------------------
+export interface Journey {
   /** The legal gate: what's allowed where you live, and where else if not. */
   step0_regulatory: RegulatoryOrientation | null;
   step1_profile: { completeness: number; summary: string };
@@ -219,13 +233,12 @@ export interface DemoRun {
   improvement_path: string;
 }
 
-/** Run the full golden path for a patient. */
-export function runDemo(p: DemoPatientSeed, marketCode = "ES"): DemoRun {
-  // Step 0 — the legal gate runs first: it can make everything else moot.
+/** The full golden path from a normalized input — shared by demo + patient pages. */
+export function computeJourney(p: JourneyInput, completenessScore: number, marketCode = "ES"): Journey {
   const family: FamilyStructure = p.family_structure ?? "hetero_couple";
-  const regulatory = regulatoryOrientation(p.country, family, patientNeeds(p));
+  const regulatory = regulatoryOrientation(p.country ?? "", family, patientNeeds(p));
 
-  const orientation = buildOrientation(p);
+  const orientation = buildOrientation(p, completenessScore);
   const plans = suggestPlans(p);
 
   const costs: CostScenario[] = plans.map((plan) => ({
@@ -234,11 +247,10 @@ export function runDemo(p: DemoPatientSeed, marketCode = "ES"): DemoRun {
   }));
 
   return {
-    patient: p,
     step0_regulatory: regulatory,
     step1_profile: {
       completeness: orientation.completeness,
-      summary: `${p.name}, ${p.age}. ${p.diagnosis?.length ? "Diagnosis: " + p.diagnosis.join(", ") + "." : "No confirmed diagnosis."} Profile ${orientation.completeness}% complete.`,
+      summary: `${p.name ? p.name + ", " : ""}${p.age ?? "—"}. ${p.diagnosis?.length ? "Diagnosis: " + p.diagnosis.join(", ") + "." : "No confirmed diagnosis."} Profile ${orientation.completeness}% complete.`,
     },
     step2_orientation: orientation,
     step3_learn: learnFor(p, plans),
@@ -249,7 +261,17 @@ export function runDemo(p: DemoPatientSeed, marketCode = "ES"): DemoRun {
   };
 }
 
-function whyPlan(plan: Plan, p: DemoPatientSeed): string {
+// --- Demonstrator wrapper (from a seed) ------------------------------------
+export interface DemoRun extends Journey {
+  patient: DemoPatientSeed;
+}
+
+/** Run the full golden path for a demo patient. */
+export function runDemo(p: DemoPatientSeed, marketCode = "ES"): DemoRun {
+  return { patient: p, ...computeJourney(p, completeness(p), marketCode) };
+}
+
+function whyPlan(plan: Plan, p: JourneyInput): string {
   const reserve = reserveBand(p.amh, p.afc);
   switch (plan) {
     case "egg_freezing":
@@ -257,7 +279,7 @@ function whyPlan(plan: Plan, p: DemoPatientSeed): string {
     case "egg_donation":
       return reserve === "low"
         ? "It appears because your markers suggest a low reserve; the literature describes it as a common route in these cases."
-        : `It appears because of your age (${p.age}), a scenario where it often enters the conversation.`;
+        : `It appears because of your age (${p.age ?? "—"}), a scenario where it often enters the conversation.`;
     case "ivf_icsi_pgt":
       return "It appears because embryo genetic testing is often considered in profiles with advanced age or previous attempts.";
     case "ivf_icsi":
@@ -269,7 +291,7 @@ function whyPlan(plan: Plan, p: DemoPatientSeed): string {
   }
 }
 
-function learnFor(p: DemoPatientSeed, plans: Plan[]): string[] {
+function learnFor(p: JourneyInput, plans: Plan[]): string[] {
   const s = new Set<string>(["patient-journey"]);
   if (plans.includes("egg_freezing")) { s.add("egg-freezing-step-by-step"); s.add("how-egg-freezing-is-paid"); }
   if (plans.includes("egg_donation")) { s.add("what-is-egg-donation"); s.add("anonymous-donation"); }
