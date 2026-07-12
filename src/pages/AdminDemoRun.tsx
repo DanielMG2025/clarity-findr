@@ -20,10 +20,26 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { DEMO_PATIENTS, runDemo, type Factor } from "@/modules/master-record";
+import { DEMO_PATIENTS, runDemo, type DemoPatientSeed, type Factor } from "@/modules/master-record";
+import { demoEstimate, DEMO_CALIBRATION, type DemoPackage } from "@/modules/component-pricing";
 import { getArticle } from "@/modules/education";
 
 const eur = (n: number) => `€${Math.round(n).toLocaleString()}`;
+
+/** Map a demo patient to a market-band package (demo-view only). */
+function packageFor(p: DemoPatientSeed): DemoPackage {
+  const donorSperm = p.family_structure === "single_woman" || p.family_structure === "female_couple";
+  switch (p.treatment_interest) {
+    case "egg_donation":
+      return "egg_donation";
+    case "social_freezing":
+      return "vitrification";
+    case "iui":
+      return "insemination";
+    default:
+      return donorSperm ? "ivf_donor_sperm" : "ivf_own";
+  }
+}
 
 const FACTOR_META: Record<Factor["kind"], { icon: typeof CheckCircle2; tone: string; label: string }> = {
   favorable: { icon: CheckCircle2, tone: "text-emerald-600", label: "Favorable" },
@@ -58,6 +74,7 @@ export default function AdminDemoRun() {
 
   const run = runDemo(patient);
   const o = run.step2_orientation;
+  const demoBand = demoEstimate(packageFor(patient), "ES");
 
   return (
     <AdminShell title={`${patient.name}, ${patient.age}`} subtitle="Full golden-path run — one call, all 7 steps">
@@ -181,16 +198,44 @@ export default function AdminDemoRun() {
                 <p className="text-xs text-muted-foreground mt-1.5">{c.why_this_plan}</p>
               </Card>
             ))}
+
+            {/* Market band (demo calibration) — internal demo only, always disclaimed */}
+            {demoBand && (
+              <Card className="p-4 border-dashed bg-muted/30">
+                <div className="flex items-center justify-between gap-3 flex-wrap">
+                  <div className="font-semibold">{demoBand.label} <Badge variant="outline" className="ml-1 text-[10px]">market band · demo</Badge></div>
+                  <div className="text-lg font-bold tabular-nums">{eur(demoBand.min)}–{eur(demoBand.max)}</div>
+                </div>
+                <p className="text-[11px] text-muted-foreground mt-1">{demoBand.includes}</p>
+                <p className="text-[11px] text-amber-700 dark:text-amber-500 mt-1">{demoBand.disclaimer}</p>
+              </Card>
+            )}
           </div>
         </Section>
 
         {/* Step 5 — Clinics */}
         <Section n={5} title="Clinics" icon={Building2}>
-          <Card className="p-4 text-sm text-muted-foreground">
-            {run.step5_clinics.length === 0
-              ? "Clinic fit is injected from the demonstrator's clinic seed (not part of this engine run)."
-              : run.step5_clinics.map((cl) => cl.name).join(", ")}
-          </Card>
+          <div className="space-y-3">
+            {run.step5_clinics.map((cl) => (
+              <Card key={cl.name} className="p-4 space-y-2">
+                <div className="flex items-center justify-between gap-3 flex-wrap">
+                  <div className="font-semibold">{cl.name}</div>
+                  <Badge variant="outline" className="text-[10px]">{cl.market}</Badge>
+                </div>
+                <ul className="space-y-1">
+                  {cl.fit_reasons.map((r) => (
+                    <li key={r} className="text-xs flex gap-1.5"><CheckCircle2 className="size-3.5 mt-0.5 shrink-0 text-emerald-600" /> {r}</li>
+                  ))}
+                  {cl.tradeoffs.map((t) => (
+                    <li key={t} className="text-xs flex gap-1.5 text-muted-foreground"><AlertTriangle className="size-3.5 mt-0.5 shrink-0 text-amber-600" /> {t}</li>
+                  ))}
+                </ul>
+                {!cl.commercial_agreement && (
+                  <p className="text-[11px] text-muted-foreground">Reference clinic (anonymized) · no commercial agreement · demo only.</p>
+                )}
+              </Card>
+            ))}
+          </div>
         </Section>
 
         {/* Step 6 — Next steps */}

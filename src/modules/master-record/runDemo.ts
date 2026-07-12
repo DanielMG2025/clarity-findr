@@ -143,6 +143,48 @@ export interface ClinicFit {
   commercial_agreement: boolean;
 }
 
+/**
+ * Anonymized REFERENCE clinics for the demonstrator — generic labels, never
+ * real clinic names or tariffs. Fit is explained, not ranked opaquely. The
+ * cheaper-market option is only offered when the patient's family structure is
+ * legally eligible there (honesty over a "cheap but blocked" trap).
+ */
+function pickClinics(p: DemoPatientSeed): ClinicFit[] {
+  const donor = p.treatment_interest === "egg_donation";
+  const heteroEligibleAbroad = (p.family_structure ?? "hetero_couple") === "hetero_couple";
+
+  const clinics: ClinicFit[] = [
+    {
+      name: "Reference clinic — Barcelona",
+      market: "Spain",
+      fit_reasons: ["Broad own-egg and donor programmes", "English-speaking coordination", "Genetic testing on-site"],
+      tradeoffs: ["Premium-segment pricing", "Longer waits in peak season"],
+      commercial_agreement: false,
+    },
+    {
+      name: donor ? "Reference clinic — Madrid (donor programme)" : "Reference clinic — Madrid",
+      market: "Spain",
+      fit_reasons: donor
+        ? ["Established egg-donation programme", "Shorter donor-matching times"]
+        : ["Solid clinical track record", "Transparent per-component pricing"],
+      tradeoffs: ["A physical-clinic quote may differ"],
+      commercial_agreement: false,
+    },
+  ];
+
+  if (heteroEligibleAbroad) {
+    clinics.push({
+      name: "Reference clinic — Prague",
+      market: "Czech Republic",
+      fit_reasons: ["Lower price level than Spain", "Frequent international-patient support"],
+      tradeoffs: ["Add travel and accommodation", "Heterosexual-couple access only (check eligibility first)"],
+      commercial_agreement: false,
+    });
+  }
+
+  return clinics;
+}
+
 // --- Step 0: regulatory gate ------------------------------------------------
 /** Derive the legal "needs" from the patient's intent + family structure. */
 function patientNeeds(p: DemoPatientSeed): Need[] {
@@ -201,7 +243,7 @@ export function runDemo(p: DemoPatientSeed, marketCode = "ES"): DemoRun {
     step2_orientation: orientation,
     step3_learn: learnFor(p, plans),
     step4_costs: costs,
-    step5_clinics: [], // the demonstrator injects these from its clinic seed
+    step5_clinics: pickClinics(p),
     step6_next: nextSteps(orientation),
     improvement_path: IMPROVEMENT_PATH,
   };

@@ -116,6 +116,22 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     treatment_interest: "egg_donation", budget_eur: 11000, donor_openness: "yes",
     amh: 0.2, afc: 3, diagnosis: ["low_ovarian_reserve"], prior_ivf: 1,
   },
+  {
+    key: "giulia_34_italy_single",
+    label: "34 · single woman in Italy (blocked at home)",
+    data_level: "medium",
+    name: "Giulia", age: 34, country: "IT", family_structure: "single_woman", trying_duration: "1_2y",
+    treatment_interest: "ivf", budget_eur: 6000,
+    amh: 1.8, afc: 11,
+  },
+  {
+    key: "lena_39_germany_donor",
+    label: "39 · egg donation needed in Germany (prohibited)",
+    data_level: "high",
+    name: "Lena", age: 39, country: "DE", family_structure: "hetero_couple", trying_duration: "over_2y",
+    treatment_interest: "egg_donation", budget_eur: 9000, donor_openness: "yes",
+    amh: 0.5, afc: 5, diagnosis: ["low_ovarian_reserve"], prior_ivf: 1,
+  },
 ];
 
 /** Build a Master Patient Record fragment from a demo seed. */
