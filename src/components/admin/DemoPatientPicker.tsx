@@ -1,8 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Compass, Wallet } from "lucide-react";
+import { Compass, Wallet, ListChecks } from "lucide-react";
 import { DEMO_PATIENTS, completeness, type DemoPatientSeed } from "@/modules/master-record";
 import { demoPatientMapping } from "@/modules/master-record/toStores";
 import { useProfileStore } from "@/modules/profile/store";
@@ -63,7 +63,10 @@ export function DemoPatientPicker() {
               {completeness(p)}% profile complete
             </div>
 
-            <div className="flex gap-2 mt-auto">
+            <div className="flex flex-wrap gap-2 mt-auto">
+              <Button asChild size="sm" variant="secondary" className="gap-1">
+                <Link to={`/admin/demo/run/${p.key}`}><ListChecks className="size-3.5" /> Full run</Link>
+              </Button>
               <Button size="sm" variant="outline" className="gap-1" onClick={() => loadAndGo(p, "/clarity-assessment")}>
                 <Compass className="size-3.5" /> Orientation
               </Button>

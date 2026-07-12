@@ -24,6 +24,7 @@ import AdminUpload from "./pages/AdminUpload.tsx";
 import AdminNormalizePrices from "./pages/AdminNormalizePrices.tsx";
 import AdminPatientPreview from "./pages/AdminPatientPreview.tsx";
 import AdminDemo from "./pages/AdminDemo.tsx";
+import AdminDemoRun from "./pages/AdminDemoRun.tsx";
 import { AdminModeButton } from "./components/AdminModeButton.tsx";
 import CommunityV2 from "./pages/CommunityV2.tsx";
 import ClinicLanding from "./pages/ClinicLanding.tsx";
@@ -169,6 +170,7 @@ const App = () => (
               <Route path="service-partners/:tab" element={<AdminServicePartners />} />
 
               <Route path="demo" element={<AdminDemo />} />
+              <Route path="demo/run/:key" element={<AdminDemoRun />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
 
