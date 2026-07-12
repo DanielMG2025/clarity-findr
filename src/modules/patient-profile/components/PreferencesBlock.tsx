@@ -1,10 +1,10 @@
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { usePatientProfileStore } from "../store";
+import { useMasterRecord } from "@/modules/master-record";
 
 export function PreferencesBlock() {
-  const p = usePatientProfileStore((s) => s.preferences);
-  const patch = usePatientProfileStore((s) => s.patchPreferences);
+  const p = useMasterRecord((s) => s.intent);
+  const patch = useMasterRecord((s) => s.patchIntent);
   return (
     <div className="grid sm:grid-cols-2 gap-4">
       <div>

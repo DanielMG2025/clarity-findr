@@ -1,10 +1,10 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { usePatientProfileStore } from "../store";
+import { useMasterRecord } from "@/modules/master-record";
 
 export function MedicalContextBlock() {
-  const m = usePatientProfileStore((s) => s.medical);
-  const patch = usePatientProfileStore((s) => s.patchMedical);
+  const m = useMasterRecord((s) => s.clinical);
+  const patch = useMasterRecord((s) => s.patchClinical);
   return (
     <div className="grid sm:grid-cols-2 gap-4">
       <div>

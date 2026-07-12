@@ -1,5 +1,6 @@
 import type { ProfileState } from "@/modules/profile/store";
 import type { PatientProfileState } from "./store";
+import type { MasterPatientRecord } from "@/modules/master-record";
 import { User2, Stethoscope, History, SlidersHorizontal, FileText, Receipt, type LucideIcon } from "lucide-react";
 
 export type BlockKey = "basic" | "medical" | "history" | "preferences" | "documents" | "quotes";
@@ -113,6 +114,41 @@ export function blockProgress(
 
 export function overallCompletion(profile: ProfileState, pp: PatientProfileState): number {
   const total = BLOCKS.reduce((sum, b) => sum + (blockProgress(b.key, profile, pp) / 100) * b.weight, 0);
+  return Math.round(total);
+}
+
+// --- Master Patient Record variants (the migration target) -----------------
+export function blockProgressMPR(key: BlockKey, mpr: MasterPatientRecord): number {
+  switch (key) {
+    case "basic": {
+      const { identity, intent } = mpr;
+      const fields = [identity.age, intent.treatment_interest, identity.country_of_residence, intent.budget_eur, intent.trying_duration, identity.family_structure];
+      const filled = fields.filter((x) => x !== "" && x !== undefined && x !== null && x !== 0).length;
+      return Math.round((filled / fields.length) * 100);
+    }
+    case "medical": {
+      const m = mpr.clinical;
+      const fields = [m.amh, m.fsh, m.afc, m.bmi_band, m.cycle_regularity, m.diagnosis?.length, m.partner_sperm_quality];
+      const filled = fields.filter((x) => x !== undefined && x !== 0).length;
+      return Math.round((filled / fields.length) * 100);
+    }
+    case "history":
+      return mpr.history.length === 0 ? 0 : Math.min(100, mpr.history.length * 50);
+    case "preferences": {
+      const i = mpr.intent;
+      const fields = [i.priority, i.travel, i.language, i.donor_openness, i.pgt_interest];
+      const filled = fields.filter((x) => x !== undefined).length;
+      return Math.round((filled / fields.length) * 100);
+    }
+    case "documents":
+      return mpr.documents.length === 0 ? 0 : Math.min(100, mpr.documents.length * 50);
+    case "quotes":
+      return mpr.shared_quotes.length === 0 ? 0 : Math.min(100, mpr.shared_quotes.length * 50);
+  }
+}
+
+export function overallCompletionMPR(mpr: MasterPatientRecord): number {
+  const total = BLOCKS.reduce((sum, b) => sum + (blockProgressMPR(b.key, mpr) / 100) * b.weight, 0);
   return Math.round(total);
 }
 

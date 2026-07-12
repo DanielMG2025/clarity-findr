@@ -3,12 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Trash2, Plus } from "lucide-react";
-import { usePatientProfileStore } from "../store";
+import { useMasterRecord } from "@/modules/master-record";
 
 export function TreatmentHistoryBlock() {
-  const list = usePatientProfileStore((s) => s.history);
-  const add = usePatientProfileStore((s) => s.addHistory);
-  const remove = usePatientProfileStore((s) => s.removeHistory);
+  const list = useMasterRecord((s) => s.history);
+  const add = useMasterRecord((s) => s.addHistory);
+  const remove = useMasterRecord((s) => s.removeHistory);
   const [draft, setDraft] = useState({ treatment: "IVF", year: new Date().getFullYear(), clinic: "", outcome: "none" as const });
 
   return (

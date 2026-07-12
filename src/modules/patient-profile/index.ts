@@ -1,6 +1,6 @@
 export { usePatientProfileStore } from "./store";
 export type { PatientProfileState, MedicalContext, TreatmentHistoryItem, ProfilePreferences, ProfileDocument, SharedQuote } from "./store";
-export { BLOCKS, blockProgress, overallCompletion, profileConfidence, FEATURES } from "./blocks";
+export { BLOCKS, blockProgress, overallCompletion, blockProgressMPR, overallCompletionMPR, profileConfidence, FEATURES } from "./blocks";
 export { ProfileCompletion } from "./components/ProfileCompletion";
 export { UnlockedFeatures } from "./components/UnlockedFeatures";
 export { ProfileBlock } from "./components/ProfileBlock";

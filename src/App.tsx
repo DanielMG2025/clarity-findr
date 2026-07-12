@@ -89,8 +89,8 @@ const App = () => (
 
             {/* Core 6 modules */}
             <Route path="/profile" element={<PatientProfile />} />
+            <Route path="/situacion" element={<PatientProfile />} />
             <Route path="/clarity-assessment" element={<ClarityAssessment />} />
-            <Route path="/situacion" element={<Navigate to="/profile" replace />} />
             <Route path="/orientacion" element={<Navigate to="/clarity-assessment" replace />} />
             <Route path="/costes" element={<Navigate to="/pricing-lab" replace />} />
             <Route path="/clinicas" element={<Navigate to="/clinics" replace />} />

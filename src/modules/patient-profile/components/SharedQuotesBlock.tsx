@@ -3,12 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Trash2, Plus } from "lucide-react";
-import { usePatientProfileStore } from "../store";
+import { useMasterRecord } from "@/modules/master-record";
 
 export function SharedQuotesBlock() {
-  const list = usePatientProfileStore((s) => s.sharedQuotes);
-  const add = usePatientProfileStore((s) => s.addSharedQuote);
-  const remove = usePatientProfileStore((s) => s.removeSharedQuote);
+  const list = useMasterRecord((s) => s.shared_quotes);
+  const add = useMasterRecord((s) => s.addSharedQuote);
+  const remove = useMasterRecord((s) => s.removeSharedQuote);
   const [draft, setDraft] = useState({ clinic_name: "", treatment_type: "IVF", total_price: 0, country: "Spain" });
 
   return (

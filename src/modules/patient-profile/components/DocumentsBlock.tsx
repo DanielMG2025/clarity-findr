@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Trash2, Upload, FileText } from "lucide-react";
-import { usePatientProfileStore } from "../store";
+import { useMasterRecord } from "@/modules/master-record";
 
 const CATEGORY_LABEL: Record<string, string> = {
   quote: "Quote",
@@ -11,9 +11,9 @@ const CATEGORY_LABEL: Record<string, string> = {
 };
 
 export function DocumentsBlock() {
-  const docs = usePatientProfileStore((s) => s.documents);
-  const add = usePatientProfileStore((s) => s.addDocument);
-  const remove = usePatientProfileStore((s) => s.removeDocument);
+  const docs = useMasterRecord((s) => s.documents);
+  const add = useMasterRecord((s) => s.addDocument);
+  const remove = useMasterRecord((s) => s.removeDocument);
   const inputRef = useRef<HTMLInputElement>(null);
 
   function onFiles(files: FileList | null) {

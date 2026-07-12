@@ -2,12 +2,11 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { TransparencyBlock } from "@/components/shared/TransparencyBlock";
-import { useProfileStore } from "@/modules/profile/store";
+import { useMasterRecord } from "@/modules/master-record";
 import {
-  usePatientProfileStore,
   BLOCKS,
-  blockProgress,
-  overallCompletion,
+  blockProgressMPR,
+  overallCompletionMPR,
   profileConfidence,
   FEATURES,
   ProfileCompletion,
@@ -32,9 +31,8 @@ const BLOCK_RENDERERS = {
 };
 
 const PatientProfile = () => {
-  const profile = useProfileStore();
-  const pp = usePatientProfileStore();
-  const completion = overallCompletion(profile, pp);
+  const mpr = useMasterRecord();
+  const completion = overallCompletionMPR(mpr);
   const confidence = profileConfidence(completion);
   const unlockedCount = FEATURES.filter((f) => completion >= f.threshold).length;
 
@@ -106,9 +104,9 @@ const PatientProfile = () => {
                 title={b.title}
                 subtitle={b.subtitle}
                 required={b.required}
-                progress={blockProgress(b.key, profile, pp)}
+                progress={blockProgressMPR(b.key, mpr)}
                 unlocks={b.unlocks}
-                defaultOpen={b.key === "basic" && blockProgress("basic", profile, pp) < 80}
+                defaultOpen={b.key === "basic" && blockProgressMPR("basic", mpr) < 80}
               >
                 {BLOCK_RENDERERS[b.key]}
               </ProfileBlock>
