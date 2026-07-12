@@ -125,6 +125,14 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     amh: 1.8, afc: 11,
   },
   {
+    key: "chiara_35_italy_female_couple",
+    label: "35 · female couple in Italy (no access at home)",
+    data_level: "medium",
+    name: "Chiara & Giorgia", age: 35, country: "IT", family_structure: "female_couple", trying_duration: "1_2y",
+    treatment_interest: "ivf", budget_eur: 7000,
+    amh: 2.2, afc: 13,
+  },
+  {
     key: "lena_39_germany_donor",
     label: "39 · egg donation needed in Germany (prohibited)",
     data_level: "high",
