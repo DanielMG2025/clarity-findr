@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import type { ReactNode } from "react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
@@ -44,6 +44,7 @@ import EggBank from "./pages/EggBank.tsx";
 import PricingLab from "./pages/PricingLab.tsx";
 import PatientProfile from "./pages/PatientProfile.tsx";
 import ClarityAssessment from "./pages/ClarityAssessment.tsx";
+import { GlossaryProvider } from "@/modules/education";
 import LearnIndex from "./pages/LearnIndex.tsx";
 import LearnArticle from "./pages/LearnArticle.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -67,12 +68,19 @@ function LayoutSwitch({ children }: { children: ReactNode }) {
   return <><AppLayout>{children}</AppLayout><AdminModeButton /></>;
 }
 
+/** Provides the glossary context, routing "Learn more" to the full guide. */
+function WithGlossary({ children }: { children: ReactNode }) {
+  const navigate = useNavigate();
+  return <GlossaryProvider openGuide={(slug) => navigate(`/learn/${slug}`)}>{children}</GlossaryProvider>;
+}
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <WithGlossary>
         <LayoutSwitch>
           <Routes>
             {/* Public landing */}
@@ -172,6 +180,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </LayoutSwitch>
+        </WithGlossary>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

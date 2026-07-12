@@ -9,7 +9,8 @@ import {
   CONTENT_DISCLAIMER,
   getArticle,
   toVideoScript,
-} from "./content";
+} from "./contentLibrary";
+import { articleForTerm, findTerms } from "./glossaryIndex";
 
 const KINDS = new Set(["glosario", "tratamiento", "journey", "negocio"]);
 
@@ -56,5 +57,29 @@ describe("toVideoScript", () => {
   it("handles articles with no steps/differences (summary-only scene)", () => {
     const v = toVideoScript(getArticle("what-is-amh")!);
     expect(v.scenes).toHaveLength(1);
+  });
+});
+
+describe("glossary index", () => {
+  it("resolves aliases (case-insensitive) to their article", () => {
+    expect(articleForTerm("IVF")?.slug).toBe("what-is-ivf");
+    expect(articleForTerm("icsi")?.slug).toBe("what-is-icsi");
+    expect(articleForTerm("antral follicle count")?.slug).toBe("what-is-afc");
+    expect(articleForTerm("nonsense")).toBeUndefined();
+  });
+
+  it("detects terms, longest-first and one per concept", () => {
+    const ms = findTerms("An IVF cycle may add ICSI or PGT-A; a second IVF is common.");
+    const slugs = ms.map((m) => m.entry.slug);
+    expect(slugs).toContain("what-is-ivf");
+    expect(slugs).toContain("what-is-icsi");
+    expect(slugs).toContain("what-is-pgt-a");
+    expect(slugs.filter((s) => s === "what-is-ivf")).toHaveLength(1); // deduped
+    expect(ms.find((m) => m.entry.slug === "what-is-pgt-a")!.text).toBe("PGT-A"); // wins over PGT
+  });
+
+  it("returns matches in order, non-overlapping", () => {
+    const ms = findTerms("blastocyst and AMH");
+    expect(ms.map((m) => m.text)).toEqual(["blastocyst", "AMH"]);
   });
 });

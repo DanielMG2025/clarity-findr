@@ -3,7 +3,7 @@ import { ArrowLeft, Clock, ExternalLink, HelpCircle, GitCompare } from "lucide-r
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { getArticle, type Article } from "@/modules/education";
+import { getArticle, AutoGlossary, type Article } from "@/modules/education";
 
 const KIND_LABEL: Record<Article["kind"], string> = {
   glosario: "Glossary",
@@ -47,10 +47,10 @@ export default function LearnArticle() {
         <p className="text-lg text-muted-foreground leading-relaxed">{a.hook}</p>
       </header>
 
-      <p className="leading-relaxed">{a.summary}</p>
+      <p className="leading-relaxed"><AutoGlossary>{a.summary}</AutoGlossary></p>
 
       {a.body?.map((p, i) => (
-        <p key={i} className="leading-relaxed text-foreground/90">{p}</p>
+        <p key={i} className="leading-relaxed text-foreground/90"><AutoGlossary>{p}</AutoGlossary></p>
       ))}
 
       {a.steps && a.steps.length > 0 && (
