@@ -46,14 +46,20 @@ export interface Scenario {
 export type Confidence = "low" | "medium" | "high";
 
 import type { Citation, PriceEstimate } from "@/modules/provenance";
+import type { Estimate as ComponentEstimate } from "@/modules/component-pricing";
 
 export interface ScenarioBundle {
   profile: PricingProfile;
   scenarios: Scenario[];
   confidence: Confidence;
   notes: string[];
-  /** Server-provided provenance estimate when available; null/absent in cold-start. */
+  /**
+   * Component-level sourced estimate — the configurator's explainable base
+   * (Spain-anchored ranges adjusted by market). Null for treatments the engine
+   * doesn't cover (iui/study).
+   */
+  component?: ComponentEstimate | null;
+  /** Legacy provenance estimate (server/observations path); unused by the base UI. */
   estimate?: PriceEstimate | null;
-  /** Citations behind the provenance estimate, surfaced in the data-sources panel. */
   citations?: Citation[];
 }

@@ -202,3 +202,41 @@ export function explain(tier: Tier, m: Market, n: number): string {
 /** How the range will improve as better sources arrive — shown to the user. */
 export const IMPROVEMENT_PATH =
   "This range will refine automatically as we bring in real patient quotes and partner-clinic rate cards.";
+
+// --- Bridge for the configurator (TreatmentKey + country label + toggles) ---
+const MARKET_CODE_BY_LABEL: Record<string, string> = {
+  Spain: "ES",
+  "Czech Republic": "CZ",
+  Greece: "GR",
+  Portugal: "PT",
+  Denmark: "DK",
+  Cyprus: "CY",
+};
+
+export interface ProfileForEstimate {
+  treatment: string; // configurator TreatmentKey
+  country: string; // canonical label ("Spain")
+  needs_icsi?: boolean;
+  needs_pgt?: boolean;
+  storageYears?: number;
+}
+
+/** Resolve a configurator profile to a component-pricing plan. */
+export function planForProfile(p: ProfileForEstimate): Plan | null {
+  if (p.treatment === "donor") return "egg_donation";
+  if (p.treatment === "freezing") return "egg_freezing";
+  if (p.treatment === "ivf" || p.treatment === "icsi") {
+    if (p.needs_pgt) return "ivf_icsi_pgt";
+    if (p.needs_icsi || p.treatment === "icsi") return "ivf_icsi";
+    return "ivf";
+  }
+  return null; // iui / study aren't covered by this engine
+}
+
+/** Component-level estimate for a configurator profile, or null if uncovered. */
+export function componentEstimateForProfile(p: ProfileForEstimate): Estimate | null {
+  const plan = planForProfile(p);
+  if (!plan) return null;
+  const code = MARKET_CODE_BY_LABEL[p.country] ?? "ES";
+  return estimate(plan, code, { storageYears: p.storageYears });
+}

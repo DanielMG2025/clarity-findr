@@ -1,8 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { buildScenarios } from "../logic/scenarios";
-import { blendProvenance } from "../logic/blendProvenance";
 import type { PricingProfile, ScenarioBundle, TreatmentKey } from "../logic/types";
-import { useProvenanceEstimate } from "./useProvenanceEstimate";
+import { componentEstimateForProfile } from "@/modules/component-pricing";
 import { useProfileStore } from "@/modules/profile/store";
 import { usePricingStore } from "@/modules/pricing/store";
 
@@ -43,13 +42,26 @@ export function usePricingConfigurator() {
     pricing.storage_years,
   ]);
 
-  // Server-provided provenance estimate (dormant unless enabled + data exists).
-  const estimate = useProvenanceEstimate(data);
-
-  const bundle: ScenarioBundle = useMemo(
-    () => blendProvenance(buildScenarios(data), estimate),
-    [data, estimate],
+  // Component-level sourced estimate — the configurator's explainable base.
+  const component = useMemo(
+    () =>
+      componentEstimateForProfile({
+        treatment: data.treatment,
+        country: data.country,
+        needs_icsi: data.needs_icsi,
+        needs_pgt: data.needs_pgt,
+        storageYears: data.storage_years,
+      }),
+    [data.treatment, data.country, data.needs_icsi, data.needs_pgt, data.storage_years],
   );
+
+  const bundle: ScenarioBundle = useMemo(() => {
+    const base = buildScenarios(data);
+    // When the engine covers this treatment, it drives the headline confidence.
+    return component
+      ? { ...base, component, confidence: component.confidence }
+      : { ...base, component: null };
+  }, [data, component]);
 
   // Patch helper: writes profile-level fields to the profile store and
   // pricing-extras to the pricing store so they remain the single sources of truth.

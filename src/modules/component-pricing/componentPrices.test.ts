@@ -6,6 +6,8 @@ import {
   COMPONENTS_ES,
   MARKETS,
   PLAN_BASKET,
+  planForProfile,
+  componentEstimateForProfile,
 } from "./componentPrices";
 
 describe("markets", () => {
@@ -61,5 +63,28 @@ describe("estimate", () => {
     for (const m of MARKETS) {
       expect(estimate("ivf", m.code).confidence).not.toBe("high");
     }
+  });
+});
+
+describe("configurator bridge", () => {
+  it("maps treatment + toggles to the right plan", () => {
+    expect(planForProfile({ treatment: "ivf", country: "Spain" })).toBe("ivf");
+    expect(planForProfile({ treatment: "icsi", country: "Spain" })).toBe("ivf_icsi");
+    expect(planForProfile({ treatment: "ivf", country: "Spain", needs_icsi: true })).toBe("ivf_icsi");
+    expect(planForProfile({ treatment: "ivf", country: "Spain", needs_pgt: true })).toBe("ivf_icsi_pgt");
+    expect(planForProfile({ treatment: "donor", country: "Spain" })).toBe("egg_donation");
+    expect(planForProfile({ treatment: "freezing", country: "Spain" })).toBe("egg_freezing");
+    expect(planForProfile({ treatment: "iui", country: "Spain" })).toBeNull();
+  });
+
+  it("estimates for covered treatments and maps country labels to markets", () => {
+    const es = componentEstimateForProfile({ treatment: "ivf", country: "Spain" })!;
+    expect(es.market.code).toBe("ES");
+    const cz = componentEstimateForProfile({ treatment: "ivf", country: "Czech Republic" })!;
+    expect(cz.market.code).toBe("CZ");
+    expect(cz.total_max).toBeLessThan(es.total_max); // cheaper market
+    // unknown country falls back to Spain; uncovered treatment returns null
+    expect(componentEstimateForProfile({ treatment: "ivf", country: "Germany" })!.market.code).toBe("ES");
+    expect(componentEstimateForProfile({ treatment: "iui", country: "Spain" })).toBeNull();
   });
 });

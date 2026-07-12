@@ -17,6 +17,7 @@ import { ReviewedClinicPricing } from "./components/ReviewedClinicPricing";
 import { FinancingSimulator } from "./components/FinancingSimulator";
 import { UploadQuoteCTA } from "./components/UploadQuoteCTA";
 import { ConfidenceBadge } from "./components/ConfidenceBadge";
+import { ComponentBreakdown } from "./components/ComponentBreakdown";
 import { HiddenCosts } from "./components/HiddenCosts";
 import { DataSourcesWeights } from "./components/DataSourcesWeights";
 import { GuaranteeProgramDetail } from "./components/GuaranteeProgramDetail";
@@ -62,6 +63,9 @@ export function PricingConfigurator() {
           <ConfidenceBadge level={bundle.confidence} />
         </div>
       </header>
+
+      {/* SOURCED RANGE — component-level explainable base */}
+      {bundle.component && <ComponentBreakdown estimate={bundle.component} />}
 
       {/* PROFILE DEPTH BANNER */}
       <Card className="p-5 bg-gradient-card border-2">
