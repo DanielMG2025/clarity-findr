@@ -10,6 +10,12 @@
 
 import { estimate, IMPROVEMENT_PATH, type Plan, type Estimate } from "@/modules/component-pricing";
 import { buildEvidence, reserveBand, type EvidenceResult } from "@/modules/evidence";
+import {
+  regulatoryOrientation,
+  type FamilyStructure,
+  type Need,
+  type RegulatoryOrientation,
+} from "@/modules/regulatory";
 import { type DemoPatientSeed, completeness } from "./demoPatients";
 
 export const MEDICAL_DISCLAIMER =
@@ -137,9 +143,31 @@ export interface ClinicFit {
   commercial_agreement: boolean;
 }
 
+// --- Step 0: regulatory gate ------------------------------------------------
+/** Derive the legal "needs" from the patient's intent + family structure. */
+function patientNeeds(p: DemoPatientSeed): Need[] {
+  const fam = p.family_structure ?? "hetero_couple";
+  const donorSperm = fam === "single_woman" || fam === "female_couple";
+  switch (p.treatment_interest) {
+    case "egg_donation":
+      return ["egg_donation"];
+    case "social_freezing":
+      return ["egg_freezing"];
+    case "iui":
+      return [donorSperm ? "iui_donor_sperm" : "ivf_own_eggs"];
+    case "ivf":
+    case "icsi":
+      return donorSperm ? ["sperm_donation"] : ["ivf_own_eggs"];
+    default:
+      return donorSperm ? ["sperm_donation"] : ["ivf_own_eggs"];
+  }
+}
+
 // --- Full result ------------------------------------------------------------
 export interface DemoRun {
   patient: DemoPatientSeed;
+  /** The legal gate: what's allowed where you live, and where else if not. */
+  step0_regulatory: RegulatoryOrientation | null;
   step1_profile: { completeness: number; summary: string };
   step2_orientation: Orientation;
   step3_learn: string[]; // slugs from the education library to highlight
@@ -151,6 +179,10 @@ export interface DemoRun {
 
 /** Run the full golden path for a patient. */
 export function runDemo(p: DemoPatientSeed, marketCode = "ES"): DemoRun {
+  // Step 0 — the legal gate runs first: it can make everything else moot.
+  const family: FamilyStructure = p.family_structure ?? "hetero_couple";
+  const regulatory = regulatoryOrientation(p.country, family, patientNeeds(p));
+
   const orientation = buildOrientation(p);
   const plans = suggestPlans(p);
 
@@ -161,6 +193,7 @@ export function runDemo(p: DemoPatientSeed, marketCode = "ES"): DemoRun {
 
   return {
     patient: p,
+    step0_regulatory: regulatory,
     step1_profile: {
       completeness: orientation.completeness,
       summary: `${p.name}, ${p.age}. ${p.diagnosis?.length ? "Diagnosis: " + p.diagnosis.join(", ") + "." : "No confirmed diagnosis."} Profile ${orientation.completeness}% complete.`,

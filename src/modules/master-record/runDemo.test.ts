@@ -36,6 +36,19 @@ describe("runDemo", () => {
     expect(r.step2_orientation.confidence).toBe("low");
   });
 
+  it("runs the legal gate as step 0", () => {
+    const r = runDemo(byKey("rosa_45_donante")); // female_couple, egg donation, ES
+    expect(r.step0_regulatory).not.toBeNull();
+    // Spain allows egg donation for female couples → no travel needed
+    expect(r.step0_regulatory!.needs_to_travel).toBe(false);
+    expect(r.step0_regulatory!.results.some((x) => x.need === "egg_donation")).toBe(true);
+  });
+
+  it("derives a donor-sperm need for single women / female couples", () => {
+    const r = runDemo(byKey("julia_27_minima")); // single_woman, ivf intent
+    expect(r.step0_regulatory!.results.map((x) => x.need)).toContain("sperm_donation");
+  });
+
   it("never invents a personalised success percentage (orientation only)", () => {
     const r = runDemo(byKey("marta_38_reserva_baja"));
     for (const f of r.step2_orientation.factors) {

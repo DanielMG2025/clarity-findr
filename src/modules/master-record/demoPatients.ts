@@ -15,6 +15,7 @@ import {
   type Diagnosis,
   type DonorOpenness,
 } from "@/modules/master-record/types";
+import type { FamilyStructure } from "@/modules/regulatory";
 
 export interface DemoPatientSeed {
   key: string;
@@ -23,6 +24,8 @@ export interface DemoPatientSeed {
   name: string;
   age: number;
   country: string;
+  /** Drives the regulatory gate. Defaults to hetero_couple when unset. */
+  family_structure?: FamilyStructure;
   trying_duration?: TryingDuration;
   treatment_interest?: TreatmentInterest;
   budget_eur?: number;
@@ -57,7 +60,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     key: "lucia_42_donante",
     label: "42 · very limited own eggs, considering donor",
     data_level: "high",
-    name: "Lucía", age: 42, country: "ES", trying_duration: "over_2y",
+    name: "Lucía", age: 42, country: "ES", family_structure: "female_couple", trying_duration: "over_2y",
     treatment_interest: "egg_donation", budget_eur: 10000, donor_openness: "yes",
     amh: 0.4, afc: 4, diagnosis: ["low_ovarian_reserve"], prior_ivf: 1,
   },
@@ -87,7 +90,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     key: "paula_33_freezing",
     label: "33 · no partner, freezing (planning)",
     data_level: "medium",
-    name: "Paula", age: 33, country: "ES",
+    name: "Paula", age: 33, country: "ES", family_structure: "single_woman",
     treatment_interest: "social_freezing", budget_eur: 3500,
     amh: 1.9, afc: 10,
   },
@@ -103,13 +106,13 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     key: "julia_27_minima",
     label: "27 · minimal profile (started, didn't finish)",
     data_level: "low",
-    name: "Julia", age: 27, country: "ES", treatment_interest: "ivf",
+    name: "Julia", age: 27, country: "ES", family_structure: "single_woman", treatment_interest: "ivf",
   },
   {
     key: "rosa_45_donante",
     label: "45 · very low reserve, donor route",
     data_level: "high",
-    name: "Rosa", age: 45, country: "ES", trying_duration: "over_2y",
+    name: "Rosa", age: 45, country: "ES", family_structure: "female_couple", trying_duration: "over_2y",
     treatment_interest: "egg_donation", budget_eur: 11000, donor_openness: "yes",
     amh: 0.2, afc: 3, diagnosis: ["low_ovarian_reserve"], prior_ivf: 1,
   },

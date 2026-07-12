@@ -12,6 +12,8 @@ import {
   Compass,
   Stethoscope,
   Sparkles,
+  ShieldCheck,
+  ExternalLink,
 } from "lucide-react";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { Card } from "@/components/ui/card";
@@ -63,6 +65,45 @@ export default function AdminDemoRun() {
         <Link to="/admin/demo" className="text-sm text-muted-foreground hover:text-primary inline-flex items-center gap-1">
           <ArrowLeft className="size-4" /> Demo Center
         </Link>
+
+        {/* Step 0 — Legal eligibility gate */}
+        {run.step0_regulatory && (
+          <Section n={0} title="Legal eligibility" icon={ShieldCheck}>
+            <Card className="p-4 space-y-3">
+              <p className="text-sm font-medium">{run.step0_regulatory.headline}</p>
+              <ul className="space-y-2">
+                {run.step0_regulatory.results.map((res) => {
+                  const Icon = res.verdict === "allowed" ? CheckCircle2 : res.verdict === "not_allowed" ? AlertTriangle : HelpCircle;
+                  const tone = res.verdict === "allowed" ? "text-emerald-600" : res.verdict === "not_allowed" ? "text-rose-600" : "text-muted-foreground";
+                  return (
+                    <li key={res.need} className="flex gap-2">
+                      <Icon className={`size-4 mt-0.5 shrink-0 ${tone}`} />
+                      <div>
+                        <div className="text-sm font-medium">{res.label}</div>
+                        <div className="text-xs text-muted-foreground leading-relaxed">{res.why}</div>
+                        {res.alternatives.length > 0 && (
+                          <div className="text-[11px] text-muted-foreground mt-0.5">
+                            Available in: {res.alternatives.slice(0, 4).map((a) => a.label).join(", ")}
+                          </div>
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+              <div className="text-xs text-muted-foreground space-y-1 border-t pt-2">
+                <p>{run.step0_regulatory.funding_note}</p>
+                <p>{run.step0_regulatory.anonymity_note}</p>
+              </div>
+              <p className="text-[11px] text-muted-foreground">
+                {run.step0_regulatory.disclaimer} ·{" "}
+                <a href={run.step0_regulatory.source.url} target="_blank" rel="noreferrer" className="text-primary hover:underline inline-flex items-center gap-0.5">
+                  {run.step0_regulatory.source.label} <ExternalLink className="size-3" />
+                </a>
+              </p>
+            </Card>
+          </Section>
+        )}
 
         {/* Step 1 — Profile */}
         <Section n={1} title="Profile" icon={Compass}>
