@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { PageHeader } from "@/components/patient/PageHeader";
+import { ConfidenceBadge } from "@/components/patient/ConfidenceBadge";
 import { SourceChip } from "@/components/patient/SourceChip";
 import { ClinicCardV2 } from "@/components/shared/ClinicCardV2";
 import { TransparencyBlock } from "@/components/shared/TransparencyBlock";
@@ -40,7 +41,7 @@ export default function Clinics() {
     : MOCK_CLINICS;
 
   return (
-    <div className="container max-w-6xl py-10 space-y-6">
+    <div className="container max-w-6xl py-10 space-y-8">
       <PageHeader
         eyebrow="Clinics"
         title="Clinics that may fit your case"
@@ -50,17 +51,20 @@ export default function Clinics() {
 
       <RegulatoryGateNotice orientation={orientation} />
 
-      <Card className="p-6 text-sm text-muted-foreground border-dashed leading-relaxed">
+      <Card className="p-6 rounded-2xl text-sm text-muted-foreground border-dashed leading-relaxed">
         Clinic identities are shown once you choose to connect. This keeps our guidance neutral
         and free for you.
       </Card>
 
       {completion < 60 && (
-        <Card className="p-6 bg-primary-soft/30 border-primary/20">
+        <Card className="p-6 rounded-2xl bg-primary-soft/25 border-primary/20">
           <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
-            <div>
-              <div className="text-xs font-bold uppercase tracking-wider text-primary">How much we know about you</div>
-              <div className="font-semibold">Share a little more to refine this list (current confidence: {confidence})</div>
+            <div className="space-y-1">
+              <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">How much we know about you</div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-base font-semibold">Share a little more to refine this list</span>
+                <ConfidenceBadge level={confidence as "high" | "medium" | "low"} />
+              </div>
             </div>
             <Button asChild size="sm" variant="outline">
               <Link to="/situacion">Complete my situation <ArrowRight className="size-3.5 ml-1" /></Link>
@@ -71,12 +75,12 @@ export default function Clinics() {
       )}
 
       {clinics.length === 0 ? (
-        <Card className="p-6 text-sm text-muted-foreground leading-relaxed">
+        <Card className="p-6 rounded-2xl text-sm text-muted-foreground leading-relaxed">
           None of our reference clinics are in a country that's legally viable for your situation yet.
           As we add clinics in the viable countries, they'll appear here.
         </Card>
       ) : (
-        <Card className="p-0 overflow-hidden">
+        <Card className="p-0 rounded-2xl overflow-hidden">
           <Table>
             <TableHeader>
               <TableRow>
@@ -111,10 +115,10 @@ export default function Clinics() {
               {clinics.map((c) => (
                 <TableRow key={c.id}>
                   <TableCell>
-                    <div className="font-semibold">{c.displayLabel}</div>
+                    <div className="text-sm font-semibold">{c.displayLabel}</div>
                     <div className="text-xs text-muted-foreground">{c.country}</div>
                   </TableCell>
-                  <TableCell className="text-right font-bold text-primary tabular-nums">{c.matchScore}</TableCell>
+                  <TableCell className="text-right font-semibold text-primary tabular-nums">{c.matchScore}</TableCell>
                   <TableCell className="text-right tabular-nums">€{c.estimatedPrice.toLocaleString()}</TableCell>
                   <TableCell className="text-right tabular-nums">{c.successRate}%</TableCell>
                   <TableCell className="text-right tabular-nums">{c.distance} km</TableCell>
@@ -140,11 +144,11 @@ export default function Clinics() {
         </>
       )}
 
-      <Card className="p-6 flex flex-wrap items-center justify-between gap-4">
+      <Card className="p-6 rounded-2xl flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           <Sparkles className="size-5 text-primary" />
           <div>
-            <div className="font-semibold">Want a more tailored shortlist?</div>
+            <div className="text-base font-semibold">Want a more tailored shortlist?</div>
             <div className="text-sm text-muted-foreground">Complete your medical context to improve the fit. Only what you want to share.</div>
           </div>
         </div>
