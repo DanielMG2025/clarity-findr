@@ -160,10 +160,10 @@ export function PricingConfigurator() {
       </section>
 
       {/* CTAs */}
-      <section className="rounded-2xl border border-border bg-gradient-to-br from-primary-soft/40 to-accent-soft/30 p-6 md:p-8">
+      <section className="rounded-2xl border border-border bg-primary-soft/25 p-6 md:p-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h3 className="text-xl font-bold">Next step?</h3>
+            <h3 className="text-lg font-semibold">Next step?</h3>
             <p className="text-sm text-muted-foreground">We'll show you which clinics fit your range and your case — with the same transparency.</p>
           </div>
           <div className="flex flex-wrap gap-2">
