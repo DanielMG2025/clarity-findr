@@ -125,7 +125,7 @@ export default function ClarityAssessment() {
             missing={completion < 60 ? "More medical data and preferences would refine the range." : "Sufficient data coverage."}
             doctor="The actual treatment suitability and recommended add-ons for your case."
           />
-          <Button asChild size="sm" className="mt-4 gap-1"><Link to="/costes">Open configurator <ArrowRight className="size-3.5" /></Link></Button>
+          <Button asChild size="sm" variant="outline" className="mt-4 gap-1"><Link to="/costes">Open configurator <ArrowRight className="size-3.5" /></Link></Button>
         </Card>
 
         {/* Clinic fit */}
@@ -169,7 +169,7 @@ export default function ClarityAssessment() {
             missing="Not applicable — this is always optional and voluntary."
             doctor="Any diagnosis, treatment plan or medication."
           />
-          <Button asChild size="sm" className="mt-4 gap-1"><Link to="/asesoramiento"><Heart className="size-3.5" /> Find guidance <ArrowRight className="size-3.5" /></Link></Button>
+          <Button asChild size="sm" variant="outline" className="mt-4 gap-1"><Link to="/asesoramiento"><Heart className="size-3.5" /> Find guidance <ArrowRight className="size-3.5" /></Link></Button>
         </Card>
       </div>
 

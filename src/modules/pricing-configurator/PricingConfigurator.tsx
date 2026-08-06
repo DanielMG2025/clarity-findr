@@ -16,7 +16,6 @@ import { ClinicComparison } from "./components/ClinicComparison";
 import { ReviewedClinicPricing } from "./components/ReviewedClinicPricing";
 import { FinancingSimulator } from "./components/FinancingSimulator";
 import { UploadQuoteCTA } from "./components/UploadQuoteCTA";
-import { ConfidenceBadge } from "./components/ConfidenceBadge";
 import { ComponentBreakdown } from "./components/ComponentBreakdown";
 import { HiddenCosts } from "./components/HiddenCosts";
 import { DataSourcesWeights } from "./components/DataSourcesWeights";
@@ -51,13 +50,10 @@ export function PricingConfigurator() {
   return (
     <div className="space-y-8">
       {/* INTRO */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm text-muted-foreground max-w-xl leading-relaxed">
-          Based on real clinic and patient data. Tap any underlined term — like{" "}
-          <SideInfo infoKey="icsi" /> or <SideInfo infoKey="pgt_a" /> — for a quick explainer.
-        </p>
-        <ConfidenceBadge level={bundle.confidence} />
-      </div>
+      <p className="text-sm text-muted-foreground max-w-2xl leading-relaxed">
+        Based on real clinic and patient data. Tap any underlined term — like{" "}
+        <SideInfo infoKey="icsi" /> or <SideInfo infoKey="pgt_a" /> — for a quick explainer.
+      </p>
 
       {/* SOURCED RANGE — component-level explainable base */}
       {bundle.component && <ComponentBreakdown estimate={bundle.component} />}
