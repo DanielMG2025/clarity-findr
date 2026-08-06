@@ -55,6 +55,11 @@ export default function Clinics() {
 
       <RegulatoryGateNotice orientation={orientation} />
 
+      <Card className="p-4 text-sm text-muted-foreground border-dashed">
+        Clinic identities are shown once you choose to connect. This keeps our guidance neutral
+        and free for you.
+      </Card>
+
       {completion < 60 && (
         <Card className="p-5 bg-primary-soft/30 border-primary/20">
           <div className="flex items-center justify-between gap-4 mb-3">
