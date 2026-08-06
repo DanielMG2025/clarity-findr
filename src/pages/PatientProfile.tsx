@@ -20,6 +20,7 @@ import {
   SharedQuotesBlock,
 } from "@/modules/patient-profile";
 import { Calculator, Building2, ArrowRight } from "lucide-react";
+import { PageHeader } from "@/components/patient/PageHeader";
 
 const BLOCK_RENDERERS = {
   basic: <BasicInfoBlock />,
@@ -40,27 +41,15 @@ const PatientProfile = () => {
   const canMatch = completion >= 25;
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="container max-w-6xl py-10 space-y-8">
+      <PageHeader
+        eyebrow="My situation"
+        title="Your fertility story, all in one place"
+        subtitle="Fill in the blocks that feel useful, at your own pace. Each one improves the orientation on costs, success factors and clinics that may fit you."
+        note="Your data is yours. We use it to explain your options — it doesn't replace a medical consultation."
+      />
 
-
-      <section className="bg-gradient-hero">
-        <div className="container py-10 md:py-14 max-w-5xl space-y-2">
-          <div className="text-xs font-semibold uppercase tracking-wider text-primary">My situation</div>
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
-            Your fertility story, all in one place.
-          </h1>
-          <p className="text-muted-foreground max-w-2xl">
-            Fill in the blocks that feel useful, at your own pace. Each one improves the orientation
-            on costs, success factors and clinics that may fit you.
-          </p>
-          <p className="text-xs text-muted-foreground max-w-2xl pt-1">
-            Your data is yours. We use it to explain your options — it doesn't replace a medical
-            consultation.
-          </p>
-        </div>
-      </section>
-
-      <div className="container max-w-6xl py-8 grid lg:grid-cols-[1fr_320px] gap-6">
+      <div className="grid lg:grid-cols-[1fr_320px] gap-6">
         <div className="space-y-5">
           <ProfileCompletion
             completion={completion}
@@ -124,8 +113,6 @@ const PatientProfile = () => {
           <UnlockedFeatures completion={completion} />
         </aside>
       </div>
-
-
     </div>
   );
 };

@@ -1,11 +1,11 @@
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
 import { Compass, ArrowRight, Info, AlertTriangle, Stethoscope, Check, TriangleAlert, HelpCircle } from "lucide-react";
 import { usePatientJourney } from "@/modules/master-record";
 import type { FactorKind } from "@/modules/master-record";
+import { ConfidenceBadge } from "@/components/patient/ConfidenceBadge";
 
 const KIND_META: Record<FactorKind, { icon: typeof Check; tone: string; label: string }> = {
   favorable: { icon: Check,        tone: "text-emerald-600", label: "In your favour" },
@@ -35,9 +35,7 @@ export function SuccessOrientationCard() {
             <h3 className="font-bold text-lg">Success factors</h3>
           </div>
         </div>
-        <Badge variant="outline" className="text-xs">
-          Confidence: {o.confidence === "high" ? "High" : o.confidence === "medium" ? "Medium" : "Low"}
-        </Badge>
+        <ConfidenceBadge level={o.confidence} />
       </div>
 
       <p className="text-xs text-muted-foreground leading-relaxed">

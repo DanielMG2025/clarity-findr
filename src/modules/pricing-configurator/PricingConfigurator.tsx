@@ -16,7 +16,6 @@ import { ClinicComparison } from "./components/ClinicComparison";
 import { ReviewedClinicPricing } from "./components/ReviewedClinicPricing";
 import { FinancingSimulator } from "./components/FinancingSimulator";
 import { UploadQuoteCTA } from "./components/UploadQuoteCTA";
-import { ConfidenceBadge } from "./components/ConfidenceBadge";
 import { ComponentBreakdown } from "./components/ComponentBreakdown";
 import { HiddenCosts } from "./components/HiddenCosts";
 import { DataSourcesWeights } from "./components/DataSourcesWeights";
@@ -50,24 +49,18 @@ export function PricingConfigurator() {
 
   return (
     <div className="space-y-8">
-      {/* HEADER */}
-      <header className="text-center space-y-3 max-w-2xl mx-auto">
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Here's what you could really expect to pay</h1>
-        <p className="text-muted-foreground">
-          Based on real clinic and patient data. Tap any underlined term — like{" "}
-          <SideInfo infoKey="icsi" /> or <SideInfo infoKey="pgt_a" /> — for a quick explainer.
-        </p>
-        <div className="flex items-center justify-center gap-2 pt-1">
-          <ConfidenceBadge level={bundle.confidence} />
-        </div>
-      </header>
+      {/* INTRO */}
+      <p className="text-sm text-muted-foreground max-w-2xl leading-relaxed">
+        Based on real clinic and patient data. Tap any underlined term — like{" "}
+        <SideInfo infoKey="icsi" /> or <SideInfo infoKey="pgt_a" /> — for a quick explainer.
+      </p>
 
       {/* SOURCED RANGE — component-level explainable base */}
       {bundle.component && <ComponentBreakdown estimate={bundle.component} />}
 
       {/* PROFILE DEPTH BANNER */}
-      <Card className="p-5 bg-gradient-card border-2">
-        <div className="flex items-center justify-between gap-4 mb-3">
+      <Card className="p-6">
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
           <div className="flex items-center gap-3">
             <div className="size-10 rounded-xl bg-primary-soft text-primary grid place-items-center">
               <User className="size-5" />
