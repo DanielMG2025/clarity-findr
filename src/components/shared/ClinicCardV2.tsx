@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { SourceChip } from "@/components/patient/SourceChip";
 
 export interface ClinicCardData {
   id: string;
@@ -63,8 +64,16 @@ export function ClinicCardV2({ clinic }: { clinic: ClinicCardData }) {
               €{clinic.priceLow.toLocaleString()} – €{clinic.priceHigh.toLocaleString()}
             </div>
           )}
+          <div className="mt-2">
+            <SourceChip
+              source="Public price lists"
+              date="2026-Q1"
+              confidence="medium"
+              detail="Normalized from this clinic's published price list and patient-shared quotes, last reviewed in Q1 2026. Your own quote may differ once the clinic reviews your case."
+            />
+          </div>
         </div>
-        <div className="rounded-lg bg-accent-soft p-3">
+        <div className="rounded-lg bg-muted p-3">
           <div className="text-xs text-muted-foreground inline-flex items-center gap-1">
             <Award className="size-3" /> Strengths
           </div>

@@ -45,9 +45,9 @@ export default function Landing() {
       <section className="relative bg-gradient-hero overflow-hidden">
         <div className="container max-w-5xl py-20 md:py-28 text-center space-y-6">
           <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary bg-primary-soft px-3 py-1.5 rounded-full">
-            <Compass className="size-3" /> From uncertainty to clarity
+            <Compass className="size-3" /> Explained, confidential orientation
           </div>
-          <h1 className="text-4xl md:text-6xl font-extrabold leading-[1.05] tracking-tight">
+          <h1 className="text-4xl md:text-6xl font-bold leading-[1.08] tracking-tight">
             From uncertainty to clarity
             <span className="block bg-gradient-primary bg-clip-text text-transparent">
               on your fertility journey.
