@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+
 
 const HELP = [
   { icon: Lightbulb,   title: "What factors may influence your case", desc: "Age, ovarian reserve, history and diagnosis explained without jargon." },
