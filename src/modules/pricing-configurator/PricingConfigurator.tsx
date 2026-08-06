@@ -21,6 +21,8 @@ import { HiddenCosts } from "./components/HiddenCosts";
 import { DataSourcesWeights } from "./components/DataSourcesWeights";
 import { GuaranteeProgramDetail } from "./components/GuaranteeProgramDetail";
 import { SideInfo } from "@/components/shared/SideInfo";
+import { ConfidenceBadge } from "./components/ConfidenceBadge";
+
 import { useMasterRecord } from "@/modules/master-record";
 import { overallCompletionMPR, profileConfidence } from "@/modules/patient-profile/blocks";
 import { toast } from "@/hooks/use-toast";
@@ -59,18 +61,21 @@ export function PricingConfigurator() {
       {bundle.component && <ComponentBreakdown estimate={bundle.component} />}
 
       {/* PROFILE DEPTH BANNER */}
-      <Card className="p-6">
+      <Card className="p-6 rounded-2xl">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
           <div className="flex items-center gap-3">
             <div className="size-10 rounded-xl bg-primary-soft text-primary grid place-items-center">
               <User className="size-5" />
             </div>
-            <div>
-              <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Profile depth</div>
-              <div className="font-semibold">
-                {completion}% complete · {confidence} confidence
-                {completion < 70 && " — add more info to refine this estimate"}
+            <div className="space-y-1">
+              <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Profile depth</div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-base font-semibold">{completion}% complete</span>
+                <ConfidenceBadge level={confidence as "high" | "medium" | "low"} />
               </div>
+              {completion < 70 && (
+                <p className="text-xs text-muted-foreground">Add more info to refine this estimate.</p>
+              )}
             </div>
           </div>
           <Button asChild size="sm" variant={completion < 70 ? "default" : "outline"}>
@@ -85,8 +90,11 @@ export function PricingConfigurator() {
         <ProfileSnapshot profile={profile} patch={patch} />
 
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold">Scenarios for your profile</h2>
+          <div className="flex items-center justify-between gap-3">
+            <div className="space-y-1">
+              <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Compare</div>
+              <h2 className="text-lg font-semibold">Scenarios for your profile</h2>
+            </div>
             <div className="inline-flex rounded-lg border border-border p-1 bg-card">
               <button
                 onClick={() => setView("single")}
@@ -103,7 +111,7 @@ export function PricingConfigurator() {
             </div>
           </div>
 
-          <div className={view === "compare" ? "grid md:grid-cols-3 gap-3" : "grid md:grid-cols-3 gap-3"}>
+          <div className="grid md:grid-cols-3 gap-3 items-start">
             {bundle.scenarios.map((s) => (
               <ScenarioCard
                 key={s.key}
@@ -111,9 +119,12 @@ export function PricingConfigurator() {
                 selected={view === "single" && selected === s.key}
                 onSelect={view === "single" ? () => setSelected(s.key) : undefined}
                 compact={view === "compare"}
+                confidence={bundle.confidence}
+                market={profile.country}
               />
             ))}
           </div>
+
 
           {view === "single" && <PriceBreakdown scenario={active} />}
         </div>
@@ -149,10 +160,10 @@ export function PricingConfigurator() {
       </section>
 
       {/* CTAs */}
-      <section className="rounded-2xl border border-border bg-gradient-to-br from-primary-soft/40 to-accent-soft/30 p-6 md:p-8">
+      <section className="rounded-2xl border border-border bg-primary-soft/25 p-6 md:p-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h3 className="text-xl font-bold">Next step?</h3>
+            <h3 className="text-lg font-semibold">Next step?</h3>
             <p className="text-sm text-muted-foreground">We'll show you which clinics fit your range and your case — with the same transparency.</p>
           </div>
           <div className="flex flex-wrap gap-2">

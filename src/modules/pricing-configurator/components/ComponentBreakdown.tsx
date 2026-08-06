@@ -10,13 +10,13 @@ const eur = (n: number) => `€${Math.round(n).toLocaleString()}`;
 export function ComponentBreakdown({ estimate }: { estimate: Estimate }) {
   const hasRecurring = estimate.recurring_max > 0;
   return (
-    <Card className="p-6 space-y-5 bg-gradient-card border-2">
+    <Card className="p-6 space-y-5 rounded-2xl">
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div>
-          <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
             Orientative range · {estimate.plan_label} · {estimate.market.label}
           </div>
-          <div className="text-3xl font-bold tabular-nums mt-1">
+          <div className="text-3xl font-semibold tabular-nums mt-1">
             {eur(estimate.total_min)}–{eur(estimate.total_max)}
           </div>
           {hasRecurring && (
@@ -32,7 +32,7 @@ export function ComponentBreakdown({ estimate }: { estimate: Estimate }) {
 
       {/* Component breakdown */}
       <div>
-        <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+        <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground mb-2">
           What's in this range
         </div>
         <ul className="divide-y border rounded-lg overflow-hidden">
