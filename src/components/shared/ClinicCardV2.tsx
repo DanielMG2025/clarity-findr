@@ -86,7 +86,7 @@ export function ClinicCardV2({ clinic }: { clinic: ClinicCardData }) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Request appointment at {clinic.name}</DialogTitle>
+            <DialogTitle>Request contact with {label}</DialogTitle>
             <DialogDescription>
               We pass your details to the clinic. They'll reach out directly. No obligation.
             </DialogDescription>
