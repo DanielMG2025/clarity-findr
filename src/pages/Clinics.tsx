@@ -2,8 +2,9 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { PageHeader } from "@/components/patient/PageHeader";
+import { SourceChip } from "@/components/patient/SourceChip";
 import { ClinicCardV2 } from "@/components/shared/ClinicCardV2";
 import { TransparencyBlock } from "@/components/shared/TransparencyBlock";
 import { RegulatoryGateNotice } from "@/components/patient/RegulatoryGateNotice";
@@ -40,29 +41,23 @@ export default function Clinics() {
 
   return (
     <div className="container max-w-6xl py-10 space-y-6">
-      <header className="space-y-2 max-w-2xl">
-        <Badge variant="secondary" className="text-[11px]">Clinics</Badge>
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Clinics that may fit your case</h1>
-        <p className="text-muted-foreground">
-          Normalized prices, clinical fit and proximity — with a transparent <em>why</em> for every
-          suggestion. You decide whether and when to reach out.
-        </p>
-        <p className="text-xs text-muted-foreground">
-          This is not a medical recommendation. It's orientation to help you have better
-          conversations with each clinic.
-        </p>
-      </header>
+      <PageHeader
+        eyebrow="Clinics"
+        title="Clinics that may fit your case"
+        subtitle="Normalized prices, clinical fit and proximity — with a transparent why for every suggestion. You decide whether and when to reach out."
+        note="This is not a medical recommendation. It's orientation to help you have better conversations with each clinic."
+      />
 
       <RegulatoryGateNotice orientation={orientation} />
 
-      <Card className="p-4 text-sm text-muted-foreground border-dashed">
+      <Card className="p-6 text-sm text-muted-foreground border-dashed leading-relaxed">
         Clinic identities are shown once you choose to connect. This keeps our guidance neutral
         and free for you.
       </Card>
 
       {completion < 60 && (
-        <Card className="p-5 bg-primary-soft/30 border-primary/20">
-          <div className="flex items-center justify-between gap-4 mb-3">
+        <Card className="p-6 bg-primary-soft/30 border-primary/20">
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
             <div>
               <div className="text-xs font-bold uppercase tracking-wider text-primary">How much we know about you</div>
               <div className="font-semibold">Share a little more to refine this list (current confidence: {confidence})</div>
@@ -76,7 +71,7 @@ export default function Clinics() {
       )}
 
       {clinics.length === 0 ? (
-        <Card className="p-6 text-sm text-muted-foreground">
+        <Card className="p-6 text-sm text-muted-foreground leading-relaxed">
           None of our reference clinics are in a country that's legally viable for your situation yet.
           As we add clinics in the viable countries, they'll appear here.
         </Card>
@@ -87,8 +82,28 @@ export default function Clinics() {
               <TableRow>
                 <TableHead>Clinic</TableHead>
                 <TableHead className="text-right">Fit</TableHead>
-                <TableHead className="text-right">Indicative price</TableHead>
-                <TableHead className="text-right">Reported success</TableHead>
+                <TableHead className="text-right">
+                  <div className="inline-flex flex-col items-end gap-1">
+                    Indicative price
+                    <SourceChip
+                      source="Public price lists"
+                      date="2026-Q1"
+                      confidence="medium"
+                      detail="Normalized from published clinic price lists and patient-shared quotes, last reviewed in Q1 2026. Ranges are indicative until a clinic confirms your own quote."
+                    />
+                  </div>
+                </TableHead>
+                <TableHead className="text-right">
+                  <div className="inline-flex flex-col items-end gap-1">
+                    Reported success
+                    <SourceChip
+                      source="Clinic-reported"
+                      date="2026-Q1"
+                      confidence="low"
+                      detail="Self-reported by each clinic, with cohorts that are not directly comparable. Use it as context, never as a prediction for your case."
+                    />
+                  </div>
+                </TableHead>
                 <TableHead className="text-right">Distance</TableHead>
               </TableRow>
             </TableHeader>

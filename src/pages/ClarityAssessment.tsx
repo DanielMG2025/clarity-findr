@@ -4,7 +4,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { ArrowRight, Wallet, Building2, Stethoscope, Heart, Info, Compass } from "lucide-react";
+import { ArrowRight, Wallet, Building2, Stethoscope, Heart, Info } from "lucide-react";
+import { PageHeader } from "@/components/patient/PageHeader";
 import { useMasterRecord, usePatientJourney } from "@/modules/master-record";
 import { BLOCKS, blockProgressMPR, overallCompletionMPR } from "@/modules/patient-profile";
 import { byCode } from "@/modules/regulatory";
@@ -62,21 +63,15 @@ export default function ClarityAssessment() {
 
   return (
     <div className="container max-w-6xl py-10 space-y-8">
-      {/* Header */}
-      <header className="space-y-3 max-w-3xl">
-        <Badge variant="secondary" className="text-[11px]">Your clarity assessment</Badge>
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight flex items-center gap-2">
-          <Compass className="size-7 text-primary" /> From uncertainty to clarity
-        </h1>
-        <p className="text-muted-foreground leading-relaxed">
-          A single, explainable and confidential view of your situation — the clinical factors
-          <em> and</em> the legal framework where you live. Each block tells you <em>why</em> you see
-          what you see and what data influences it.
-        </p>
-      </header>
+      <PageHeader
+        eyebrow="My orientation"
+        title="From uncertainty to clarity"
+        subtitle="One explainable, confidential view of your situation — the clinical factors and the legal framework where you live."
+        note="Every block tells you why you see what you see, and what data influences it."
+      />
 
       {/* Profile summary + completion */}
-      <Card className="p-5 bg-gradient-card border-2">
+      <Card className="p-6">
         <div className="flex items-center justify-between gap-4 mb-3 flex-wrap">
           <div>
             <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Your situation summary</div>
@@ -183,7 +178,7 @@ export default function ClarityAssessment() {
       <EvidenceBasePanel />
 
       {/* Disclaimer */}
-      <Card className="p-5 bg-muted/30 border-dashed">
+      <Card className="p-6 bg-muted/30 border-dashed">
         <p className="text-xs text-muted-foreground leading-relaxed">
           <strong className="text-foreground">Important notice:</strong> Fertility Compass provides
           orientation based on public data, statistical models and information you choose to share.
