@@ -21,6 +21,8 @@ import { HiddenCosts } from "./components/HiddenCosts";
 import { DataSourcesWeights } from "./components/DataSourcesWeights";
 import { GuaranteeProgramDetail } from "./components/GuaranteeProgramDetail";
 import { SideInfo } from "@/components/shared/SideInfo";
+import { ConfidenceBadge } from "./components/ConfidenceBadge";
+
 import { useMasterRecord } from "@/modules/master-record";
 import { overallCompletionMPR, profileConfidence } from "@/modules/patient-profile/blocks";
 import { toast } from "@/hooks/use-toast";
