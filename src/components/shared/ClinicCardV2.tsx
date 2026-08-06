@@ -12,6 +12,8 @@ import { toast } from "sonner";
 export interface ClinicCardData {
   id: string;
   name: string;
+  /** Anonymised label shown to patients before they request contact. */
+  displayLabel?: string;
   city?: string | null;
   country: string;
   estimatedPrice: number;
