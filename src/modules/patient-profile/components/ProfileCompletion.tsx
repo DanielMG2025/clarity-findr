@@ -13,13 +13,13 @@ interface Props {
 
 export function ProfileCompletion({ completion, confidence, unlockedCount, totalFeatures }: Props) {
   return (
-    <Card className="p-6">
+    <Card className="p-6 rounded-2xl">
       <div className="flex items-start justify-between gap-4 mb-4">
         <div>
-          <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+          <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
             <Sparkles className="size-3" /> Your fertility profile
           </div>
-          <h2 className="text-2xl font-bold mt-1">{completion}% complete</h2>
+          <h2 className="text-xl font-semibold mt-1">{completion}% complete</h2>
           <p className="text-sm text-muted-foreground mt-1">
             The more you complete, the more accurate your estimates and recommendations.
           </p>
