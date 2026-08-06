@@ -52,6 +52,22 @@ export function EvidenceBasePanel() {
     return [...map.values()];
   }, [evidence]);
 
+  // Real, sourced figures. Own-egg band follows the patient's age when known.
+  const figures = useMemo(() => {
+    const age = typeof evidence.segment.age === "number" ? evidence.segment.age : undefined;
+    return [
+      {
+        label: "With your own eggs (per transfer)",
+        citationId: age != null ? ownEggCitationForAge(age) : "br_own_avg",
+      },
+      { label: "With donor eggs (per transfer)", citationId: "pr_donor" },
+      { label: "With a frozen embryo transfer", citationId: "pr_fet" },
+      { label: "Across three complete cycles", citationId: "cumulative_3_cycles" },
+    ];
+  }, [evidence]);
+
+
+
   return (
     <Card className="p-6 space-y-5">
       <div className="flex items-start justify-between gap-3 flex-wrap">
