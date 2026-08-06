@@ -33,18 +33,19 @@ const BADGE_LABELS: Record<NonNullable<ClinicCardData["badge"]>, { label: string
 
 export function ClinicCardV2({ clinic }: { clinic: ClinicCardData }) {
   const [open, setOpen] = useState(false);
+  const label = clinic.displayLabel ?? clinic.name;
   return (
     <Card className="p-6 hover:shadow-elegant transition-smooth border">
       <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
         <div>
           <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="text-lg font-bold">{clinic.name}</h3>
+            <h3 className="text-lg font-bold">{label}</h3>
             {clinic.badge && (
               <Badge className={BADGE_LABELS[clinic.badge].cls}>{BADGE_LABELS[clinic.badge].label}</Badge>
             )}
           </div>
           <div className="text-sm text-muted-foreground inline-flex items-center gap-1 mt-1">
-            <MapPin className="size-3.5" /> {clinic.city ? `${clinic.city}, ` : ""}{clinic.country}
+            <MapPin className="size-3.5" /> {clinic.country}
           </div>
         </div>
         <div className="text-right">
