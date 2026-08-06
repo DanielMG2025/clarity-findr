@@ -3,12 +3,14 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import type { Scenario } from "../logic/types";
+import { WhyDisclosure, WhyLine } from "@/components/patient/WhyDisclosure";
+import { ConfidenceBadge } from "./ConfidenceBadge";
+import type { Confidence, Scenario } from "../logic/types";
 
-const TONE: Record<Scenario["tone"], { ring: string; chip: string; bar: string; dot: string; label: string }> = {
-  emerald: { ring: "ring-accent/30",   chip: "bg-accent-soft text-accent",     bar: "bg-accent",     dot: "bg-accent",     label: "🟢" },
-  blue:    { ring: "ring-primary/30",  chip: "bg-primary-soft text-primary",   bar: "bg-primary",    dot: "bg-primary",    label: "🔵" },
-  violet:  { ring: "ring-expert/30",   chip: "bg-expert-soft text-expert",     bar: "bg-expert",     dot: "bg-expert",     label: "🟣" },
+const TONE: Record<Scenario["tone"], { ring: string; chip: string; bar: string; dot: string }> = {
+  emerald: { ring: "ring-accent/30",   chip: "bg-accent-soft text-accent",     bar: "bg-accent",     dot: "bg-accent" },
+  blue:    { ring: "ring-primary/30",  chip: "bg-primary-soft text-primary",   bar: "bg-primary",    dot: "bg-primary" },
+  violet:  { ring: "ring-expert/30",   chip: "bg-expert-soft text-expert",     bar: "bg-expert",     dot: "bg-expert" },
 };
 
 const RISK_CLS: Record<Scenario["riskLabel"], string> = {
@@ -22,9 +24,14 @@ interface Props {
   selected?: boolean;
   onSelect?: () => void;
   compact?: boolean;
+  /** Bundle-level confidence, shown as the module's shared badge when available. */
+  confidence?: Confidence;
+  /** Market the range is anchored to, used in the "why" explanation. */
+  market?: string;
 }
 
-export function ScenarioCard({ scenario, selected, onSelect, compact }: Props) {
+export function ScenarioCard({ scenario, selected, onSelect, compact, confidence, market }: Props) {
+
   const t = TONE[scenario.tone];
   return (
     <Card
