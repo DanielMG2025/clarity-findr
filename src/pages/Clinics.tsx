@@ -91,8 +91,8 @@ export default function Clinics() {
               {clinics.map((c) => (
                 <TableRow key={c.id}>
                   <TableCell>
-                    <div className="font-semibold">{c.name}</div>
-                    <div className="text-xs text-muted-foreground">{c.city}, {c.country}</div>
+                    <div className="font-semibold">{c.displayLabel}</div>
+                    <div className="text-xs text-muted-foreground">{c.country}</div>
                   </TableCell>
                   <TableCell className="text-right font-bold text-primary tabular-nums">{c.matchScore}</TableCell>
                   <TableCell className="text-right tabular-nums">€{c.estimatedPrice.toLocaleString()}</TableCell>
