@@ -2,10 +2,11 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
-import { Compass, ArrowRight, Info, AlertTriangle, Stethoscope, Check, TriangleAlert, HelpCircle } from "lucide-react";
+import { Compass, ArrowRight, AlertTriangle, Stethoscope, Check, TriangleAlert, HelpCircle } from "lucide-react";
 import { usePatientJourney } from "@/modules/master-record";
 import type { FactorKind } from "@/modules/master-record";
 import { ConfidenceBadge } from "@/components/patient/ConfidenceBadge";
+import { WhyDisclosure, WhyLine } from "@/components/patient/WhyDisclosure";
 
 const KIND_META: Record<FactorKind, { icon: typeof Check; tone: string; label: string }> = {
   favorable: { icon: Check,        tone: "text-emerald-600", label: "In your favour" },
@@ -31,8 +32,8 @@ export function SuccessOrientationCard() {
             <Compass className="size-5" />
           </span>
           <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Approximate orientation</div>
-            <h3 className="font-bold text-lg">Success factors</h3>
+            <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Approximate orientation</div>
+            <h3 className="text-base font-semibold leading-tight">Success factors</h3>
           </div>
         </div>
         <ConfidenceBadge level={o.confidence} />
@@ -40,7 +41,7 @@ export function SuccessOrientationCard() {
 
       <p className="text-xs text-muted-foreground leading-relaxed">
         Based on publicly known factors such as age, ovarian reserve, prior history, diagnosis and
-        treatment type. <strong>It is not a medical prediction.</strong>
+        treatment type. <span className="font-medium text-foreground">It is not a medical prediction.</span>
       </p>
 
       <ul className="divide-y border rounded-lg overflow-hidden">
@@ -66,16 +67,13 @@ export function SuccessOrientationCard() {
         </div>
       )}
 
-      <details className="text-xs text-muted-foreground">
-        <summary className="cursor-pointer font-semibold text-foreground inline-flex items-center gap-1">
-          <Info className="size-3.5" /> Why we see this
-        </summary>
-        <div className="mt-2 space-y-2 leading-relaxed">
-          <p><strong>How confident:</strong> {o.confidence_reason}</p>
-          <p><strong>What to confirm with a doctor:</strong> any clinical interpretation of your specific values and the suitability of a specific treatment.</p>
-          <p className="text-[11px]">{o.disclaimer}</p>
-        </div>
-      </details>
+      <WhyDisclosure>
+        <WhyLine label="How confident">{o.confidence_reason}</WhyLine>
+        <WhyLine label="What to confirm with a doctor">
+          any clinical interpretation of your specific values and the suitability of a specific treatment.
+        </WhyLine>
+        <p className="text-[11px]">{o.disclaimer}</p>
+      </WhyDisclosure>
 
       <div className="space-y-2">
         <Progress value={o.completeness} className="h-2" />

@@ -23,8 +23,8 @@ export function RegulatoryFrameworkPanel({ orientation }: { orientation: Regulat
         <div className="flex items-center gap-2">
           <span className="grid place-items-center size-9 rounded-xl bg-primary-soft text-primary"><Scale className="size-5" /></span>
           <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Your legal framework</div>
-            <h3 className="font-bold text-lg">What you can legally do</h3>
+            <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Your legal framework</div>
+            <h3 className="text-base font-semibold leading-tight">What you can legally do</h3>
           </div>
         </div>
         <p className="text-sm text-muted-foreground leading-relaxed">
@@ -46,8 +46,8 @@ export function RegulatoryFrameworkPanel({ orientation }: { orientation: Regulat
         <div className="flex items-center gap-2">
           <span className="grid place-items-center size-9 rounded-xl bg-primary-soft text-primary"><Scale className="size-5" /></span>
           <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Your legal framework</div>
-            <h3 className="font-bold text-lg">What you can legally do in {o.home.label}</h3>
+            <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Your legal framework</div>
+            <h3 className="text-base font-semibold leading-tight">What you can legally do in {o.home.label}</h3>
           </div>
         </div>
         {o.needs_to_travel ? (
