@@ -16,6 +16,7 @@ const KIND_LABEL: Record<SourceKind, string> = {
   public_report: "Public market report",
   crowd: "Patient-shared price",
   b2b: "Clinic rate card",
+  scientific: "Reviewed scientific source",
 };
 
 export function DataSourcesPanel({
