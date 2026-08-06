@@ -3,6 +3,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, ExternalLink, FlaskConical, Route, ShieldCheck } from "lucide-react";
 import { usePatientJourney } from "@/modules/master-record";
+import { ownEggCitationForAge } from "@/modules/evidence/citations";
+import { EvidencePopover } from "@/components/patient/EvidencePopover";
 import type { RouteHint } from "@/modules/evidence";
 
 const ROUTE_LABEL: Record<RouteHint["route"], string> = {
@@ -49,6 +51,22 @@ export function EvidenceBasePanel() {
     }
     return [...map.values()];
   }, [evidence]);
+
+  // Real, sourced figures. Own-egg band follows the patient's age when known.
+  const figures = useMemo(() => {
+    const age = typeof evidence.segment.age === "number" ? evidence.segment.age : undefined;
+    return [
+      {
+        label: "With your own eggs (per transfer)",
+        citationId: age != null ? ownEggCitationForAge(age) : "br_own_avg",
+      },
+      { label: "With donor eggs (per transfer)", citationId: "pr_donor" },
+      { label: "With a frozen embryo transfer", citationId: "pr_fet" },
+      { label: "Across three complete cycles", citationId: "cumulative_3_cycles" },
+    ];
+  }, [evidence]);
+
+
 
   return (
     <Card className="p-6 space-y-5">
@@ -112,49 +130,24 @@ export function EvidenceBasePanel() {
         )}
       </div>
 
-      {/* Reference statistics — figures are gated until a clinician fills them */}
+      {/* Real, sourced figures — each opens its own full breakdown */}
       <div>
         <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-1.5">
-          <FlaskConical className="size-3.5" /> Reference statistics for your segment
+          <FlaskConical className="size-3.5" /> Success rates for a profile like yours
         </div>
         <ul className="space-y-2">
-          {evidence.statements.map((s) => (
-            <li key={`${s.metric}-${s.segment.age_band}`} className="rounded-lg border p-3">
-              <div className="flex items-center justify-between gap-3 flex-wrap">
-                <span className="text-sm font-medium">{humanizeMetric(s.metric)}</span>
-                {s.provisional ? (
-                  <Badge variant="outline" className="text-[10px]">Pending clinical review</Badge>
-                ) : (
-                  <span className="text-sm font-bold tabular-nums">
-                    {Math.round(s.value_min * 100)}–{Math.round(s.value_max * 100)}%
-                  </span>
-                )}
-              </div>
-              <div className="text-xs text-muted-foreground mt-1 flex items-center gap-1 flex-wrap">
-                {s.citation.url ? (
-                  <a
-                    href={s.citation.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-primary hover:underline inline-flex items-center gap-0.5"
-                  >
-                    {s.citation.label} <ExternalLink className="size-3" />
-                  </a>
-                ) : (
-                  <span>{s.citation.label}</span>
-                )}
-                <span>· {s.citation.locator}</span>
-              </div>
+          {figures.map((f) => (
+            <li
+              key={f.citationId}
+              className="rounded-lg border p-3 flex items-center justify-between gap-3 flex-wrap"
+            >
+              <span className="text-sm font-medium">{f.label}</span>
+              <EvidencePopover citationId={f.citationId} />
             </li>
           ))}
         </ul>
-        {evidence.statements.some((s) => s.provisional) && (
-          <p className="text-[11px] text-muted-foreground mt-2 leading-relaxed">
-            Exact figures are being validated against the cited source tables and will appear once
-            a clinical reviewer confirms them. We won't show a number we can't stand behind.
-          </p>
-        )}
       </div>
+
 
       {/* References footer */}
       {sources.length > 0 && (

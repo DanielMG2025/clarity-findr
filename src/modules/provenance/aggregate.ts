@@ -221,6 +221,7 @@ const KIND_PHRASE: Record<SourceKind, string> = {
   public_report: "public market reports",
   crowd: "prices shared by patients",
   b2b: "clinic rate cards",
+  scientific: "reviewed scientific sources",
 };
 
 /**
