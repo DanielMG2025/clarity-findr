@@ -33,7 +33,7 @@ const PARTNERS: PartnerCategory[] = [
   {
     icon: Dna,
     category: "Genetic screening",
-    examples: "Igenomix · Veritas · Eugin Lab",
+    examples: "Accredited genetic labs",
     description:
       "Carrier screening + PGT-A panel ordered through partner labs. Results sync into your match profile.",
     why_matters:
@@ -45,7 +45,7 @@ const PARTNERS: PartnerCategory[] = [
       "Informs conversations about which treatments to consider",
       "Highlights clinics with the relevant lab capabilities",
     ],
-    cta_target: "/patient/advanced",
+    cta_target: "/situacion",
     color: "primary",
   },
   {
@@ -63,7 +63,7 @@ const PARTNERS: PartnerCategory[] = [
       "A more grounded picture before clinic conversations",
       "Helps clinics discuss a realistic treatment plan",
     ],
-    cta_target: "/patient/advanced",
+    cta_target: "/situacion",
     color: "accent",
   },
   {
@@ -81,7 +81,7 @@ const PARTNERS: PartnerCategory[] = [
       "Helps keep more clinics within reach",
       "Supports choosing on fit, not only this month's budget",
     ],
-    cta_target: "/patient/unlock",
+    cta_target: "/situacion",
     color: "primary",
   },
   {
@@ -99,7 +99,7 @@ const PARTNERS: PartnerCategory[] = [
       "Helps you ask the right questions before deciding",
       "Can bring more confidence to your decision",
     ],
-    cta_target: "/patient/advanced",
+    cta_target: "/situacion",
     color: "accent",
   },
 ];
@@ -186,15 +186,6 @@ const Partners = () => (
                       </div>
                     </div>
                   </div>
-                  <span
-                    className={`text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-wider whitespace-nowrap shrink-0 ${
-                      accent
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-accent text-accent-foreground"
-                    }`}
-                  >
-                    Partner-funded
-                  </span>
                 </div>
 
                 <p className="text-sm text-muted-foreground mb-4">{p.description}</p>
@@ -247,12 +238,12 @@ const Partners = () => (
                 <div className="mt-auto space-y-3">
                   <Button asChild variant="hero" className="w-full">
                     <Link to={p.cta_target}>
-                      Learn more about this option
+                      See how this fits my situation
                       <ArrowRight className="size-4" />
                     </Link>
                   </Button>
                   <p className="text-[11px] text-muted-foreground text-center leading-snug">
-                    Funded by our partners — no extra cost to you, and always disclosed.
+                    If you choose this, we may receive a referral fee — always disclosed, and it never changes what we recommend.
                   </p>
                 </div>
               </Card>
@@ -273,9 +264,10 @@ const Partners = () => (
                 Why partners are part of the platform
               </h2>
               <p className="text-muted-foreground mt-2 max-w-3xl">
-                A fertility decision deserves good information. These partners are here because
-                they can add something concrete — data, an expert view, or a little financial
-                breathing room — while keeping the cost off you.
+                A fertility decision deserves good information. These are independent providers
+                that can add something concrete — data, an expert view, or a little financial
+                breathing room — and we tell you openly whenever we have a commercial
+                relationship with them.
               </p>
             </div>
           </div>
@@ -283,10 +275,10 @@ const Partners = () => (
           <div className="grid md:grid-cols-3 gap-5">
             <Card className="p-6">
               <HandCoins className="size-5 text-accent mb-3" />
-              <div className="font-bold mb-1">Reduces patient cost</div>
+              <div className="font-bold mb-1">Transparent and independent</div>
               <p className="text-sm text-muted-foreground">
-                Genetic panels, home tests and financing are paid for by partners, not by you.
-                The platform stays free where it should be.
+                The core guidance stays free. Where we have a commercial relationship with a
+                provider we disclose it — and it never changes what we recommend.
               </p>
             </Card>
             <Card className="p-6">
@@ -310,11 +302,8 @@ const Partners = () => (
           <div className="mt-10 flex flex-wrap gap-3">
             <Button asChild variant="hero">
               <Link to="/asesoramiento">
-                See partner-funded modules <ArrowRight className="size-4" />
+                See complementary services <ArrowRight className="size-4" />
               </Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link to="/admin/pricing-dashboard">Admin · revenue model</Link>
             </Button>
           </div>
         </div>
@@ -324,11 +313,11 @@ const Partners = () => (
       <section className="container py-16 max-w-3xl text-center">
         <Sparkles className="size-8 text-primary mx-auto mb-4" />
         <h2 className="text-2xl md:text-3xl font-bold">
-          Funded by those who benefit — not by you alone.
+          Transparent about every relationship.
         </h2>
         <p className="text-muted-foreground mt-3">
-          You only pay for what's purely for you. Anything that also benefits a clinic or a
-          partner is funded by them — always disclosed, never hidden.
+          The core guidance is free. For complementary services we may earn a referral fee —
+          and we always tell you when we do. Disclosure is the whole point.
         </p>
       </section>
     </main>
