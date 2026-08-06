@@ -12,6 +12,8 @@ import { toast } from "sonner";
 export interface ClinicCardData {
   id: string;
   name: string;
+  /** Anonymised label shown to patients before they request contact. */
+  displayLabel?: string;
   city?: string | null;
   country: string;
   estimatedPrice: number;
@@ -31,18 +33,19 @@ const BADGE_LABELS: Record<NonNullable<ClinicCardData["badge"]>, { label: string
 
 export function ClinicCardV2({ clinic }: { clinic: ClinicCardData }) {
   const [open, setOpen] = useState(false);
+  const label = clinic.displayLabel ?? clinic.name;
   return (
     <Card className="p-6 hover:shadow-elegant transition-smooth border">
       <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
         <div>
           <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="text-lg font-bold">{clinic.name}</h3>
+            <h3 className="text-lg font-bold">{label}</h3>
             {clinic.badge && (
               <Badge className={BADGE_LABELS[clinic.badge].cls}>{BADGE_LABELS[clinic.badge].label}</Badge>
             )}
           </div>
           <div className="text-sm text-muted-foreground inline-flex items-center gap-1 mt-1">
-            <MapPin className="size-3.5" /> {clinic.city ? `${clinic.city}, ` : ""}{clinic.country}
+            <MapPin className="size-3.5" /> {clinic.country}
           </div>
         </div>
         <div className="text-right">
@@ -83,7 +86,7 @@ export function ClinicCardV2({ clinic }: { clinic: ClinicCardData }) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Request appointment at {clinic.name}</DialogTitle>
+            <DialogTitle>Request contact with {label}</DialogTitle>
             <DialogDescription>
               We pass your details to the clinic. They'll reach out directly. No obligation.
             </DialogDescription>
