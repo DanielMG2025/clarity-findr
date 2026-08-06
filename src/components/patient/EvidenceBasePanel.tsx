@@ -3,6 +3,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, ExternalLink, FlaskConical, Route, ShieldCheck } from "lucide-react";
 import { usePatientJourney } from "@/modules/master-record";
+import { ownEggCitationForAge } from "@/modules/evidence/citations";
+import { EvidencePopover } from "@/components/patient/EvidencePopover";
 import type { RouteHint } from "@/modules/evidence";
 
 const ROUTE_LABEL: Record<RouteHint["route"], string> = {
