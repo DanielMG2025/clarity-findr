@@ -9,7 +9,7 @@ import { EvidencePopover } from "@/components/patient/EvidencePopover";
 import { SourceChip } from "@/components/patient/SourceChip";
 import { ConfidenceBadge } from "@/components/patient/ConfidenceBadge";
 import { WhyDisclosure, WhyLine } from "@/components/patient/WhyDisclosure";
-import { usePatientJourney } from "@/modules/master-record";
+import { useMasterRecord, usePatientJourney } from "@/modules/master-record";
 import { EVIDENCE_SOURCE_MAP, type RouteHint } from "@/modules/evidence";
 import {
   SOURCES as EVIDENCE_CITATION_SOURCES,
@@ -72,22 +72,22 @@ function sourceDateFromEstimate(estimate: PriceEstimate) {
 
 export default function SourcesDossier() {
   const journey = usePatientJourney();
+  const patientAge = useMasterRecord((state) => state.identity.age);
   const { profile, bundle } = usePricingConfigurator();
   const evidence = journey.step2_orientation.evidence;
   const orientation = journey.step0_regulatory;
 
   const evidenceFigures = useMemo(() => {
-    const age = typeof evidence.segment.age === "number" ? evidence.segment.age : undefined;
     return [
       {
         label: "With your own eggs (per transfer)",
-        citationId: age != null ? ownEggCitationForAge(age) : "br_own_avg",
+        citationId: patientAge != null ? ownEggCitationForAge(patientAge) : "br_own_avg",
       },
       { label: "With donor eggs (per transfer)", citationId: "pr_donor" },
       { label: "With a frozen embryo transfer", citationId: "pr_fet" },
       { label: "Across three complete cycles", citationId: "cumulative_3_cycles" },
     ];
-  }, [evidence.segment.age]);
+  }, [patientAge]);
 
   const evidenceSources = useMemo(() => {
     const map = new Map<string, { label: string; url?: string; detail?: string; date?: string; confidence: "high" | "medium" | "low" }>();

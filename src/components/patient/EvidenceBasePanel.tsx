@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpen, ExternalLink, FlaskConical, Route, ShieldCheck } from "lucide-react";
-import { usePatientJourney } from "@/modules/master-record";
+import { useMasterRecord, usePatientJourney } from "@/modules/master-record";
 import { ownEggCitationForAge } from "@/modules/evidence/citations";
 import { EvidencePopover } from "@/components/patient/EvidencePopover";
 import type { RouteHint } from "@/modules/evidence";
@@ -41,6 +41,7 @@ function humanizeMetric(metric: string): string {
 export function EvidenceBasePanel() {
   // Same evidence the shared journey engine computes (buildEvidence under the hood).
   const evidence = usePatientJourney().step2_orientation.evidence;
+  const patientAge = useMasterRecord((state) => state.identity.age);
 
   // Distinct sources cited across statements + routes, for a references footer.
   const sources = useMemo(() => {
@@ -56,17 +57,16 @@ export function EvidenceBasePanel() {
 
   // Real, sourced figures. Own-egg band follows the patient's age when known.
   const figures = useMemo(() => {
-    const age = typeof evidence.segment.age === "number" ? evidence.segment.age : undefined;
     return [
       {
         label: "With your own eggs (per transfer)",
-        citationId: age != null ? ownEggCitationForAge(age) : "br_own_avg",
+        citationId: patientAge != null ? ownEggCitationForAge(patientAge) : "br_own_avg",
       },
       { label: "With donor eggs (per transfer)", citationId: "pr_donor" },
       { label: "With a frozen embryo transfer", citationId: "pr_fet" },
       { label: "Across three complete cycles", citationId: "cumulative_3_cycles" },
     ];
-  }, [evidence]);
+  }, [patientAge]);
 
 
 
