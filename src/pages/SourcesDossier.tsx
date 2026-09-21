@@ -14,7 +14,6 @@ import { EVIDENCE_SOURCE_MAP, type RouteHint } from "@/modules/evidence";
 import {
   SOURCES as EVIDENCE_CITATION_SOURCES,
   citation,
-  formatValue,
   ownEggCitationForAge,
 } from "@/modules/evidence/citations";
 import { seedEstimateForProfile, type PriceEstimate, type SourceKind } from "@/modules/provenance";
@@ -56,6 +55,10 @@ function formatEuro(value: number) {
 
 function evidenceConfidence(kind: string): "high" | "medium" | "low" {
   return kind === "registry" ? "high" : "medium";
+}
+
+function shortEvidenceSource(label: string) {
+  return label.split("—")[0]?.split("·")[0]?.trim() || label;
 }
 
 function routeSourceFor(label: string) {
@@ -166,7 +169,7 @@ export default function SourcesDossier() {
                     <div className="text-sm font-medium text-foreground">{figure.label}</div>
                     {item && (
                       <SourceChip
-                        source={item.source.publisher}
+                        source={shortEvidenceSource(item.source.publisher)}
                         date={item.source.year}
                         confidence={evidenceConfidence(item.source.kind)}
                         detail={item.source.scope}

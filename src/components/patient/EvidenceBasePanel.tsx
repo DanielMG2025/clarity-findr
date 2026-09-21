@@ -158,7 +158,7 @@ export function EvidenceBasePanel() {
             <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
               <ShieldCheck className="size-3.5" /> Sources
             </div>
-            <Button asChild size="sm" variant="outline" className="h-8 gap-1.5">
+            <Button asChild size="sm" variant="outline" className="h-auto min-h-8 whitespace-normal text-left leading-snug">
               <Link to="/sources">See every source behind your orientation <ArrowRight className="size-3.5" /></Link>
             </Button>
           </div>
