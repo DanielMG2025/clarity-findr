@@ -1,7 +1,9 @@
 import { useMemo } from "react";
+import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, ExternalLink, FlaskConical, Route, ShieldCheck } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, BookOpen, ExternalLink, FlaskConical, Route, ShieldCheck } from "lucide-react";
 import { usePatientJourney } from "@/modules/master-record";
 import { ownEggCitationForAge } from "@/modules/evidence/citations";
 import { EvidencePopover } from "@/components/patient/EvidencePopover";
@@ -152,8 +154,13 @@ export function EvidenceBasePanel() {
       {/* References footer */}
       {sources.length > 0 && (
         <div className="rounded-lg bg-muted/40 border p-3">
-          <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5 flex items-center gap-1.5">
-            <ShieldCheck className="size-3.5" /> Sources
+          <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+              <ShieldCheck className="size-3.5" /> Sources
+            </div>
+            <Button asChild size="sm" variant="outline" className="h-8 gap-1.5">
+              <Link to="/sources">See every source behind your orientation <ArrowRight className="size-3.5" /></Link>
+            </Button>
           </div>
           <ul className="flex flex-wrap gap-x-4 gap-y-1">
             {sources.map((s) => (

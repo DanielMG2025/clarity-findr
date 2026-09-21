@@ -2,7 +2,7 @@ import { Globe, Users, MessagesSquare, Calculator, UserCircle2 } from "lucide-re
 import { Card } from "@/components/ui/card";
 import type { Citation, PriceEstimate, SourceKind } from "@/modules/provenance";
 
-const SOURCES = [
+export const PRICING_SOURCE_CATEGORIES = [
   { Icon: Globe,          title: "Public clinic prices",        desc: "Official price lists and fee pages from European clinic websites." },
   { Icon: Users,          title: "Patient quotes",              desc: "Real quotes patients have shared after their first consultation." },
   { Icon: MessagesSquare, title: "Community & forum data",      desc: "Public conversations and shared experiences about similar treatments." },
@@ -35,7 +35,7 @@ export function DataSourcesPanel({
         We blend several data sources to give you a realistic range — not one single, unrealistic number.
       </p>
       <ul className="grid sm:grid-cols-2 gap-3">
-        {SOURCES.map(({ Icon, title, desc }) => (
+        {PRICING_SOURCE_CATEGORIES.map(({ Icon, title, desc }) => (
           <li key={title} className="flex gap-3 p-3 rounded-lg bg-background/70 border border-border">
             <div className="size-9 rounded-lg bg-primary-soft grid place-items-center shrink-0">
               <Icon className="size-4 text-primary" />

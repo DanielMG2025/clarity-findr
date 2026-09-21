@@ -259,6 +259,16 @@ export default function ClarityAssessment() {
       </div>
 
       {/* Evidence base — cited, orientative statistics and typical routes */}
+      <Card className="rounded-2xl border-primary/15 bg-primary-soft/25 p-5">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            See the full source file behind this page: evidence, cost assumptions and regulatory framework in one auditable view.
+          </p>
+          <Button asChild variant="outline" className="gap-1.5">
+            <Link to="/sources">See every source behind your orientation <ArrowRight className="size-3.5" /></Link>
+          </Button>
+        </div>
+      </Card>
       <EvidenceBasePanel />
 
       {/* Disclaimer */}
