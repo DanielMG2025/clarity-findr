@@ -1,8 +1,10 @@
 import { useMemo } from "react";
+import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, ExternalLink, FlaskConical, Route, ShieldCheck } from "lucide-react";
-import { usePatientJourney } from "@/modules/master-record";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, BookOpen, ExternalLink, FlaskConical, Route, ShieldCheck } from "lucide-react";
+import { useMasterRecord, usePatientJourney } from "@/modules/master-record";
 import { ownEggCitationForAge } from "@/modules/evidence/citations";
 import { EvidencePopover } from "@/components/patient/EvidencePopover";
 import type { RouteHint } from "@/modules/evidence";
@@ -39,6 +41,7 @@ function humanizeMetric(metric: string): string {
 export function EvidenceBasePanel() {
   // Same evidence the shared journey engine computes (buildEvidence under the hood).
   const evidence = usePatientJourney().step2_orientation.evidence;
+  const patientAge = useMasterRecord((state) => state.identity.age);
 
   // Distinct sources cited across statements + routes, for a references footer.
   const sources = useMemo(() => {
@@ -54,17 +57,16 @@ export function EvidenceBasePanel() {
 
   // Real, sourced figures. Own-egg band follows the patient's age when known.
   const figures = useMemo(() => {
-    const age = typeof evidence.segment.age === "number" ? evidence.segment.age : undefined;
     return [
       {
         label: "With your own eggs (per transfer)",
-        citationId: age != null ? ownEggCitationForAge(age) : "br_own_avg",
+        citationId: patientAge != null ? ownEggCitationForAge(patientAge) : "br_own_avg",
       },
       { label: "With donor eggs (per transfer)", citationId: "pr_donor" },
       { label: "With a frozen embryo transfer", citationId: "pr_fet" },
       { label: "Across three complete cycles", citationId: "cumulative_3_cycles" },
     ];
-  }, [evidence]);
+  }, [patientAge]);
 
 
 
@@ -152,8 +154,13 @@ export function EvidenceBasePanel() {
       {/* References footer */}
       {sources.length > 0 && (
         <div className="rounded-lg bg-muted/40 border p-3">
-          <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5 flex items-center gap-1.5">
-            <ShieldCheck className="size-3.5" /> Sources
+          <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+              <ShieldCheck className="size-3.5" /> Sources
+            </div>
+            <Button asChild size="sm" variant="outline" className="h-auto min-h-8 whitespace-normal text-left leading-snug">
+              <Link to="/sources">See every source behind your orientation <ArrowRight className="size-3.5" /></Link>
+            </Button>
           </div>
           <ul className="flex flex-wrap gap-x-4 gap-y-1">
             {sources.map((s) => (
