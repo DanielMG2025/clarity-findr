@@ -20,6 +20,7 @@ import AccountPartner from "./pages/AccountPartner.tsx";
 import PricingLab from "./pages/PricingLab.tsx";
 import SourcesDossier from "./pages/SourcesDossier.tsx";
 import PatientProfile from "./pages/PatientProfile.tsx";
+import PatientReport from "./pages/PatientReport.tsx";
 import ClarityAssessment from "./pages/ClarityAssessment.tsx";
 import { GlossaryProvider } from "@/modules/education";
 import LearnIndex from "./pages/LearnIndex.tsx";
@@ -63,6 +64,7 @@ const App = () => (
 
             {/* Patient journey — the core modules */}
             <Route path="/situacion" element={<PatientProfile />} />
+            <Route path="/report" element={<PatientReport />} />
             <Route path="/orientacion" element={<ClarityAssessment />} />
             <Route path="/sources" element={<SourcesDossier />} />
             <Route path="/costes" element={<PricingLab />} />

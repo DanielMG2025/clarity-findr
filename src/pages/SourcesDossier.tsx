@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, BookOpen, CircleAlert, ExternalLink, FileText, Route, Scale, Wallet } from "lucide-react";
+import { ArrowRight, BookOpen, CircleAlert, ExternalLink, FileDown, FileText, Route, Scale, Wallet } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -204,6 +204,11 @@ export default function SourcesDossier() {
         eyebrow="Full transparency"
         title="Every source behind your orientation"
         subtitle="Every figure here carries its source, its date, how confident we are — and what it does not tell you. This is the whole product: not just the answer, the full file behind it."
+        aside={
+          <Button asChild variant="outline" className="gap-2 rounded-full border-primary/20 bg-primary-soft text-primary hover:bg-primary-soft/70 hover:text-primary">
+            <Link to="/report"><FileDown className="size-4" /> Report summary</Link>
+          </Button>
+        }
       />
 
       <Card className="space-y-5 rounded-2xl p-6">
