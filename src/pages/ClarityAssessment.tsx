@@ -265,7 +265,7 @@ export default function ClarityAssessment() {
             See the full source file behind this page: evidence, cost assumptions and regulatory framework in one auditable view.
           </p>
           <Button asChild variant="outline" className="h-auto min-h-10 whitespace-normal text-left leading-snug">
-            <Link to="/sources">See every source behind your orientation <ArrowRight className="size-3.5" /></Link>
+            <Link to="/sources">See every source behind this orientation <ArrowRight className="size-3.5" /></Link>
           </Button>
         </div>
       </Card>

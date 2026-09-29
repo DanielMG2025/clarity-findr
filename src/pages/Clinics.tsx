@@ -48,6 +48,9 @@ export default function Clinics() {
         subtitle="Normalized prices, clinical fit and proximity — with a transparent why for every suggestion. You decide whether and when to reach out."
         note="This is not a medical recommendation. It's orientation to help you have better conversations with each clinic."
       />
+      <Button asChild variant="ghost" size="sm" className="-mt-5 h-auto gap-1.5 px-0 text-primary hover:bg-transparent hover:text-primary/80">
+        <Link to="/sources">See the sources behind this <ArrowRight className="size-3.5" /></Link>
+      </Button>
 
       <RegulatoryGateNotice orientation={orientation} />
 
