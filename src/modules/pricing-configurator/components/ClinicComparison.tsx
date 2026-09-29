@@ -3,7 +3,10 @@ import { Badge } from "@/components/ui/badge";
 import { WhatIsThis } from "@/components/shared/WhatIsThis";
 
 interface Row {
+  /** Internal only — never shown to patients before they request contact. */
   clinic: string;
+  /** Anonymised label shown to patients. */
+  displayLabel: string;
   country: string;
   published: number;
   patient_quotes_avg: number | null;
@@ -15,9 +18,9 @@ interface Row {
 }
 
 const SAMPLE: Row[] = [
-  { clinic: "IVI Madrid",        country: "Spain",          published: 5800, patient_quotes_avg: 6900, basic_norm: 7200,  premium_norm: 11500, includes: ["Base IVF", "Lab"], excludes: ["Medication", "ICSI"], why: "Low headline price, but medication and extras are billed separately." },
-  { clinic: "Reprofit",          country: "Czech Republic", published: 3200, patient_quotes_avg: 4100, basic_norm: 4900,  premium_norm: 7800,  includes: ["Base IVF", "Lab", "Vitrification"], excludes: ["Travel"], why: "Cheaper market overall; remember to add travel and accommodation." },
-  { clinic: "Ginefiv Barcelona", country: "Spain",          published: 6300, patient_quotes_avg: 7400, basic_norm: 7800,  premium_norm: 12200, includes: ["Base IVF", "Lab", "ICSI"], excludes: ["PGT-A"], why: "Includes ICSI by default; PGT-A is billed separately." },
+  { clinic: "IVI Madrid",        displayLabel: "Clinic A", country: "Spain",          published: 5800, patient_quotes_avg: 6900, basic_norm: 7200,  premium_norm: 11500, includes: ["Base IVF", "Lab"], excludes: ["Medication", "ICSI"], why: "Low headline price, but medication and extras are billed separately." },
+  { clinic: "Reprofit",          displayLabel: "Clinic B", country: "Czech Republic", published: 3200, patient_quotes_avg: 4100, basic_norm: 4900,  premium_norm: 7800,  includes: ["Base IVF", "Lab", "Vitrification"], excludes: ["Travel"], why: "Cheaper market overall; remember to add travel and accommodation." },
+  { clinic: "Ginefiv Barcelona", displayLabel: "Clinic C", country: "Spain",          published: 6300, patient_quotes_avg: 7400, basic_norm: 7800,  premium_norm: 12200, includes: ["Base IVF", "Lab", "ICSI"], excludes: ["PGT-A"], why: "Includes ICSI by default; PGT-A is billed separately." },
 ];
 
 const fmt = (n: number | null) => (n == null ? "—" : `€${n.toLocaleString()}`);
@@ -48,7 +51,7 @@ export function ClinicComparison() {
             {SAMPLE.map((r) => (
               <tr key={r.clinic} className="bg-muted/30">
                 <td className="p-3 rounded-l-lg">
-                  <div className="font-semibold">{r.clinic}</div>
+                  <div className="font-semibold">{r.displayLabel}</div>
                   <div className="text-[11px] text-muted-foreground">{r.country}</div>
                   <div className="flex flex-wrap gap-1 mt-1">
                     {r.includes.map(i => <Badge key={i} variant="outline" className="text-[10px] bg-accent-soft text-accent border-accent/30">+ {i}</Badge>)}
