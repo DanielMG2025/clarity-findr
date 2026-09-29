@@ -58,7 +58,7 @@ export function UploadQuoteCTA({ defaultCountry = "Spain", defaultTreatment = "I
             <div className="grid sm:grid-cols-2 gap-3 mt-2">
               <div>
                 <Label className="text-xs">Clinic</Label>
-                <Input value={clinic} onChange={(e) => setClinic(e.target.value)} placeholder="e.g. IVI Madrid" />
+                <Input value={clinic} onChange={(e) => setClinic(e.target.value)} placeholder="Enter the clinic name" />
               </div>
               <div>
                 <Label className="text-xs">Base price (€)</Label>
