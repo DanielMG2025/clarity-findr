@@ -256,6 +256,86 @@ export default function SourcesDossier() {
           })}
         </div>
 
+        {/* Table 1 — the published age bands, shown in full in-app */}
+        <div className="space-y-2">
+          <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+            <FileText className="size-3.5" /> IVF pregnancy rate with own eggs, by age (HFEA)
+          </div>
+          <div className="rounded-xl border border-border/70">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[140px] text-xs">Age band</TableHead>
+                  <TableHead className="w-[80px] text-xs">Rate</TableHead>
+                  <TableHead className="text-xs">Cohort</TableHead>
+                  <TableHead className="text-xs">Where in the source</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {ownEggRows.map((row) => {
+                  const yours = row.id === yourBandId;
+                  return (
+                    <TableRow key={row.id} className={yours ? "bg-primary-soft/70 hover:bg-primary-soft/70" : undefined}>
+                      <TableCell className="whitespace-nowrap text-sm font-medium">
+                        {ageBandLabel(row.claim)}
+                        {yours && (
+                          <span className="ml-2 rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
+                            your band
+                          </span>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-sm font-semibold tabular-nums">{row.value}%</TableCell>
+                      <TableCell className="text-xs leading-relaxed text-muted-foreground">{row.cohort}</TableCell>
+                      <TableCell className="text-xs leading-relaxed text-muted-foreground">{row.locator}</TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </div>
+          <SourceFootnote rows={ownEggRows} />
+        </div>
+
+        {/* Table 2 — the other published figures in the same evidence file */}
+        <div className="space-y-2">
+          <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+            <BookOpen className="size-3.5" /> Other published figures (HFEA · ESHRE)
+          </div>
+          <div className="rounded-xl border border-border/70">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="text-xs">Measure</TableHead>
+                  <TableHead className="w-[80px] text-xs">Rate</TableHead>
+                  <TableHead className="text-xs">Cohort</TableHead>
+                  <TableHead className="text-xs">Where</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {otherFigureRows.map((row) => (
+                  <TableRow key={row.id}>
+                    <TableCell className="text-sm font-medium">{row.claim}</TableCell>
+                    <TableCell className="text-sm font-semibold tabular-nums">{row.value}%</TableCell>
+                    <TableCell className="text-xs leading-relaxed text-muted-foreground">{row.cohort}</TableCell>
+                    <TableCell className="text-xs leading-relaxed text-muted-foreground">{row.locator}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+          <SourceFootnote rows={otherFigureRows} />
+        </div>
+
+        {/* One combined honest caveat for both tables */}
+        {combinedEvidenceCaveat && (
+          <div className="flex gap-2 rounded-xl border border-warning/30 bg-warning/15 p-4 text-xs leading-relaxed">
+            <CircleAlert className="mt-0.5 size-4 shrink-0 text-warning" />
+            <p className="text-muted-foreground">
+              <span className="font-medium text-foreground">What these tables don't tell you:</span> {combinedEvidenceCaveat}
+            </p>
+          </div>
+        )}
+
         <div className="space-y-2">
           <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
             <Route className="size-3.5" /> Route citations
