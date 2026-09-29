@@ -19,7 +19,7 @@ import {
   DocumentsBlock,
   SharedQuotesBlock,
 } from "@/modules/patient-profile";
-import { Calculator, Building2, ArrowRight, FileText } from "lucide-react";
+import { Calculator, Building2, ArrowRight, FileText, HeartHandshake } from "lucide-react";
 import { PageHeader } from "@/components/patient/PageHeader";
 
 const BLOCK_RENDERERS = {
@@ -48,9 +48,14 @@ const PatientProfile = () => {
         subtitle="Fill in the blocks that feel useful, at your own pace. Each one improves the orientation on costs, success factors and clinics that may fit you."
         note="Your data is yours. We use it to explain your options — it doesn't replace a medical consultation."
         aside={
-          <Button asChild variant="outline" className="gap-2 rounded-full border-primary/20 bg-primary-soft text-primary hover:bg-primary-soft/70 hover:text-primary">
-            <Link to="/report"><FileText className="size-4" /> Generate my report</Link>
-          </Button>
+          <div className="flex flex-wrap justify-end gap-2">
+            <Button asChild className="gap-2 rounded-full">
+              <Link to="/summary"><HeartHandshake className="size-4" /> Get my orientation summary <ArrowRight className="size-3.5" /></Link>
+            </Button>
+            <Button asChild variant="outline" className="gap-2 rounded-full border-primary/20 bg-primary-soft text-primary hover:bg-primary-soft/70 hover:text-primary">
+              <Link to="/report"><FileText className="size-4" /> Generate my report</Link>
+            </Button>
+          </div>
         }
       />
 
