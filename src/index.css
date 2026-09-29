@@ -154,6 +154,7 @@
 @media print {
   [data-sidebar="sidebar"],
   [data-sidebar="trigger"],
+  [data-state][data-side][data-variant],
   header.h-12,
   .no-print {
     display: none !important;
