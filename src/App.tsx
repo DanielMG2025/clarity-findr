@@ -22,6 +22,7 @@ import SourcesDossier from "./pages/SourcesDossier.tsx";
 import PatientProfile from "./pages/PatientProfile.tsx";
 import PatientReport from "./pages/PatientReport.tsx";
 import ClarityAssessment from "./pages/ClarityAssessment.tsx";
+import PatientSummary from "./pages/PatientSummary.tsx";
 import { GlossaryProvider } from "@/modules/education";
 import LearnIndex from "./pages/LearnIndex.tsx";
 import LearnArticle from "./pages/LearnArticle.tsx";
@@ -64,6 +65,7 @@ const App = () => (
 
             {/* Patient journey — the core modules */}
             <Route path="/situacion" element={<PatientProfile />} />
+            <Route path="/summary" element={<PatientSummary />} />
             <Route path="/report" element={<PatientReport />} />
             <Route path="/orientacion" element={<ClarityAssessment />} />
             <Route path="/sources" element={<SourcesDossier />} />
