@@ -288,7 +288,7 @@ export function ReviewedClinicPricing() {
             <Link to="/clinicas">Compare clinics</Link>
           </Button>
           <Button asChild>
-            <Link to="/clinicas?contact=1">
+            <Link to="/clinicas?contact=m1">
               Request contact <ArrowRight className="size-4 ml-1" />
             </Link>
           </Button>
