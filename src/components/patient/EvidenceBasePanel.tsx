@@ -1,9 +1,7 @@
 import { useMemo } from "react";
-import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, BookOpen, ExternalLink, FlaskConical, Route, ShieldCheck } from "lucide-react";
+import { BookOpen, ExternalLink, FlaskConical, Route, ShieldCheck } from "lucide-react";
 import { useMasterRecord, usePatientJourney } from "@/modules/master-record";
 import { ownEggCitationForAge } from "@/modules/evidence/citations";
 import { EvidencePopover } from "@/components/patient/EvidencePopover";
