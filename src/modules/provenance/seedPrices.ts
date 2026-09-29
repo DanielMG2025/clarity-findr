@@ -2,9 +2,11 @@
 // ---------------------------------------------------------------------------
 // A referenced, fixed-date price base so the demo can show real ranges before
 // the live scraper / crowd / B2B feeds exist. Every figure carries its source
-// and a confidence flag. These are MARKET-GUIDE aggregates (secondary sources),
-// so confidence is capped at "medium" — they are meant to be superseded by
-// clinic B2B tariffs and patient quotes, exactly as the pricing spec describes.
+// and a confidence flag. Most rows are MARKET-GUIDE aggregates (secondary
+// sources), so confidence is capped at "medium" — they are meant to be superseded
+// by clinic B2B tariffs and patient quotes, exactly as the pricing spec describes.
+// España now also cites one PRIMARY source (a clinic's own published price list,
+// fivv_2026). One clinic is a data point, not a market sample, so the cap holds.
 //
 // Treatments covered: FIV con óvulos propios · ovodonación · congelación.
 // Markets: España + destinos UE (Chequia, Grecia, Portugal, Dinamarca, Chipre).
@@ -30,6 +32,7 @@ export const SEED_PRICE_SOURCES: Source[] = [
   { id: "froad_2026", kind: "public_report", label: "FertilityRoad — IVF cost explained, 2026", url: "https://fertilityroad.com/", market: "EU", as_of: "2026", weight: 0.5 },
   { id: "fconsult_2026", kind: "public_report", label: "Fertility Consultancy — Donor egg IVF costs worldwide, 2026", url: "https://www.fertilityconsultancy.com/", market: "EU", as_of: "2026", weight: 0.5 },
   { id: "sef_local_2025", kind: "public_report", label: "Spanish Fertility Society (SEF) / The Local ES, 2025", url: "https://www.thelocal.es/", market: "ES", as_of: "2025", weight: 0.6 },
+  { id: "fivv_2026", kind: "scraped_web", label: "FIV Valencia — published price list (clinic primary source), 2026", url: "https://www.fivvalencia.com/es/precios/", market: "ES", as_of: "2026-09", weight: 0.8, usage_note: "Primary source: a clinic's own published, itemized prices. All figures exclude medication and special tests." },
 ];
 
 export const SEED_SOURCE_MAP = new Map(SEED_PRICE_SOURCES.map((s) => [s.id, s]));
@@ -53,7 +56,7 @@ export interface SeedPrice {
 // Prices per cycle, EUR, generally EXCLUDING medication unless noted.
 export const SEED_PRICES: SeedPrice[] = [
   // ---- FIV con óvulos propios ----
-  { treatment: "ivf", market: "ES", market_label: "España", min: 4000, mid: 4900, max: 6000, currency: "EUR", source_ids: ["sef_local_2025", "ovu_we_2026", "edf_2026"], confidence: "medium", as_of: SEED_AS_OF, note: "excl. medication (~€1,000–2,200)" },
+  { treatment: "ivf", market: "ES", market_label: "España", min: 4000, mid: 4900, max: 6000, currency: "EUR", source_ids: ["sef_local_2025", "ovu_we_2026", "edf_2026", "fivv_2026"], confidence: "medium", as_of: SEED_AS_OF, note: "excl. medication (~€1,000–2,200). FIV Valencia (2026): IVF/ICSI with PGT-A €6,295, excl. medication & special tests." },
   { treatment: "ivf", market: "CZ", market_label: "Chequia", min: 2500, mid: 3000, max: 3500, currency: "EUR", source_ids: ["fca_2026", "edf_2026"], confidence: "medium", as_of: SEED_AS_OF, note: "European low end; excl. medication" },
   { treatment: "ivf", market: "GR", market_label: "Grecia", min: 3000, mid: 3500, max: 4000, currency: "EUR", source_ids: ["edf_2026", "fca_2026"], confidence: "medium", as_of: SEED_AS_OF },
   { treatment: "ivf", market: "PT", market_label: "Portugal", min: 3500, mid: 4200, max: 5000, currency: "EUR", source_ids: ["ovu_we_2026", "fca_2026"], confidence: "medium", as_of: SEED_AS_OF },
@@ -61,7 +64,7 @@ export const SEED_PRICES: SeedPrice[] = [
   { treatment: "ivf", market: "CY", market_label: "Chipre", min: 2500, mid: 3000, max: 3500, currency: "EUR", source_ids: ["fca_2026", "froad_2026"], confidence: "low", as_of: SEED_AS_OF, note: "includes Cyprus/Northern Cyprus clinics (variable regulation)" },
 
   // ---- Ovodonación ----
-  { treatment: "donor", market: "ES", market_label: "España", min: 6000, mid: 7200, max: 9000, currency: "EUR", source_ids: ["edf_2026", "fconsult_2026", "sef_local_2025"], confidence: "medium", as_of: SEED_AS_OF, note: "guarantee programmes reach €16,500–19,000" },
+  { treatment: "donor", market: "ES", market_label: "España", min: 6000, mid: 7200, max: 9000, currency: "EUR", source_ids: ["edf_2026", "fconsult_2026", "sef_local_2025", "fivv_2026"], confidence: "medium", as_of: SEED_AS_OF, note: "guarantee programmes reach €16,500–19,000. FIV Valencia (2026): egg donation €7,195 (All-In, 2 blastocysts guaranteed, max 1 transfer, €9,495), excl. medication & special tests." },
   { treatment: "donor", market: "CZ", market_label: "Chequia", min: 4200, mid: 5000, max: 6000, currency: "EUR", source_ids: ["edf_2026", "fconsult_2026"], confidence: "medium", as_of: SEED_AS_OF },
   { treatment: "donor", market: "GR", market_label: "Grecia", min: 5000, mid: 6000, max: 7000, currency: "EUR", source_ids: ["edf_2026", "fconsult_2026"], confidence: "medium", as_of: SEED_AS_OF },
   { treatment: "donor", market: "PT", market_label: "Portugal", min: 6000, mid: 7000, max: 9000, currency: "EUR", source_ids: ["fconsult_2026"], confidence: "medium", as_of: SEED_AS_OF },
@@ -69,7 +72,7 @@ export const SEED_PRICES: SeedPrice[] = [
   { treatment: "donor", market: "CY", market_label: "Chipre", min: 5000, mid: 6000, max: 7500, currency: "EUR", source_ids: ["edf_2026", "fconsult_2026"], confidence: "low", as_of: SEED_AS_OF },
 
   // ---- Congelación de óvulos ----
-  { treatment: "freezing", market: "ES", market_label: "España", min: 2300, mid: 2900, max: 3500, currency: "EUR", source_ids: ["fca_2026"], confidence: "medium", as_of: SEED_AS_OF, note: "procedure only; full €3,500–4,700; excl. medication" },
+  { treatment: "freezing", market: "ES", market_label: "España", min: 2300, mid: 2900, max: 3500, currency: "EUR", source_ids: ["fca_2026", "fivv_2026"], confidence: "medium", as_of: SEED_AS_OF, note: "procedure only; full €3,500–4,700; excl. medication. FIV Valencia (2026): egg freezing €2,200 incl. 3 years of storage, excl. medication & special tests." },
   { treatment: "freezing", market: "CZ", market_label: "Chequia", min: 1500, mid: 2200, max: 3000, currency: "EUR", source_ids: ["fca_2026"], confidence: "medium", as_of: SEED_AS_OF, note: "~€1,500 includes 1 year of storage; excl. medication" },
   { treatment: "freezing", market: "GR", market_label: "Grecia", min: 1500, mid: 2300, max: 3000, currency: "EUR", source_ids: ["fca_2026"], confidence: "medium", as_of: SEED_AS_OF },
   { treatment: "freezing", market: "PT", market_label: "Portugal", min: 2500, mid: 3000, max: 4000, currency: "EUR", source_ids: ["ovu_we_2026"], confidence: "low", as_of: SEED_AS_OF, note: "sparse data; to validate" },
