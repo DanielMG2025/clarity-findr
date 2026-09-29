@@ -181,6 +181,16 @@ export default function SourcesDossier() {
     return [...map.values()];
   }, [evidence.routes, evidenceFigures]);
 
+  const ownEggRows = useMemo(() => citedRows(OWN_EGG_BAND_IDS), []);
+  const otherFigureRows = useMemo(() => citedRows(OTHER_FIGURE_IDS), []);
+  const yourBandId = patientAge != null ? ownEggCitationForAge(patientAge) : undefined;
+  const combinedEvidenceCaveat = [
+    ownEggRows[0]?.caveat,
+    otherFigureRows.find((row) => row.id === "cumulative_3_cycles")?.caveat,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   const priceEstimate = useMemo(
     () => bundle.estimate ?? seedEstimateForProfile(profile.treatment, profile.country),
     [bundle.estimate, profile.country, profile.treatment],
