@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { AlertCircle, Check, CircleAlert, FileText, HelpCircle, Printer, Scale, TriangleAlert, UserRound, Wallet } from "lucide-react";
+import { AlertCircle, ArrowRight, Check, CircleAlert, FileText, HelpCircle, Printer, Scale, TriangleAlert, UserRound, Wallet } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -148,7 +148,10 @@ export default function PatientReport() {
 
   return (
     <div className="report-page mx-auto max-w-5xl space-y-6 px-4 py-8 md:px-8 md:py-10">
-      <div className="no-print flex justify-end">
+      <div className="no-print flex flex-wrap items-center justify-between gap-3">
+        <Button asChild variant="link" className="h-auto px-0 text-muted-foreground hover:text-primary">
+          <Link to="/summary">See the short orientation summary <ArrowRight className="size-3.5" /></Link>
+        </Button>
         <Button onClick={() => window.print()} className="gap-2 rounded-full">
           <Printer className="size-4" /> Download / Print PDF
         </Button>

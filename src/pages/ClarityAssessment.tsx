@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { ArrowRight, Wallet, Building2, Stethoscope, Heart, CalendarDays, MapPin, Sparkles } from "lucide-react";
+import { ArrowRight, Wallet, Building2, Stethoscope, Heart, CalendarDays, MapPin, Sparkles, FileText, HeartHandshake } from "lucide-react";
 import { PageHeader } from "@/components/patient/PageHeader";
 import { ConfidenceBadge, type ConfidenceLevel } from "@/components/patient/ConfidenceBadge";
 import { WhyDisclosure, WhyLine } from "@/components/patient/WhyDisclosure";
@@ -135,6 +135,16 @@ export default function ClarityAssessment() {
         title="From uncertainty to clarity"
         subtitle="One explainable, confidential view of your situation — the clinical factors and the legal framework where you live."
         note="Every block tells you why you see what you see, and what data influences it."
+        aside={
+          <div className="flex flex-wrap justify-end gap-2">
+            <Button asChild className="gap-2 rounded-full">
+              <Link to="/summary"><HeartHandshake className="size-4" /> Get my orientation summary <ArrowRight className="size-3.5" /></Link>
+            </Button>
+            <Button asChild variant="outline" className="gap-2 rounded-full border-primary/20 bg-primary-soft text-primary hover:bg-primary-soft/70 hover:text-primary">
+              <Link to="/report"><FileText className="size-4" /> Generate my report</Link>
+            </Button>
+          </div>
+        }
       />
 
       {/* Profile summary + completion */}
