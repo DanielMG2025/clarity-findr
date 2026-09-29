@@ -78,7 +78,7 @@ export function EvidencePopover({
             <p className="mt-1.5 text-xs"><span className="font-medium">Exact location: </span><span className="text-muted-foreground">{c.locator}</span></p>
             {c.source.url && (
               <a href={c.source.url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline">
-                Open the report <ExternalLink className="size-3" />
+                Verify at source <ExternalLink className="size-3" />
               </a>
             )}
           </div>

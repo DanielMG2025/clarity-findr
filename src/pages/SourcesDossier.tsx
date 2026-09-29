@@ -4,6 +4,7 @@ import { ArrowRight, BookOpen, CircleAlert, ExternalLink, FileText, Route, Scale
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { PageHeader } from "@/components/patient/PageHeader";
 import { EvidencePopover } from "@/components/patient/EvidencePopover";
 import { SourceChip } from "@/components/patient/SourceChip";
@@ -15,6 +16,8 @@ import {
   SOURCES as EVIDENCE_CITATION_SOURCES,
   citation,
   ownEggCitationForAge,
+  type Citation,
+  type Source,
 } from "@/modules/evidence/citations";
 import { seedEstimateForProfile, type PriceEstimate, type SourceKind } from "@/modules/provenance";
 import { usePricingConfigurator } from "@/modules/pricing-configurator";
@@ -55,6 +58,54 @@ function formatEuro(value: number) {
 
 function evidenceConfidence(kind: string): "high" | "medium" | "low" {
   return kind === "registry" ? "high" : "medium";
+}
+
+/** Rows of Table 1 — own-egg pregnancy rate by age band, in published order. */
+const OWN_EGG_BAND_IDS = ["pr_own_18_34", "pr_own_35_37", "pr_own_38_39", "pr_own_40_42", "pr_own_43_44"];
+
+/** Rows of Table 2 — the other published figures in the evidence file. */
+const OTHER_FIGURE_IDS = ["pr_donor", "pr_fet", "pr_blastocyst", "cumulative_3_cycles"];
+
+type CitedRow = Citation & { source: Source };
+
+/** Read-only: pulls the existing citations by id, in the given order. */
+function citedRows(ids: string[]): CitedRow[] {
+  return ids
+    .map((id) => citation(id))
+    .filter((row): row is CitedRow => row !== undefined);
+}
+
+/** Short band label from the claim text, e.g. "…ages 18–34" → "18–34". */
+function ageBandLabel(claim: string) {
+  const match = claim.match(/ages\s+(.+)$/i);
+  return match ? match[1] : claim;
+}
+
+/** Small secondary source line + "verify at source" link, once per distinct source. */
+function SourceFootnote({ rows }: { rows: CitedRow[] }) {
+  const sources = new Map<string, Source>();
+  for (const row of rows) {
+    if (!sources.has(row.source.id)) sources.set(row.source.id, row.source);
+  }
+  return (
+    <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2">
+      {[...sources.values()].map((source) => (
+        <span key={source.id} className="flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
+          <span>{source.publisher} · {source.year}</span>
+          {source.url && (
+            <a
+              href={source.url}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 text-muted-foreground underline decoration-border underline-offset-2 hover:text-primary"
+            >
+              Verify at source <ExternalLink className="size-3" />
+            </a>
+          )}
+        </span>
+      ))}
+    </div>
+  );
 }
 
 function shortEvidenceSource(label: string) {
