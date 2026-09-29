@@ -56,8 +56,8 @@ describe("seedEstimate", () => {
     expect(est.range_max).toBe(6000);
     expect(est.expected).toBe(4900);
     expect(est.confidence).toBe("medium");
-    expect(est.sample_size).toBe(3); // three cited guides
-    expect(est.citations).toHaveLength(3);
+    expect(est.sample_size).toBe(4); // three market guides + one clinic primary source
+    expect(est.citations).toHaveLength(4);
     expect(est.citations[0].label.length).toBeGreaterThan(0);
   });
 
