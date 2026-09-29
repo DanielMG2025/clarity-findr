@@ -19,7 +19,7 @@ import {
   DocumentsBlock,
   SharedQuotesBlock,
 } from "@/modules/patient-profile";
-import { Calculator, Building2, ArrowRight } from "lucide-react";
+import { Calculator, Building2, ArrowRight, FileText } from "lucide-react";
 import { PageHeader } from "@/components/patient/PageHeader";
 
 const BLOCK_RENDERERS = {
@@ -47,6 +47,11 @@ const PatientProfile = () => {
         title="Your fertility story, all in one place"
         subtitle="Fill in the blocks that feel useful, at your own pace. Each one improves the orientation on costs, success factors and clinics that may fit you."
         note="Your data is yours. We use it to explain your options — it doesn't replace a medical consultation."
+        aside={
+          <Button asChild variant="outline" className="gap-2 rounded-full border-primary/20 bg-primary-soft text-primary hover:bg-primary-soft/70 hover:text-primary">
+            <Link to="/report"><FileText className="size-4" /> Generate my report</Link>
+          </Button>
+        }
       />
 
       <div className="grid lg:grid-cols-[1fr_320px] gap-6">
