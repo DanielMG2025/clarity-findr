@@ -202,7 +202,9 @@ export default function OrientationSummary() {
             </Section>
           </div>
         </Card>
+        </>
       )}
+
     </div>
   );
 }
