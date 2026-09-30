@@ -137,7 +137,16 @@ export default function OrientationSummary() {
           <Button asChild className="no-print mt-5 rounded-full"><Link to="/situacion">Complete my situation</Link></Button>
         </Card>
       ) : (
-        <Card className="rounded-2xl p-6 sm:p-8">
+        <>
+          <div className="space-y-4 text-[15px] leading-8 text-muted-foreground">
+            {narrative.map((paragraph, index) => (
+              <p key={index} className={index === narrative.length - 1 ? "font-medium text-foreground" : undefined}>
+                {paragraph}
+              </p>
+            ))}
+          </div>
+          <Card className="rounded-2xl p-6 sm:p-8">
+
           <div className="space-y-6">
             <Section number="01" title="Your situation">
               <p>{joinNaturally(situationParts)}.</p>
