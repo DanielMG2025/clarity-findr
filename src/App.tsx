@@ -19,6 +19,7 @@ import AccountClinic from "./pages/AccountClinic.tsx";
 import AccountPartner from "./pages/AccountPartner.tsx";
 import PricingLab from "./pages/PricingLab.tsx";
 import SourcesDossier from "./pages/SourcesDossier.tsx";
+import ReferenceCentre from "./pages/ReferenceCentre.tsx";
 import PatientProfile from "./pages/PatientProfile.tsx";
 import PatientReport from "./pages/PatientReport.tsx";
 import ClarityAssessment from "./pages/ClarityAssessment.tsx";
