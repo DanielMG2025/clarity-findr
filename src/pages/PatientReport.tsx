@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { ConfidenceBadge } from "@/components/patient/ConfidenceBadge";
 import { SourceChip } from "@/components/patient/SourceChip";
 import { useMasterRecord, usePatientJourney, type FactorKind, type TreatmentInterest } from "@/modules/master-record";
+import { patientNarrative } from "@/modules/master-record/patientNarrative";
 import { citation, ownEggCitationForAge, type Citation, type Source } from "@/modules/evidence/citations";
 import { seedEstimateForProfile, type PriceEstimate } from "@/modules/provenance";
 import { usePricingConfigurator } from "@/modules/pricing-configurator";
@@ -99,6 +100,7 @@ function SourceLines({ rows }: { rows: CitedRow[] }) {
 export default function PatientReport() {
   const mpr = useMasterRecord();
   const journey = usePatientJourney();
+  const narrative = patientNarrative(mpr, journey);
   const { profile, bundle } = usePricingConfigurator();
   const orientation = journey.step0_regulatory;
   const patientAge = mpr.identity.age;
@@ -186,6 +188,13 @@ export default function PatientReport() {
         </Card>
       ) : (
         <>
+          <div className="max-w-3xl space-y-4 text-[15px] leading-8 text-muted-foreground">
+            {narrative.map((paragraph, index) => (
+              <p key={index} className={index === narrative.length - 1 ? "font-medium text-foreground" : undefined}>
+                {paragraph}
+              </p>
+            ))}
+          </div>
           <Card className="report-card space-y-5 rounded-2xl p-6">
             <SectionHeading icon={UserRound} eyebrow="Your situation" title="The details used for this orientation" />
             <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
