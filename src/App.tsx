@@ -19,6 +19,7 @@ import AccountClinic from "./pages/AccountClinic.tsx";
 import AccountPartner from "./pages/AccountPartner.tsx";
 import PricingLab from "./pages/PricingLab.tsx";
 import SourcesDossier from "./pages/SourcesDossier.tsx";
+import ReferenceCentre from "./pages/ReferenceCentre.tsx";
 import PatientProfile from "./pages/PatientProfile.tsx";
 import PatientReport from "./pages/PatientReport.tsx";
 import ClarityAssessment from "./pages/ClarityAssessment.tsx";
@@ -69,6 +70,7 @@ const App = () => (
             <Route path="/report" element={<PatientReport />} />
             <Route path="/orientacion" element={<ClarityAssessment />} />
             <Route path="/sources" element={<SourcesDossier />} />
+            <Route path="/library" element={<ReferenceCentre />} />
             <Route path="/costes" element={<PricingLab />} />
             <Route path="/clinicas" element={<Clinics />} />
             <Route path="/asesoramiento" element={<Partners />} />

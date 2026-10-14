@@ -1,0 +1,47 @@
+export type RefScope = "ES" | "EU" | "UK" | "US" | "World";
+export type RefCategory = "outcomes" | "legal" | "guidelines" | "terminology" | "context" | "costs";
+
+export const SCOPE_LABEL: Record<RefScope, string> = {
+  ES: "Spain", EU: "Europe", UK: "United Kingdom", US: "United States", World: "Worldwide",
+};
+export const CATEGORY_LABEL: Record<RefCategory, string> = {
+  outcomes: "Outcomes & success rates",
+  legal: "Legal framework & access",
+  guidelines: "Guidelines & what works",
+  terminology: "Terminology",
+  context: "Context & epidemiology",
+  costs: "Costs",
+};
+
+export interface ReferenceEntry {
+  id: string;
+  title: string;
+  publisher: string;
+  year: string;
+  as_of: string;
+  scope: RefScope;
+  category: RefCategory;
+  what_it_is: string;
+  key_datum: string;
+  limitation: string;
+  url?: string;
+  status: "verified" | "pending";
+}
+
+export const REFERENCE_LIBRARY: ReferenceEntry[] = [
+  { id: "hfea_2023", title: "Fertility treatment 2023: trends and figures", publisher: "HFEA — Human Fertilisation and Embryology Authority", year: "2023 data, published 2025", as_of: "2025", scope: "UK", category: "outcomes", what_it_is: "Statutory registry of every licensed fertility clinic in the UK, with pregnancy and birth rates broken down by patient age.", key_datum: "Pregnancy rate per embryo transfer with own eggs falls from 41% (under 35) to 9% (43–44).", limitation: "Measured per embryo transferred, not per cycle started, and it is UK data, not Spain.", url: "https://www.hfea.gov.uk/about-us/publications/research-and-data/fertility-treatment-2023-trends-and-figures/", status: "verified" },
+  { id: "hfea_2022", title: "Fertility treatment 2022: preliminary trends and figures", publisher: "HFEA", year: "2022 data", as_of: "2024", scope: "UK", category: "outcomes", what_it_is: "UK statutory registry, used where the 2023 report does not break out a particular age band.", key_datum: "Pregnancy rate per transfer with own eggs at 40–42 rose from 10% (2012) to 16% (2022).", limitation: "Per transfer; UK population.", url: "https://www.hfea.gov.uk/about-us/publications/research-and-data/fertility-treatment-2022-preliminary-trends-and-figures/", status: "verified" },
+  { id: "eshre_eim_2019", title: "ART in Europe, 2019 (ESHRE / EIM)", publisher: "ESHRE / European IVF-Monitoring Consortium · Human Reproduction", year: "2019 data, published 2023", as_of: "2023", scope: "EU", category: "outcomes", what_it_is: "The largest ART dataset in Europe: 1,077,813 cycles from 1,488 clinics across 40 countries.", key_datum: "Pregnancy rate per fresh transfer with donor eggs: 50.5%.", limitation: "2019 is the latest consolidated European year, and it aggregates very different national systems.", url: "https://doi.org/10.1093/humrep/dead197", status: "verified" },
+  { id: "sef_2023", title: "Registro Nacional de Actividad 2023 – Registro SEF", publisher: "Ministerio de Sanidad & Sociedad Española de Fertilidad (SEF)", year: "2023 data, published December 2025", as_of: "2025-12", scope: "ES", category: "outcomes", what_it_is: "The official Spanish national ART registry, covering all Spanish centres — the tenth annual report.", key_datum: "168,372 IVF cycles and 39,555 births in 2023; around 10% of all births in Spain follow assisted reproduction.", limitation: "Primarily an activity and volume registry; age-banded success is reported less granularly than HFEA.", url: "https://www.sefertilidad.net", status: "verified" },
+  { id: "sart_cdc", title: "ART Success Rates (SART / CDC)", publisher: "SART & US Centers for Disease Control and Prevention", year: "annual", as_of: "2026", scope: "US", category: "outcomes", what_it_is: "US clinic-level and national ART outcome reporting.", key_datum: "National summary plus per-clinic success data.", limitation: "US population; metrics and reporting differ from European registries.", url: "https://www.sartcorsonline.com", status: "pending" },
+  { id: "atlas_2024", title: "European Atlas of Fertility Treatment Policies 2024", publisher: "Fertility Europe & European Parliamentary Forum (EPF)", year: "Data extracted June 2024", as_of: "2024-06", scope: "EU", category: "legal", what_it_is: "Country-by-country legal framework: who can access which treatment, donor anonymity, PGT and public funding.", key_datum: "Maps access and restrictions across Europe (single women, female couples, donor anonymity, funding).", limitation: "Policy snapshot from June 2024; national rules change.", url: "https://fertilityeurope.eu/atlas2024/", status: "verified" },
+  { id: "iffs_surveillance", title: "IFFS Surveillance", publisher: "International Federation of Fertility Societies", year: "latest edition 2022", as_of: "2022", scope: "World", category: "legal", what_it_is: "A global survey of ART regulation and practice across roughly 80 countries.", key_datum: "Worldwide comparison of what is legally permitted and practised.", limitation: "Self-reported by national societies; updated roughly every three years.", url: "https://www.iffs-reproduction.org", status: "pending" },
+  { id: "hfea_addons", title: "Treatment add-ons with limited evidence (ratings)", publisher: "HFEA", year: "five-category system since October 2023", as_of: "2024", scope: "UK", category: "guidelines", what_it_is: "An independent evidence rating for about 13 common IVF 'add-ons' (time-lapse, PGT-A, assisted hatching and others), from green to red.", key_datum: "No add-on is currently rated green; PGT-A (day 5) is rated red for improving the chance of a baby.", limitation: "Ratings are reviewed annually and can change; based mainly on randomised trials.", url: "https://www.hfea.gov.uk/treatments/treatment-add-ons/", status: "verified" },
+  { id: "nice_cg156", title: "Fertility problems: assessment and treatment (CG156)", publisher: "NICE — National Institute for Health and Care Excellence", year: "published 2013, updated 2017", as_of: "2017", scope: "UK", category: "guidelines", what_it_is: "The UK public clinical guideline on investigating and treating fertility problems, written in plain language.", key_datum: "Sets out when IVF is recommended and the criteria for NHS-funded treatment.", limitation: "UK NHS context; a full update is under way.", url: "https://www.nice.org.uk/guidance/cg156", status: "pending" },
+  { id: "eshre_guidelines", title: "ESHRE guidelines & patient leaflets", publisher: "European Society of Human Reproduction and Embryology", year: "various, continuously updated", as_of: "2026", scope: "EU", category: "guidelines", what_it_is: "Evidence-based clinical guidelines plus plain-language leaflets written for patients.", key_datum: "Covers ovarian stimulation, recurrent implantation failure, endometriosis and more.", limitation: "Guideline-specific; check each document's own date.", url: "https://www.eshre.eu/Guidelines-and-Legal", status: "pending" },
+  { id: "asrm_resources", title: "ASRM patient resources & committee opinions", publisher: "American Society for Reproductive Medicine", year: "various", as_of: "2026", scope: "US", category: "guidelines", what_it_is: "Patient fact sheets and professional committee opinions on fertility care.", key_datum: "A widely used reference for definitions and practice positions.", limitation: "US practice context.", url: "https://www.asrm.org/for-patients/", status: "pending" },
+  { id: "glossary_2017", title: "The International Glossary on Infertility and Fertility Care", publisher: "ICMART / WHO / ESHRE / ASRM (Zegers-Hochschild et al.)", year: "2017", as_of: "2017", scope: "World", category: "terminology", what_it_is: "The internationally agreed definitions of fertility and ART terminology.", key_datum: "The standard reference for terms such as infertility, clinical pregnancy and live birth.", limitation: "Definitional; not an outcomes source.", url: "https://doi.org/10.1093/humrep/dex234", status: "pending" },
+  { id: "who_infertility", title: "Infertility fact sheet", publisher: "World Health Organization", year: "2023", as_of: "2023", scope: "World", category: "context", what_it_is: "WHO's overview of infertility prevalence and care worldwide.", key_datum: "Around 1 in 6 adults experience infertility at some point in their lives.", limitation: "A broad prevalence estimate across very different settings.", url: "https://www.who.int/news-room/fact-sheets/detail/infertility", status: "verified" },
+  { id: "fivvalencia_2026", title: "FIV Valencia — published price list", publisher: "FIV Valencia (clinic primary source)", year: "2026", as_of: "2026-09", scope: "ES", category: "costs", what_it_is: "A Spanish clinic that publishes an itemized treatment price list.", key_datum: "Egg donation €7,195; IVF/ICSI with PGT-A €6,295 — both excluding medication and special tests.", limitation: "One clinic, not a market average; medication is a large excluded cost.", url: "https://www.fivvalencia.com/es/precios/", status: "verified" },
+  { id: "aggregators_es", title: "Market price ranges (Reproducción Asistida ORG, ovodonante)", publisher: "Sector portals (Spain)", year: "continuously updated", as_of: "2026", scope: "ES", category: "costs", what_it_is: "Patient-facing portals that publish typical Spanish price ranges.", key_datum: "Own-egg IVF roughly €3,000–5,500; egg donation roughly €4,000–9,000.", limitation: "Aggregated ranges, not primary clinic data; wide and promotion-driven.", url: "https://www.reproduccionasistida.org", status: "pending" },
+];

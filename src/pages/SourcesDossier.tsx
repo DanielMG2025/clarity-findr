@@ -211,6 +211,14 @@ export default function SourcesDossier() {
         }
       />
 
+      <Link
+        to="/library"
+        className="inline-flex items-center gap-1.5 text-sm text-primary underline decoration-border underline-offset-4 hover:decoration-primary"
+      >
+        Browse the full reference library <ArrowRight className="size-3.5" />
+      </Link>
+
+
       <Card className="space-y-5 rounded-2xl p-6">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex items-center gap-2.5">
