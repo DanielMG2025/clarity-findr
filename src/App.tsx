@@ -70,6 +70,7 @@ const App = () => (
             <Route path="/report" element={<PatientReport />} />
             <Route path="/orientacion" element={<ClarityAssessment />} />
             <Route path="/sources" element={<SourcesDossier />} />
+            <Route path="/library" element={<ReferenceCentre />} />
             <Route path="/costes" element={<PricingLab />} />
             <Route path="/clinicas" element={<Clinics />} />
             <Route path="/asesoramiento" element={<Partners />} />
