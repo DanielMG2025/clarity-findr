@@ -1,120 +1,242 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Nunito+Sans:wght@400;500;600;700;800&display=swap');
+@font-face {
+  font-family: 'Bodoni Moda';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/bodonimoda/v28/aFT67PxzY382XsXX63LUYL6GYFcan6NJrKp-VPjfJMShrpsGFUt8oU7awIA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Bodoni Moda';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/bodonimoda/v28/aFT67PxzY382XsXX63LUYL6GYFcan6NJrKp-VPjfJMShrpsGFUt8oXzawIA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Bodoni Moda';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/bodonimoda/v28/aFT67PxzY382XsXX63LUYL6GYFcan6NJrKp-VPjfJMShrpsGFUt8oZDdwIA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Bodoni Moda';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/bodonimoda/v28/aFT67PxzY382XsXX63LUYL6GYFcan6NJrKp-VPjfJMShrpsGFUt8oandwIA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Bodoni Moda';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/bodonimoda/v28/aFT67PxzY382XsXX63LUYL6GYFcan6NJrKp-VPjfJMShrpsGFUt8oc7dwIA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/cormorantgaramond/v21/co3umX5slCNuHLi8bLeY9MK7whWMhyjypVO7abI26QOD_v86GnM.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/cormorantgaramond/v21/co3umX5slCNuHLi8bLeY9MK7whWMhyjypVO7abI26QOD_s06GnM.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/cormorantgaramond/v21/co3umX5slCNuHLi8bLeY9MK7whWMhyjypVO7abI26QOD_iE9GnM.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/cormorantgaramond/v21/co3umX5slCNuHLi8bLeY9MK7whWMhyjypVO7abI26QOD_hg9GnM.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/hankengrotesk/v12/ieVq2YZDLWuGJpnzaiwFXS9tYvBRzyFLlZg_f_Ncs2Za4Q.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/hankengrotesk/v12/ieVq2YZDLWuGJpnzaiwFXS9tYvBRzyFLlZg_f_NcgWZa4Q.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/hankengrotesk/v12/ieVq2YZDLWuGJpnzaiwFXS9tYvBRzyFLlZg_f_NcbWFa4Q.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/hankengrotesk/v12/ieVq2YZDLWuGJpnzaiwFXS9tYvBRzyFLlZg_f_NcVGFa4Q.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/hankengrotesk/v12/ieVq2YZDLWuGJpnzaiwFXS9tYvBRzyFLlZg_f_NcM2Fa4Q.ttf) format('truetype');
+}
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Fertility decision platform — calm clinical design system.
+/* Fertility decision platform — warm editorial design system.
    All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    /* Warm ivory canvas */
-    --background: 36 33% 98%;
-    --foreground: 25 18% 22%;
+    /* Warm magazine canvas */
+    --background: 40 40% 94%;
+    --foreground: 350 30% 12%;
 
-    --card: 40 44% 99%;
-    --card-foreground: 25 18% 22%;
+    --card: 40 40% 96%;
+    --card-foreground: 350 30% 12%;
 
-    --popover: 40 44% 99%;
-    --popover-foreground: 25 18% 22%;
+    --popover: 40 40% 96%;
+    --popover-foreground: 350 30% 12%;
 
-    /* Serene sage-teal — calm health & wellness register */
-    --primary: 170 28% 42%;
-    --primary-foreground: 0 0% 100%;
-    --primary-soft: 170 35% 93%;
-    --primary-glow: 160 40% 55%;
+    /* Burgundy ink with antique gold highlights */
+    --primary: 352 50% 38%;
+    --primary-foreground: 40 40% 96%;
+    --primary-soft: 352 38% 92%;
+    --primary-glow: 37 42% 52%;
 
-    --secondary: 36 25% 94%;
-    --secondary-foreground: 25 18% 25%;
+    --secondary: 40 36% 90%;
+    --secondary-foreground: 350 28% 18%;
 
-    --muted: 36 22% 94%;
-    --muted-foreground: 28 12% 45%;
+    --muted: 40 28% 91%;
+    --muted-foreground: 15 10% 42%;
 
-    /* Warm apricot accent */
-    --accent: 28 55% 62%;
-    --accent-foreground: 25 30% 18%;
-    --accent-soft: 30 60% 94%;
+    /* Antique gold accent */
+    --accent: 37 42% 50%;
+    --accent-foreground: 350 30% 12%;
+    --accent-soft: 40 40% 88%;
 
-    --warning: 35 85% 55%;
-    --warning-foreground: 30 45% 18%;
+    --warning: 37 60% 48%;
+    --warning-foreground: 350 30% 14%;
 
-    /* Module tones — softened for a warmer, calmer palette */
-    --expert: 268 40% 55%;
-    --expert-foreground: 0 0% 100%;
-    --expert-soft: 268 45% 95%;
-    --donor: 340 52% 60%;
-    --donor-foreground: 0 0% 100%;
-    --donor-soft: 340 55% 96%;
-    --freezing: 195 52% 52%;
-    --freezing-foreground: 0 0% 100%;
-    --freezing-soft: 195 55% 95%;
-    --clinic: 205 35% 40%;
-    --clinic-foreground: 0 0% 100%;
-    --clinic-soft: 205 40% 95%;
-    --partner: 30 72% 56%;
-    --partner-foreground: 25 40% 18%;
-    --partner-soft: 30 75% 95%;
+    /* Module tones — plum, gold, olive, terracotta and wine */
+    --expert: 330 28% 36%;
+    --expert-foreground: 40 40% 96%;
+    --expert-soft: 330 24% 93%;
+    --donor: 37 42% 50%;
+    --donor-foreground: 350 30% 12%;
+    --donor-soft: 40 40% 90%;
+    --freezing: 65 22% 34%;
+    --freezing-foreground: 40 40% 96%;
+    --freezing-soft: 65 22% 92%;
+    --clinic: 15 38% 38%;
+    --clinic-foreground: 40 40% 96%;
+    --clinic-soft: 15 30% 93%;
+    --partner: 352 38% 35%;
+    --partner-foreground: 40 40% 96%;
+    --partner-soft: 352 30% 93%;
 
     --destructive: 2 65% 58%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 32 20% 88%;
-    --input: 32 20% 88%;
-    --ring: 170 28% 42%;
+    --border: 36 18% 85%;
+    --input: 36 18% 85%;
+    --ring: 352 50% 38%;
 
-    --radius: 1.25rem;
+    --radius: 0.5rem;
 
-    /* Gradients — warm ivory into soft sage */
-    --gradient-hero: linear-gradient(135deg, hsl(36 45% 97%) 0%, hsl(30 40% 96%) 50%, hsl(160 30% 95%) 100%);
-    --gradient-primary: linear-gradient(135deg, hsl(170 28% 42%), hsl(160 40% 55%));
-    --gradient-card: linear-gradient(180deg, hsl(40 44% 99%), hsl(36 33% 98%));
+    /* Gradients — warm paper, burgundy and gold */
+    --gradient-hero: linear-gradient(135deg, hsl(40 44% 96%), hsl(40 40% 93%) 50%, hsl(37 40% 90%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(352 50% 38%), hsl(37 42% 50%));
+    --gradient-card: linear-gradient(180deg, hsl(40 40% 97%), hsl(40 40% 94%));
 
-    /* Shadows — warm-tinted and soft */
-    --shadow-soft: 0 1px 3px 0 hsl(25 30% 20% / 0.04), 0 1px 2px -1px hsl(25 30% 20% / 0.04);
-    --shadow-card: 0 4px 20px -6px hsl(30 40% 30% / 0.10), 0 2px 8px -2px hsl(30 40% 30% / 0.05);
-    --shadow-elegant: 0 20px 50px -20px hsl(170 30% 35% / 0.18);
-    --shadow-glow: 0 0 40px hsl(160 40% 55% / 0.22);
+    /* Shadows — wine-tinted and soft */
+    --shadow-soft: 0 1px 3px 0 hsl(350 30% 15% / 0.04), 0 1px 2px -1px hsl(350 30% 15% / 0.04);
+    --shadow-card: 0 4px 20px -6px hsl(350 30% 15% / 0.10), 0 2px 8px -2px hsl(350 30% 15% / 0.05);
+    --shadow-elegant: 0 20px 50px -20px hsl(350 30% 15% / 0.18);
+    --shadow-glow: 0 0 40px hsl(350 30% 15% / 0.22);
 
     --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
-    --sidebar-background: 36 33% 98%;
-    --sidebar-foreground: 28 15% 30%;
-    --sidebar-primary: 25 18% 22%;
-    --sidebar-primary-foreground: 40 40% 98%;
-    --sidebar-accent: 36 25% 93%;
-    --sidebar-accent-foreground: 25 18% 25%;
-    --sidebar-border: 32 20% 88%;
-    --sidebar-ring: 170 28% 42%;
+    --sidebar-background: 40 40% 94%;
+    --sidebar-foreground: 350 28% 18%;
+    --sidebar-primary: 352 50% 38%;
+    --sidebar-primary-foreground: 40 40% 96%;
+    --sidebar-accent: 40 36% 90%;
+    --sidebar-accent-foreground: 350 28% 18%;
+    --sidebar-border: 36 18% 85%;
+    --sidebar-ring: 352 50% 38%;
   }
 
   .dark {
-    --background: 25 15% 10%;
-    --foreground: 36 20% 92%;
-    --card: 25 15% 13%;
-    --card-foreground: 36 20% 92%;
-    --popover: 25 15% 13%;
-    --popover-foreground: 36 20% 92%;
-    --primary: 165 40% 55%;
-    --primary-foreground: 25 15% 10%;
-    --primary-soft: 170 25% 20%;
-    --primary-glow: 160 45% 60%;
-    --secondary: 25 12% 18%;
-    --secondary-foreground: 36 20% 92%;
-    --muted: 25 12% 18%;
-    --muted-foreground: 30 12% 62%;
-    --accent: 28 55% 62%;
-    --accent-foreground: 25 20% 12%;
-    --accent-soft: 28 30% 20%;
+    --background: 345 28% 9%;
+    --foreground: 40 30% 90%;
+    --card: 345 24% 12%;
+    --card-foreground: 40 30% 90%;
+    --popover: 345 24% 12%;
+    --popover-foreground: 40 30% 90%;
+    --primary: 352 55% 55%;
+    --primary-foreground: 345 30% 10%;
+    --primary-soft: 350 25% 20%;
+    --primary-glow: 37 45% 58%;
+    --secondary: 345 15% 18%;
+    --secondary-foreground: 40 30% 90%;
+    --muted: 345 15% 18%;
+    --muted-foreground: 35 14% 62%;
+    --accent: 37 45% 58%;
+    --accent-foreground: 345 30% 10%;
+    --accent-soft: 37 25% 20%;
     --destructive: 2 60% 52%;
     --destructive-foreground: 0 0% 100%;
-    --border: 25 12% 22%;
-    --input: 25 12% 22%;
-    --ring: 165 40% 55%;
-    --gradient-hero: linear-gradient(135deg, hsl(25 15% 11%), hsl(170 20% 15%));
-    --gradient-primary: linear-gradient(135deg, hsl(165 40% 55%), hsl(150 35% 50%));
-    --gradient-card: linear-gradient(180deg, hsl(25 15% 13%), hsl(25 15% 11%));
+    --border: 345 16% 20%;
+    --input: 345 16% 20%;
+    --ring: 352 55% 55%;
+    --gradient-hero: linear-gradient(135deg, hsl(345 28% 9%), hsl(350 25% 13%) 50%, hsl(37 22% 15%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(352 55% 55%), hsl(37 45% 58%));
+    --gradient-card: linear-gradient(180deg, hsl(345 24% 12%), hsl(345 28% 9%));
+    --sidebar-background: 345 28% 9%;
+    --sidebar-foreground: 40 30% 90%;
+    --sidebar-primary: 352 55% 55%;
+    --sidebar-primary-foreground: 345 30% 10%;
+    --sidebar-accent: 345 15% 18%;
+    --sidebar-accent-foreground: 40 30% 90%;
+    --sidebar-border: 345 16% 20%;
+    --sidebar-ring: 352 55% 55%;
+    --expert: 330 30% 62%;
+    --expert-foreground: 345 30% 10%;
+    --expert-soft: 330 20% 19%;
+    --donor: 37 30% 62%;
+    --donor-foreground: 345 30% 10%;
+    --donor-soft: 37 20% 19%;
+    --freezing: 65 30% 62%;
+    --freezing-foreground: 345 30% 10%;
+    --freezing-soft: 65 20% 19%;
+    --clinic: 15 30% 62%;
+    --clinic-foreground: 345 30% 10%;
+    --clinic-soft: 15 20% 19%;
+    --partner: 352 30% 62%;
+    --partner-foreground: 345 30% 10%;
+    --partner-soft: 352 20% 19%;
+    --warning: 37 60% 58%;
+    --warning-foreground: 345 30% 10%;
   }
 }
 
@@ -123,16 +245,18 @@
     @apply border-border;
   }
   html {
-    font-family: 'Nunito Sans', system-ui, -apple-system, sans-serif;
+    font-family: 'Hanken Grotesk', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
   body {
+    font-family: 'Hanken Grotesk', system-ui, -apple-system, sans-serif;
     @apply bg-background text-foreground;
     line-height: 1.65;
   }
   h1, h2, h3, h4 {
-    font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
-    letter-spacing: -0.01em;
+    font-family: 'Bodoni Moda', Georgia, serif;
+    font-weight: 500;
+    letter-spacing: 0;
   }
 }
 

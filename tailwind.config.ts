@@ -14,8 +14,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['"Nunito Sans"', "system-ui", "-apple-system", "sans-serif"],
-        serif: ['"Fraunces"', "Georgia", "serif"],
+        sans: ['"Hanken Grotesk"', "system-ui", "-apple-system", "sans-serif"],
+        serif: ['"Bodoni Moda"', "Georgia", "serif"],
+        display: ['"Bodoni Moda"', "Georgia", "serif"],
+        editorial: ['"Cormorant Garamond"', "Georgia", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",
