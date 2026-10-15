@@ -46,16 +46,17 @@ export default function DemoRoom() {
   };
 
   return (
-    <div className="container max-w-6xl py-10 space-y-8">
-      <header className="space-y-3 max-w-3xl">
-        <Badge variant="secondary" className="text-[11px]">Demo room</Badge>
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight flex items-center gap-2">
+    <div className="container max-w-6xl py-10 space-y-10">
+      <header className="space-y-4 max-w-3xl">
+        <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-primary">Demo room</p>
+        <h1 className="font-display text-3xl md:text-4xl font-medium tracking-tight flex items-center gap-3">
           <PlayCircle className="size-7 text-primary" /> Load a demo patient
         </h1>
-        <p className="text-muted-foreground leading-relaxed">
+        <div className="h-px w-16 bg-accent/60" />
+        <p className="text-muted-foreground leading-loose max-w-[65ch]">
           Pick one of the built-in patients to load their full situation into the journey and jump
           straight to the questionnaire, already filled in. Data completeness varies on purpose — use
-          it to show <em>more data → higher confidence</em>. The restrictive-country cases (Italy,
+          it to show <em className="font-editorial not-italic italic">more data → higher confidence</em>. The restrictive-country cases (Italy,
           Germany…) are the best way to show the legal engine in action.
         </p>
       </header>
