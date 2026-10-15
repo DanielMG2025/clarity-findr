@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PlayCircle, RotateCcw, ArrowRight, Scale, MapPin, Users } from "lucide-react";
 import {
@@ -62,9 +61,9 @@ export default function DemoRoom() {
       </header>
 
       {loadedName && (
-        <Card className="p-4 flex flex-wrap items-center justify-between gap-3 bg-primary-soft/30 border-primary/20">
-          <div className="text-sm">
-            Currently loaded: <strong>{loadedName}</strong>. The whole journey now reflects this patient.
+        <Card className="p-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border-primary/20 bg-primary-soft/30 shadow-none">
+          <div className="text-sm leading-relaxed">
+            Currently loaded: <strong className="font-display font-medium">{loadedName}</strong>. The whole journey now reflects this patient.
           </div>
           <div className="flex gap-2">
             <Button size="sm" variant="outline" className="gap-1" onClick={() => reset()}>
