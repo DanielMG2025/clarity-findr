@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PlayCircle, RotateCcw, ArrowRight, Scale, MapPin, Users } from "lucide-react";
 import {
@@ -46,24 +45,25 @@ export default function DemoRoom() {
   };
 
   return (
-    <div className="container max-w-6xl py-10 space-y-8">
-      <header className="space-y-3 max-w-3xl">
-        <Badge variant="secondary" className="text-[11px]">Demo room</Badge>
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight flex items-center gap-2">
+    <div className="container max-w-6xl py-10 space-y-10">
+      <header className="space-y-4 max-w-3xl">
+        <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-primary">Demo room</p>
+        <h1 className="font-display text-3xl md:text-4xl font-medium tracking-tight flex items-center gap-3">
           <PlayCircle className="size-7 text-primary" /> Load a demo patient
         </h1>
-        <p className="text-muted-foreground leading-relaxed">
+        <div className="h-px w-16 bg-accent/60" />
+        <p className="text-muted-foreground leading-loose max-w-[65ch]">
           Pick one of the built-in patients to load their full situation into the journey and jump
           straight to the questionnaire, already filled in. Data completeness varies on purpose — use
-          it to show <em>more data → higher confidence</em>. The restrictive-country cases (Italy,
+          it to show <em className="font-editorial">more data → higher confidence</em>. The restrictive-country cases (Italy,
           Germany…) are the best way to show the legal engine in action.
         </p>
       </header>
 
       {loadedName && (
-        <Card className="p-4 flex flex-wrap items-center justify-between gap-3 bg-primary-soft/30 border-primary/20">
-          <div className="text-sm">
-            Currently loaded: <strong>{loadedName}</strong>. The whole journey now reflects this patient.
+        <Card className="p-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border-primary/20 bg-primary-soft/30 shadow-none">
+          <div className="text-sm leading-relaxed">
+            Currently loaded: <strong className="font-display font-medium">{loadedName}</strong>. The whole journey now reflects this patient.
           </div>
           <div className="flex gap-2">
             <Button size="sm" variant="outline" className="gap-1" onClick={() => reset()}>
@@ -76,7 +76,7 @@ export default function DemoRoom() {
         </Card>
       )}
 
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {DEMO_PATIENTS.map((p) => {
           const family = p.family_structure ?? "hetero_couple";
           const country = byCode(p.country)?.label ?? p.country;
@@ -85,16 +85,16 @@ export default function DemoRoom() {
             <button
               key={p.key}
               onClick={() => pick(p)}
-              className="text-left rounded-xl border bg-card p-4 flex flex-col gap-3 hover:border-primary/50 hover:shadow-md transition-smooth focus:outline-none focus:ring-2 focus:ring-primary/40"
+              className="text-left rounded-2xl border border-border/70 bg-card p-5 flex flex-col gap-4 shadow-none hover:border-primary/40 hover:shadow-sm transition-smooth focus:outline-none focus:ring-2 focus:ring-primary/40"
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <div className="font-semibold">{p.name} · {p.age}</div>
-                  <div className="text-xs text-muted-foreground">{p.label}</div>
+                  <div className="font-display text-lg font-medium tracking-tight">{p.name} · {p.age}</div>
+                  <div className="text-xs text-muted-foreground leading-relaxed">{p.label}</div>
                 </div>
-                <Badge variant="outline" className={`text-[10px] shrink-0 ${LEVEL_TONE[p.data_level]}`}>
+                <span className={`shrink-0 rounded-full border px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider ${LEVEL_TONE[p.data_level]}`}>
                   {LEVEL_LABEL[p.data_level]}
-                </Badge>
+                </span>
               </div>
 
               <div className="flex flex-wrap gap-1.5 text-[11px]">
@@ -111,8 +111,10 @@ export default function DemoRoom() {
                 )}
               </div>
 
-              <div className="mt-auto flex items-center justify-between">
-                <span className="text-[11px] text-muted-foreground">{completeness(p)}% profile complete</span>
+              <div className="mt-auto flex items-center justify-between border-t border-border/50 pt-3">
+                <span className="text-[11px] text-muted-foreground">
+                  <span className="font-display tabular-nums">{completeness(p)}%</span> profile complete
+                </span>
                 <span className="text-xs font-semibold text-primary inline-flex items-center gap-1">
                   Load <ArrowRight className="size-3.5" />
                 </span>
@@ -122,8 +124,8 @@ export default function DemoRoom() {
         })}
       </div>
 
-      <p className="text-xs text-muted-foreground">
-        Loading a patient replaces any data currently in your session. Use <strong>Reset</strong> to
+      <p className="max-w-[65ch] border-t border-accent/40 pt-6 font-editorial text-base italic leading-loose text-muted-foreground">
+        Loading a patient replaces any data currently in your session. Use <strong className="not-italic font-semibold">Reset</strong> to
         clear it and pick another.
       </p>
     </div>
