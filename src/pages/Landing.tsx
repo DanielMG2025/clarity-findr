@@ -40,7 +40,7 @@ const TRUST = [
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-3 py-1 text-[11px] font-medium uppercase tracking-wider text-primary">
+    <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
       {children}
     </span>
   );
@@ -48,7 +48,7 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 
 function IconChip({ icon: Icon }: { icon: typeof Lock }) {
   return (
-    <div className="size-10 rounded-xl bg-primary-soft text-primary grid place-items-center">
+    <div className="size-10 rounded-full border border-accent/40 bg-background text-primary grid place-items-center">
       <Icon className="size-5" />
     </div>
   );
@@ -56,27 +56,27 @@ function IconChip({ icon: Icon }: { icon: typeof Lock }) {
 
 export default function Landing() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen [&_h1]:text-balance [&_h2]:text-balance [&_h3]:text-balance">
       {/* HERO */}
-      <section className="relative bg-gradient-hero overflow-hidden">
-        <div className="container max-w-4xl py-24 md:py-32 text-center">
+      <section className="relative bg-background overflow-hidden border-b border-border before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-border before:via-accent before:to-border">
+        <div className="container max-w-6xl px-6 pt-16 pb-14 md:pt-24 md:pb-20 text-center">
           <Eyebrow><Compass className="size-3" /> Explained, confidential orientation</Eyebrow>
-          <h1 className="mt-7 text-4xl md:text-6xl font-semibold leading-[1.1] tracking-tight">
+          <h1 className="mt-8 mx-auto max-w-5xl font-display text-5xl md:text-7xl lg:text-8xl font-medium leading-[1.08] tracking-normal">
             From uncertainty to clarity
-            <span className="block bg-gradient-primary bg-clip-text text-transparent">
+            <span className="block text-primary">
               on your fertility journey.
             </span>
           </h1>
-          <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-8 font-editorial italic text-2xl md:text-3xl text-foreground max-w-2xl mx-auto leading-relaxed">
             Fertility Compass helps you understand your options, estimate realistic costs, and weigh
             the factors that may influence treatment success.
           </p>
-          <p className="mt-4 text-base text-foreground/80 max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-5 text-sm md:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
             Every number comes with its source, its date, and how sure we are — and what it doesn't
             tell you.
           </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <Button asChild size="lg" className="gap-2 px-7 shadow-md">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+            <Button asChild size="lg" className="gap-2 px-7 shadow-elegant">
               <Link to="/situacion">Start my assessment <ArrowRight className="size-4" /></Link>
             </Button>
             <Button asChild size="lg" variant="ghost" className="gap-2 text-muted-foreground hover:text-foreground">
@@ -95,9 +95,9 @@ export default function Landing() {
       </section>
 
       {/* EMOTIONAL PROBLEM */}
-      <section className="container max-w-3xl py-16 md:py-20 text-center">
+      <section className="container max-w-4xl px-6 py-20 md:py-28 text-center">
         <Eyebrow>What many of us feel</Eyebrow>
-        <h2 className="mt-4 text-3xl md:text-4xl font-semibold tracking-tight mb-4">
+        <h2 className="mt-6 font-display text-3xl md:text-5xl font-medium leading-tight tracking-normal mb-6">
           Looking for fertility information can feel confusing, lonely and exhausting.
         </h2>
         <p className="text-muted-foreground leading-relaxed max-w-2xl mx-auto">
@@ -107,19 +107,19 @@ export default function Landing() {
       </section>
 
       {/* WHAT WE HELP YOU UNDERSTAND */}
-      <section className="bg-muted/40 border-y">
-        <div className="container max-w-6xl py-16 md:py-20">
-          <div className="max-w-2xl mb-10">
+      <section className="bg-muted/20 border-y border-border">
+        <div className="container max-w-6xl px-6 py-20 md:py-28">
+          <div className="max-w-3xl mb-12 md:mb-16">
             <Eyebrow>How we help</Eyebrow>
-            <h2 className="mt-4 text-3xl md:text-4xl font-semibold tracking-tight">
+            <h2 className="mt-6 font-display text-3xl md:text-5xl font-medium leading-tight tracking-normal">
               We help you understand — we don't decide for you.
             </h2>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {HELP.map((h) => (
-              <Card key={h.title} className="rounded-2xl p-6">
+              <Card key={h.title} className="rounded-lg p-7 bg-card shadow-none">
                 <IconChip icon={h.icon} />
-                <h3 className="font-semibold mt-4 mb-1">{h.title}</h3>
+                <h3 className="font-display text-2xl font-medium leading-snug mt-5 mb-3">{h.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{h.desc}</p>
               </Card>
             ))}
@@ -128,19 +128,19 @@ export default function Landing() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="how-it-works" className="container max-w-6xl py-16 md:py-20">
-        <div className="max-w-2xl mb-10">
+      <section id="how-it-works" className="container max-w-6xl px-6 py-20 md:py-28">
+        <div className="max-w-3xl mb-12 md:mb-16">
           <Eyebrow>How it works</Eyebrow>
-          <h2 className="mt-4 text-3xl md:text-4xl font-semibold tracking-tight">Five steps, at your own pace.</h2>
+          <h2 className="mt-6 font-display text-3xl md:text-5xl font-medium leading-tight tracking-normal">Five steps, at your own pace.</h2>
           <p className="text-muted-foreground mt-3 leading-relaxed">
             No pressure and no forced paths. You can pause, come back, and complete it whenever you want.
           </p>
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-5">
+        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-4">
           {STEPS.map((s) => (
-            <Card key={s.n} className="rounded-2xl p-6 relative">
+            <Card key={s.n} className="rounded-lg p-7 bg-card shadow-none relative">
               <div className="absolute -top-3 left-6 size-7 rounded-full bg-primary text-primary-foreground text-xs font-medium grid place-items-center">{s.n}</div>
-              <h3 className="font-semibold mb-1 mt-3">{s.title}</h3>
+              <h3 className="font-display text-xl font-medium leading-snug mb-3 mt-3">{s.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
             </Card>
           ))}
@@ -148,36 +148,36 @@ export default function Landing() {
       </section>
 
       {/* TRUST & SAFETY */}
-      <section className="bg-muted/40 border-y">
-        <div className="container max-w-6xl py-16 md:py-20">
-          <div className="max-w-2xl mb-10">
+      <section className="bg-muted/20 border-y border-border">
+        <div className="container max-w-6xl px-6 py-20 md:py-28">
+          <div className="max-w-3xl mb-12 md:mb-16">
             <Eyebrow>Trust and privacy</Eyebrow>
-            <h2 className="mt-4 text-3xl md:text-4xl font-semibold tracking-tight">
+            <h2 className="mt-6 font-display text-3xl md:text-5xl font-medium leading-tight tracking-normal">
               Confidential, transparent and respectful.
             </h2>
           </div>
-          <div className="grid md:grid-cols-3 gap-5 items-stretch">
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8 items-stretch">
             {TRUST.map((t) => (
               <Card
                 key={t.title}
                 className={
                   t.featured
-                    ? "rounded-2xl p-6 bg-primary-soft/50 ring-1 ring-primary/25 shadow-sm"
-                    : "rounded-2xl p-6"
+                    ? "rounded-lg p-7 bg-primary-soft/40 border-accent/60 shadow-card"
+                    : "rounded-lg p-7 bg-card shadow-none"
                 }
               >
                 <IconChip icon={t.icon} />
-                <h3 className="font-semibold mt-4 mb-1">{t.title}</h3>
+                <h3 className="font-display text-2xl font-medium leading-snug mt-5 mb-3">{t.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{t.desc}</p>
                 {t.featured && (
-                  <p className="mt-3 text-[11px] font-medium uppercase tracking-wider text-primary">
+                  <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
                     Source · date · confidence
                   </p>
                 )}
               </Card>
             ))}
           </div>
-          <Card className="rounded-2xl p-5 mt-6 bg-background/60 border-dashed">
+          <Card className="rounded-none p-0 pt-8 mt-10 bg-transparent border-0 border-t border-border shadow-none">
             <p className="text-sm text-muted-foreground leading-relaxed">
               <strong className="text-foreground font-semibold">Important notice:</strong> Fertility Compass
               provides orientation based on public data, statistical models and information you
@@ -189,10 +189,10 @@ export default function Landing() {
       </section>
 
       {/* CTA */}
-      <section className="bg-gradient-primary text-primary-foreground">
-        <div className="container max-w-3xl py-20 text-center space-y-5">
+      <section className="relative bg-primary text-primary-foreground before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-primary before:via-accent before:to-primary">
+        <div className="container max-w-4xl px-6 py-20 md:py-28 text-center space-y-7">
           <Heart className="size-8 mx-auto opacity-90" />
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
+          <h2 className="font-display text-4xl md:text-5xl font-medium leading-tight tracking-normal">
             Take the first step toward your clarity.
           </h2>
           <p className="opacity-90 max-w-2xl mx-auto leading-relaxed">
@@ -200,7 +200,7 @@ export default function Landing() {
             transparency and confidentiality — every figure explained.
           </p>
           <div className="flex flex-wrap justify-center gap-3 pt-3">
-            <Button asChild size="lg" variant="secondary" className="gap-2 px-7 shadow-md">
+            <Button asChild size="lg" variant="secondary" className="gap-2 px-7 shadow-elegant">
               <Link to="/situacion">Start my assessment <ArrowRight className="size-4" /></Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="gap-2 bg-transparent border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10">
