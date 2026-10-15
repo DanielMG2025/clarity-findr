@@ -76,7 +76,7 @@ export default function DemoRoom() {
         </Card>
       )}
 
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {DEMO_PATIENTS.map((p) => {
           const family = p.family_structure ?? "hetero_couple";
           const country = byCode(p.country)?.label ?? p.country;
@@ -85,16 +85,16 @@ export default function DemoRoom() {
             <button
               key={p.key}
               onClick={() => pick(p)}
-              className="text-left rounded-xl border bg-card p-4 flex flex-col gap-3 hover:border-primary/50 hover:shadow-md transition-smooth focus:outline-none focus:ring-2 focus:ring-primary/40"
+              className="text-left rounded-2xl border border-border/70 bg-card p-5 flex flex-col gap-4 shadow-none hover:border-primary/40 hover:shadow-sm transition-smooth focus:outline-none focus:ring-2 focus:ring-primary/40"
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <div className="font-semibold">{p.name} · {p.age}</div>
-                  <div className="text-xs text-muted-foreground">{p.label}</div>
+                  <div className="font-display text-lg font-medium tracking-tight">{p.name} · {p.age}</div>
+                  <div className="text-xs text-muted-foreground leading-relaxed">{p.label}</div>
                 </div>
-                <Badge variant="outline" className={`text-[10px] shrink-0 ${LEVEL_TONE[p.data_level]}`}>
+                <span className={`shrink-0 rounded-full border px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider ${LEVEL_TONE[p.data_level]}`}>
                   {LEVEL_LABEL[p.data_level]}
-                </Badge>
+                </span>
               </div>
 
               <div className="flex flex-wrap gap-1.5 text-[11px]">
