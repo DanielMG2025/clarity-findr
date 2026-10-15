@@ -135,17 +135,15 @@ export default function ClarityAssessment() {
         title="From uncertainty to clarity"
         subtitle="One explainable, confidential view of your situation — the clinical factors and the legal framework where you live."
         note="Every block tells you why you see what you see, and what data influences it."
-        aside={
-          <div className="flex flex-wrap justify-end gap-2">
-            <Button asChild className="gap-2 rounded-full">
-              <Link to="/summary"><HeartHandshake className="size-4" /> Get my orientation summary <ArrowRight className="size-3.5" /></Link>
-            </Button>
-            <Button asChild variant="outline" className="gap-2 rounded-full border-primary/20 bg-primary-soft text-primary hover:bg-primary-soft/70 hover:text-primary">
-              <Link to="/report"><FileText className="size-4" /> Generate my report</Link>
-            </Button>
-          </div>
-        }
       />
+      <div className="flex min-w-0 flex-wrap gap-2 sm:justify-end">
+        <Button asChild className="gap-2 rounded-full">
+          <Link to="/summary"><HeartHandshake className="size-4" /> Get my orientation summary <ArrowRight className="size-3.5" /></Link>
+        </Button>
+        <Button asChild variant="outline" className="gap-2 rounded-full border-primary/20 bg-primary-soft text-primary hover:bg-primary-soft/70 hover:text-primary">
+          <Link to="/report"><FileText className="size-4" /> Generate my report</Link>
+        </Button>
+      </div>
 
       {/* Profile summary + completion */}
       <Card className="p-6">
