@@ -54,18 +54,18 @@ export default function Clinics() {
 
       <RegulatoryGateNotice orientation={orientation} />
 
-      <Card className="p-6 rounded-2xl text-sm text-muted-foreground border-dashed leading-relaxed">
+      <Card className="rounded-none border-0 border-y border-accent/40 bg-accent-soft/35 px-4 py-5 text-sm leading-7 text-muted-foreground shadow-none sm:px-5">
         Clinic identities are shown once you choose to connect. This keeps our guidance neutral
         and free for you.
       </Card>
 
       {completion < 60 && (
-        <Card className="p-6 rounded-2xl bg-primary-soft/25 border-primary/20">
+        <Card className="rounded-none border-0 border-t border-border/70 bg-transparent px-0 pb-2 pt-6 shadow-none">
           <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
             <div className="space-y-1">
-              <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">How much we know about you</div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">How much we know about you</div>
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-base font-semibold">Share a little more to refine this list</span>
+                <span className="font-display text-xl font-medium">Share a little more to refine this list</span>
                 <ConfidenceBadge level={confidence as "high" | "medium" | "low"} />
               </div>
             </div>
@@ -78,13 +78,13 @@ export default function Clinics() {
       )}
 
       {clinics.length === 0 ? (
-        <Card className="p-6 rounded-2xl text-sm text-muted-foreground leading-relaxed">
+        <Card className="max-w-[65ch] rounded-none border-0 border-t border-border/70 bg-transparent px-0 pb-2 pt-6 text-sm leading-7 text-muted-foreground shadow-none">
           None of our reference clinics are in a country that's legally viable for your situation yet.
           As we add clinics in the viable countries, they'll appear here.
         </Card>
       ) : (
-        <Card className="p-0 rounded-2xl overflow-hidden">
-          <Table>
+        <Card className="max-w-full overflow-x-auto rounded-none border-0 border-y border-border/70 bg-transparent p-0 shadow-none">
+          <Table className="[&_thead]:border-b [&_thead]:border-accent/60">
             <TableHeader>
               <TableRow>
                 <TableHead>Clinic</TableHead>
@@ -118,13 +118,13 @@ export default function Clinics() {
               {clinics.map((c) => (
                 <TableRow key={c.id}>
                   <TableCell>
-                    <div className="text-sm font-semibold">{c.displayLabel}</div>
+                    <div className="font-display text-base font-medium">{c.displayLabel}</div>
                     <div className="text-xs text-muted-foreground">{c.country}</div>
                   </TableCell>
-                  <TableCell className="text-right font-semibold text-primary tabular-nums">{c.matchScore}</TableCell>
-                  <TableCell className="text-right tabular-nums">€{c.estimatedPrice.toLocaleString()}</TableCell>
-                  <TableCell className="text-right tabular-nums">{c.successRate}%</TableCell>
-                  <TableCell className="text-right tabular-nums">{c.distance} km</TableCell>
+                  <TableCell className="text-right font-display text-lg font-medium tabular-nums text-primary">{c.matchScore}</TableCell>
+                  <TableCell className="text-right font-display text-lg font-medium tabular-nums">€{c.estimatedPrice.toLocaleString()}</TableCell>
+                  <TableCell className="text-right font-display text-lg font-medium tabular-nums">{c.successRate}%</TableCell>
+                  <TableCell className="text-right font-display text-lg font-medium tabular-nums">{c.distance} km</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -147,11 +147,11 @@ export default function Clinics() {
         </>
       )}
 
-      <Card className="p-6 rounded-2xl flex flex-wrap items-center justify-between gap-4">
+      <Card className="flex flex-wrap items-center justify-between gap-4 rounded-none border-0 border-t border-border/70 bg-transparent px-0 pb-2 pt-8 shadow-none">
         <div className="flex items-center gap-2">
-          <Sparkles className="size-5 text-primary" />
+          <Sparkles className="size-5 text-accent" />
           <div>
-            <div className="text-base font-semibold">Want a more tailored shortlist?</div>
+            <div className="font-display text-xl font-medium">Want a more tailored shortlist?</div>
             <div className="text-sm text-muted-foreground">Complete your medical context to improve the fit. Only what you want to share.</div>
           </div>
         </div>
