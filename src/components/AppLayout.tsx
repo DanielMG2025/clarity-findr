@@ -15,10 +15,10 @@ export function AppLayout({ children }: Props) {
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
         <div className="flex-1 flex flex-col min-w-0">
-          <header className="h-14 flex items-center border-b border-border/70 bg-background/85 backdrop-blur sticky top-0 z-30">
-            <SidebarTrigger className="ml-3" />
-            <span className="ml-4 truncate font-editorial italic text-base text-muted-foreground md:text-lg">Your fertility companion</span>
-            <Button asChild size="sm" variant="outline" className="ml-auto mr-4 h-8 gap-1.5 rounded-full border-accent/50 bg-accent-soft/50 text-primary hover:bg-accent-soft hover:text-primary">
+          <header className="no-print h-14 flex items-center gap-2 border-b border-sidebar-border bg-sidebar text-sidebar-foreground sticky top-0 z-30">
+            <SidebarTrigger className="ml-3 shrink-0 text-sidebar-accent-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-sidebar-ring" />
+            <span className="ml-2 min-w-0 truncate font-editorial italic text-base text-sidebar-primary md:text-lg">Your fertility companion</span>
+            <Button asChild size="sm" variant="outline" className="ml-auto mr-4 h-8 shrink-0 gap-1.5 rounded-full border-sidebar-primary/60 bg-sidebar-primary/10 text-sidebar-accent-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-sidebar-ring">
               <Link to="/demo"><Play className="size-3.5" /> Demo mode</Link>
             </Button>
           </header>

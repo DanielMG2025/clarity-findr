@@ -35,22 +35,22 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className="border-b border-border/70">
-        <NavLink to="/" className="flex items-center gap-2.5 px-2 py-3">
-          <span className="grid place-items-center size-8 rounded-full bg-gradient-primary text-primary-foreground shadow-glow shrink-0">
+      <SidebarHeader className="border-b border-sidebar-border">
+        <NavLink to="/" className="flex items-center gap-2.5 px-2 py-3 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring">
+          <span className="grid place-items-center size-8 rounded-full bg-sidebar-primary text-sidebar-primary-foreground shadow-glow shrink-0">
             <Sparkles className="size-4" />
           </span>
           {!collapsed && (
             <span className="flex flex-col leading-none min-w-0">
-              <span className="truncate font-display text-[15px] font-medium tracking-tight text-foreground">Fertility Compass</span>
-              <span aria-hidden className="mt-1.5 h-px w-12 bg-gradient-to-r from-accent/80 to-transparent" />
+              <span className="truncate font-display text-[15px] font-medium tracking-tight text-sidebar-accent-foreground">Fertility Compass</span>
+              <span aria-hidden className="mt-1.5 h-px w-12 bg-gradient-to-r from-sidebar-primary/80 to-transparent" />
             </span>
           )}
         </NavLink>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          {!collapsed && <SidebarGroupLabel className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary/80">Your journey</SidebarGroupLabel>}
+          {!collapsed && <SidebarGroupLabel className="text-[10px] font-semibold uppercase tracking-[0.2em] text-sidebar-primary">Your journey</SidebarGroupLabel>}
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
@@ -59,14 +59,14 @@ export function AppSidebar() {
                     asChild
                     isActive={isActive(item.url)}
                     tooltip={item.title}
-                    className="data-[active=true]:bg-transparent data-[active=true]:text-primary data-[active=true]:shadow-[inset_2px_0_0_0_hsl(var(--accent))] rounded-none"
+                    className="text-sidebar-foreground data-[active=true]:bg-transparent data-[active=true]:text-sidebar-primary data-[active=true]:shadow-[inset_2px_0_0_0_hsl(var(--sidebar-primary))] rounded-none"
                   >
                     <NavLink to={item.url} className="flex items-start gap-3">
                       <item.icon className="size-4 mt-0.5 shrink-0" />
                       {!collapsed && (
                         <div className="flex flex-col leading-tight min-w-0">
                           <span className="text-sm font-medium tracking-tight truncate">{item.title}</span>
-                          <span className="text-[11px] text-muted-foreground truncate">{item.desc}</span>
+                          <span className="text-[11px] text-sidebar-foreground/80 truncate">{item.desc}</span>
                         </div>
                       )}
                     </NavLink>
