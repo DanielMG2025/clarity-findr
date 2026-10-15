@@ -48,7 +48,7 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 
 function IconChip({ icon: Icon }: { icon: typeof Lock }) {
   return (
-    <div className="size-10 rounded-full border border-accent/40 bg-background text-primary grid place-items-center">
+    <div className="grid size-10 shrink-0 place-items-center rounded-full border border-accent/60 bg-card text-primary">
       <Icon className="size-5" />
     </div>
   );
@@ -58,7 +58,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen [&_h1]:text-balance [&_h2]:text-balance [&_h3]:text-balance">
       {/* HERO — magazine cover */}
-      <section className="relative overflow-hidden border-b border-border text-background before:absolute before:inset-x-0 before:top-0 before:z-10 before:h-px before:bg-gradient-to-r before:from-transparent before:via-accent before:to-transparent after:absolute after:inset-x-0 after:bottom-0 after:z-10 after:h-px after:bg-gradient-to-r after:from-transparent after:via-accent after:to-transparent">
+      <section className="relative overflow-hidden border-b border-border text-background dark:[--foreground:var(--sidebar-background)] dark:[--background:var(--sidebar-accent-foreground)] dark:[--primary:var(--sidebar-accent)] before:absolute before:inset-x-0 before:top-0 before:z-10 before:h-px before:bg-gradient-to-r before:from-transparent before:via-accent before:to-transparent after:absolute after:inset-x-0 after:bottom-0 after:z-10 after:h-px after:bg-gradient-to-r after:from-transparent after:via-accent after:to-transparent">
         {/* Cover gradient: burgundy bleeding into near-black ink */}
         <div
           aria-hidden
@@ -67,25 +67,25 @@ export default function Landing() {
         {/* Decorative fine-line compass bloom */}
         <div aria-hidden className="pointer-events-none absolute inset-0 grid place-items-center opacity-[0.14]">
           <svg
-            viewBox="0 0 600 600"
+            viewBox="0 0 200 200"
             fill="none"
             stroke="hsl(var(--accent))"
             strokeWidth="1"
+            strokeLinejoin="round"
             className="size-[min(80vw,560px)]"
           >
-            <circle cx="300" cy="300" r="286" />
-            <circle cx="300" cy="300" r="212" strokeDasharray="2 7" />
-            <circle cx="300" cy="300" r="120" />
-            {Array.from({ length: 16 }).map((_, i) => {
-              const a = (i * Math.PI) / 8;
-              const x1 = 300 + 120 * Math.cos(a);
-              const y1 = 300 + 120 * Math.sin(a);
-              const x2 = 300 + 286 * Math.cos(a);
-              const y2 = 300 + 286 * Math.sin(a);
-              return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} />;
-            })}
-            <path d="M300 60 L330 270 L300 300 L270 270 Z" />
-            <path d="M300 540 L330 330 L300 300 L270 330 Z" opacity="0.7" />
+            <circle cx="100" cy="100" r="92" opacity="0.85" />
+            <path d="M100 4 L96 15 L104 15 Z" fill="hsl(var(--accent))" stroke="none" />
+            <path d="M100 4 L96 15 L104 15 Z" fill="hsl(var(--accent))" stroke="none" transform="rotate(90 100 100)" />
+            <path d="M100 4 L96 15 L104 15 Z" fill="hsl(var(--accent))" stroke="none" transform="rotate(180 100 100)" />
+            <path d="M100 4 L96 15 L104 15 Z" fill="hsl(var(--accent))" stroke="none" transform="rotate(270 100 100)" />
+            <ellipse cx="100" cy="100" rx="9" ry="66" transform="rotate(0 100 100)" />
+            <ellipse cx="100" cy="100" rx="9" ry="66" transform="rotate(30 100 100)" />
+            <ellipse cx="100" cy="100" rx="9" ry="66" transform="rotate(60 100 100)" />
+            <ellipse cx="100" cy="100" rx="9" ry="66" transform="rotate(90 100 100)" />
+            <ellipse cx="100" cy="100" rx="9" ry="66" transform="rotate(120 100 100)" />
+            <ellipse cx="100" cy="100" rx="9" ry="66" transform="rotate(150 100 100)" />
+            <circle cx="100" cy="100" r="9" fill="hsl(var(--accent))" stroke="none" />
           </svg>
         </div>
 
@@ -149,7 +149,7 @@ export default function Landing() {
         <h2 className="mt-6 font-display text-3xl md:text-5xl font-medium leading-tight tracking-normal mb-6">
           Looking for fertility information can feel confusing, lonely and exhausting.
         </h2>
-        <p className="text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+        <p className="text-muted-foreground leading-relaxed max-w-[65ch] mx-auto">
           Forums, ads and clinic websites all say different things. It's hard to know what's
           relevant for your case, what questions to ask, and what to expect — emotionally and financially.
         </p>
@@ -166,10 +166,10 @@ export default function Landing() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {HELP.map((h) => (
-              <Card key={h.title} className="rounded-lg p-7 bg-card shadow-none">
+              <Card key={h.title} className="min-w-0 rounded-lg border border-border/70 bg-card/60 p-7 shadow-none">
                 <IconChip icon={h.icon} />
                 <h3 className="font-display text-2xl font-medium leading-snug mt-5 mb-3">{h.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{h.desc}</p>
+                <p className="max-w-[65ch] text-sm text-muted-foreground leading-relaxed">{h.desc}</p>
               </Card>
             ))}
           </div>
@@ -181,16 +181,16 @@ export default function Landing() {
         <div className="max-w-3xl mb-12 md:mb-16">
           <Eyebrow>How it works</Eyebrow>
           <h2 className="mt-6 font-display text-3xl md:text-5xl font-medium leading-tight tracking-normal">Five steps, at your own pace.</h2>
-          <p className="text-muted-foreground mt-3 leading-relaxed">
+          <p className="max-w-[65ch] text-muted-foreground mt-3 leading-relaxed">
             No pressure and no forced paths. You can pause, come back, and complete it whenever you want.
           </p>
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-4">
+        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8">
           {STEPS.map((s) => (
-            <Card key={s.n} className="rounded-lg p-7 bg-card shadow-none relative">
-              <div className="absolute -top-3 left-6 size-7 rounded-full bg-primary text-primary-foreground text-xs font-medium grid place-items-center">{s.n}</div>
-              <h3 className="font-display text-xl font-medium leading-snug mb-3 mt-3">{s.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
+            <Card key={s.n} className="min-w-0 rounded-lg border border-border/70 bg-card/60 p-7 shadow-none">
+              <div className="grid size-10 shrink-0 place-items-center rounded-full border border-accent/60 bg-card font-display text-2xl font-medium tabular-nums text-primary">{s.n}</div>
+              <h3 className="font-display text-2xl font-medium leading-snug mt-5 mb-3">{s.title}</h3>
+              <p className="max-w-[65ch] text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
             </Card>
           ))}
         </div>
@@ -211,13 +211,13 @@ export default function Landing() {
                 key={t.title}
                 className={
                   t.featured
-                    ? "rounded-lg p-7 bg-primary-soft/40 border-accent/60 shadow-card"
-                    : "rounded-lg p-7 bg-card shadow-none"
+                    ? "min-w-0 rounded-lg border border-accent/60 bg-card/60 p-7 shadow-none"
+                    : "min-w-0 rounded-lg border border-border/70 bg-card/60 p-7 shadow-none"
                 }
               >
                 <IconChip icon={t.icon} />
                 <h3 className="font-display text-2xl font-medium leading-snug mt-5 mb-3">{t.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{t.desc}</p>
+                <p className="max-w-[65ch] text-sm text-muted-foreground leading-relaxed">{t.desc}</p>
                 {t.featured && (
                   <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
                     Source · date · confidence
@@ -227,7 +227,7 @@ export default function Landing() {
             ))}
           </div>
           <Card className="rounded-none p-0 pt-8 mt-10 bg-transparent border-0 border-t border-border shadow-none">
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <p className="max-w-[65ch] text-sm text-muted-foreground leading-relaxed">
               <strong className="text-foreground font-semibold">Important notice:</strong> Fertility Compass
               provides orientation based on public data, statistical models and information you
               choose to share. It does not replace a medical consultation, diagnosis or treatment
@@ -238,21 +238,22 @@ export default function Landing() {
       </section>
 
       {/* CTA */}
-      <section className="relative bg-primary text-primary-foreground before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-primary before:via-accent before:to-primary">
-        <div className="container max-w-4xl px-6 py-20 md:py-28 text-center space-y-7">
-          <Heart className="size-8 mx-auto opacity-90" />
-          <h2 className="font-display text-4xl md:text-5xl font-medium leading-tight tracking-normal">
+      <section className="relative overflow-hidden bg-foreground text-background dark:[--foreground:var(--sidebar-background)] dark:[--background:var(--sidebar-accent-foreground)] dark:[--primary:var(--sidebar-accent)] before:absolute before:inset-x-0 before:top-0 before:z-10 before:h-px before:bg-gradient-to-r before:from-transparent before:via-accent before:to-transparent">
+        <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_-5%,hsl(var(--primary))_0%,hsl(var(--foreground))_55%,hsl(var(--foreground))_100%)]" />
+        <div className="relative container max-w-4xl px-6 py-20 md:py-28 text-center space-y-7">
+          <Heart className="size-8 mx-auto text-accent" />
+          <h2 className="font-display text-3xl md:text-5xl font-medium leading-tight tracking-normal">
             Take the first step toward your clarity.
           </h2>
-          <p className="opacity-90 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-background/90 max-w-[65ch] mx-auto leading-relaxed">
             Information, tools and guidance to make fertility decisions with more confidence,
             transparency and confidentiality — every figure explained.
           </p>
           <div className="flex flex-wrap justify-center gap-3 pt-3">
-            <Button asChild size="lg" variant="secondary" className="gap-2 px-7 shadow-elegant">
+            <Button asChild size="lg" variant="secondary" className="gap-2 rounded-full bg-accent px-7 text-accent-foreground shadow-elegant hover:bg-accent/90">
               <Link to="/situacion">Start my assessment <ArrowRight className="size-4" /></Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="gap-2 bg-transparent border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10">
+            <Button asChild size="lg" variant="ghost" className="gap-2 rounded-full border border-background/25 text-background/80 hover:bg-background/10 hover:text-background">
               <Link to="/costes"><Sparkles className="size-4" /> Explore costs</Link>
             </Button>
           </div>
