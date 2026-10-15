@@ -55,7 +55,7 @@ export default function DemoRoom() {
         <p className="text-muted-foreground leading-loose max-w-[65ch]">
           Pick one of the built-in patients to load their full situation into the journey and jump
           straight to the questionnaire, already filled in. Data completeness varies on purpose — use
-          it to show <em className="font-editorial not-italic italic">more data → higher confidence</em>. The restrictive-country cases (Italy,
+          it to show <em className="font-editorial">more data → higher confidence</em>. The restrictive-country cases (Italy,
           Germany…) are the best way to show the legal engine in action.
         </p>
       </header>
