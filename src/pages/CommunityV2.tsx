@@ -180,10 +180,11 @@ const CommunityV2 = () => {
 
       {/* Ask form */}
       {askOpen && (
-        <Card className="p-6 rounded-2xl space-y-4">
-          <div className="space-y-1">
+        <Card className="p-6 rounded-2xl space-y-4 border-border/70 shadow-none">
+          <div className="space-y-1.5">
             <div className={EYEBROW}>Questions</div>
-            <h2 className="text-base font-semibold">Ask the community</h2>
+            <h2 className="font-display text-xl font-medium tracking-tight">Ask the community</h2>
+            <div className="h-px w-12 bg-accent/60" />
           </div>
           <form onSubmit={submitAsk} className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
@@ -228,10 +229,11 @@ const CommunityV2 = () => {
 
       {/* Share form */}
       {shareOpen && (
-        <Card className="p-6 rounded-2xl space-y-4">
-          <div className="space-y-1">
+        <Card className="p-6 rounded-2xl space-y-4 border-border/70 shadow-none">
+          <div className="space-y-1.5">
             <div className={EYEBROW}>Prices</div>
-            <h2 className="text-base font-semibold">Share a clinic price you received</h2>
+            <h2 className="font-display text-xl font-medium tracking-tight">Share a clinic price you received</h2>
+            <div className="h-px w-12 bg-accent/60" />
           </div>
           <form onSubmit={submitShare} className="grid md:grid-cols-3 gap-4">
             <div className="space-y-2">
