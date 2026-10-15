@@ -36,8 +36,8 @@ export function ScenarioCard({ scenario, selected, onSelect, compact, confidence
   return (
     <Card
       className={cn(
-        "p-5 transition-smooth cursor-pointer ring-1 hover:shadow-card",
-        selected ? `ring-2 ${t.ring} shadow-card` : "ring-border",
+"p-5 transition-smooth cursor-pointer rounded-none border-0 border-y border-border/70 bg-transparent shadow-none",
+        selected ? `ring-2 ${t.ring}` : "ring-0",
       )}
       onClick={onSelect}
     >
@@ -53,7 +53,7 @@ export function ScenarioCard({ scenario, selected, onSelect, compact, confidence
       </div>
 
       <div className="space-y-1.5 mb-3">
-        <div className="text-2xl font-semibold tabular-nums tracking-tight">
+        <div className="font-display text-2xl font-medium tabular-nums tracking-tight">
           €{scenario.total_min.toLocaleString()} – €{scenario.total_max.toLocaleString()}
         </div>
         <div className="text-xs text-muted-foreground">Estimated total range · all-in</div>

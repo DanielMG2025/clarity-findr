@@ -29,8 +29,8 @@ export function DataSourcesPanel({
   const hasCitations = !!citations && citations.length > 0;
   const hasRange = !!estimate && !estimate.empty;
   return (
-    <Card className="p-6 bg-primary-soft/30 border-primary/15">
-      <h3 className="text-lg font-bold mb-1">How do we calculate this?</h3>
+    <Card className="p-6 rounded-none border-0 border-y border-border/70 bg-primary-soft/20 shadow-none">
+      <h3 className="font-display text-xl font-medium mb-1">How do we calculate this?</h3>
       <p className="text-sm text-muted-foreground mb-4">
         We blend several data sources to give you a realistic range — not one single, unrealistic number.
       </p>
@@ -54,7 +54,7 @@ export function DataSourcesPanel({
             <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Published range for your market
             </span>
-            <span className="text-sm font-bold tabular-nums">
+            <span className="font-display text-base font-medium tabular-nums">
               €{estimate!.range_min.toLocaleString()}–€{estimate!.range_max.toLocaleString()}
             </span>
           </div>

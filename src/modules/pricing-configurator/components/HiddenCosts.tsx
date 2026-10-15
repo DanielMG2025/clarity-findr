@@ -40,17 +40,17 @@ const SEV_CLS = {
 
 export function HiddenCosts() {
   return (
-    <Card className="p-6 border-warning/30 bg-warning/5">
+    <Card className="p-6 rounded-none border-0 border-y border-accent/40 bg-accent-soft/35 shadow-none">
       <div className="flex items-center gap-2 mb-1">
         <AlertTriangle className="size-5 text-warning" />
-        <h3 className="text-lg font-bold">Hidden costs worth checking</h3>
+        <h3 className="font-display text-xl font-medium">Hidden costs worth checking</h3>
       </div>
       <p className="text-sm text-muted-foreground mb-4">
         Many published prices <strong>don't include</strong> these items. It's the main reason the final bill ends up higher than expected.
       </p>
       <ul className="grid sm:grid-cols-2 gap-3">
         {ITEMS.map(({ Icon, title, impact, desc, severity }) => (
-          <li key={title} className="flex gap-3 p-3 rounded-lg bg-background border border-border">
+          <li key={title} className="flex gap-3 p-3 rounded-none bg-transparent border border-border/70">
             <div className="size-9 rounded-lg bg-warning/15 grid place-items-center shrink-0">
               <Icon className="size-4 text-warning" />
             </div>

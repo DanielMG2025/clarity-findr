@@ -40,13 +40,13 @@ export function UploadQuoteCTA({ defaultCountry = "Spain", defaultTreatment = "I
   };
 
   return (
-    <Card className="p-6 bg-accent-soft/30 border-accent/20">
+    <Card className="p-6 rounded-none border-0 border-y border-accent/30 bg-accent-soft/25 shadow-none">
       <div className="flex items-start gap-3">
         <div className="size-10 rounded-xl bg-background grid place-items-center shrink-0 border border-accent/30">
           <MessageSquareQuote className="size-5 text-accent" />
         </div>
         <div className="flex-1">
-          <h3 className="font-bold">Patients like you have shared</h3>
+          <h3 className="font-display text-lg font-medium">Patients like you have shared</h3>
           <p className="text-sm text-muted-foreground mt-1 mb-3">
             Every quote uploaded makes the estimates more accurate for the next person. 100% anonymous.
           </p>

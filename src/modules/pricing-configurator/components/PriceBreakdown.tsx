@@ -5,10 +5,10 @@ import type { Scenario } from "../logic/types";
 export function PriceBreakdown({ scenario }: { scenario: Scenario }) {
   const max = Math.max(...scenario.components.map(c => c.max), 1);
   return (
-    <Card className="p-6">
+    <Card className="p-6 rounded-none border-0 border-y border-border/70 bg-transparent shadow-none">
       <div className="flex items-baseline justify-between mb-4">
-        <h3 className="text-lg font-bold">Detailed breakdown · {scenario.label}</h3>
-        <div className="text-sm font-semibold tabular-nums text-primary">
+        <h3 className="font-display text-xl font-medium">Detailed breakdown · {scenario.label}</h3>
+        <div className="font-display text-base font-medium tabular-nums text-primary">
           €{scenario.total_min.toLocaleString()} – €{scenario.total_max.toLocaleString()}
         </div>
       </div>

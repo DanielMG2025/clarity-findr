@@ -18,8 +18,8 @@ export function GuaranteeExplanation() {
   ];
 
   return (
-    <Card className="p-6">
-      <h3 className="text-lg font-bold mb-1">Another way to pay for treatment</h3>
+    <Card className="p-6 rounded-none border-0 border-y border-border/70 bg-transparent shadow-none">
+      <h3 className="font-display text-xl font-medium mb-1">Another way to pay for treatment</h3>
       <p className="text-sm text-muted-foreground mb-5">
         Some clinics offer <strong>guarantee programs</strong>: you pay a fixed price for several attempts and get a refund if pregnancy isn't achieved. They don't always pay off — it depends on your profile.
       </p>

@@ -10,13 +10,13 @@ const eur = (n: number) => `€${Math.round(n).toLocaleString()}`;
 export function ComponentBreakdown({ estimate }: { estimate: Estimate }) {
   const hasRecurring = estimate.recurring_max > 0;
   return (
-    <Card className="p-6 space-y-5 rounded-2xl">
+    <Card className="p-6 space-y-5 rounded-none border-0 border-y border-border/70 bg-transparent shadow-none">
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div>
-          <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+          <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-primary">
             Orientative range · {estimate.plan_label} · {estimate.market.label}
           </div>
-          <div className="text-3xl font-semibold tabular-nums mt-1">
+          <div className="font-display text-4xl font-medium tabular-nums tracking-tight mt-1">
             {eur(estimate.total_min)}–{eur(estimate.total_max)}
           </div>
           {hasRecurring && (
@@ -32,10 +32,10 @@ export function ComponentBreakdown({ estimate }: { estimate: Estimate }) {
 
       {/* Component breakdown */}
       <div>
-        <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground mb-2">
+        <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-primary mb-2">
           What's in this range
         </div>
-        <ul className="divide-y border rounded-lg overflow-hidden">
+        <ul className="divide-y divide-border/70 border-y border-border/70">
           {estimate.lines.map((l) => (
             <li key={l.key} className="px-3 py-2.5">
               <div className="flex items-center justify-between gap-3">
@@ -59,7 +59,7 @@ export function ComponentBreakdown({ estimate }: { estimate: Estimate }) {
         </ul>
       </div>
 
-      <div className="rounded-lg bg-muted/40 border border-dashed p-3 space-y-2">
+      <div className="border-y border-accent/40 bg-accent-soft/35 px-4 py-5 space-y-2">
         <p className="text-xs text-muted-foreground leading-relaxed">
           <strong className="text-foreground">Heads up:</strong> {estimate.caveat}
         </p>
