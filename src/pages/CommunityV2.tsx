@@ -43,7 +43,7 @@ const AGE_BANDS = ["<25", "25-29", "30-34", "35-39", "40-44", "45+"];
 const COUNTRIES = ["Spain", "Czech Republic", "Portugal", "Greece", "UK", "Other"];
 
 /** Shared quiet label used across the patient journey pages. */
-const EYEBROW = "text-[11px] font-medium uppercase tracking-wider text-muted-foreground";
+const EYEBROW = "text-[11px] font-medium uppercase tracking-[0.18em] text-primary";
 
 function useVotes() {
   const [votes, setVotes] = useState<Record<string, number>>(() => {
@@ -140,7 +140,7 @@ const CommunityV2 = () => {
   };
 
   return (
-    <div className="container max-w-5xl py-10 space-y-8">
+    <div className="container max-w-5xl py-10 space-y-10">
       <PageHeader
         eyebrow="Community"
         title="People like you, asking real questions"
@@ -153,7 +153,7 @@ const CommunityV2 = () => {
       </div>
 
       {/* Filters */}
-      <Card className="p-6 rounded-2xl flex flex-wrap items-center gap-3">
+      <Card className="p-6 rounded-2xl flex flex-wrap items-center gap-3 border-border/70 shadow-none">
         <span className={EYEBROW}>Filter</span>
         <Select value={filterTreatment} onValueChange={setFilterTreatment}>
           <SelectTrigger className="w-44"><SelectValue placeholder="Treatment" /></SelectTrigger>
