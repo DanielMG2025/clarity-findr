@@ -29,8 +29,8 @@ function buildSources(confidence: Confidence): SourceWeight[] {
 export function DataSourcesWeights({ confidence }: { confidence: Confidence }) {
   const sources = buildSources(confidence);
   return (
-    <Card className="p-6">
-      <h3 className="text-lg font-bold mb-1">How each source weighs in your estimate</h3>
+    <Card className="p-6 rounded-none border-0 border-y border-border/70 bg-transparent shadow-none">
+      <h3 className="font-display text-xl font-medium mb-1">How each source weighs in your estimate</h3>
       <p className="text-sm text-muted-foreground mb-5">
         We blend several sources and re-weight them based on the data available for your case. The more data we have, the more the estimate leans on real-world evidence.
       </p>

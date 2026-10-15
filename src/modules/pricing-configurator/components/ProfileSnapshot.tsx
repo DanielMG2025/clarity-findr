@@ -20,14 +20,14 @@ interface Props {
  */
 export function ProfileSnapshot({ profile, patch }: Props) {
   return (
-    <Card className="p-5 space-y-5 bg-gradient-card border-2">
+    <Card className="p-5 space-y-5 rounded-none border-0 border-y border-border/70 bg-transparent shadow-none">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="size-10 rounded-xl bg-primary-soft text-primary grid place-items-center">
             <User className="size-5" />
           </div>
           <div>
-            <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground">From your profile</div>
+            <div className="text-xs font-medium uppercase tracking-[0.18em] text-primary">From your profile</div>
             <div className="font-semibold">Adjust extras here, edit the rest in your profile.</div>
           </div>
         </div>

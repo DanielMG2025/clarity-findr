@@ -27,8 +27,8 @@ const fmt = (n: number | null) => (n == null ? "—" : `€${n.toLocaleString()}
 
 export function ClinicComparison() {
   return (
-    <Card className="p-6">
-      <h3 className="text-lg font-bold mb-1">Side-by-side clinics</h3>
+    <Card className="p-6 rounded-none border-0 border-y border-border/70 bg-transparent shadow-none">
+      <h3 className="font-display text-xl font-medium mb-1">Side-by-side clinics</h3>
       <p className="text-sm text-muted-foreground mb-4">
         We compare the published price, what other patients have actually paid and our normalized prices.{" "}
         <WhatIsThis title="What is a normalized price?">
@@ -60,8 +60,8 @@ export function ClinicComparison() {
                 </td>
                 <td className="p-3 text-right tabular-nums font-medium">{fmt(r.published)}</td>
                 <td className="p-3 text-right tabular-nums font-medium">{fmt(r.patient_quotes_avg)}</td>
-                <td className="p-3 text-right tabular-nums font-bold text-accent">{fmt(r.basic_norm)}</td>
-                <td className="p-3 text-right tabular-nums font-bold text-primary">{fmt(r.premium_norm)}</td>
+                <td className="p-3 text-right font-display font-medium tabular-nums text-accent">{fmt(r.basic_norm)}</td>
+                <td className="p-3 text-right font-display font-medium tabular-nums text-primary">{fmt(r.premium_norm)}</td>
                 <td className="p-3 pl-3 rounded-r-lg text-xs text-muted-foreground max-w-[240px]">{r.why}</td>
               </tr>
             ))}

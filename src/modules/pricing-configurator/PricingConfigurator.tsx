@@ -52,7 +52,7 @@ export function PricingConfigurator() {
   return (
     <div className="space-y-8">
       {/* INTRO */}
-      <p className="text-sm text-muted-foreground max-w-2xl leading-relaxed">
+      <p className="text-sm text-muted-foreground max-w-[65ch] leading-relaxed">
         Based on real clinic and patient data. Tap any underlined term — like{" "}
         <SideInfo infoKey="icsi" /> or <SideInfo infoKey="pgt_a" /> — for a quick explainer.
       </p>
@@ -61,14 +61,14 @@ export function PricingConfigurator() {
       {bundle.component && <ComponentBreakdown estimate={bundle.component} />}
 
       {/* PROFILE DEPTH BANNER */}
-      <Card className="p-6 rounded-2xl">
+      <Card className="p-6 rounded-none border-0 border-y border-border/70 bg-transparent shadow-none">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
           <div className="flex items-center gap-3">
             <div className="size-10 rounded-xl bg-primary-soft text-primary grid place-items-center">
               <User className="size-5" />
             </div>
             <div className="space-y-1">
-              <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Profile depth</div>
+              <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-primary">Profile depth</div>
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-base font-semibold">{completion}% complete</span>
                 <ConfidenceBadge level={confidence as "high" | "medium" | "low"} />
@@ -92,8 +92,8 @@ export function PricingConfigurator() {
         <div className="space-y-4">
           <div className="flex items-center justify-between gap-3">
             <div className="space-y-1">
-              <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Compare</div>
-              <h2 className="text-lg font-semibold">Scenarios for your profile</h2>
+              <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-primary">Compare</div>
+              <h2 className="font-display text-xl font-medium">Scenarios for your profile</h2>
             </div>
             <div className="inline-flex rounded-lg border border-border p-1 bg-card">
               <button
@@ -160,10 +160,10 @@ export function PricingConfigurator() {
       </section>
 
       {/* CTAs */}
-      <section className="rounded-2xl border border-border bg-primary-soft/25 p-6 md:p-8">
+      <section className="rounded-none border-0 border-y border-primary/20 bg-primary-soft/30 p-6 md:p-8 shadow-none">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h3 className="text-lg font-semibold">Next step?</h3>
+            <h3 className="font-display text-xl font-medium">Next step?</h3>
             <p className="text-sm text-muted-foreground">We'll show you which clinics fit your range and your case — with the same transparency.</p>
           </div>
           <div className="flex flex-wrap gap-2">

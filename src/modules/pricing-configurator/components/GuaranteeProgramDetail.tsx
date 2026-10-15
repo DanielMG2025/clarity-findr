@@ -24,10 +24,10 @@ export function GuaranteeProgramDetail({ guarantee }: Props) {
   ];
 
   return (
-    <Card className="p-6 border-expert/30 bg-expert-soft/20">
+    <Card className="p-6 rounded-none border-0 border-y border-expert/30 bg-expert-soft/20 shadow-none">
       <div className="flex items-center gap-2 mb-1">
         <ShieldCheck className="size-5 text-expert" />
-        <h3 className="text-lg font-bold">Guarantee program detail</h3>
+        <h3 className="font-display text-xl font-medium">Guarantee program detail</h3>
         <Badge variant="outline" className="bg-expert-soft text-expert border-expert/30 ml-1">
           €{guarantee.total_min.toLocaleString()} – €{guarantee.total_max.toLocaleString()}
         </Badge>
@@ -44,7 +44,7 @@ export function GuaranteeProgramDetail({ guarantee }: Props) {
               {label}
               <WhatIsThis title={label} size="sm">{hint}</WhatIsThis>
             </div>
-            <div className="text-xl font-bold tabular-nums mt-1">{value}</div>
+            <div className="font-display text-xl font-medium tabular-nums mt-1">{value}</div>
           </div>
         ))}
       </div>

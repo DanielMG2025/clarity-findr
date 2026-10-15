@@ -15,10 +15,10 @@ export function FinancingSimulator({ amountMin, amountMax }: { amountMin: number
   const monthlyHigh = Math.round((amountMax * (1 + apr)) / months);
 
   return (
-    <Card className="p-6">
+    <Card className="p-6 rounded-none border-0 border-y border-border/70 bg-transparent shadow-none">
       <div className="flex items-center gap-2 mb-1">
         <CreditCard className="size-4 text-primary" />
-        <h3 className="text-lg font-bold">Financing simulator</h3>
+        <h3 className="font-display text-xl font-medium">Financing simulator</h3>
       </div>
       <p className="text-sm text-muted-foreground mb-5">Estimated monthly payment using an indicative 8% APR. This is not a financial offer.</p>
 
@@ -43,7 +43,7 @@ export function FinancingSimulator({ amountMin, amountMax }: { amountMin: number
 
       <div className="mt-6 p-4 rounded-xl bg-primary-soft/40 border border-primary/15">
         <div className="text-xs text-muted-foreground">Estimated monthly payment</div>
-        <div className="text-3xl font-bold tabular-nums text-primary">€{monthly.toLocaleString()}/mo</div>
+        <div className="font-display text-3xl font-medium tabular-nums text-primary">€{monthly.toLocaleString()}/mo</div>
         <div className="text-xs text-muted-foreground mt-1 tabular-nums">
           Range between €{monthlyLow.toLocaleString()} and €{monthlyHigh.toLocaleString()}/mo depending on the scenario
         </div>

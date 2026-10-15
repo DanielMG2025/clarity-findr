@@ -14,12 +14,12 @@ const ITEMS = [
 
 export function WhatAffectsPrice() {
   return (
-    <Card className="p-6">
-      <h3 className="text-lg font-bold mb-1">What can change the price?</h3>
+    <Card className="p-6 rounded-none border-0 border-y border-border/70 bg-transparent shadow-none">
+      <h3 className="font-display text-xl font-medium mb-1">What can change the price?</h3>
       <p className="text-sm text-muted-foreground mb-4">These are the factors that explain most of the gap between quotes.</p>
       <ul className="grid sm:grid-cols-2 gap-3">
         {ITEMS.map(({ Icon, label, hint }) => (
-          <li key={label} className="flex gap-3 p-3 rounded-lg border border-border">
+          <li key={label} className="flex gap-3 p-3 rounded-none border border-border/70">
             <div className="size-9 rounded-lg bg-muted grid place-items-center shrink-0">
               <Icon className="size-4 text-foreground/70" />
             </div>

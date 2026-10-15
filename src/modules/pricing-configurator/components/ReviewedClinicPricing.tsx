@@ -153,11 +153,11 @@ export function ReviewedClinicPricing() {
   const completion = overallCompletionMPR(mpr);
 
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden rounded-none border-0 border-y border-border/70 bg-transparent shadow-none">
       <CardHeader>
         <div className="flex items-start justify-between gap-3 flex-wrap">
           <div>
-            <CardTitle className="text-lg">IVF in Madrid · reviewed prices</CardTitle>
+            <CardTitle className="font-display text-xl font-medium">IVF in Madrid · reviewed prices</CardTitle>
             <CardDescription>
               Estimates based on prices published by the clinics and reviewed by our team.
             </CardDescription>
@@ -196,7 +196,7 @@ export function ReviewedClinicPricing() {
           {MADRID_FIV.map((c) => {
             const sm = sourceMeta[c.source];
             return (
-              <div key={c.id} className="border rounded-xl p-4 hover:border-primary/40 transition-colors">
+              <div key={c.id} className="rounded-none border border-border/70 p-4 hover:border-primary/40 transition-colors">
                 <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
                   <div>
                     <div className="font-semibold">{c.displayLabel}</div>
@@ -214,15 +214,15 @@ export function ReviewedClinicPricing() {
                 <div className="grid grid-cols-3 gap-3 text-sm">
                   <div>
                     <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Published price</div>
-                    <div className="font-bold tabular-nums">{fmt(c.published)}</div>
+                    <div className="font-display font-medium tabular-nums">{fmt(c.published)}</div>
                   </div>
                   <div>
                     <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Normalized basic</div>
-                    <div className="font-bold tabular-nums text-accent">{fmt(c.basicMin)}–{fmt(c.basicMax)}</div>
+                    <div className="font-display font-medium tabular-nums text-accent">{fmt(c.basicMin)}–{fmt(c.basicMax)}</div>
                   </div>
                   <div>
                     <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Normalized premium</div>
-                    <div className="font-bold tabular-nums text-primary">{fmt(c.premiumMin)}–{fmt(c.premiumMax)}</div>
+                    <div className="font-display font-medium tabular-nums text-primary">{fmt(c.premiumMin)}–{fmt(c.premiumMax)}</div>
                   </div>
                 </div>
 
