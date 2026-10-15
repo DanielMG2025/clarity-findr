@@ -111,8 +111,10 @@ export default function DemoRoom() {
                 )}
               </div>
 
-              <div className="mt-auto flex items-center justify-between">
-                <span className="text-[11px] text-muted-foreground">{completeness(p)}% profile complete</span>
+              <div className="mt-auto flex items-center justify-between border-t border-border/50 pt-3">
+                <span className="text-[11px] text-muted-foreground">
+                  <span className="font-display tabular-nums">{completeness(p)}%</span> profile complete
+                </span>
                 <span className="text-xs font-semibold text-primary inline-flex items-center gap-1">
                   Load <ArrowRight className="size-3.5" />
                 </span>
@@ -122,8 +124,8 @@ export default function DemoRoom() {
         })}
       </div>
 
-      <p className="text-xs text-muted-foreground">
-        Loading a patient replaces any data currently in your session. Use <strong>Reset</strong> to
+      <p className="max-w-[65ch] border-t border-accent/40 pt-6 font-editorial text-base italic leading-loose text-muted-foreground">
+        Loading a patient replaces any data currently in your session. Use <strong className="not-italic font-semibold">Reset</strong> to
         clear it and pick another.
       </p>
     </div>
