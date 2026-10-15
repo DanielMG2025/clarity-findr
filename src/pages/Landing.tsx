@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
-  Sparkles,
   ShieldCheck,
   Compass,
   Wallet,
@@ -252,9 +251,6 @@ export default function Landing() {
           <div className="flex flex-wrap justify-center gap-3 pt-3">
             <Button asChild size="lg" variant="secondary" className="gap-2 rounded-full bg-accent px-7 text-accent-foreground shadow-elegant hover:bg-accent/90">
               <Link to="/situacion">Start my assessment <ArrowRight className="size-4" /></Link>
-            </Button>
-            <Button asChild size="lg" variant="ghost" className="gap-2 rounded-full border border-background/25 text-background/80 hover:bg-background/10 hover:text-background">
-              <Link to="/costes"><Sparkles className="size-4" /> Explore costs</Link>
             </Button>
           </div>
         </div>
