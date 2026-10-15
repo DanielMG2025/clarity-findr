@@ -71,15 +71,15 @@ function sourceDateFromEstimate(estimate: PriceEstimate) {
   return [...new Set(dates)].join(", ") || "not dated";
 }
 
-function SectionHeading({ icon: Icon, eyebrow, title }: { icon: typeof UserRound; eyebrow: string; title: string }) {
+function SectionHeading({ number, icon: Icon, eyebrow, title }: { number: string; icon: typeof UserRound; eyebrow: string; title: string }) {
   return (
-    <div className="flex items-start gap-4">
-      <span className="grid size-9 shrink-0 place-items-center border-t border-accent/60 text-accent">
-        <Icon className="size-5" />
-      </span>
-      <div>
-        <div className="text-[11px] font-medium uppercase tracking-widest text-primary">{eyebrow}</div>
-        <h2 className="mt-2 font-display text-2xl font-medium leading-tight sm:text-3xl">{title}</h2>
+    <div className="flex min-w-0 items-center gap-4 rounded-lg bg-foreground px-5 py-6 text-background [print-color-adjust:exact] [-webkit-print-color-adjust:exact] sm:gap-6 sm:px-7 sm:py-7 print:break-inside-avoid print:py-4">
+      <span aria-hidden="true" className="shrink-0 font-display text-5xl font-normal leading-none text-accent tabular-nums sm:text-6xl">{number}</span>
+      <div className="min-w-0 space-y-2">
+        <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-widest text-accent">
+          <Icon className="size-5 shrink-0" /> {eyebrow}
+        </div>
+        <h2 className="min-w-0 break-words font-display text-2xl font-medium leading-tight text-background sm:text-3xl">{title}</h2>
       </div>
     </div>
   );
@@ -159,18 +159,18 @@ export default function PatientReport() {
         </Button>
       </div>
 
-      <header className="report-document-header border-b border-primary/20 pb-8">
+      <header className="report-document-header rounded-lg border-b border-accent/50 bg-foreground px-6 py-9 text-background [print-color-adjust:exact] [-webkit-print-color-adjust:exact] sm:px-10 sm:py-12 print:px-6 print:py-6">
         <div className="flex flex-wrap items-start justify-between gap-5">
           <div className="min-w-0 space-y-4">
-            <div className="text-xs font-semibold uppercase tracking-wider text-primary">Fertility Compass</div>
-            <h1 className="font-display text-4xl font-medium leading-tight md:text-5xl">Personalized orientation report</h1>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            <div className="text-xs font-semibold uppercase tracking-wider text-accent">Fertility Compass</div>
+            <h1 className="break-words font-display text-4xl font-medium leading-tight text-background md:text-5xl">Personalized orientation report</h1>
+            <p className="max-w-2xl text-sm leading-relaxed text-background/80">
               Orientation based on public data — not a diagnosis or a personalized prediction.
             </p>
           </div>
-          <div className="text-sm text-muted-foreground">
-            <div className="text-[11px] font-medium uppercase tracking-wider">Prepared</div>
-            <div className="mt-1 font-semibold text-foreground">{reportDate}</div>
+          <div className="text-sm text-background/80">
+            <div className="text-[11px] font-medium uppercase tracking-wider text-accent">Prepared</div>
+            <div className="mt-1 font-semibold text-background">{reportDate}</div>
           </div>
         </div>
       </header>
@@ -196,7 +196,7 @@ export default function PatientReport() {
             ))}
           </div>
           <Card className="report-card space-y-6 rounded-none border-0 border-t border-border/70 bg-transparent px-0 pb-2 pt-8 shadow-none">
-            <SectionHeading icon={UserRound} eyebrow="Your situation" title="The details used for this orientation" />
+            <SectionHeading number="01" icon={UserRound} eyebrow="Your situation" title="The details used for this orientation" />
             <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {situationFields.map((field) => (
                 <div key={field.label} className="min-w-0 border-b border-border/70 py-3">
@@ -208,8 +208,8 @@ export default function PatientReport() {
           </Card>
 
           <Card className="report-card space-y-6 rounded-none border-0 border-t border-border/70 bg-transparent px-0 pb-2 pt-8 shadow-none">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <SectionHeading icon={Check} eyebrow="Your factors" title="What may influence your orientation" />
+            <div className="space-y-3">
+              <SectionHeading number="02" icon={Check} eyebrow="Your factors" title="What may influence your orientation" />
               <ConfidenceBadge level={journey.step2_orientation.confidence} />
             </div>
             <ul className="grid gap-3 md:grid-cols-2">
@@ -233,7 +233,7 @@ export default function PatientReport() {
           </Card>
 
           <Card className="report-card space-y-6 rounded-none border-0 border-t border-border/70 bg-transparent px-0 pb-2 pt-8 shadow-none">
-            <SectionHeading icon={FileText} eyebrow="Evidence" title="The published figures behind your orientation" />
+            <SectionHeading number="03" icon={FileText} eyebrow="Evidence" title="The published figures behind your orientation" />
 
             <div className="space-y-2">
               <h3 className="text-sm font-semibold">IVF pregnancy rate with own eggs, by age (HFEA)</h3>
@@ -281,8 +281,8 @@ export default function PatientReport() {
           </Card>
 
           <Card className="report-card space-y-6 rounded-none border-0 border-t border-border/70 bg-transparent px-0 pb-2 pt-8 shadow-none">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <SectionHeading icon={Wallet} eyebrow="Your costs" title="Published price orientation" />
+            <div className="space-y-3">
+              <SectionHeading number="04" icon={Wallet} eyebrow="Your costs" title="Published price orientation" />
               {hasPriceEstimate && priceEstimate && <ConfidenceBadge level={priceEstimate.confidence} />}
             </div>
             {hasPriceEstimate && priceEstimate ? <>
@@ -305,7 +305,7 @@ export default function PatientReport() {
           </Card>
 
           <Card className="report-card space-y-6 rounded-none border-0 border-t border-border/70 bg-transparent px-0 pb-2 pt-8 shadow-none">
-            <SectionHeading icon={Scale} eyebrow="Regulatory framework" title="Legal context for your situation" />
+            <SectionHeading number="05" icon={Scale} eyebrow="Regulatory framework" title="Legal context for your situation" />
             {orientation ? <>
               <div className="min-w-0 border-l border-border/70 p-4">
                 <SourceChip source="European Atlas of Fertility Treatment Policies" date={orientation.source.as_of} confidence="medium" detail={orientation.source.note} />
@@ -330,6 +330,10 @@ export default function PatientReport() {
             </ul>
             <p className="min-w-0 border-l-2 border-primary/35 bg-primary-soft/25 p-4 text-sm leading-relaxed text-muted-foreground">Every figure in this report carries its source. You don't need to leave this document to see the evidence.</p>
           </footer>
+          <div className="flex flex-wrap items-center gap-5 rounded-lg bg-foreground px-6 py-7 text-background [print-color-adjust:exact] [-webkit-print-color-adjust:exact] sm:px-8 print:break-inside-avoid print:py-4">
+            <span className="font-display text-2xl font-medium">Fertility Compass</span>
+            <span aria-hidden="true" className="h-px min-w-12 flex-1 bg-accent" />
+          </div>
         </>
       )}
     </div>
