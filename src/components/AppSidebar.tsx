@@ -37,7 +37,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader className="border-b border-sidebar-border">
         <NavLink to="/" className="flex items-center gap-2.5 px-2 py-3 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring">
-          <span className="grid place-items-center size-8 rounded-full bg-gradient-primary text-sidebar-accent-foreground shadow-glow shrink-0">
+          <span className="grid place-items-center size-8 rounded-full bg-sidebar-primary text-sidebar-primary-foreground shadow-glow shrink-0">
             <Sparkles className="size-4" />
           </span>
           {!collapsed && (
