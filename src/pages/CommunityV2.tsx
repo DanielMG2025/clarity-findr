@@ -283,40 +283,40 @@ const CommunityV2 = () => {
         </TabsList>
 
         <TabsContent value="qa" className="space-y-4 mt-0">
-          {loading && <Card className="p-6 rounded-2xl text-sm text-muted-foreground">Loading…</Card>}
+          {loading && <Card className="p-6 rounded-2xl border-border/70 shadow-none text-sm text-muted-foreground">Loading…</Card>}
           {!loading && filteredDiscussions.length === 0 && (
-            <Card className="p-6 rounded-2xl text-sm text-muted-foreground">No questions yet for these filters.</Card>
+            <Card className="p-6 rounded-2xl border-border/70 shadow-none text-sm text-muted-foreground">No questions yet for these filters.</Card>
           )}
           {filteredDiscussions.map((d) => (
-            <Card key={d.id} className="p-6 rounded-2xl flex gap-4">
+            <Card key={d.id} className="p-6 rounded-2xl border-border/70 shadow-none flex gap-4">
               <button
                 onClick={() => upvote(d.id)}
                 aria-label="Upvote this question"
                 className="flex flex-col items-center gap-1 rounded-xl border border-transparent px-2 py-1.5 text-muted-foreground transition-smooth hover:border-primary/20 hover:bg-primary-soft/40 hover:text-primary shrink-0"
               >
                 <ArrowUp className="size-5" />
-                <span className="text-xs font-semibold tabular-nums">{votes[d.id] ?? 0}</span>
+                <span className="font-display text-sm font-medium tabular-nums">{votes[d.id] ?? 0}</span>
               </button>
-              <div className="flex-1 min-w-0 space-y-1.5">
+              <div className="flex-1 min-w-0 max-w-[65ch] space-y-2">
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge variant="secondary">{d.category}</Badge>
                   {d.country && <Badge variant="outline">{d.country}</Badge>}
                   {d.age_band && <Badge variant="outline">{d.age_band}</Badge>}
                 </div>
-                <div className="font-semibold">{d.prompt}</div>
-                <p className="text-sm text-muted-foreground leading-relaxed">{d.reply}</p>
+                <div className="font-display text-lg font-medium tracking-tight">{d.prompt}</div>
+                <p className="text-sm text-muted-foreground leading-loose">{d.reply}</p>
               </div>
             </Card>
           ))}
         </TabsContent>
 
         <TabsContent value="prices" className="space-y-4 mt-0">
-          {loading && <Card className="p-6 rounded-2xl text-sm text-muted-foreground">Loading…</Card>}
+          {loading && <Card className="p-6 rounded-2xl border-border/70 shadow-none text-sm text-muted-foreground">Loading…</Card>}
           {!loading && filteredStories.length === 0 && (
-            <Card className="p-6 rounded-2xl text-sm text-muted-foreground">No shared prices yet for these filters.</Card>
+            <Card className="p-6 rounded-2xl border-border/70 shadow-none text-sm text-muted-foreground">No shared prices yet for these filters.</Card>
           )}
           {filteredStories.map((s) => (
-            <Card key={s.id} className="p-6 rounded-2xl space-y-2">
+            <Card key={s.id} className="p-6 rounded-2xl border-border/70 shadow-none space-y-2.5">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge>{s.treatment_type}</Badge>
                 <Badge variant="outline">{s.country}</Badge>
@@ -324,10 +324,10 @@ const CommunityV2 = () => {
                 {s.is_verified && <Badge className="bg-accent text-accent-foreground"><ShieldCheck className="size-3" /> Verified</Badge>}
               </div>
               <div className="flex flex-wrap items-baseline gap-3">
-                {s.clinic_name && <div className="font-semibold">{s.clinic_name}</div>}
-                {s.estimated_price && <div className="text-2xl font-semibold text-primary tabular-nums">€{s.estimated_price.toLocaleString()}</div>}
+                {s.clinic_name && <div className="font-display text-lg font-medium tracking-tight">{s.clinic_name}</div>}
+                {s.estimated_price && <div className="font-display text-2xl font-medium text-primary tabular-nums">€{s.estimated_price.toLocaleString()}</div>}
               </div>
-              {s.story && <p className="text-sm text-muted-foreground leading-relaxed">{s.story}</p>}
+              {s.story && <p className="max-w-[65ch] text-sm text-muted-foreground leading-loose">{s.story}</p>}
             </Card>
           ))}
         </TabsContent>
