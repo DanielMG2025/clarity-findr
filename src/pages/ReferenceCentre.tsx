@@ -27,9 +27,9 @@ const CATEGORY_ORDER: RefCategory[] = ["outcomes", "legal", "guidelines", "termi
 
 function EntryCard({ entry }: { entry: ReferenceEntry }) {
   return (
-    <Card className="space-y-4 rounded-2xl p-6">
+    <Card className="space-y-4 rounded-none border-0 border-t border-border/70 bg-transparent px-0 pb-2 pt-6 shadow-none">
       <div className="space-y-2">
-        <h3 className="text-base font-semibold leading-snug">{entry.title}</h3>
+        <h3 className="font-display text-xl font-medium leading-snug">{entry.title}</h3>
         <p className="text-xs text-muted-foreground">
           {entry.publisher} · {entry.year}
         </p>
@@ -50,17 +50,17 @@ function EntryCard({ entry }: { entry: ReferenceEntry }) {
         </div>
       </div>
 
-      <div className="space-y-3 text-sm leading-relaxed">
+      <div className="max-w-[65ch] space-y-4 text-sm leading-7">
         <div>
-          <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">What it is</div>
+          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">What it is</div>
           <p className="mt-1 text-foreground/90">{entry.what_it_is}</p>
         </div>
         <div>
-          <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Key figure</div>
-          <p className="mt-1 text-foreground/90">{entry.key_datum}</p>
+          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">Key figure</div>
+          <p className="mt-1 font-display text-base font-medium leading-7 text-foreground/90">{entry.key_datum}</p>
         </div>
-        <div className="rounded-xl border border-warning/25 bg-warning/10 p-3">
-          <div className="text-[11px] font-medium uppercase tracking-wider text-warning-foreground/90">
+        <div className="rounded-none border-y border-warning/30 bg-warning/10 px-4 py-4">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-warning-foreground/90">
             What it doesn't tell you
           </div>
           <p className="mt-1 text-xs leading-relaxed text-warning-foreground/90">{entry.limitation}</p>
@@ -127,15 +127,17 @@ export default function ReferenceCentre() {
         })}
       </div>
 
-      <div className="space-y-10">
+      <div className="space-y-14">
         {grouped.map(({ category, entries }) => (
-          <section key={category} className="space-y-4">
-            <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-              {CATEGORY_LABEL[category]}
-              <span className="ml-2 text-border">·</span>
-              <span className="ml-2 font-normal">{entries.length}</span>
+          <section key={category} className="space-y-6">
+            <div className="border-b border-accent/40 pb-3">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+                {CATEGORY_LABEL[category]}
+                <span className="ml-2 text-border">·</span>
+                <span className="ml-2 font-normal">{entries.length}</span>
+              </div>
             </div>
-            <div className="grid gap-4 lg:grid-cols-2">
+            <div className="grid gap-8 lg:grid-cols-2">
               {entries.map((entry) => (
                 <EntryCard key={entry.id} entry={entry} />
               ))}
