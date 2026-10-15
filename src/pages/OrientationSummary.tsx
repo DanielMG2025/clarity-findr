@@ -18,9 +18,12 @@ function formatEuro(value: number) {
 function Section({ number, title, children }: { number: string; title: string; children: React.ReactNode }) {
   return (
     <section className={`report-card space-y-5 border-t border-border/70 pt-8 first:border-t-0 first:pt-0 ${number === "04" ? "print:break-before-page" : ""}`}>
-      <div className="flex items-baseline gap-4 sm:gap-5">
-        <span className="shrink-0 font-display text-5xl font-normal leading-none text-accent sm:text-6xl">{number}</span>
-        <h2 className="min-w-0 font-display text-2xl font-medium leading-tight sm:text-3xl">{title}</h2>
+      <div className="flex items-center gap-4 rounded-lg bg-foreground px-5 py-6 text-background [print-color-adjust:exact] [-webkit-print-color-adjust:exact] sm:gap-6 sm:px-7 sm:py-7 print:break-inside-avoid print:py-4">
+        <span className="shrink-0 font-display text-5xl font-normal leading-none text-accent tabular-nums sm:text-6xl">{number}</span>
+        <div className="min-w-0 space-y-2">
+          <span className="block text-[11px] font-medium uppercase tracking-[0.18em] text-accent">Chapter {number}</span>
+          <h2 className="min-w-0 break-words font-display text-2xl font-medium leading-tight text-background sm:text-3xl">{title}</h2>
+        </div>
       </div>
       <div className="max-w-[65ch] space-y-4 text-base leading-8 text-muted-foreground">{children}</div>
     </section>
@@ -67,7 +70,7 @@ export default function OrientationSummary() {
         </Button>
       </div>
 
-      <div className="report-document-header border-b border-primary/20 pb-8 [&_h1]:font-display [&_h1]:text-4xl [&_h1]:font-medium [&_h1]:tracking-normal sm:[&_h1]:text-5xl [&_header>div]:space-y-4">
+      <div className="report-document-header rounded-lg border-b border-accent/50 bg-foreground px-6 py-9 text-background [print-color-adjust:exact] [-webkit-print-color-adjust:exact] sm:px-10 sm:py-12 print:px-6 print:py-6 [&_h1]:break-words [&_h1]:font-display [&_h1]:text-4xl [&_h1]:font-medium [&_h1]:tracking-normal [&_h1]:text-background sm:[&_h1]:text-5xl [&_header>div]:min-w-0 [&_header>div]:space-y-4 [&_header>div>div]:text-accent [&_header>div>p]:text-background/80">
         <PageHeader
           eyebrow="Fertility Compass"
           title="Your orientation summary"
@@ -151,6 +154,10 @@ export default function OrientationSummary() {
             </Section>
           </div>
         </Card>
+          <footer className="flex flex-wrap items-center gap-5 rounded-lg bg-foreground px-6 py-7 text-background [print-color-adjust:exact] [-webkit-print-color-adjust:exact] sm:px-8 print:break-inside-avoid print:py-4">
+            <span className="font-display text-2xl font-medium">Fertility Compass</span>
+            <span aria-hidden="true" className="h-px min-w-12 flex-1 bg-accent" />
+          </footer>
         </>
       )}
 
