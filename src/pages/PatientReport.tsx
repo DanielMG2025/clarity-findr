@@ -73,13 +73,13 @@ function sourceDateFromEstimate(estimate: PriceEstimate) {
 
 function SectionHeading({ icon: Icon, eyebrow, title }: { icon: typeof UserRound; eyebrow: string; title: string }) {
   return (
-    <div className="flex items-center gap-3">
-      <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-primary-soft text-primary">
+    <div className="flex items-start gap-4">
+      <span className="grid size-9 shrink-0 place-items-center border-t border-accent/60 text-accent">
         <Icon className="size-5" />
       </span>
       <div>
-        <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{eyebrow}</div>
-        <h2 className="text-lg font-semibold">{title}</h2>
+        <div className="text-[11px] font-medium uppercase tracking-widest text-primary">{eyebrow}</div>
+        <h2 className="mt-2 font-display text-2xl font-medium leading-tight sm:text-3xl">{title}</h2>
       </div>
     </div>
   );
@@ -149,7 +149,7 @@ export default function PatientReport() {
   }, [orientation, otherFigureRows, ownEggRows, priceEstimate]);
 
   return (
-    <div className="report-page mx-auto max-w-5xl space-y-6 px-4 py-8 md:px-8 md:py-10">
+    <div className="report-page mx-auto min-w-0 max-w-5xl space-y-6 px-4 py-8 md:space-y-10 md:px-8 md:py-12">
       <div className="no-print flex flex-wrap items-center justify-between gap-3">
         <Button asChild variant="link" className="h-auto px-0 text-muted-foreground hover:text-primary">
           <Link to="/summary">See the short orientation summary <ArrowRight className="size-3.5" /></Link>
@@ -159,11 +159,11 @@ export default function PatientReport() {
         </Button>
       </div>
 
-      <header className="report-document-header border-b border-primary/20 pb-6">
+      <header className="report-document-header border-b border-primary/20 pb-8">
         <div className="flex flex-wrap items-start justify-between gap-5">
-          <div className="space-y-2">
+          <div className="min-w-0 space-y-4">
             <div className="text-xs font-semibold uppercase tracking-wider text-primary">Fertility Compass</div>
-            <h1 className="text-3xl font-bold md:text-4xl">Personalized orientation report</h1>
+            <h1 className="font-display text-4xl font-medium leading-tight md:text-5xl">Personalized orientation report</h1>
             <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
               Orientation based on public data — not a diagnosis or a personalized prediction.
             </p>
@@ -188,26 +188,26 @@ export default function PatientReport() {
         </Card>
       ) : (
         <>
-          <div className="max-w-3xl space-y-4 text-[15px] leading-8 text-muted-foreground">
+          <div className="max-w-[65ch] space-y-6 text-base leading-8 text-muted-foreground">
             {narrative.map((paragraph, index) => (
-              <p key={index} className={index === narrative.length - 1 ? "font-medium text-foreground" : undefined}>
+              <p key={index} className={index === 0 ? "font-editorial text-2xl italic leading-relaxed text-foreground sm:text-3xl first-letter:float-left first-letter:mr-2 first-letter:mt-1 first-letter:font-display first-letter:text-6xl first-letter:not-italic first-letter:leading-none first-letter:text-primary sm:first-letter:text-7xl print:first-letter:text-4xl" : index === narrative.length - 1 ? "font-medium text-foreground" : undefined}>
                 {paragraph}
               </p>
             ))}
           </div>
-          <Card className="report-card space-y-5 rounded-2xl p-6">
+          <Card className="report-card space-y-6 rounded-none border-0 border-t border-border/70 bg-transparent px-0 pb-2 pt-8 shadow-none">
             <SectionHeading icon={UserRound} eyebrow="Your situation" title="The details used for this orientation" />
             <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {situationFields.map((field) => (
-                <div key={field.label} className="rounded-xl border border-border/70 bg-background/70 p-3">
+                <div key={field.label} className="min-w-0 border-b border-border/70 py-3">
                   <dt className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{field.label}</dt>
-                  <dd className="mt-1 text-sm font-semibold">{field.value ?? "Not provided"}</dd>
+                  <dd className="mt-2 text-base font-medium">{field.value ?? "Not provided"}</dd>
                 </div>
               ))}
             </dl>
           </Card>
 
-          <Card className="report-card space-y-5 rounded-2xl p-6">
+          <Card className="report-card space-y-6 rounded-none border-0 border-t border-border/70 bg-transparent px-0 pb-2 pt-8 shadow-none">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <SectionHeading icon={Check} eyebrow="Your factors" title="What may influence your orientation" />
               <ConfidenceBadge level={journey.step2_orientation.confidence} />
@@ -217,14 +217,14 @@ export default function PatientReport() {
                 const meta = FACTOR_META[factor.kind];
                 const Icon = meta.Icon;
                 return (
-                  <li key={`${factor.title}-${index}`} className="rounded-xl border border-border/70 p-3">
-                    <div className="flex items-center gap-2">
+                  <li key={`${factor.title}-${index}`} className="min-w-0 border-b border-border/70 py-4">
+                    <div className="flex flex-wrap items-center gap-2">
                       <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-medium ${meta.className}`}>
                         <Icon className="size-3" /> {meta.label}
                       </span>
                       <span className="text-sm font-semibold">{factor.title}</span>
                     </div>
-                    <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{factor.why}</p>
+                    <p className="mt-3 max-w-[65ch] text-sm leading-7 text-muted-foreground">{factor.why}</p>
                   </li>
                 );
               })}
@@ -232,12 +232,12 @@ export default function PatientReport() {
             <p className="text-xs leading-relaxed text-muted-foreground">{journey.step2_orientation.confidence_reason}</p>
           </Card>
 
-          <Card className="report-card space-y-6 rounded-2xl p-6">
+          <Card className="report-card space-y-6 rounded-none border-0 border-t border-border/70 bg-transparent px-0 pb-2 pt-8 shadow-none">
             <SectionHeading icon={FileText} eyebrow="Evidence" title="The published figures behind your orientation" />
 
             <div className="space-y-2">
               <h3 className="text-sm font-semibold">IVF pregnancy rate with own eggs, by age (HFEA)</h3>
-              <div className="report-table overflow-x-auto rounded-xl border border-border/70">
+              <div className="report-table max-w-full overflow-x-auto rounded-none border-y border-border/70 [&_thead]:border-b [&_thead]:border-accent/60">
                 <Table className="min-w-[760px]">
                   <TableHeader><TableRow>
                     <TableHead className="w-[135px] text-xs">Age band</TableHead><TableHead className="w-[75px] text-xs">Rate</TableHead><TableHead className="text-xs">Cohort</TableHead><TableHead className="text-xs">Where in the source</TableHead>
@@ -246,7 +246,7 @@ export default function PatientReport() {
                     const yours = row.id === yourBandId;
                     return <TableRow key={row.id} className={yours ? "bg-primary-soft/70 hover:bg-primary-soft/70" : undefined}>
                       <TableCell className="whitespace-nowrap text-sm font-medium">{ageBandLabel(row.claim)}{yours && <span className="ml-2 rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">your band</span>}</TableCell>
-                      <TableCell className="text-sm font-semibold tabular-nums">{row.value}%</TableCell>
+                      <TableCell className="font-display text-xl font-medium tabular-nums">{row.value}%</TableCell>
                       <TableCell className="text-xs leading-relaxed text-muted-foreground">{row.cohort}</TableCell>
                       <TableCell className="text-xs leading-relaxed text-muted-foreground">{row.locator}</TableCell>
                     </TableRow>;
@@ -258,14 +258,14 @@ export default function PatientReport() {
 
             <div className="space-y-2">
               <h3 className="text-sm font-semibold">Other published figures (HFEA · ESHRE)</h3>
-              <div className="report-table overflow-x-auto rounded-xl border border-border/70">
+              <div className="report-table max-w-full overflow-x-auto rounded-none border-y border-border/70 [&_thead]:border-b [&_thead]:border-accent/60">
                 <Table className="min-w-[800px]">
                   <TableHeader><TableRow>
                     <TableHead className="text-xs">Measure</TableHead><TableHead className="w-[75px] text-xs">Rate</TableHead><TableHead className="text-xs">Cohort</TableHead><TableHead className="text-xs">Where</TableHead>
                   </TableRow></TableHeader>
                   <TableBody>{otherFigureRows.map((row) => <TableRow key={row.id}>
                     <TableCell className="text-sm font-medium">{row.claim}</TableCell>
-                    <TableCell className="text-sm font-semibold tabular-nums">{row.value}%</TableCell>
+                    <TableCell className="font-display text-xl font-medium tabular-nums">{row.value}%</TableCell>
                     <TableCell className="text-xs leading-relaxed text-muted-foreground">{row.cohort}</TableCell>
                     <TableCell className="text-xs leading-relaxed text-muted-foreground">{row.locator}</TableCell>
                   </TableRow>)}</TableBody>
@@ -274,46 +274,46 @@ export default function PatientReport() {
               <SourceLines rows={otherFigureRows} />
             </div>
 
-            {combinedEvidenceCaveat && <div className="flex gap-2 rounded-xl border border-warning/30 bg-warning/15 p-4 text-xs leading-relaxed">
-              <CircleAlert className="mt-0.5 size-4 shrink-0 text-warning" />
-              <p className="text-muted-foreground"><span className="font-medium text-foreground">What these tables don't tell you:</span> {combinedEvidenceCaveat}</p>
+            {combinedEvidenceCaveat && <div className="flex gap-3 border-y border-accent/40 bg-accent-soft/35 px-4 py-5 text-sm leading-7 sm:px-5">
+              <CircleAlert className="mt-1 size-4 shrink-0 text-accent" />
+              <p className="max-w-[65ch] text-muted-foreground"><span className="font-semibold text-primary">What these tables don't tell you:</span> {combinedEvidenceCaveat}</p>
             </div>}
           </Card>
 
-          <Card className="report-card space-y-5 rounded-2xl p-6">
+          <Card className="report-card space-y-6 rounded-none border-0 border-t border-border/70 bg-transparent px-0 pb-2 pt-8 shadow-none">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <SectionHeading icon={Wallet} eyebrow="Your costs" title="Published price orientation" />
               {hasPriceEstimate && priceEstimate && <ConfidenceBadge level={priceEstimate.confidence} />}
             </div>
             {hasPriceEstimate && priceEstimate ? <>
               <div className="grid gap-3 sm:grid-cols-2">
-                <div className="rounded-xl border border-primary/15 bg-primary-soft/25 p-4">
+                <div className="min-w-0 border-l-2 border-primary/35 bg-primary-soft/25 p-4">
                   <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Published range</div>
-                  <div className="mt-1 text-2xl font-semibold tabular-nums">{formatEuro(priceEstimate.range_min)}–{formatEuro(priceEstimate.range_max)}</div>
+                  <div className="mt-2 break-words font-display text-3xl font-medium tabular-nums">{formatEuro(priceEstimate.range_min)}–{formatEuro(priceEstimate.range_max)}</div>
                 </div>
-                <div className="rounded-xl border border-border/70 p-4">
+                <div className="min-w-0 border-l border-border/70 p-4">
                   <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Central estimate</div>
-                  <div className="mt-1 text-2xl font-semibold tabular-nums">{formatEuro(priceEstimate.expected)}</div>
+                  <div className="mt-2 break-words font-display text-3xl font-medium tabular-nums">{formatEuro(priceEstimate.expected)}</div>
                 </div>
               </div>
               <SourceChip source="Public market guides" date={sourceDateFromEstimate(priceEstimate)} confidence={priceEstimate.confidence} detail="The same published estimate used on the Costs and Sources pages." />
             </> : <p className="rounded-xl border border-border/70 bg-muted/30 p-4 text-sm text-muted-foreground">There is not enough published price data for this exact profile, so no number is shown.</p>}
-            <div className="flex gap-2 rounded-xl border border-warning/30 bg-warning/15 p-4 text-xs leading-relaxed">
-              <CircleAlert className="mt-0.5 size-4 shrink-0 text-warning" />
-              <p className="text-muted-foreground"><span className="font-medium text-foreground">What this price doesn't tell you:</span> Published prices are usually per cycle, usually excluding medication, storage, travel and case-specific add-ons. Only a clinic quote can confirm your total.</p>
+            <div className="flex gap-3 border-y border-accent/40 bg-accent-soft/35 px-4 py-5 text-sm leading-7 sm:px-5">
+              <CircleAlert className="mt-1 size-4 shrink-0 text-accent" />
+              <p className="max-w-[65ch] text-muted-foreground"><span className="font-semibold text-primary">What this price doesn't tell you:</span> Published prices are usually per cycle, usually excluding medication, storage, travel and case-specific add-ons. Only a clinic quote can confirm your total.</p>
             </div>
           </Card>
 
-          <Card className="report-card space-y-5 rounded-2xl p-6">
+          <Card className="report-card space-y-6 rounded-none border-0 border-t border-border/70 bg-transparent px-0 pb-2 pt-8 shadow-none">
             <SectionHeading icon={Scale} eyebrow="Regulatory framework" title="Legal context for your situation" />
             {orientation ? <>
-              <div className="rounded-xl border border-border/70 p-4">
+              <div className="min-w-0 border-l border-border/70 p-4">
                 <SourceChip source="European Atlas of Fertility Treatment Policies" date={orientation.source.as_of} confidence="medium" detail={orientation.source.note} />
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{orientation.headline}</p>
+                <p className="mt-3 max-w-[65ch] text-sm leading-7 text-muted-foreground">{orientation.headline}</p>
               </div>
-              <ul className="space-y-2">{orientation.results.map((result) => <li key={result.need} className="rounded-xl border border-border/70 p-3">
+              <ul className="space-y-2">{orientation.results.map((result) => <li key={result.need} className="min-w-0 border-b border-border/70 py-4">
                 <div className="flex flex-wrap items-center gap-2"><span className="text-sm font-semibold">{result.label}</span><Badge variant="outline" className={VERDICT_CLASS[result.verdict]}>{VERDICT_LABEL[result.verdict]}</Badge></div>
-                <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">{result.why}</p>
+                <p className="mt-2 max-w-[65ch] text-sm leading-7 text-muted-foreground">{result.why}</p>
               </li>)}</ul>
               {orientation.home.verify && <p className="rounded-xl border border-warning/30 bg-warning/15 p-3 text-xs leading-relaxed text-muted-foreground"><span className="font-medium text-foreground">Confirm locally:</span> {orientation.home.verify}</p>}
               <p className="rounded-xl border border-border/70 bg-muted/30 p-3 text-xs leading-relaxed text-muted-foreground"><span className="font-medium text-foreground">Subject to change:</span> {orientation.disclaimer}</p>
@@ -322,13 +322,13 @@ export default function PatientReport() {
 
           <footer className="report-card space-y-4 border-t border-primary/20 pt-6">
             <div>
-              <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Sources</div>
-              <h2 className="mt-1 text-lg font-semibold">Sources carried in this report</h2>
+              <div className="text-[11px] font-medium uppercase tracking-widest text-primary">Sources</div>
+              <h2 className="mt-2 font-display text-2xl font-medium sm:text-3xl">Sources carried in this report</h2>
             </div>
             <ul className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
               {sourceFooter.map((source) => <li key={`${source.label}-${source.date}`} className="text-xs leading-relaxed"><span className="font-medium text-foreground">{source.label}</span><span className="text-muted-foreground"> · {source.date}</span></li>)}
             </ul>
-            <p className="rounded-xl border border-primary/15 bg-primary-soft/25 p-4 text-sm leading-relaxed text-muted-foreground">Every figure in this report carries its source. You don't need to leave this document to see the evidence.</p>
+            <p className="min-w-0 border-l-2 border-primary/35 bg-primary-soft/25 p-4 text-sm leading-relaxed text-muted-foreground">Every figure in this report carries its source. You don't need to leave this document to see the evidence.</p>
           </footer>
         </>
       )}
