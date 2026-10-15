@@ -35,27 +35,37 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className="border-b">
-        <NavLink to="/" className="flex items-center gap-2 px-2 py-2 font-bold">
-          <span className="grid place-items-center size-8 rounded-xl bg-gradient-primary text-primary-foreground shadow-glow shrink-0">
+      <SidebarHeader className="border-b border-border/70">
+        <NavLink to="/" className="flex items-center gap-2.5 px-2 py-3">
+          <span className="grid place-items-center size-8 rounded-full bg-gradient-primary text-primary-foreground shadow-glow shrink-0">
             <Sparkles className="size-4" />
           </span>
-          {!collapsed && <span className="truncate">Fertility Compass</span>}
+          {!collapsed && (
+            <span className="flex flex-col leading-none min-w-0">
+              <span className="truncate font-display text-[15px] font-medium tracking-tight text-foreground">Fertility Compass</span>
+              <span aria-hidden className="mt-1.5 h-px w-12 bg-gradient-to-r from-accent/80 to-transparent" />
+            </span>
+          )}
         </NavLink>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          {!collapsed && <SidebarGroupLabel>Your journey</SidebarGroupLabel>}
+          {!collapsed && <SidebarGroupLabel className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary/80">Your journey</SidebarGroupLabel>}
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton asChild isActive={isActive(item.url)} tooltip={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={isActive(item.url)}
+                    tooltip={item.title}
+                    className="data-[active=true]:bg-transparent data-[active=true]:text-primary data-[active=true]:shadow-[inset_2px_0_0_0_hsl(var(--accent))] rounded-none"
+                  >
                     <NavLink to={item.url} className="flex items-start gap-3">
                       <item.icon className="size-4 mt-0.5 shrink-0" />
                       {!collapsed && (
                         <div className="flex flex-col leading-tight min-w-0">
-                          <span className="text-sm font-medium truncate">{item.title}</span>
+                          <span className="text-sm font-medium tracking-tight truncate">{item.title}</span>
                           <span className="text-[11px] text-muted-foreground truncate">{item.desc}</span>
                         </div>
                       )}
