@@ -57,40 +57,87 @@ function IconChip({ icon: Icon }: { icon: typeof Lock }) {
 export default function Landing() {
   return (
     <div className="min-h-screen [&_h1]:text-balance [&_h2]:text-balance [&_h3]:text-balance">
-      {/* HERO */}
-      <section className="relative bg-background overflow-hidden border-b border-border before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-border before:via-accent before:to-border">
-        <div className="container max-w-6xl px-6 pt-16 pb-14 md:pt-24 md:pb-20 text-center">
-          <Eyebrow><Compass className="size-3" /> Explained, confidential orientation</Eyebrow>
-          <h1 className="mt-8 mx-auto max-w-5xl font-display text-5xl md:text-7xl lg:text-8xl font-medium leading-[1.08] tracking-normal">
-            From uncertainty to clarity
-            <span className="block text-primary">
-              on your fertility journey.
+      {/* HERO — magazine cover */}
+      <section className="relative overflow-hidden border-b border-border text-background before:absolute before:inset-x-0 before:top-0 before:z-10 before:h-px before:bg-gradient-to-r before:from-transparent before:via-accent before:to-transparent after:absolute after:inset-x-0 after:bottom-0 after:z-10 after:h-px after:bg-gradient-to-r after:from-transparent after:via-accent after:to-transparent">
+        {/* Cover gradient: burgundy bleeding into near-black ink */}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_-5%,hsl(var(--primary))_0%,hsl(var(--foreground))_55%,hsl(var(--foreground))_100%)]"
+        />
+        {/* Decorative fine-line compass bloom */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 grid place-items-center opacity-[0.14]">
+          <svg
+            viewBox="0 0 600 600"
+            fill="none"
+            stroke="hsl(var(--accent))"
+            strokeWidth="1"
+            className="size-[min(80vw,560px)]"
+          >
+            <circle cx="300" cy="300" r="286" />
+            <circle cx="300" cy="300" r="212" strokeDasharray="2 7" />
+            <circle cx="300" cy="300" r="120" />
+            {Array.from({ length: 16 }).map((_, i) => {
+              const a = (i * Math.PI) / 8;
+              const x1 = 300 + 120 * Math.cos(a);
+              const y1 = 300 + 120 * Math.sin(a);
+              const x2 = 300 + 286 * Math.cos(a);
+              const y2 = 300 + 286 * Math.sin(a);
+              return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} />;
+            })}
+            <path d="M300 60 L330 270 L300 300 L270 270 Z" />
+            <path d="M300 540 L330 330 L300 300 L270 330 Z" opacity="0.7" />
+          </svg>
+        </div>
+
+        <div className="relative container max-w-6xl px-6 text-center">
+          {/* MASTHEAD */}
+          <div className="flex items-center justify-between gap-4 border-b border-background/15 py-5">
+            <div className="flex min-w-0 items-center gap-3">
+              <span className="grid size-9 shrink-0 place-items-center rounded-full border border-accent/70 text-accent">
+                <Compass className="size-4" />
+              </span>
+              <span className="font-display text-lg md:text-xl tracking-[0.08em] text-background">
+                Fertility Compass
+              </span>
+            </div>
+            <span className="hidden text-[11px] font-medium uppercase tracking-[0.18em] text-accent sm:inline">
+              Explained orientation
             </span>
-          </h1>
-          <p className="mt-8 font-editorial italic text-2xl md:text-3xl text-foreground max-w-2xl mx-auto leading-relaxed">
-            Fertility Compass helps you understand your options, estimate realistic costs, and weigh
-            the factors that may influence treatment success.
-          </p>
-          <p className="mt-5 text-sm md:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
-            Every number comes with its source, its date, and how sure we are — and what it doesn't
-            tell you.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <Button asChild size="lg" className="gap-2 px-7 shadow-elegant">
-              <Link to="/situacion">Start my assessment <ArrowRight className="size-4" /></Link>
-            </Button>
-            <Button asChild size="lg" variant="ghost" className="gap-2 text-muted-foreground hover:text-foreground">
-              <Link to="#how-it-works">See how it works</Link>
-            </Button>
           </div>
-          <p className="mt-10 text-xs text-muted-foreground max-w-xl mx-auto leading-relaxed">
-            Orientation based on public data and on what you choose to share. It does not replace a medical consultation.
-          </p>
-          <p className="mt-2 text-xs">
-            <Link to="/demo" className="text-muted-foreground/70 hover:text-primary underline underline-offset-4">
-              Running a live demo? Load a sample patient →
-            </Link>
-          </p>
+
+          <div className="pt-14 pb-16 md:pt-20 md:pb-24">
+            <Eyebrow><Compass className="size-3" /> Explained, confidential orientation</Eyebrow>
+            <h1 className="mt-8 mx-auto max-w-5xl font-display text-[clamp(2.75rem,9vw,6rem)] font-medium leading-[1.05] tracking-normal">
+              From uncertainty to clarity
+              <span className="block text-accent italic">
+                on your fertility journey.
+              </span>
+            </h1>
+            <p className="mt-8 font-editorial italic text-2xl md:text-3xl text-background/90 max-w-[40ch] mx-auto leading-relaxed">
+              Fertility Compass helps you understand your options, estimate realistic costs, and weigh
+              the factors that may influence treatment success.
+            </p>
+            <p className="mt-5 text-sm md:text-base text-background/70 max-w-xl mx-auto leading-relaxed">
+              Every number comes with its source, its date, and how sure we are — and what it doesn't
+              tell you.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+              <Button asChild size="lg" className="gap-2 rounded-full bg-accent px-7 text-accent-foreground shadow-elegant hover:bg-accent/90">
+                <Link to="/situacion">Start my assessment <ArrowRight className="size-4" /></Link>
+              </Button>
+              <Button asChild size="lg" variant="ghost" className="gap-2 rounded-full border border-background/25 text-background/80 hover:bg-background/10 hover:text-background">
+                <Link to="#how-it-works">See how it works</Link>
+              </Button>
+            </div>
+            <p className="mt-10 text-xs text-background/70 max-w-xl mx-auto leading-relaxed">
+              Orientation based on public data and on what you choose to share. It does not replace a medical consultation.
+            </p>
+            <p className="mt-2 text-xs">
+              <Link to="/demo" className="text-accent/90 hover:text-accent underline underline-offset-4">
+                Running a live demo? Load a sample patient →
+              </Link>
+            </p>
+          </div>
         </div>
       </section>
 
