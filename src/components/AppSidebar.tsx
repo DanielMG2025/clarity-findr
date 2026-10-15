@@ -15,7 +15,7 @@ import {
 
 const items = [
   { title: "My situation",        url: "/situacion",     icon: Heart,        desc: "Your story and data" },
-  { title: "Success orientation", url: "/orientacion",   icon: Compass,      desc: "Factors that may influence" },
+  { title: "My orientation",      url: "/orientacion",   icon: Compass,      desc: "Factors that may influence" },
   { title: "Behind the numbers",  url: "/sources",       icon: FileText,     desc: "Every source, explained" },
   { title: "Reference library",   url: "/library",       icon: Library,      desc: "Every source, curated" },
   { title: "Costs",               url: "/costes",        icon: Wallet,       desc: "Price ranges explained" },
