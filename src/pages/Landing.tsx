@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
-  Sparkles,
   ShieldCheck,
   Compass,
   Wallet,
