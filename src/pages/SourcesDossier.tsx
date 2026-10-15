@@ -413,32 +413,32 @@ export default function SourcesDossier() {
         </WhyDisclosure>
       </Card>
 
-      <Card className="space-y-5 rounded-2xl p-6">
+      <Card className="space-y-6 rounded-none border-0 border-t border-border/70 bg-transparent px-0 pb-2 pt-8 shadow-none">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-primary-soft text-primary">
               <Wallet className="size-5" />
             </span>
             <div>
-              <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Costs</div>
-              <h2 className="text-base font-semibold">Price sources behind the range</h2>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">Costs</div>
+              <h2 className="font-display text-2xl font-medium">Price sources behind the range</h2>
             </div>
           </div>
           {hasPriceEstimate && <ConfidenceBadge level={priceEstimate.confidence} />}
         </div>
 
         {hasPriceEstimate ? (
-          <div className="rounded-xl border border-primary/15 bg-primary-soft/25 p-4">
+          <div className="rounded-none border-y border-accent/40 bg-accent-soft/35 px-4 py-5 sm:px-5">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
-                <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Published range</div>
-                <div className="mt-1 text-2xl font-semibold tabular-nums">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">Published range</div>
+                <div className="mt-1 font-display text-3xl font-medium tabular-nums">
                   {formatEuro(priceEstimate.range_min)}–{formatEuro(priceEstimate.range_max)}
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Central estimate</div>
-                <div className="mt-1 text-lg font-semibold tabular-nums">{formatEuro(priceEstimate.expected)}</div>
+                <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">Central estimate</div>
+                <div className="mt-1 font-display text-xl font-medium tabular-nums">{formatEuro(priceEstimate.expected)}</div>
               </div>
             </div>
             <div className="mt-3">
@@ -451,8 +451,8 @@ export default function SourcesDossier() {
             </div>
           </div>
         ) : (
-          <div className="rounded-xl border border-border/70 bg-muted/30 p-4">
-            <p className="text-sm leading-relaxed text-muted-foreground">
+          <div className="max-w-[65ch] rounded-none border-l border-border/70 bg-transparent p-4 pl-5">
+            <p className="text-sm leading-7 text-muted-foreground">
               We do not have enough published price data for this exact profile yet, so no number is shown here.
             </p>
           </div>
@@ -461,7 +461,7 @@ export default function SourcesDossier() {
         {priceCitations.length > 0 ? (
           <ul className="space-y-2">
             {priceCitations.map((source) => (
-              <li key={`${source.source_id}-${source.observed_at}-${source.amount_eur}`} className="rounded-xl border border-border/70 bg-background/70 p-3">
+              <li key={`${source.source_id}-${source.observed_at}-${source.amount_eur}`} className="rounded-none border-l border-border/70 bg-transparent p-3 pl-5">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="space-y-1">
                     <div className="text-sm font-medium">{PRICE_KIND_LABEL[source.source_kind]}</div>
@@ -472,7 +472,7 @@ export default function SourcesDossier() {
                       detail={`This source contributes ${Math.round(source.weight * 100)}% of the cited aggregate weight.`}
                     />
                   </div>
-                  <div className="text-sm font-semibold tabular-nums">{formatEuro(source.amount_eur)}</div>
+                  <div className="font-display text-lg font-medium tabular-nums">{formatEuro(source.amount_eur)}</div>
                 </div>
               </li>
             ))}
@@ -480,7 +480,7 @@ export default function SourcesDossier() {
         ) : (
           <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {PRICING_SOURCE_CATEGORIES.map(({ Icon, title, desc }) => (
-              <li key={title} className="flex gap-3 rounded-xl border border-border/70 bg-background/70 p-3">
+              <li key={title} className="flex gap-3 rounded-none border-l border-border/70 bg-transparent p-3 pl-5">
                 <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-primary-soft text-primary">
                   <Icon className="size-4" />
                 </span>
@@ -493,9 +493,9 @@ export default function SourcesDossier() {
           </ul>
         )}
 
-        <div className="flex gap-2 rounded-xl border border-warning/30 bg-warning/15 p-4 text-xs leading-relaxed">
-          <CircleAlert className="mt-0.5 size-4 shrink-0 text-warning" />
-          <p className="text-muted-foreground">
+        <div className="flex gap-2 rounded-none border-y border-warning/30 bg-warning/10 px-4 py-5 text-sm leading-7">
+          <CircleAlert className="mt-1 size-4 shrink-0 text-warning" />
+          <p className="max-w-[65ch] text-muted-foreground">
             <span className="font-medium text-foreground">What this price doesn't tell you:</span> Published prices are usually per cycle, usually excluding medication, storage, travel and case-specific add-ons. Only a clinic quote can confirm your total.
           </p>
         </div>
@@ -506,15 +506,15 @@ export default function SourcesDossier() {
         </WhyDisclosure>
       </Card>
 
-      <Card className="space-y-5 rounded-2xl p-6">
+      <Card className="space-y-6 rounded-none border-0 border-t border-border/70 bg-transparent px-0 pb-2 pt-8 shadow-none">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-primary-soft text-primary">
               <Scale className="size-5" />
             </span>
             <div>
-              <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Regulatory framework</div>
-              <h2 className="text-base font-semibold">Legal context behind your orientation</h2>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">Regulatory framework</div>
+              <h2 className="font-display text-2xl font-medium">Legal context behind your orientation</h2>
             </div>
           </div>
           <ConfidenceBadge level="medium" />
@@ -522,7 +522,7 @@ export default function SourcesDossier() {
 
         {orientation ? (
           <>
-            <div className="rounded-xl border border-border/70 bg-background/70 p-4">
+            <div className="max-w-[65ch] rounded-none border-l border-border/70 bg-transparent p-4 pl-5">
               <SourceChip
                 source="European Atlas of Fertility Treatment Policies"
                 date={orientation.source.as_of}
@@ -534,7 +534,7 @@ export default function SourcesDossier() {
 
             <ul className="space-y-2">
               {orientation.results.map((result) => (
-                <li key={result.need} className="rounded-xl border border-border/70 bg-background/70 p-3">
+                <li key={result.need} className="rounded-none border-l border-border/70 bg-transparent p-3 pl-5">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="text-sm font-medium">{result.label}</span>
                     <Badge variant="outline" className={VERDICT_CLASS[result.verdict]}>
@@ -548,7 +548,7 @@ export default function SourcesDossier() {
 
             <div className="space-y-2">
               {orientation.home.verify && (
-                <p className="rounded-xl border border-warning/30 bg-warning/15 p-3 text-xs leading-relaxed text-muted-foreground">
+                <p className="max-w-[65ch] rounded-none border-y border-warning/30 bg-warning/10 px-4 py-4 text-sm leading-7 text-muted-foreground">
                   <span className="font-medium text-foreground">What this does not settle:</span> {orientation.home.verify}
                 </p>
               )}
@@ -558,8 +558,8 @@ export default function SourcesDossier() {
             </div>
           </>
         ) : (
-          <div className="rounded-xl border border-border/70 bg-muted/30 p-4">
-            <p className="text-sm leading-relaxed text-muted-foreground">
+          <div className="max-w-[65ch] rounded-none border-l border-border/70 bg-transparent p-4 pl-5">
+            <p className="text-sm leading-7 text-muted-foreground">
               Add your country of residence and family situation to see the regulatory source file for your orientation.
             </p>
             <Button asChild size="sm" variant="outline" className="mt-3 gap-1.5">
@@ -574,8 +574,8 @@ export default function SourcesDossier() {
         </WhyDisclosure>
       </Card>
 
-      <Card className="rounded-2xl border-primary/15 bg-primary-soft/25 p-6">
-        <p className="text-sm leading-relaxed text-muted-foreground">
+      <Card className="rounded-none border-0 border-y border-accent/40 bg-accent-soft/35 px-4 py-6 shadow-none sm:px-6">
+        <p className="mx-auto max-w-[65ch] font-editorial text-xl italic leading-8 text-foreground/90">
           A search engine, an AI or a forum will give you a number. We give you the number, where it came from, how old it is, how sure we are, and what it leaves out. That's the difference.
         </p>
       </Card>
