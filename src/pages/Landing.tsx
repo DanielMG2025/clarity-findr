@@ -106,7 +106,9 @@ export default function Landing() {
           </div>
 
           <div className="pt-14 pb-16 md:pt-20 md:pb-24">
-            <Eyebrow><Compass className="size-3" /> Explained, confidential orientation</Eyebrow>
+            <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
+              <Compass className="size-3" /> Explained, confidential orientation
+            </span>
             <h1 className="mt-8 mx-auto max-w-5xl font-display text-[clamp(2.75rem,9vw,6rem)] font-medium leading-[1.05] tracking-normal">
               From uncertainty to clarity
               <span className="block text-accent italic">
