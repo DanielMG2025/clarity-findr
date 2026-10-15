@@ -219,15 +219,15 @@ export default function SourcesDossier() {
       </Link>
 
 
-      <Card className="space-y-5 rounded-2xl p-6">
+      <Card className="space-y-6 rounded-none border-0 border-t border-border/70 bg-transparent px-0 pb-2 pt-8 shadow-none">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-primary-soft text-primary">
               <BookOpen className="size-5" />
             </span>
             <div>
-              <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Evidence</div>
-              <h2 className="text-base font-semibold">Published clinical figures and route context</h2>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">Evidence</div>
+              <h2 className="font-display text-2xl font-medium">Published clinical figures and route context</h2>
             </div>
           </div>
           <ConfidenceBadge level="high" />
@@ -237,7 +237,7 @@ export default function SourcesDossier() {
           {evidenceFigures.map((figure) => {
             const item = citation(figure.citationId);
             return (
-              <div key={figure.citationId} className="rounded-xl border border-border/70 bg-background/70 p-4">
+              <div key={figure.citationId} className="rounded-none border-l border-border/70 bg-transparent p-4 pl-5">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="space-y-1">
                     <div className="text-sm font-medium text-foreground">{figure.label}</div>
@@ -271,11 +271,11 @@ export default function SourcesDossier() {
 
         {/* Table 1 — the published age bands, shown in full in-app */}
         <div className="space-y-2">
-          <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+          <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
             <FileText className="size-3.5" /> IVF pregnancy rate with own eggs, by age (HFEA)
           </div>
-          <div className="rounded-xl border border-border/70">
-            <Table>
+          <div className="max-w-full overflow-x-auto rounded-none border-y border-border/70">
+            <Table className="[&_thead]:border-b [&_thead]:border-accent/60">
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[140px] text-xs">Age band</TableHead>
@@ -297,7 +297,7 @@ export default function SourcesDossier() {
                           </span>
                         )}
                       </TableCell>
-                      <TableCell className="text-sm font-semibold tabular-nums">{row.value}%</TableCell>
+                      <TableCell className="font-display text-lg font-medium tabular-nums">{row.value}%</TableCell>
                       <TableCell className="text-xs leading-relaxed text-muted-foreground">{row.cohort}</TableCell>
                       <TableCell className="text-xs leading-relaxed text-muted-foreground">{row.locator}</TableCell>
                     </TableRow>
@@ -311,11 +311,11 @@ export default function SourcesDossier() {
 
         {/* Table 2 — the other published figures in the same evidence file */}
         <div className="space-y-2">
-          <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+          <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
             <BookOpen className="size-3.5" /> Other published figures (HFEA · ESHRE)
           </div>
-          <div className="rounded-xl border border-border/70">
-            <Table>
+          <div className="max-w-full overflow-x-auto rounded-none border-y border-border/70">
+            <Table className="[&_thead]:border-b [&_thead]:border-accent/60">
               <TableHeader>
                 <TableRow>
                   <TableHead className="text-xs">Measure</TableHead>
@@ -328,7 +328,7 @@ export default function SourcesDossier() {
                 {otherFigureRows.map((row) => (
                   <TableRow key={row.id}>
                     <TableCell className="text-sm font-medium">{row.claim}</TableCell>
-                    <TableCell className="text-sm font-semibold tabular-nums">{row.value}%</TableCell>
+                    <TableCell className="font-display text-lg font-medium tabular-nums">{row.value}%</TableCell>
                     <TableCell className="text-xs leading-relaxed text-muted-foreground">{row.cohort}</TableCell>
                     <TableCell className="text-xs leading-relaxed text-muted-foreground">{row.locator}</TableCell>
                   </TableRow>
@@ -341,16 +341,16 @@ export default function SourcesDossier() {
 
         {/* One combined honest caveat for both tables */}
         {combinedEvidenceCaveat && (
-          <div className="flex gap-2 rounded-xl border border-warning/30 bg-warning/15 p-4 text-xs leading-relaxed">
-            <CircleAlert className="mt-0.5 size-4 shrink-0 text-warning" />
-            <p className="text-muted-foreground">
+          <div className="flex gap-2 rounded-none border-y border-warning/30 bg-warning/10 px-4 py-5 text-sm leading-7">
+            <CircleAlert className="mt-1 size-4 shrink-0 text-warning" />
+            <p className="max-w-[65ch] text-muted-foreground">
               <span className="font-medium text-foreground">What these tables don't tell you:</span> {combinedEvidenceCaveat}
             </p>
           </div>
         )}
 
         <div className="space-y-2">
-          <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+          <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
             <Route className="size-3.5" /> Route citations
           </div>
           {evidence.routes.length === 0 ? (
@@ -360,7 +360,7 @@ export default function SourcesDossier() {
               {evidence.routes.map((route) => {
                 const source = routeSourceFor(route.citation.label);
                 return (
-                  <li key={route.route} className="rounded-xl border border-border/70 bg-muted/25 p-3">
+                  <li key={route.route} className="rounded-none border-l border-border/70 bg-transparent p-3 pl-5">
                     <div className="text-sm font-medium">{ROUTE_LABEL[route.route]}</div>
                     <div className="mt-1 flex flex-wrap items-center gap-2">
                       <SourceChip
@@ -386,8 +386,8 @@ export default function SourcesDossier() {
         </div>
 
         {evidenceSources.length > 0 && (
-          <div className="rounded-xl border border-border/70 bg-muted/30 p-4">
-            <div className="mb-2 flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+          <div className="rounded-none border-t border-border/70 bg-transparent px-0 pb-2 pt-5">
+            <div className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
               <FileText className="size-3.5" /> Distinct sources in this evidence file
             </div>
             <ul className="flex flex-wrap gap-x-4 gap-y-2">
