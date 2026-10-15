@@ -17,12 +17,12 @@ function formatEuro(value: number) {
 
 function Section({ number, title, children }: { number: string; title: string; children: React.ReactNode }) {
   return (
-    <section className={`report-card space-y-3 border-t border-border/70 pt-5 first:border-t-0 first:pt-0 ${number === "04" ? "print:break-before-page" : ""}`}>
-      <div className="flex items-baseline gap-3">
-        <span className="text-[11px] font-medium uppercase tracking-wider text-primary">{number}</span>
-        <h2 className="text-xl font-semibold">{title}</h2>
+    <section className={`report-card space-y-5 border-t border-border/70 pt-8 first:border-t-0 first:pt-0 ${number === "04" ? "print:break-before-page" : ""}`}>
+      <div className="flex items-baseline gap-4 sm:gap-5">
+        <span className="shrink-0 font-display text-5xl font-normal leading-none text-accent sm:text-6xl">{number}</span>
+        <h2 className="min-w-0 font-display text-2xl font-medium leading-tight sm:text-3xl">{title}</h2>
       </div>
-      <div className="space-y-3 text-[15px] leading-7 text-muted-foreground">{children}</div>
+      <div className="max-w-[65ch] space-y-4 text-base leading-8 text-muted-foreground">{children}</div>
     </section>
   );
 }
@@ -57,7 +57,7 @@ export default function OrientationSummary() {
 
   return (
 
-    <div className="report-page mx-auto max-w-3xl space-y-6 px-4 py-8 md:px-8 md:py-10">
+    <div className="report-page mx-auto max-w-3xl space-y-10 px-4 py-8 md:px-8 md:py-12">
       <div className="no-print flex flex-wrap items-center justify-between gap-3">
         <Button asChild variant="link" className="h-auto px-0 text-muted-foreground hover:text-primary">
           <Link to="/report">See the full detailed report <ArrowRight className="size-3.5" /></Link>
@@ -67,7 +67,7 @@ export default function OrientationSummary() {
         </Button>
       </div>
 
-      <div className="report-document-header border-b border-primary/20 pb-5">
+      <div className="report-document-header border-b border-primary/20 pb-8 [&_h1]:font-display [&_h1]:text-4xl [&_h1]:font-medium [&_h1]:tracking-normal sm:[&_h1]:text-5xl [&_header>div]:space-y-4">
         <PageHeader
           eyebrow="Fertility Compass"
           title="Your orientation summary"
@@ -87,16 +87,16 @@ export default function OrientationSummary() {
         </Card>
       ) : (
         <>
-          <div className="space-y-4 text-[15px] leading-8 text-muted-foreground">
+          <div className="max-w-[65ch] space-y-6 text-base leading-8 text-muted-foreground">
             {narrative.map((paragraph, index) => (
-              <p key={index} className={index === narrative.length - 1 ? "font-medium text-foreground" : undefined}>
+              <p key={index} className={index === 0 ? "font-editorial text-2xl italic leading-relaxed text-foreground sm:text-3xl first-letter:float-left first-letter:mr-2 first-letter:mt-1 first-letter:font-display first-letter:text-6xl first-letter:not-italic first-letter:leading-none first-letter:text-primary sm:first-letter:text-7xl" : index === narrative.length - 1 ? "font-medium text-foreground" : undefined}>
                 {paragraph}
               </p>
             ))}
           </div>
-          <Card className="rounded-2xl p-6 sm:p-8">
+          <Card className="rounded-none border-0 bg-transparent p-0 shadow-none ring-0">
 
-          <div className="space-y-6">
+          <div className="space-y-10">
             <Section number="01" title="Your situation">
               <p>{joinNaturally(situationParts)}.</p>
               <p>This gives you a useful starting point. It helps frame the questions to ask, but it cannot tell us exactly how your body will respond or replace a consultation.</p>
