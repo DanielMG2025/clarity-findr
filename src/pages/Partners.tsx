@@ -103,6 +103,24 @@ const PARTNERS: PartnerCategory[] = [
     cta_target: "/situacion",
     color: "accent",
   },
+  {
+    icon: Plane,
+    category: "Travel & accommodation",
+    examples: "Partner travel agencies · destination packages",
+    description:
+      "Flights, stays and transfers for treatment away from home, bundled per destination and booked from your match step — with integrations with travel partners and destination-specific offers.",
+    why_matters:
+      "Fertility care often means travelling — to another city or country for cost, legal access or donor availability. Travel and lodging are a real part of the total cost and the emotional load, and they're usually left out of the sticker price.",
+    when_to_use:
+      "When your orientation points to a clinic in another city or country, or you're weighing a domestic clinic against a cross-border option.",
+    impact: [
+      "Folds travel and lodging into the real total cost",
+      "Destination-specific offers through travel partners",
+      "Less logistics stress around each treatment cycle",
+    ],
+    cta_target: "/situacion",
+    color: "primary",
+  },
 ];
 
 const Partners = () => (
@@ -153,7 +171,7 @@ const Partners = () => (
       {/* Partner cards */}
       <section className="container py-16">
         <div className="max-w-3xl mb-10">
-          <h2 className="text-2xl md:text-3xl font-bold">Four ways to gain clarity</h2>
+          <h2 className="text-2xl md:text-3xl font-bold">Five ways to gain clarity</h2>
           <p className="text-muted-foreground mt-2">
             Each partner adds a concrete piece: medical data, expert opinion, or financial help.
             Pick the ones that fit where you are on your journey.
