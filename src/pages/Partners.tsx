@@ -199,7 +199,7 @@ const Partners = () => (
                       />
                     </div>
                     <div className="min-w-0">
-                      <h3 className="text-lg font-bold truncate">{p.category}</h3>
+                      <h3 className="text-lg font-bold whitespace-normal md:truncate">{p.category}</h3>
                       <div className="text-xs text-muted-foreground whitespace-normal md:truncate">
                         {p.examples}
                       </div>
