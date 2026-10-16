@@ -87,18 +87,18 @@ const PARTNERS: PartnerCategory[] = [
   },
   {
     icon: Stethoscope,
-    category: "Expert consultation",
-    examples: "Independent fertility doctors · 30-min video",
+    category: "Early medical orientation",
+    examples: "Gynaecologist · fertility doctor · 30-min video",
     description:
-      "An independent second opinion from a fertility specialist with no ties to the clinics on your list.",
+      "Access to an independent professional — a gynaecologist or fertility doctor — for a first orientation while you're still exploring, before you walk into any clinic.",
     why_matters:
-      "Each clinic tends to favour its own protocol. An independent professional can look at your situation and help you weigh the options calmly.",
+      "Before choosing a clinic it helps to talk to a professional who has no stake in where you go. It's closer to a first opinion than a second — a way to understand your situation first-hand before anyone starts selling you a protocol.",
     when_to_use:
-      "Helpful when two or three clinics are suggesting very different paths or quotes.",
+      "Early on, while you're still weighing options and before booking a clinic consultation.",
     impact: [
-      "Offers a second perspective on your options",
-      "Helps you ask the right questions before deciding",
-      "Can bring more confidence to your decision",
+      "A first, independent read on your situation",
+      "Helps you arrive at clinics with better questions",
+      "Less chance of being steered by a clinic's own protocol",
     ],
     cta_target: "/situacion",
     color: "accent",
@@ -139,7 +139,7 @@ const Partners = () => (
           <h1 className="text-4xl md:text-6xl font-extrabold mt-3 leading-[1.05]">
             When you need
             <span className="block bg-gradient-primary bg-clip-text text-transparent">
-              a second opinion.
+              a first, honest opinion.
             </span>
           </h1>
           <p className="text-lg text-muted-foreground mt-4 max-w-2xl">
