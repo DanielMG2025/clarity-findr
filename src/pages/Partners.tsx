@@ -12,6 +12,7 @@ import {
   Database,
   ShieldCheck,
   HeartPulse,
+  Plane,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -102,6 +103,24 @@ const PARTNERS: PartnerCategory[] = [
     cta_target: "/situacion",
     color: "accent",
   },
+  {
+    icon: Plane,
+    category: "Travel & accommodation",
+    examples: "Partner travel agencies · destination packages",
+    description:
+      "Flights, stays and transfers for treatment away from home, bundled per destination and booked from your match step — with integrations with travel partners and destination-specific offers.",
+    why_matters:
+      "Fertility care often means travelling — to another city or country for cost, legal access or donor availability. Travel and lodging are a real part of the total cost and the emotional load, and they're usually left out of the sticker price.",
+    when_to_use:
+      "When your orientation points to a clinic in another city or country, or you're weighing a domestic clinic against a cross-border option.",
+    impact: [
+      "Folds travel and lodging into the real total cost",
+      "Destination-specific offers through travel partners",
+      "Less logistics stress around each treatment cycle",
+    ],
+    cta_target: "/situacion",
+    color: "primary",
+  },
 ];
 
 const Partners = () => (
@@ -152,7 +171,7 @@ const Partners = () => (
       {/* Partner cards */}
       <section className="container py-16">
         <div className="max-w-3xl mb-10">
-          <h2 className="text-2xl md:text-3xl font-bold">Four ways to gain clarity</h2>
+          <h2 className="text-2xl md:text-3xl font-bold">Five ways to gain clarity</h2>
           <p className="text-muted-foreground mt-2">
             Each partner adds a concrete piece: medical data, expert opinion, or financial help.
             Pick the ones that fit where you are on your journey.
@@ -165,7 +184,7 @@ const Partners = () => (
             return (
               <Card
                 key={p.category}
-                className="p-7 shadow-card hover:shadow-elegant transition-smooth flex flex-col bg-gradient-card border-2"
+                className="p-7 shadow-card hover:shadow-elegant transition-smooth flex flex-col min-w-0 bg-gradient-card border-2"
               >
                 {/* Header */}
                 <div className="flex items-start justify-between gap-3 mb-4">
@@ -180,8 +199,8 @@ const Partners = () => (
                       />
                     </div>
                     <div className="min-w-0">
-                      <h3 className="text-lg font-bold truncate">{p.category}</h3>
-                      <div className="text-xs text-muted-foreground truncate">
+                      <h3 className="text-lg font-bold whitespace-normal md:truncate">{p.category}</h3>
+                      <div className="text-xs text-muted-foreground whitespace-normal md:truncate">
                         {p.examples}
                       </div>
                     </div>
