@@ -184,7 +184,7 @@ const Partners = () => (
             return (
               <Card
                 key={p.category}
-                className="p-7 shadow-card hover:shadow-elegant transition-smooth flex flex-col bg-gradient-card border-2"
+                className="p-7 shadow-card hover:shadow-elegant transition-smooth flex flex-col min-w-0 bg-gradient-card border-2"
               >
                 {/* Header */}
                 <div className="flex items-start justify-between gap-3 mb-4">
@@ -200,7 +200,7 @@ const Partners = () => (
                     </div>
                     <div className="min-w-0">
                       <h3 className="text-lg font-bold truncate">{p.category}</h3>
-                      <div className="text-xs text-muted-foreground truncate">
+                      <div className="text-xs text-muted-foreground whitespace-normal md:truncate">
                         {p.examples}
                       </div>
                     </div>
