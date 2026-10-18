@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 
 const HELP = [
@@ -122,21 +123,49 @@ export default function Landing() {
               Every number comes with its source, its date, and how sure we are — and what it doesn't
               tell you.
             </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-              <Button asChild size="lg" className="gap-2 rounded-full bg-accent px-7 text-accent-foreground shadow-elegant hover:bg-accent/90">
-                <Link to="/situacion">Start my assessment <ArrowRight className="size-4" /></Link>
-              </Button>
-              <Button asChild size="lg" variant="ghost" className="gap-2 rounded-full border border-background/25 text-background/80 hover:bg-background/10 hover:text-background">
-                <Link to="#how-it-works">See how it works</Link>
-              </Button>
+            <div className="mt-8 space-y-6">
+              <div className="space-y-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-background/60">
+                  For patients
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-4">
+                  <Button asChild size="lg" className="gap-2 rounded-full bg-accent px-7 text-accent-foreground shadow-elegant hover:bg-accent/90">
+                    <Link to="/situacion">Start my assessment <ArrowRight className="size-4" /></Link>
+                  </Button>
+                  <Button asChild size="lg" variant="ghost" className="gap-2 rounded-full border border-background/25 text-background/80 hover:bg-background/10 hover:text-background">
+                    <Link to="#how-it-works">See how it works</Link>
+                  </Button>
+                </div>
+              </div>
+
+              <div aria-hidden className="flex items-center gap-4 text-background/50">
+                <span className="h-px flex-1 bg-background/15" />
+                <span className="text-[11px] font-medium uppercase tracking-[0.18em]">or</span>
+                <span className="h-px flex-1 bg-background/15" />
+              </div>
+
+              <div className="mx-auto w-full max-w-xl rounded-2xl border border-accent/50 bg-accent/10 p-6 text-left shadow-elegant">
+                <div className="flex flex-wrap items-start justify-between gap-4">
+                  <div className="min-w-0 space-y-2">
+                    <Badge variant="outline" className="border-accent/60 bg-accent/15 text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
+                      Demo
+                    </Badge>
+                    <h2 className="font-display text-xl font-medium leading-snug text-background md:text-2xl">
+                      Just exploring the product?
+                    </h2>
+                    <p className="max-w-[46ch] text-sm leading-relaxed text-background/80">
+                      Enter demo mode and we'll load a sample patient so you can walk through the
+                      entire journey — no data needed.
+                    </p>
+                  </div>
+                  <Button asChild className="mt-1 shrink-0 gap-2 rounded-full border border-accent/70 bg-transparent px-5 text-accent hover:bg-accent/15 hover:text-accent">
+                    <Link to="/demo">Enter demo mode <ArrowRight className="size-4" /></Link>
+                  </Button>
+                </div>
+              </div>
             </div>
             <p className="mt-10 text-xs text-background/70 max-w-xl mx-auto leading-relaxed">
               Orientation based on public data and on what you choose to share. It does not replace a medical consultation.
-            </p>
-            <p className="mt-2 text-xs">
-              <Link to="/demo" className="text-accent/90 hover:text-accent underline underline-offset-4">
-                Running a live demo? Load a sample patient →
-              </Link>
             </p>
           </div>
         </div>
