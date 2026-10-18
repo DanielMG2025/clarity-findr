@@ -25,7 +25,7 @@ function LocalizedText({ text }: { text: string }) {
 export function presentationProps(type: ElementType, input: unknown) {
   if (typeof input !== "object" || input === null) return input;
   const props = input as Record<string, unknown>;
-  if (typeof type === "string") return props;
+  if (typeof type !== "object" || type === null || !("render" in type)) return props;
   const localize = (child: ReactNode): ReactNode => typeof child === "string"
     ? createElement(LocalizedText, { text: child })
     : Array.isArray(child) ? child.map(localize) : child;
