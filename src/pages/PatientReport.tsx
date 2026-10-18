@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useLanguage } from "@/i18n/LanguageContext";
 import { Link } from "react-router-dom";
 import { AlertCircle, ArrowRight, Check, CircleAlert, FileText, HelpCircle, Printer, Scale, TriangleAlert, UserRound, Wallet } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -98,6 +99,7 @@ function SourceLines({ rows }: { rows: CitedRow[] }) {
 }
 
 export default function PatientReport() {
+  const { language } = useLanguage();
   const mpr = useMasterRecord();
   const journey = usePatientJourney();
   const narrative = patientNarrative(mpr, journey);
@@ -123,7 +125,7 @@ export default function PatientReport() {
     [bundle.estimate, profile.country, profile.treatment],
   );
   const hasPriceEstimate = Boolean(priceEstimate && !priceEstimate.empty);
-  const reportDate = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric" }).format(new Date());
+  const reportDate = new Intl.DateTimeFormat(language === "es" ? "es-ES" : "en-GB", { day: "numeric", month: "long", year: "numeric" }).format(new Date());
   const country = mpr.identity.country_of_residence ? byCode(mpr.identity.country_of_residence)?.label : undefined;
 
   const situationFields = [

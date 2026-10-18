@@ -19,7 +19,7 @@ import { Badge } from "@/components/ui/badge";
 
 const ClinicLanding = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col [&_a]:whitespace-normal [&_a]:text-center [&_a]:h-auto [&_a]:min-h-10">
 
       <main className="flex-1">
         {/* HERO */}
@@ -212,7 +212,7 @@ const ClinicLanding = () => {
                 Standard lead
               </Badge>
               <h3 className="text-xl font-bold">Pre-qualified patient</h3>
-              <div className="flex items-baseline gap-1.5 mt-2 mb-4">
+              <div className="flex flex-wrap items-baseline gap-1.5 mt-2 mb-4">
                 <span className="text-3xl font-extrabold text-accent">€150–€400</span>
                 <span className="text-sm text-muted-foreground">per lead</span>
               </div>
@@ -243,7 +243,7 @@ const ClinicLanding = () => {
                 Premium lead
               </Badge>
               <h3 className="text-xl font-bold">Patient-initiated review</h3>
-              <div className="flex items-baseline gap-1.5 mt-2 mb-4">
+              <div className="flex flex-wrap items-baseline gap-1.5 mt-2 mb-4">
                 <span className="text-3xl font-extrabold">€400–€1,200+</span>
                 <span className="text-sm text-muted-foreground">per lead</span>
               </div>
