@@ -15,6 +15,10 @@ export function translate(text: string, language: Language): string {
     ? Object.keys(es).find(key => key.toUpperCase() === normalized)
     : undefined;
   let translated = es[normalized] ?? (uppercaseKey ? es[uppercaseKey] : undefined);
+  if (translated === undefined && normalized.includes(" · ")) {
+    const parts = normalized.split(" · ");
+    if (parts.every(part => es[part] !== undefined)) translated = parts.map(part => es[part]).join(" · ");
+  }
   if (translated === undefined) {
     const library = normalized.match(/^A curated, growing library of the public references we rely on — each one pre-digested so you don't have to hunt for it\. (\d+) references and growing\.$/);
     if (library) translated = `Una biblioteca de referencias públicas seleccionadas, en constante crecimiento y explicadas para que no tengas que buscarlas. ${library[1]} referencias, y seguimos ampliándola.`;
