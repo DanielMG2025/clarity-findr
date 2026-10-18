@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useLanguage } from "@/i18n/LanguageContext";
 import { Link } from "react-router-dom";
 import { ArrowRight, FileText, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,7 @@ function Section({ number, title, children }: { number: string; title: string; c
 }
 
 export default function OrientationSummary() {
+  const { language } = useLanguage();
   const mpr = useMasterRecord();
   const journey = usePatientJourney();
   const { profile, bundle } = usePricingConfigurator();
@@ -54,7 +56,7 @@ export default function OrientationSummary() {
   ].filter((part): part is string => Boolean(part));
   const optionRows = journey.step4_costs.slice(0, 3);
   const blockedResult = journey.step0_regulatory?.results.find((result) => result.verdict === "not_allowed");
-  const reportDate = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric" }).format(new Date());
+  const reportDate = new Intl.DateTimeFormat(language === "es" ? "es-ES" : "en-GB", { day: "numeric", month: "long", year: "numeric" }).format(new Date());
 
   const narrative = patientNarrative(mpr, journey);
 

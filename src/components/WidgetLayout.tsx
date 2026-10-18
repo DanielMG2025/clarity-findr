@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { useSearchParams } from "react-router-dom";
+import { LanguageSwitch } from "@/i18n/LanguageSwitch";
 
 /**
  * Chromeless layout for embeddable widgets.
@@ -16,6 +17,7 @@ export function WidgetLayout({ children }: { children: ReactNode }) {
       className="min-h-screen bg-background text-foreground"
       style={accent ? ({ ["--primary" as string]: accent } as React.CSSProperties) : undefined}
     >
+      <header className="no-print flex h-10 justify-end bg-sidebar px-4"><LanguageSwitch /></header>
       {partner && (
         <div className="border-b bg-muted/40">
           <div className="container py-2 flex items-center justify-between text-xs text-muted-foreground">

@@ -29,6 +29,7 @@ import LearnIndex from "./pages/LearnIndex.tsx";
 import LearnArticle from "./pages/LearnArticle.tsx";
 import DemoRoom from "./pages/DemoRoom.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import { LanguageProvider } from "./i18n/LanguageContext";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ function WithGlossary({ children }: { children: ReactNode }) {
 }
 
 const App = () => (
+  <LanguageProvider>
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
@@ -100,6 +102,7 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
+  </LanguageProvider>
 );
 
 export default App;

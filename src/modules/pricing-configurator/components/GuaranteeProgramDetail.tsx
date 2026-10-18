@@ -25,7 +25,7 @@ export function GuaranteeProgramDetail({ guarantee }: Props) {
 
   return (
     <Card className="p-6 rounded-none border-0 border-y border-expert/30 bg-expert-soft/20 shadow-none">
-      <div className="flex items-center gap-2 mb-1">
+      <div className="flex flex-wrap items-center gap-2 mb-1">
         <ShieldCheck className="size-5 text-expert" />
         <h3 className="font-display text-xl font-medium">Guarantee program detail</h3>
         <Badge variant="outline" className="bg-expert-soft text-expert border-expert/30 ml-1">
@@ -38,9 +38,9 @@ export function GuaranteeProgramDetail({ guarantee }: Props) {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
         {stats.map(({ Icon, label, value, hint }) => (
-          <div key={label} className="p-3 rounded-xl bg-background border border-border">
-            <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground font-semibold uppercase tracking-wider">
-              <Icon className="size-3.5 text-expert" />
+          <div key={label} className="min-w-0 p-3 rounded-xl bg-background border border-border">
+            <div className="flex flex-wrap items-center gap-1.5 text-[11px] text-muted-foreground font-semibold uppercase tracking-wider">
+              <Icon className="size-3.5 shrink-0 text-expert" />
               {label}
               <WhatIsThis title={label} size="sm">{hint}</WhatIsThis>
             </div>

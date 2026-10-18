@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, type ResolvedConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
@@ -12,7 +12,14 @@ export default defineConfig(({ mode }) => ({
       overlay: false,
     },
   },
-  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+  plugins: [react({ jsxImportSource: "@/i18n" }), {
+    name: "local-jsx-runtime",
+    configResolved(config: ResolvedConfig) {
+      // Local runtimes must share the app context, not a bundled private copy.
+      config.optimizeDeps.include = config.optimizeDeps.include?.filter(id => !id.startsWith("@/i18n/"));
+    },
+  }, mode === "development" && componentTagger()].filter(Boolean),
+  optimizeDeps: { exclude: ["@/i18n/jsx-dev-runtime", "@/i18n/jsx-runtime"] },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

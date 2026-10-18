@@ -22,13 +22,13 @@ export function WhatIsThis({ title = "What is this?", children, learnMoreHref, c
           type="button"
           aria-label={title}
           className={cn(
-            "inline-flex items-center gap-1 rounded-full text-muted-foreground hover:text-primary transition-smooth",
+            "inline-flex max-w-full min-w-0 items-center gap-1 rounded-full text-muted-foreground hover:text-primary transition-smooth",
             size === "sm" ? "text-xs" : "text-sm",
             className
           )}
         >
-          <HelpCircle className={size === "sm" ? "size-3.5" : "size-4"} />
-          <span className="underline decoration-dotted underline-offset-2">{title}</span>
+          <HelpCircle className={size === "sm" ? "size-3.5 shrink-0" : "size-4 shrink-0"} />
+          <span className="min-w-0 break-words text-left underline decoration-dotted underline-offset-2">{title}</span>
         </button>
       </PopoverTrigger>
       <PopoverContent className="w-72 text-sm leading-relaxed" side="top">
