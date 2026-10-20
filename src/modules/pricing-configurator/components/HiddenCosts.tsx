@@ -6,7 +6,7 @@ const ITEMS = [
   {
     Icon: Pill,
     title: "Medication",
-    impact: "Can double the total cost",
+    impact: "Often a large part of the total",
     desc: "Most clinics publish the cycle price WITHOUT medication. Hormones usually add €1,000–€2,800.",
     severity: "high" as const,
   },
@@ -43,10 +43,10 @@ export function HiddenCosts() {
     <Card className="p-6 rounded-none border-0 border-y border-accent/40 bg-accent-soft/35 shadow-none">
       <div className="flex items-center gap-2 mb-1">
         <AlertTriangle className="size-5 text-warning" />
-        <h3 className="font-display text-xl font-medium">Hidden costs worth checking</h3>
+        <h3 className="font-display text-xl font-medium">Costs worth asking about</h3>
       </div>
       <p className="text-sm text-muted-foreground mb-4">
-        Many published prices <strong>don't include</strong> these items. It's the main reason the final bill ends up higher than expected.
+        Many published prices <strong>don't include</strong> these items. Knowing them early helps you plan a realistic budget.
       </p>
       <ul className="grid sm:grid-cols-2 gap-3">
         {ITEMS.map(({ Icon, title, impact, desc, severity }) => (
