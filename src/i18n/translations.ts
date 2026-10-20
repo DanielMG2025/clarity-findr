@@ -1,6 +1,7 @@
 // Exact English presentation copy is the key; source records are never modified.
 export const es: Record<string, string> = {
   "Language": "Idioma",
+  "Pills": "Píldoras",
   "English": "English",
   "Español": "Español",
   "Your fertility companion": "Tu compañera de fertilidad",
