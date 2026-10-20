@@ -3,7 +3,7 @@ import { ExternalLink, Sparkles } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { AUDIENCE_LABEL, RESOURCES, sortedPills, type Audience } from "@/modules/content";
+import { AUDIENCE_LABEL, RESOURCES, usePublishedPills, type Audience } from "@/modules/content";
 import { PillCard } from "@/modules/content/PillCard";
 
 const FILTERS: (Audience | "all")[] = ["all", "planners", "first-steps", "men"];
@@ -12,7 +12,7 @@ export default function Descubre() {
   const { language } = useLanguage();
   const es = language === "es";
   const [filter, setFilter] = useState<Audience | "all">("all");
-  const [today, ...rest] = sortedPills();
+  const [today, ...rest] = usePublishedPills();
   const match = (a: Audience[]) => filter === "all" || a.includes(filter);
   const feed = rest.filter((p) => match(p.audiences));
   const voices = RESOURCES.filter((r) => match(r.audiences));
