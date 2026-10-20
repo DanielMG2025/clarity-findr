@@ -23,6 +23,7 @@ const items = [
   { title: "Guidance",            url: "/asesoramiento", icon: Stethoscope,  desc: "Professionals and services" },
   { title: "Community",           url: "/community",     icon: Users,        desc: "Real experiences" },
   { title: "Learn",               url: "/aprende",       icon: BookOpen,     desc: "Fertility, explained simply" },
+  { title: "Discover",            url: "/descubre",      icon: Sparkles,     desc: "A little something every day" },
   { title: "My space",            url: "/account",       icon: LayoutDashboard, desc: "History and saved items" },
 ];
 

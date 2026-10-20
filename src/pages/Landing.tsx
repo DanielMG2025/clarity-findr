@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { PillTeaser } from "@/modules/content/PillTeaser";
 
 
 const HELP = [
@@ -164,6 +165,7 @@ export default function Landing() {
                 </div>
               </div>
             </div>
+            <PillTeaser />
             <p className="mt-10 text-xs text-background/70 max-w-xl mx-auto leading-relaxed">
               Orientation based on public data and on what you choose to share. It does not replace a medical consultation.
             </p>

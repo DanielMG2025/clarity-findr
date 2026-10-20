@@ -28,12 +28,13 @@ import { GlossaryProvider } from "@/modules/education";
 import LearnIndex from "./pages/LearnIndex.tsx";
 import LearnArticle from "./pages/LearnArticle.tsx";
 import DemoRoom from "./pages/DemoRoom.tsx";
+import Descubre from "./pages/Descubre.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { LanguageProvider } from "./i18n/LanguageContext";
 
 const queryClient = new QueryClient();
 
-const PUBLIC_PATHS = new Set<string>(["/", "/demo"]);
+const PUBLIC_PATHS = new Set<string>(["/", "/demo", "/descubre"]);
 
 function LayoutSwitch({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
@@ -65,6 +66,7 @@ const App = () => (
             {/* Public landing + demo room */}
             <Route path="/" element={<Landing />} />
             <Route path="/demo" element={<DemoRoom />} />
+            <Route path="/descubre" element={<Descubre />} />
 
             {/* Patient journey — the core modules */}
             <Route path="/situacion" element={<PatientProfile />} />
