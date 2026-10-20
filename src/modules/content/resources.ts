@@ -26,4 +26,10 @@ export const RESOURCES: Resource[] = [
   { id: "pet", name: "Progress Educational Trust / BioNews", url: "https://www.progress.org.uk", platform: "News · Charity", audiences: ["first-steps", "planners", "men"],
     blurb: { en: "Independent news, and good at spotting credible vs hype.", es: "Noticias independientes, y buen olfato para distinguir lo fiable de lo exagerado." },
     affiliation: { en: "Independent charity.", es: "Organización benéfica independiente." } },
+  { id: "sef", name: "Sociedad Española de Fertilidad (SEF)", url: "https://www.sefertilidad.net", platform: "Institucional", audiences: ["first-steps", "planners", "men"],
+    blurb: { en: "Spain's fertility medical society and its national results registry.", es: "La sociedad médica española de fertilidad y su registro nacional de resultados." },
+    affiliation: { en: "Medical society — no clinic sales.", es: "Sociedad médica — no vende servicios de clínica." } },
+  { id: "rao", name: "Reproducción Asistida ORG", url: "https://www.reproduccionasistida.org", platform: "Divulgación (ES)", audiences: ["first-steps", "planners", "men"],
+    blurb: { en: "A Spanish-language patient portal with specialist-reviewed content.", es: "Portal de divulgación en español con contenidos revisados por especialistas." },
+    affiliation: { en: "Reviewed media outlet; it also runs a clinic directory.", es: "Medio divulgativo revisado; también tiene un directorio de clínicas." } },
 ];
