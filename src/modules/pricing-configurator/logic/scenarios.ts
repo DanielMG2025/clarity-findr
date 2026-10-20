@@ -102,7 +102,7 @@ export function buildScenarios(profile: PricingProfile): ScenarioBundle {
     label: "Premium scenario",
     shortDesc: "Cycle with advanced techniques (ICSI, PGT-A, vitrification) and storage included.",
     riskLabel: "Low risk",
-    riskHint: "More expensive upfront, but reduces variability and re-interventions.",
+    riskHint: "Higher cost upfront, but reduces variability and re-interventions.",
     components: premiumComponents,
     total_min: 0, total_max: 0,
     tone: "blue",

@@ -74,7 +74,7 @@ const PARTNERS: PartnerCategory[] = [
     description:
       "Partner financing for IVF cycles and medication, integrated at the unlock step — no out-of-pocket required to apply.",
     why_matters:
-      "Cost weighs heavily on fertility decisions. Spreading it over time can leave room to choose a clinic that fits you, not only the least expensive one.",
+      "Cost is an important part of fertility decisions. Spreading it over time can leave room to choose a clinic that fits you, not only the least expensive one.",
     when_to_use:
       "Once you've shortlisted clinics and want to compare monthly cost rather than the sticker price.",
     impact: [
