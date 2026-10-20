@@ -1,0 +1,29 @@
+import type { Resource } from "./types";
+
+/** Curated trusted voices — supplied by the founder. */
+export const RESOURCES: Resource[] = [
+  { id: "crawford", name: "Natalie Crawford, MD", handle: "@nataliecrawfordmd", url: "https://www.instagram.com/nataliecrawfordmd", platform: "Instagram · Podcast ('As a Woman')", audiences: ["planners", "first-steps"],
+    blurb: { en: "Evidence-based women's fertility, explained warmly.", es: "Fertilidad femenina basada en la evidencia, explicada con cariño." },
+    affiliation: { en: "Reproductive endocrinologist — co-owns a clinic.", es: "Endocrinóloga reproductiva — copropietaria de una clínica." } },
+  { id: "fdu", name: "Fertility Docs Uncensored", url: "https://www.youtube.com/@fertilitydocsuncensored/videos", platform: "Podcast · YouTube", audiences: ["first-steps", "planners", "men"],
+    blurb: { en: "Q&A by several fertility doctors — plain answers.", es: "Preguntas y respuestas con varios médicos de fertilidad — respuestas claras." },
+    affiliation: { en: "Hosts are practising clinicians.", es: "Los presentadores ejercen en clínica." } },
+  { id: "eyvazzadeh", name: "Aimee Eyvazzadeh ('The Egg Whisperer')", handle: "@eggwhisperer", url: "https://www.youtube.com/@eggwhisperer", platform: "YouTube · Instagram", audiences: ["planners", "first-steps"],
+    blurb: { en: "Egg freezing and IVF explainers.", es: "Explicaciones sobre congelación de óvulos y FIV." },
+    affiliation: { en: "Reproductive endocrinologist in private practice.", es: "Endocrinóloga reproductiva en consulta privada." } },
+  { id: "sekhon", name: "Lucky Sekhon, MD", handle: "@lucky.sekhon", url: "https://www.instagram.com/lucky.sekhon", platform: "Instagram", audiences: ["planners"],
+    blurb: { en: "Egg freezing and IVF, myth-busting.", es: "Congelación de óvulos y FIV, desmontando mitos." },
+    affiliation: { en: "Reproductive endocrinologist — clinic-affiliated.", es: "Endocrinóloga reproductiva — vinculada a una clínica." } },
+  { id: "bryk", name: "Darren Bryk, MD", url: "https://cofertility.com/all-authors/darren-bryk", platform: "Articles", audiences: ["men"],
+    blurb: { en: "Male fertility, from a urologist — one of the few clear voices on the male side.", es: "Fertilidad masculina contada por un urólogo — una de las pocas voces claras sobre el lado masculino." },
+    affiliation: { en: "Urologist.", es: "Urólogo." } },
+  { id: "asrm", name: "ASRM — reproductivefacts.org", url: "https://www.reproductivefacts.org", platform: "Institutional", audiences: ["first-steps", "planners", "men"],
+    blurb: { en: "Patient guides from the US fertility medical society.", es: "Guías para pacientes de la sociedad médica de fertilidad de EE. UU." },
+    affiliation: { en: "Medical society — no clinic sales.", es: "Sociedad médica — no vende servicios de clínica." } },
+  { id: "hfea", name: "HFEA", url: "https://www.hfea.gov.uk", platform: "Institutional", audiences: ["first-steps", "planners"],
+    blurb: { en: "UK regulator — data and plain-language guides.", es: "Regulador británico — datos y guías en lenguaje claro." },
+    affiliation: { en: "Government regulator.", es: "Regulador público." } },
+  { id: "pet", name: "Progress Educational Trust / BioNews", url: "https://www.progress.org.uk", platform: "News · Charity", audiences: ["first-steps", "planners", "men"],
+    blurb: { en: "Independent news, and good at spotting credible vs hype.", es: "Noticias independientes, y buen olfato para distinguir lo fiable de lo exagerado." },
+    affiliation: { en: "Independent charity.", es: "Organización benéfica independiente." } },
+];

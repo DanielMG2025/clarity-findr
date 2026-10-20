@@ -22,6 +22,8 @@ export const es: Record<string, string> = {
   "Community": "Comunidad",
   "Real experiences": "Experiencias reales",
   "Learn": "Aprender",
+  "Discover": "Descubre",
+  "A little something every day": "Algo cada día",
   "Fertility, explained simply": "La fertilidad, explicada de forma sencilla",
   "My space": "Mi espacio",
   "History and saved items": "Historial y elementos guardados",
