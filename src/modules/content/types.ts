@@ -1,4 +1,4 @@
-export type Audience = "planners" | "first-steps" | "men";
+export type Audience = "planners" | "first-steps" | "experienced" | "men" | "lgbt";
 export type Mold = "stat" | "myth" | "deep-dive" | "market" | "curiosity" | "glossary" | "pick";
 export type Localized = { en: string; es: string };
 
@@ -26,7 +26,9 @@ export interface Resource {
 export const AUDIENCE_LABEL: Record<Audience, Localized> = {
   planners: { en: "Planners", es: "Planificadoras" },
   "first-steps": { en: "First steps", es: "Primeros pasos" },
+  experienced: { en: "Experienced", es: "Con experiencia" },
   men: { en: "Men", es: "Hombres" },
+  lgbt: { en: "LGBTQ+", es: "LGTBIQ+" },
 };
 
 export const MOLD_LABEL: Record<Mold, Localized> = {

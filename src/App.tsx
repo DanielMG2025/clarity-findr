@@ -29,6 +29,7 @@ import LearnIndex from "./pages/LearnIndex.tsx";
 import LearnArticle from "./pages/LearnArticle.tsx";
 import DemoRoom from "./pages/DemoRoom.tsx";
 import Descubre from "./pages/Descubre.tsx";
+import Admin from "./pages/Admin.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { LanguageProvider } from "./i18n/LanguageContext";
 
@@ -95,6 +96,9 @@ const App = () => (
 
             {/* Embeddable widgets — chromeless layout for iframe distribution */}
             <Route path="/widgets/fiv-madrid" element={<WidgetFivMadrid />} />
+
+            {/* Admin — tabbed control surface (Pills tab is role-gated) */}
+            <Route path="/admin" element={<Admin />} />
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

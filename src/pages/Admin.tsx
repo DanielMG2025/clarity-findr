@@ -11,6 +11,7 @@ import {
   BarChart3,
   ShieldCheck,
   ExternalLink,
+  Sparkle,
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -24,6 +25,7 @@ import CommunityTab from "@/components/admin/CommunityTab";
 import LeadsTab from "@/components/admin/LeadsTab";
 import MonetizationTab from "@/components/admin/MonetizationTab";
 import AnalyticsTab from "@/components/admin/AnalyticsTab";
+import PillsTab from "@/components/admin/PillsTab";
 
 const TABS = [
   { v: "overview", icon: LayoutDashboard, label: "Overview" },
@@ -35,6 +37,7 @@ const TABS = [
   { v: "monetization", icon: CreditCard, label: "Monetization" },
   { v: "data-engine", icon: Database, label: "Data engine" },
   { v: "analytics", icon: BarChart3, label: "Analytics" },
+  { v: "pills", icon: Sparkle, label: "Pills" },
 ];
 
 const Admin = () => {
@@ -115,6 +118,9 @@ const Admin = () => {
             </TabsContent>
             <TabsContent value="analytics" className="mt-6">
               <AnalyticsTab />
+            </TabsContent>
+            <TabsContent value="pills" className="mt-6">
+              <PillsTab />
             </TabsContent>
           </Tabs>
         </div>
