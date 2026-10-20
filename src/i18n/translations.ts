@@ -502,7 +502,7 @@ export const es: Record<string, string> = {
   "Second transfers": "Transferencias posteriores",
   "+€600 to €1,200 per attempt": "+€600 a €1,200 por intento",
   "If the first embryo doesn't implant, the second transfer (thaw + procedure) is usually billed separately.": "Si el primer embrión no implanta, la segunda transferencia (descongelación y procedimiento) suele cobrarse aparte.",
-  "Hidden costs worth checking": "Costes ocultos que conviene comprobar",
+  "Costs worth asking about": "Costes por los que conviene preguntar",
   "Many published prices": "Muchos precios publicados",
   "don't include": "no incluyen",
   "these items. Knowing them early helps you plan a realistic budget.": "estos conceptos. Conocerlos pronto te ayuda a planificar un presupuesto realista.",
