@@ -263,6 +263,66 @@ export type Database = {
           },
         ]
       }
+      pills: {
+        Row: {
+          audiences: string[]
+          body_en: string
+          body_es: string
+          created_at: string
+          date: string
+          id: string
+          mold: string
+          source_confidence: string
+          source_date: string | null
+          source_name: string
+          source_note_en: string | null
+          source_note_es: string | null
+          source_url: string | null
+          status: string
+          title_en: string
+          title_es: string
+          updated_at: string
+        }
+        Insert: {
+          audiences?: string[]
+          body_en?: string
+          body_es?: string
+          created_at?: string
+          date?: string
+          id: string
+          mold: string
+          source_confidence?: string
+          source_date?: string | null
+          source_name?: string
+          source_note_en?: string | null
+          source_note_es?: string | null
+          source_url?: string | null
+          status?: string
+          title_en?: string
+          title_es?: string
+          updated_at?: string
+        }
+        Update: {
+          audiences?: string[]
+          body_en?: string
+          body_es?: string
+          created_at?: string
+          date?: string
+          id?: string
+          mold?: string
+          source_confidence?: string
+          source_date?: string | null
+          source_name?: string
+          source_note_en?: string | null
+          source_note_es?: string | null
+          source_url?: string | null
+          status?: string
+          title_en?: string
+          title_es?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           age: number | null
@@ -371,6 +431,24 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_submitted_quotes: {
         Row: {
           base_price: number
@@ -432,11 +510,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
       refresh_aggregated_pricing: { Args: never; Returns: undefined }
       refresh_clinic_insights: { Args: never; Returns: undefined }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -563,6 +648,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+    },
   },
 } as const
