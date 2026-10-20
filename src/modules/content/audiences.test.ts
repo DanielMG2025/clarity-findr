@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { AUDIENCE_LABEL, type Audience } from "./types";
+import { RESOURCES } from "./resources";
 
 /** The Learn page filter row must cover every audience key, in this order, with these labels. */
 const FILTER_ROW: (Audience | "all")[] = ["all", "planners", "first-steps", "experienced", "men", "lgbt"];
