@@ -6,7 +6,7 @@ import { useLanguage } from "@/i18n/LanguageContext";
 import { AUDIENCE_LABEL, RESOURCES, usePublishedPills, type Audience } from "@/modules/content";
 import { PillCard } from "@/modules/content/PillCard";
 
-const FILTERS: (Audience | "all")[] = ["all", "planners", "first-steps", "men"];
+const FILTERS: (Audience | "all")[] = ["all", "planners", "first-steps", "experienced", "men", "lgbt"];
 
 export default function Descubre() {
   const { language } = useLanguage();

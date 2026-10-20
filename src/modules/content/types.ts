@@ -26,9 +26,9 @@ export interface Resource {
 export const AUDIENCE_LABEL: Record<Audience, Localized> = {
   planners: { en: "Planners", es: "Planificadoras" },
   "first-steps": { en: "First steps", es: "Primeros pasos" },
-  experienced: { en: "Experienced", es: "Con experiencia" },
+  experienced: { en: "Experienced", es: "Experimentadas" },
   men: { en: "Men", es: "Hombres" },
-  lgbt: { en: "LGBTQ+", es: "LGTBIQ+" },
+  lgbt: { en: "LGBTI+ couples", es: "Parejas LGTBI+" },
 };
 
 export const MOLD_LABEL: Record<Mold, Localized> = {
