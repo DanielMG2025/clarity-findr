@@ -4,8 +4,8 @@ import { NoObjectGeneratedError, Output, streamText } from "npm:ai@6";
 import { z } from "npm:zod@4";
 import { json, requireAdmin } from "../_shared/listenAuth.ts";
 
-const MAX_SIGNALS = 80; // cost cap: posts sent to the model per run
-const SNIPPET = 280;
+const MAX_SIGNALS = 125; // cost cap: posts sent to the model per run
+const SNIPPET = 240;
 const AUD = ["planners", "first-steps", "experienced", "men", "lgbt"] as const;
 
 const Topic = z.object({
