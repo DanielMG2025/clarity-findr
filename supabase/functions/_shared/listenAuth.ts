@@ -13,7 +13,12 @@ export async function requireAdmin(req: Request): Promise<SupabaseClient | Respo
   if (!token) return json({ error: "Not signed in" }, 401);
   if (token === service) return admin;
   const { data, error } = await admin.auth.getUser(token);
-  if (error || !data.user) return json({ error: "Not signed in" }, 401);
+  if (error || !data.user) {
+    // Server-to-server calls with a (possibly differently formatted) service-role key: prove it via an admin-only call.
+    const probe = createClient(url, token);
+    const { error: pe } = await probe.auth.admin.listUsers({ page: 1, perPage: 1 });
+    return pe ? json({ error: "Not signed in" }, 401) : admin;
+  }
   const { data: ok } = await admin.rpc("has_role", { _user_id: data.user.id, _role: "admin" });
   if (!ok) return json({ error: "Admin role required" }, 403);
   return admin;
