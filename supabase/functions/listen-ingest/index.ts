@@ -66,16 +66,6 @@ function fromJson(payload: any, sub: string): Row[] {
           created_utc: p.created_utc ? new Date(p.created_utc * 1000).toISOString() : null,
         }));
 }
-        if (error) { perSub[sub] = `db: ${error.message}`; continue; }
-        stored += count ?? 0;
-      }
-      perSub[sub] = rows.length;
-    } catch (e) {
-      perSub[sub] = `error: ${(e as Error).message}`;
-    }
-  }
-  return json({ fetched: perSub, new_signals: stored });
-});
 
 const decode = (t: string) => t.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&#32;/g, " ").replace(/&amp;/g, "&");
 const strip = (h: string) => decode(h).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
