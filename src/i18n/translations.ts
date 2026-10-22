@@ -2,6 +2,7 @@
 export const es: Record<string, string> = {
   "Language": "Idioma",
   "Pills": "Píldoras",
+  "Listening": "Escucha",
   "English": "English",
   "Español": "Español",
   "Your fertility companion": "Tu compañera de fertilidad",

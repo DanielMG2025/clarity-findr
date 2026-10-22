@@ -9,3 +9,4 @@
 - [x] Verify populated and empty states, navigation, typecheck, build, and compact A4 output.
 - Pills content pipeline: DB + admin tab + /descubre reads (done)
 - [x] Fill the Experienced and LGBTI+ trusted-voices filters so neither grid is empty.
+- [x] Forum-listening MVP: ingest → distil → admin Listening tab → /descubre weekly conversation

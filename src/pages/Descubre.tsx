@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { AUDIENCE_LABEL, RESOURCES, usePublishedPills, type Audience } from "@/modules/content";
 import { PillCard } from "@/modules/content/PillCard";
+import { ConversationSection } from "@/modules/content/ConversationSection";
 
 const FILTERS: (Audience | "all")[] = ["all", "planners", "first-steps", "experienced", "men", "lgbt"];
 
@@ -30,6 +31,8 @@ export default function Descubre() {
           {es ? "Algo cada día — siempre con su fuente, sin venderte nada." : "A little something every day — always with its source, never selling you anything."}
         </p>
       </header>
+
+      <ConversationSection />
 
       <section className="mt-12">
         <p className={`${eyebrow} mb-4`}>{es ? "Píldora del día" : "Pill of the day"}</p>
