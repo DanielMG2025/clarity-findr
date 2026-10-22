@@ -218,6 +218,92 @@ export type Database = {
         }
         Relationships: []
       }
+      conversation_topics: {
+        Row: {
+          answer_en: string
+          answer_es: string
+          audiences: string[]
+          confidence: string
+          created_at: string
+          id: string
+          mentions_estimate: number
+          question_en: string
+          question_es: string
+          run_id: string | null
+          source_forum: string
+          source_url: string | null
+          status: string
+          trend: string
+        }
+        Insert: {
+          answer_en?: string
+          answer_es?: string
+          audiences?: string[]
+          confidence?: string
+          created_at?: string
+          id?: string
+          mentions_estimate?: number
+          question_en?: string
+          question_es?: string
+          run_id?: string | null
+          source_forum?: string
+          source_url?: string | null
+          status?: string
+          trend?: string
+        }
+        Update: {
+          answer_en?: string
+          answer_es?: string
+          audiences?: string[]
+          confidence?: string
+          created_at?: string
+          id?: string
+          mentions_estimate?: number
+          question_en?: string
+          question_es?: string
+          run_id?: string | null
+          source_forum?: string
+          source_url?: string | null
+          status?: string
+          trend?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_topics_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "listening_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      listening_runs: {
+        Row: {
+          finished_at: string | null
+          id: string
+          note: string | null
+          signals_fetched: number
+          started_at: string
+          topics_created: number
+        }
+        Insert: {
+          finished_at?: string | null
+          id?: string
+          note?: string | null
+          signals_fetched?: number
+          started_at?: string
+          topics_created?: number
+        }
+        Update: {
+          finished_at?: string | null
+          id?: string
+          note?: string | null
+          signals_fetched?: number
+          started_at?: string
+          topics_created?: number
+        }
+        Relationships: []
+      }
       matches: {
         Row: {
           clinic_id: string
@@ -362,6 +448,42 @@ export type Database = {
           treatment_interest?: string | null
           trying_duration?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      raw_signals: {
+        Row: {
+          body: string
+          created_utc: string | null
+          external_id: string
+          fetched_at: string
+          id: string
+          source: string
+          subreddit: string
+          title: string
+          url: string
+        }
+        Insert: {
+          body?: string
+          created_utc?: string | null
+          external_id: string
+          fetched_at?: string
+          id?: string
+          source?: string
+          subreddit: string
+          title?: string
+          url?: string
+        }
+        Update: {
+          body?: string
+          created_utc?: string | null
+          external_id?: string
+          fetched_at?: string
+          id?: string
+          source?: string
+          subreddit?: string
+          title?: string
+          url?: string
         }
         Relationships: []
       }

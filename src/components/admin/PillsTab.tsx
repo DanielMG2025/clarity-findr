@@ -32,7 +32,7 @@ const empty = (): Draft => ({
 
 const slugify = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 48);
 
-function useAdminSession() {
+export function useAdminSession() {
   const [userId, setUserId] = useState<string | null | undefined>(undefined);
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setUserId(s?.user.id ?? null));
@@ -51,7 +51,7 @@ function useAdminSession() {
   return { userId, isAdmin: !!isAdmin, checking: userId === undefined || (!!userId && isLoading) };
 }
 
-function SignIn({ es }: { es: boolean }) {
+export function SignIn({ es }: { es: boolean }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
