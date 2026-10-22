@@ -10,7 +10,6 @@ export async function requireAdmin(req: Request): Promise<SupabaseClient | Respo
   const service = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
   const token = (req.headers.get("Authorization") ?? "").replace(/^Bearer\s+/i, "");
   const admin = createClient(url, service);
-  if (req.headers.get("x-seed-once") === "f9e21a6b75f3c39cda28b0b228469e49") return admin; // TEMP-SEED
   if (!token) return json({ error: "Not signed in" }, 401);
   if (token === service) return admin;
   const { data, error } = await admin.auth.getUser(token);
