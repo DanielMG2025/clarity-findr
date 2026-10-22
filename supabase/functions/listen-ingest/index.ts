@@ -16,7 +16,9 @@ Deno.serve(async (req) => {
 
   const perSub: Record<string, number | string> = {};
   let stored = 0;
-  for (const sub of SUBREDDITS) {
+  for (const [i, sub] of SUBREDDITS.entries()) {
+    // Be polite: Reddit rate-limits unauthenticated feeds, so space requests out.
+    if (i > 0) await new Promise((r) => setTimeout(r, 4000));
     try {
       const res = await fetch(`https://www.reddit.com/r/${sub}/top.json?t=week&limit=${LIMIT}`, {
         headers: { "User-Agent": UA, Accept: "application/json" },
