@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowDown, ArrowRight, Compass, ExternalLink, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,11 @@ export default function Descubre() {
   const match = (a: Audience[]) => filter === "all" || a.includes(filter);
   const feed = rest.filter((p) => match(p.audiences));
   const voices = RESOURCES.filter((r) => match(r.audiences));
+
+  useEffect(() => {
+    const id = window.location.hash.slice(1);
+    if (id) setTimeout(() => document.getElementById(id)?.scrollIntoView(), 100);
+  }, []);
 
   const eyebrow = "text-[11px] font-semibold uppercase tracking-[0.18em] text-primary";
 
