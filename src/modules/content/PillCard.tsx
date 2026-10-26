@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Info, Share2, Check, ExternalLink } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -56,6 +57,21 @@ export function PillCard({ pill, featured = false }: { pill: Pill; featured?: bo
       <h3 className={`mt-4 font-display font-medium leading-snug text-balance ${featured ? "text-3xl md:text-4xl" : "text-xl"}`}>{pill.title[language]}</h3>
       <p className={`mt-3 max-w-[65ch] leading-relaxed text-muted-foreground ${featured ? "text-base md:text-lg" : "text-sm"}`}>{pill.body[language]}</p>
       <div className="mt-5"><PillSourceChip source={pill.source} /></div>
+      <BridgeCta />
     </Card>
+  );
+}
+
+/** Contextual bridge from content into the personal tool. */
+export function BridgeCta() {
+  const { language } = useLanguage();
+  const es = language === "es";
+  return (
+    <p className="mt-5 border-t border-border/70 pt-4 text-sm">
+      <span className="text-muted-foreground">{es ? "¿Y en tu caso?" : "And in your case?"}</span>{" "}
+      <Link to="/situacion" className="font-medium text-primary hover:underline">
+        {es ? "→ Brujulea tu situación" : "→ Check your situation"}
+      </Link>
+    </p>
   );
 }

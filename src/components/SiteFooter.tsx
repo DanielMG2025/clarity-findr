@@ -7,7 +7,7 @@ const SiteFooter = () => {
     <footer className="border-t bg-muted/30 mt-24">
       <div className="container py-10 text-sm text-muted-foreground space-y-3">
         <nav className="flex gap-5 text-xs font-medium">
-          <Link to="/descubre" className="hover:text-primary">{language === "es" ? "Descubre" : "Learn"}</Link>
+          <Link to="/descubre" className="hover:text-primary">{language === "es" ? "Descubre" : "Discover"}</Link>
         </nav>
         <p className="max-w-3xl">
           This platform provides informational insights based on aggregated user data. It is not

@@ -17,7 +17,7 @@ export function PublicLayout({ children }: Props) {
       <header className="no-print sticky top-0 z-40 flex h-10 shrink-0 items-center justify-between gap-4 border-b border-sidebar-border bg-sidebar px-4 text-sidebar-foreground">
         <nav className="flex items-center gap-5">
           <NavLink to="/" end className={link}>{language === "es" ? "Inicio" : "Home"}</NavLink>
-          <NavLink to="/descubre" className={link}>{language === "es" ? "Descubre" : "Learn"}</NavLink>
+          <NavLink to="/descubre" className={link}>{language === "es" ? "Descubre" : "Discover"}</NavLink>
         </nav>
         <LanguageSwitch />
       </header>

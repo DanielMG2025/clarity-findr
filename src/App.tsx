@@ -25,7 +25,6 @@ import PatientReport from "./pages/PatientReport.tsx";
 import ClarityAssessment from "./pages/ClarityAssessment.tsx";
 import OrientationSummary from "./pages/OrientationSummary.tsx";
 import { GlossaryProvider } from "@/modules/education";
-import LearnIndex from "./pages/LearnIndex.tsx";
 import LearnArticle from "./pages/LearnArticle.tsx";
 import DemoRoom from "./pages/DemoRoom.tsx";
 import Descubre from "./pages/Descubre.tsx";
@@ -81,7 +80,7 @@ const App = () => (
             <Route path="/costes" element={<PricingLab />} />
             <Route path="/clinicas" element={<Clinics />} />
             <Route path="/asesoramiento" element={<Partners />} />
-            <Route path="/aprende" element={<LearnIndex />} />
+            <Route path="/aprende" element={<Navigate to="/descubre#basicos" replace />} />
             <Route path="/aprende/:slug" element={<LearnArticle />} />
             <Route path="/community" element={<CommunityV2 />} />
 

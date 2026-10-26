@@ -2,8 +2,8 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { BookOpen, Clock, Search, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { BridgeCta } from "./PillCard";
 import { ALL_ARTICLES, type Article } from "@/modules/education";
 
 const CATEGORIES: { kind: Article["kind"]; label: string; blurb: string }[] = [
@@ -26,11 +26,12 @@ function ArticleCard({ a }: { a: Article }) {
           Read <ArrowRight className="size-3" />
         </span>
       </div>
+      <BridgeCta />
     </Card>
   );
 }
 
-export default function LearnIndex() {
+export function BasicsSection() {
   const [q, setQ] = useState("");
 
   const query = q.trim().toLowerCase();
@@ -42,12 +43,11 @@ export default function LearnIndex() {
   }, [query]);
 
   return (
-    <div className="container max-w-5xl py-10 space-y-8">
+    <div id="basicos" className="scroll-mt-24 space-y-8">
       <header className="space-y-3 max-w-2xl">
-        <Badge variant="secondary" className="text-[11px]">Learn</Badge>
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight flex items-center gap-2">
-          <BookOpen className="size-7 text-primary" /> Understand fertility, from scratch
-        </h1>
+        <h2 className="font-display text-3xl font-medium flex items-center gap-2">
+          <BookOpen className="size-6 text-primary" /> Basics
+        </h2>
         <p className="text-muted-foreground leading-relaxed">
           Plain-language explainers of every treatment, term and journey — orientative and sourced,
           never a medical guide.

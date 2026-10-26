@@ -1,5 +1,8 @@
-import { useState } from "react";
-import { ExternalLink, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { ArrowDown, ArrowRight, Compass, ExternalLink, Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { BasicsSection } from "@/modules/content/BasicsSection";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -18,20 +21,34 @@ export default function Descubre() {
   const feed = rest.filter((p) => match(p.audiences));
   const voices = RESOURCES.filter((r) => match(r.audiences));
 
+  useEffect(() => {
+    const id = window.location.hash.slice(1);
+    if (id) setTimeout(() => document.getElementById(id)?.scrollIntoView(), 100);
+  }, []);
+
   const eyebrow = "text-[11px] font-semibold uppercase tracking-[0.18em] text-primary";
 
   return (
     <div className="container max-w-5xl px-6 py-14 md:py-20 [&_h2]:text-balance">
       <header className="max-w-3xl">
-        <span className={`${eyebrow} inline-flex items-center gap-2`}><Sparkles className="size-3" /> {es ? "Descubre" : "Learn"}</span>
+        <span className={`${eyebrow} inline-flex items-center gap-2`}><Sparkles className="size-3" /> {es ? "Descubre" : "Discover"}</span>
         <h1 className="mt-5 font-display text-4xl md:text-6xl font-medium leading-tight text-balance">
-          {es ? "Tu amigo que de verdad sabe de fertilidad." : "Your friend who actually knows fertility."}
+          {es ? "Tu brújula para orientarte en el tratamiento de fertilidad." : "Your compass to navigate fertility treatment."}
         </h1>
         <p className="mt-4 font-editorial italic text-xl md:text-2xl text-muted-foreground">
-          {es ? "Algo cada día — siempre con su fuente, sin venderte nada." : "A little something every day — always with its source, never selling you anything."}
+          {es ? "Información de fuentes públicas y lo que se dice en los foros, seleccionado para ti." : "Information from public sources and what people say in forums, selected for you."}
         </p>
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <Button asChild size="lg" className="gap-2">
+            <Link to="/situacion"><Compass className="size-4" /> {es ? "Explora tu caso" : "Explore your case"} <ArrowRight className="size-4" /></Link>
+          </Button>
+          <Button variant="ghost" size="lg" className="gap-2" onClick={() => document.getElementById("contenido")?.scrollIntoView({ behavior: "smooth" })}>
+            {es ? "Descubre lo que se mueve" : "See what's moving"} <ArrowDown className="size-4" />
+          </Button>
+        </div>
       </header>
 
+      <div id="contenido" className="scroll-mt-24" />
       <ConversationSection />
 
       <section className="mt-12">
@@ -83,6 +100,10 @@ export default function Descubre() {
             </Card>
           ))}
         </div>
+      </section>
+
+      <section className="mt-20 border-t border-border pt-12">
+        <BasicsSection />
       </section>
 
       <p className="mt-16 max-w-[65ch] border-t border-border pt-6 text-sm text-muted-foreground leading-relaxed">
