@@ -45,7 +45,8 @@ export function AccessGate({ children }: { children: ReactNode }) {
       if (hash) {
         url.searchParams.delete("access_token_hash");
         window.history.replaceState({}, "", url.pathname + url.search + url.hash);
-        const { error } = await supabase.auth.verifyOtp({ token_hash: hash, type: "magiclink" });
+        // Email verifies both first-time signup links and returning-user magic links.
+        const { error } = await supabase.auth.verifyOtp({ token_hash: hash, type: "email" });
         if (error && !disposed) { setState("out"); return; }
       }
       if (!disposed) await check();
