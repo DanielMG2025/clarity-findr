@@ -1,4 +1,5 @@
 # Roadmap
+- [ ] Add allowed-users access control, magic links, and admin Users management; verify revocation and existing admin access.
 
 - [x] Add persistent English/Spanish presentation and a universal language switch.
 - [x] Translate user-facing interface copy without changing source data or engines; original source, educational and generated content remains English where not mapped.
