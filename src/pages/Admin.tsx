@@ -28,8 +28,11 @@ import MonetizationTab from "@/components/admin/MonetizationTab";
 import AnalyticsTab from "@/components/admin/AnalyticsTab";
 import PillsTab from "@/components/admin/PillsTab";
 import ListeningTab from "@/components/admin/ListeningTab";
+import UsersTab from "@/components/admin/UsersTab";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 const TABS = [
+  { v: "users", icon: Users, label: "Users" },
   { v: "overview", icon: LayoutDashboard, label: "Overview" },
   { v: "patients", icon: Users, label: "Patients" },
   { v: "clinics", icon: Building2, label: "Clinics" },
@@ -44,6 +47,7 @@ const TABS = [
 ];
 
 const Admin = () => {
+  const { language } = useLanguage();
   return (
     <div className="min-h-screen flex flex-col">
 
@@ -54,7 +58,7 @@ const Admin = () => {
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
-                  <ShieldCheck className="size-3 mr-1" /> Admin · mock auth
+                  <ShieldCheck className="size-3 mr-1" /> {language === "es" ? "Acceso autorizado" : "Authorized access"}
                 </Badge>
                 <Badge variant="outline" className="text-[10px]">
                   Roles: patient · clinic · partner · admin
@@ -62,9 +66,7 @@ const Admin = () => {
               </div>
               <h1 className="text-3xl md:text-4xl font-extrabold">Platform admin</h1>
               <p className="text-sm text-muted-foreground mt-1 max-w-2xl">
-                One control surface for patients, clinics, partners, the community, monetization and the
-                data engine. Every section is read-only in this build — moderation and write actions are
-                stubbed pending real admin auth.
+                {language === "es" ? "Usuarios, píldoras y escucha disponibles para administradores. Las demás secciones conservan su estado actual." : "Users, pills and listening are available to admins. Other sections retain their existing functionality."}
               </p>
             </div>
             <Button asChild variant="outline">
@@ -79,12 +81,15 @@ const Admin = () => {
               <TabsList className="inline-flex w-auto">
                 {TABS.map((t) => (
                   <TabsTrigger key={t.v} value={t.v} className="text-xs md:text-sm">
-                    <t.icon className="size-3.5 mr-1.5" /> {t.label}
+                    <t.icon className="size-3.5 mr-1.5" /> {t.v === "users" && language === "es" ? "Usuarios" : t.label}
                   </TabsTrigger>
                 ))}
               </TabsList>
             </div>
 
+            <TabsContent value="users" className="mt-6">
+              <UsersTab />
+            </TabsContent>
             <TabsContent value="overview" className="mt-6">
               <OverviewTab />
             </TabsContent>

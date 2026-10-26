@@ -1,4 +1,5 @@
 # Architecture rules
+- Every route is wrapped by AccessGate; verify identity with getUser and current_user_has_access on loads/navigation/focus, with admin bypass enforced in the database. Keep access-list reads/writes admin-only and magic-link credentials confined to admin responses and same-origin redemption.
 
 - Keep `/report` and `/summary` as read-only aggregations of existing master-record, journey, evidence, pricing, and regulatory outputs so printed figures never diverge from patient pages.
 

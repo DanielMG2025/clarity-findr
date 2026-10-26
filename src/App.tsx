@@ -32,6 +32,7 @@ import Descubre from "./pages/Descubre.tsx";
 import Admin from "./pages/Admin.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { LanguageProvider } from "./i18n/LanguageContext";
+import { AccessGate } from "./modules/access/AccessGate";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +62,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <AccessGate>
         <WithGlossary>
         <LayoutSwitch>
           <Routes>
@@ -105,6 +107,7 @@ const App = () => (
           </Routes>
         </LayoutSwitch>
         </WithGlossary>
+        </AccessGate>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

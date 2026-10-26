@@ -50,6 +50,33 @@ export type Database = {
         }
         Relationships: []
       }
+      allowed_users: {
+        Row: {
+          active: boolean
+          created_at: string
+          email: string
+          id: string
+          last_link_sent_at: string | null
+          name: string | null
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          email: string
+          id?: string
+          last_link_sent_at?: string | null
+          name?: string | null
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          email?: string
+          id?: string
+          last_link_sent_at?: string | null
+          name?: string | null
+        }
+        Relationships: []
+      }
       clinic_insights: {
         Row: {
           availability_score: number
@@ -632,6 +659,8 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      access_email_allowed: { Args: { candidate: string }; Returns: boolean }
+      current_user_has_access: { Args: never; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
