@@ -28,8 +28,10 @@ import MonetizationTab from "@/components/admin/MonetizationTab";
 import AnalyticsTab from "@/components/admin/AnalyticsTab";
 import PillsTab from "@/components/admin/PillsTab";
 import ListeningTab from "@/components/admin/ListeningTab";
+import UsersTab from "@/components/admin/UsersTab";
 
 const TABS = [
+  { v: "users", icon: Users, label: "Users" },
   { v: "overview", icon: LayoutDashboard, label: "Overview" },
   { v: "patients", icon: Users, label: "Patients" },
   { v: "clinics", icon: Building2, label: "Clinics" },
