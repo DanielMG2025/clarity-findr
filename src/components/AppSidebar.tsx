@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { Heart, Sparkles, Compass, FileText, Library, Wallet, Building2, Stethoscope, Users, BookOpen, LayoutDashboard } from "lucide-react";
+import { Heart, Sparkles, Compass, FileText, Library, Wallet, Building2, Stethoscope, Users, LayoutDashboard } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,

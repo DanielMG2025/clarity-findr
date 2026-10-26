@@ -33,7 +33,7 @@ export default function LearnArticle() {
   return (
     <article className="container max-w-2xl py-10 space-y-6">
       <Link to="/descubre#basicos" className="text-sm text-muted-foreground hover:text-primary inline-flex items-center gap-1">
-        <ArrowLeft className="size-4" /> Learn
+        <ArrowLeft className="size-4" /> Basics
       </Link>
 
       <header className="space-y-3">

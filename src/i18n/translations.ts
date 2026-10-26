@@ -26,6 +26,7 @@ export const es: Record<string, string> = {
   "Learn": "Aprender",
   "Discover": "Descubre",
   "A little something every day": "Algo cada día",
+  "Sources, forums and basics": "Fuentes, foros y básicos",
   "Fertility, explained simply": "La fertilidad, explicada de forma sencilla",
   "My space": "Mi espacio",
   "History and saved items": "Historial y elementos guardados",
