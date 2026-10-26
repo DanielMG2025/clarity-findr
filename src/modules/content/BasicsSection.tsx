@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { BookOpen, Clock, Search, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { BridgeCta } from "./PillCard";
 import { ALL_ARTICLES, type Article } from "@/modules/education";
 
 const CATEGORIES: { kind: Article["kind"]; label: string; blurb: string }[] = [
@@ -25,6 +26,7 @@ function ArticleCard({ a }: { a: Article }) {
           Read <ArrowRight className="size-3" />
         </span>
       </div>
+      <BridgeCta />
     </Card>
   );
 }
