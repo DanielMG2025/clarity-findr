@@ -58,7 +58,7 @@ const Admin = () => {
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
-                  <ShieldCheck className="size-3 mr-1" /> Admin · mock auth
+                  <ShieldCheck className="size-3 mr-1" /> {language === "es" ? "Acceso autorizado" : "Authorized access"}
                 </Badge>
                 <Badge variant="outline" className="text-[10px]">
                   Roles: patient · clinic · partner · admin
@@ -66,9 +66,7 @@ const Admin = () => {
               </div>
               <h1 className="text-3xl md:text-4xl font-extrabold">Platform admin</h1>
               <p className="text-sm text-muted-foreground mt-1 max-w-2xl">
-                One control surface for patients, clinics, partners, the community, monetization and the
-                data engine. Every section is read-only in this build — moderation and write actions are
-                stubbed pending real admin auth.
+                {language === "es" ? "Usuarios, píldoras y escucha disponibles para administradores. Las demás secciones conservan su estado actual." : "Users, pills and listening are available to admins. Other sections retain their existing functionality."}
               </p>
             </div>
             <Button asChild variant="outline">
