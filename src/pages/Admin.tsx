@@ -29,6 +29,7 @@ import AnalyticsTab from "@/components/admin/AnalyticsTab";
 import PillsTab from "@/components/admin/PillsTab";
 import ListeningTab from "@/components/admin/ListeningTab";
 import UsersTab from "@/components/admin/UsersTab";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 const TABS = [
   { v: "users", icon: Users, label: "Users" },
@@ -46,6 +47,7 @@ const TABS = [
 ];
 
 const Admin = () => {
+  const { language } = useLanguage();
   return (
     <div className="min-h-screen flex flex-col">
 
@@ -81,12 +83,15 @@ const Admin = () => {
               <TabsList className="inline-flex w-auto">
                 {TABS.map((t) => (
                   <TabsTrigger key={t.v} value={t.v} className="text-xs md:text-sm">
-                    <t.icon className="size-3.5 mr-1.5" /> {t.label}
+                    <t.icon className="size-3.5 mr-1.5" /> {t.v === "users" && language === "es" ? "Usuarios" : t.label}
                   </TabsTrigger>
                 ))}
               </TabsList>
             </div>
 
+            <TabsContent value="users" className="mt-6">
+              <UsersTab />
+            </TabsContent>
             <TabsContent value="overview" className="mt-6">
               <OverviewTab />
             </TabsContent>
