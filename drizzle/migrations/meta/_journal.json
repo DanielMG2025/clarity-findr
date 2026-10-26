@@ -15,6 +15,13 @@
       "when": 1792700062929,
       "tag": "0001_forum_listening",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793020384420,
+      "tag": "0002_allowed_users_access_gate",
+      "breakpoints": true
     }
   ]
 }
