@@ -1,0 +1,14 @@
+CREATE TABLE public.listen_sources (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), name text NOT NULL, feed_url text NOT NULL UNIQUE, lang text NOT NULL DEFAULT 'en', kind text NOT NULL DEFAULT 'forum', active boolean NOT NULL DEFAULT true, created_at timestamptz NOT NULL DEFAULT now());
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.listen_sources TO authenticated;
+GRANT ALL ON public.listen_sources TO service_role;
+ALTER TABLE public.listen_sources ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Admins manage listening sources" ON public.listen_sources FOR ALL TO authenticated USING (public.has_role(auth.uid(), 'admin')) WITH CHECK (public.has_role(auth.uid(), 'admin'));
+ALTER TABLE public.raw_signals ADD COLUMN source_name text NOT NULL DEFAULT '', ADD COLUMN lang text NOT NULL DEFAULT '', ADD COLUMN snippet text NOT NULL DEFAULT '', ADD COLUMN market_data jsonb NOT NULL DEFAULT '{}'::jsonb;
+CREATE UNIQUE INDEX raw_signals_rss_url_unique ON public.raw_signals(url) WHERE source = 'rss';
+COMMENT ON COLUMN public.raw_signals.body IS 'DEPRECATED: RSS intake uses neutral snippet only; never store personal narratives';
+COMMENT ON COLUMN public.raw_signals.subreddit IS 'DEPRECATED: RSS intake uses source_name';
+ALTER TABLE public.listening_runs ADD COLUMN source text, ADD COLUMN items_found integer NOT NULL DEFAULT 0, ADD COLUMN items_new integer NOT NULL DEFAULT 0, ADD COLUMN status text NOT NULL DEFAULT 'running', ADD COLUMN ran_at timestamptz NOT NULL DEFAULT now();
+ALTER TABLE public.conversation_topics ADD COLUMN source_lang text, ADD COLUMN signal_ids uuid[] NOT NULL DEFAULT '{}', ADD COLUMN market_data jsonb NOT NULL DEFAULT '[]'::jsonb;
+CREATE OR REPLACE FUNCTION public.listening_forum_count() RETURNS integer LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public AS $$ SELECT count(*)::integer FROM public.listen_sources WHERE active AND kind = 'forum' AND public.current_user_has_access(); $$;
+REVOKE ALL ON FUNCTION public.listening_forum_count() FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.listening_forum_count() TO authenticated;

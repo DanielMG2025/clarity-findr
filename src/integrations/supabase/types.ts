@@ -253,11 +253,14 @@ export type Database = {
           confidence: string
           created_at: string
           id: string
+          market_data: Json
           mentions_estimate: number
           question_en: string
           question_es: string
           run_id: string | null
+          signal_ids: string[]
           source_forum: string
+          source_lang: string | null
           source_url: string | null
           status: string
           trend: string
@@ -269,11 +272,14 @@ export type Database = {
           confidence?: string
           created_at?: string
           id?: string
+          market_data?: Json
           mentions_estimate?: number
           question_en?: string
           question_es?: string
           run_id?: string | null
+          signal_ids?: string[]
           source_forum?: string
+          source_lang?: string | null
           source_url?: string | null
           status?: string
           trend?: string
@@ -285,11 +291,14 @@ export type Database = {
           confidence?: string
           created_at?: string
           id?: string
+          market_data?: Json
           mentions_estimate?: number
           question_en?: string
           question_es?: string
           run_id?: string | null
+          signal_ids?: string[]
           source_forum?: string
+          source_lang?: string | null
           source_url?: string | null
           status?: string
           trend?: string
@@ -343,29 +352,74 @@ export type Database = {
         }
         Relationships: []
       }
+      listen_sources: {
+        Row: {
+          active: boolean
+          created_at: string
+          feed_url: string
+          id: string
+          kind: string
+          lang: string
+          name: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          feed_url: string
+          id?: string
+          kind?: string
+          lang?: string
+          name: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          feed_url?: string
+          id?: string
+          kind?: string
+          lang?: string
+          name?: string
+        }
+        Relationships: []
+      }
       listening_runs: {
         Row: {
           finished_at: string | null
           id: string
+          items_found: number
+          items_new: number
           note: string | null
+          ran_at: string
           signals_fetched: number
+          source: string | null
           started_at: string
+          status: string
           topics_created: number
         }
         Insert: {
           finished_at?: string | null
           id?: string
+          items_found?: number
+          items_new?: number
           note?: string | null
+          ran_at?: string
           signals_fetched?: number
+          source?: string | null
           started_at?: string
+          status?: string
           topics_created?: number
         }
         Update: {
           finished_at?: string | null
           id?: string
+          items_found?: number
+          items_new?: number
           note?: string | null
+          ran_at?: string
           signals_fetched?: number
+          source?: string | null
           started_at?: string
+          status?: string
           topics_created?: number
         }
         Relationships: []
@@ -524,7 +578,11 @@ export type Database = {
           external_id: string
           fetched_at: string
           id: string
+          lang: string
+          market_data: Json
+          snippet: string
           source: string
+          source_name: string
           subreddit: string
           title: string
           url: string
@@ -535,7 +593,11 @@ export type Database = {
           external_id: string
           fetched_at?: string
           id?: string
+          lang?: string
+          market_data?: Json
+          snippet?: string
           source?: string
+          source_name?: string
           subreddit: string
           title?: string
           url?: string
@@ -546,7 +608,11 @@ export type Database = {
           external_id?: string
           fetched_at?: string
           id?: string
+          lang?: string
+          market_data?: Json
+          snippet?: string
           source?: string
+          source_name?: string
           subreddit?: string
           title?: string
           url?: string
@@ -707,6 +773,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      listening_forum_count: { Args: never; Returns: number }
       refresh_aggregated_pricing: { Args: never; Returns: undefined }
       refresh_clinic_insights: { Args: never; Returns: undefined }
     }
