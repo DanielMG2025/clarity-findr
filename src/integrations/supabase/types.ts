@@ -304,6 +304,45 @@ export type Database = {
           },
         ]
       }
+      feed_probes: {
+        Row: {
+          body_len: number | null
+          checked_at: string
+          content_type: string | null
+          error: string | null
+          http_status: number | null
+          id: string
+          is_feed: boolean
+          item_count: number
+          sample_titles: string[]
+          url: string
+        }
+        Insert: {
+          body_len?: number | null
+          checked_at?: string
+          content_type?: string | null
+          error?: string | null
+          http_status?: number | null
+          id?: string
+          is_feed?: boolean
+          item_count?: number
+          sample_titles?: string[]
+          url: string
+        }
+        Update: {
+          body_len?: number | null
+          checked_at?: string
+          content_type?: string | null
+          error?: string | null
+          http_status?: number | null
+          id?: string
+          is_feed?: boolean
+          item_count?: number
+          sample_titles?: string[]
+          url?: string
+        }
+        Relationships: []
+      }
       listening_runs: {
         Row: {
           finished_at: string | null
