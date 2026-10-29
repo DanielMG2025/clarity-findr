@@ -25,6 +25,7 @@ function TopicCard({ t }: { t: TopicRow }) {
       <p className="mt-3 text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
         ≈ {t.mentions_estimate} {es ? "menciones · anónimo" : "mentions · anonymous"}
       </p>
+      <p className="mt-1 text-[10px] text-muted-foreground">{es ? "Publicaciones del feed, no personas únicas" : "Feed items, not unique people"}</p>
       <h3 className="mt-2 font-display text-xl font-medium leading-snug text-balance">{es ? t.question_es : t.question_en}</h3>
       <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{es ? t.answer_es : t.answer_en}</p>
       <p className="mt-3 text-xs text-muted-foreground">{new Date(t.created_at).toLocaleDateString(es ? "es-ES" : "en-GB")} · {es ? "Confianza" : "Confidence"}: {es ? ({ low: "baja", medium: "media", high: "alta" }[t.confidence] ?? t.confidence) : t.confidence}</p>

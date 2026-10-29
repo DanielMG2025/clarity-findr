@@ -39,8 +39,13 @@ Deno.serve(async (req) => {
   if (!apiKey) return json({ error: "AI is not configured" }, 500);
 
   const since = new Date(Date.now() - CURRENT_DAYS * 864e5).toISOString();
+  const { data: activeSources, error: sourceError } = await db.from("listen_sources").select("name").eq("active", true);
+  if (sourceError) return json({ error: sourceError.message }, 500);
+  if (!activeSources?.length) return json({ error: "No active sources." }, 400);
   const { data: signals, error } = await db.from("raw_signals")
     .select("id,source_name,lang,title,snippet,url,market_data,created_utc").eq("source", "rss").gte("created_utc", since)
+    .in("source_name", activeSources.map(s => s.name))
+    .not("title", "in", '("Preguntas sobre el proceso de fertilidad","Questions about the fertility process")')
     .order("created_utc", { ascending: false }).limit(MAX_SIGNALS);
   if (error) return json({ error: error.message }, 500);
   if (!signals?.length) return json({ error: "No feed items published in the last 7 days. Run ingest first." }, 400);
