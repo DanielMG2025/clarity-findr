@@ -4,18 +4,11 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 import { json } from "../_shared/listenAuth.ts";
 
 const URLS = [
-  "https://www.reproduccionasistida.org/foro/feed/",
   "https://boards.hellobee.com/rss/board/ivf/topics",
-  "https://boards.hellobee.com/rss/board/pregnancy-amp-if/topics",
   "https://boards.hellobee.com/rss/board/ttc/topics",
-  "https://boards.hellobee.com/rss/board/trying-to-conceive/topics",
-  "https://www.invitra.com/en/forums/feed/",
-  "https://www.invitra.com/forums/feed/",
-  "https://www.invitra.com/en/feed/",
-  "https://healthunlocked.com/essential-parent-fertility/posts.rss",
-  "https://healthunlocked.com/fertilitynetworkuk/posts.rss",
+  "https://boards.hellobee.com/rss/board/pregnancy-amp-if/topics",
   "https://www.ohbaby.co.nz/forum/rss",
-  "https://www.ohbaby.co.nz/forum/rss.php",
+  "https://www.ohbaby.co.nz/ttc-ivf-pregnancy-loss/rss",
 ];
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -33,7 +26,7 @@ Deno.serve(async (req) => {
     try {
       const res = await fetch(url, {
         redirect: "follow",
-        signal: AbortSignal.timeout(10_000),
+        signal: AbortSignal.timeout(25_000),
         headers: {
           "User-Agent": "FertilityCompass-listener/0.1 (feasibility probe)",
           Accept: "application/rss+xml, application/atom+xml, application/xml, text/xml",
