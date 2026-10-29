@@ -9,5 +9,5 @@
 
 - Learn pills are read from the `pills` table via `usePublishedPills`, which falls back to the static seed in `src/modules/content/pills.ts`, so /descubre never renders empty; writes are gated by the `admin` role in `user_roles` (RLS + `has_role`).
 
-- Forum listening: `listen-ingest` (Reddit public feeds, anonymised, prototype-grade) and `listen-distil` (AI synthesis into draft `conversation_topics`) are manual-trigger edge functions gated by the admin role in code; /descubre reads only published topics and hides the section when none exist.
+- Forum listening uses active database-configured RSS sources, neutral thematic intake and structured metadata only; manual admin-only ingest/distil reuse existing tables, with item-date freshness and validated support IDs. /descubre reads published topics and an authorized aggregate source count, never the admin-only source configuration.
 - `/descubre` is the single content hub (conversation, pills, trusted voices, Basics guides via `BasicsSection`); `/aprende` redirects to `/descubre#basicos` while `/aprende/:slug` stays the article route for glossary deep links.

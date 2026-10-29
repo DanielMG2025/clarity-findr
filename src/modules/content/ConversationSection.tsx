@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { AUDIENCE_LABEL, type Audience } from "./types";
-import { usePublishedTopics, type TopicRow } from "./conversation";
+import { usePublishedTopics, useListeningForumCount, type TopicRow } from "./conversation";
 
 function TopicCard({ t }: { t: TopicRow }) {
   const { language } = useLanguage();
@@ -27,6 +27,7 @@ function TopicCard({ t }: { t: TopicRow }) {
       </p>
       <h3 className="mt-2 font-display text-xl font-medium leading-snug text-balance">{es ? t.question_es : t.question_en}</h3>
       <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{es ? t.answer_es : t.answer_en}</p>
+      <p className="mt-3 text-xs text-muted-foreground">{new Date(t.created_at).toLocaleDateString(es ? "es-ES" : "en-GB")} · {es ? "Confianza" : "Confidence"}: {es ? ({ low: "baja", medium: "media", high: "alta" }[t.confidence] ?? t.confidence) : t.confidence}</p>
       <div className="mt-5 flex flex-wrap items-center gap-2">
         <span className="inline-flex items-center gap-1 rounded-full border border-border bg-muted/50 px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
           <MessageCircle className="size-2.5" aria-hidden /> {es ? "lo que se dice · señal anecdótica" : "what people say · anecdotal signal"}
@@ -46,10 +47,11 @@ export function ConversationSection() {
   const { language } = useLanguage();
   const es = language === "es";
   const topics = usePublishedTopics();
+  const forums = useListeningForumCount();
   if (topics.length === 0) return null;
   return (
     <section className="mt-12">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">{es ? "Escuchamos los foros" : "We listen to the forums"}</p>
+      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">{es ? `Escuchando ${forums} foros` : `Listening to ${forums} forums`}</p>
       <h2 className="mt-2 font-display text-3xl font-medium">{es ? "La conversación de esta semana" : "This week's conversation"}</h2>
       <p className="mt-2 max-w-[65ch] text-sm text-muted-foreground">
         {es
