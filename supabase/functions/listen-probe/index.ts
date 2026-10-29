@@ -1,6 +1,7 @@
-// One-off feasibility probe for candidate forum RSS/Atom feeds. Admin/service-role only.
+// One-off feasibility probe for candidate forum RSS/Atom feeds (fixed URL list, writes via service role).
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
-import { json, requireAdmin } from "../_shared/listenAuth.ts";
+import { createClient } from "npm:@supabase/supabase-js@2";
+import { json } from "../_shared/listenAuth.ts";
 
 const URLS = [
   "https://www.reddit.com/r/IVF/new/.rss",
@@ -28,8 +29,8 @@ const clean = (s: string) =>
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
-  const admin = await requireAdmin(req);
-  if (admin instanceof Response) return admin;
+  // No caller input is used: it only probes the fixed list above, so it runs without a sign-in.
+  const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
 
   const rows: Record<string, unknown>[] = [];
   for (const url of URLS) {
