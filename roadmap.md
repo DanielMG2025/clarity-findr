@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Adapt listening to database-configured RSS sources with strict privacy, source management, and a reviewed real run. Both ingested; inviTRA is archived (2022), so only supported current Spanish content was published.
 - [x] Add allowed-users access control, magic links, and admin Users management; verify revocation and existing admin access.
 
 - [x] Add persistent English/Spanish presentation and a universal language switch.

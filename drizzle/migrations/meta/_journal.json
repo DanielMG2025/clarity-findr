@@ -29,6 +29,13 @@
       "when": 1793302916072,
       "tag": "0003_feed_probes",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793304172729,
+      "tag": "0004_rss_listening_sources",
+      "breakpoints": true
     }
   ]
 }

@@ -20,6 +20,7 @@ import { useLanguage } from "@/i18n/LanguageContext";
 import { AUDIENCE_LABEL, type Audience } from "@/modules/content";
 import { topKeywords, type TopicRow } from "@/modules/content/conversation";
 import { SignIn, useAdminSession } from "./PillsTab";
+import { ListeningSources } from "./ListeningSources";
 
 const AUDIENCES = Object.keys(AUDIENCE_LABEL) as Audience[];
 
@@ -91,14 +92,14 @@ function MarketPanel({ es, topics }: { es: boolean; topics: TopicRow[] }) {
   const { data: signals = [] } = useQuery({
     queryKey: ["topics", "signals"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("raw_signals").select("subreddit,title,body").order("fetched_at", { ascending: false }).limit(1000);
+      const { data, error } = await supabase.from("raw_signals").select("source_name,title,snippet,market_data,created_utc,url").eq("source", "rss").order("fetched_at", { ascending: false }).limit(1000);
       if (error) throw error;
       return data;
     },
   });
-  const keywords = useMemo(() => topKeywords(signals.map((s) => `${s.title} ${s.body}`), 20), [signals]);
+  const keywords = useMemo(() => topKeywords(signals.map((s) => `${s.title} ${s.snippet}`), 20), [signals]);
   const bySub = useMemo(() => {
-    const m = new Map<string, number>(); signals.forEach((s) => m.set(s.subreddit, (m.get(s.subreddit) ?? 0) + 1));
+    const m = new Map<string, number>(); signals.forEach((s) => m.set(s.source_name, (m.get(s.source_name) ?? 0) + 1));
     return [...m.entries()].sort((a, b) => b[1] - a[1]);
   }, [signals]);
   const byAud = AUDIENCES.map((a) => [a, topics.filter((t) => t.audiences.includes(a)).length] as const);
@@ -135,6 +136,10 @@ function MarketPanel({ es, topics }: { es: boolean; topics: TopicRow[] }) {
           ))}
         </Card>
       </div>
+      <h4 className="text-sm font-semibold">{es ? "Datos observados · sin verificar" : "Observed fields · unverified"}</h4>
+      <div className="divide-y divide-border">
+        {signals.map(s => <div key={s.url} className="py-2 text-xs space-y-1"><p className="font-medium">{s.source_name} · {s.created_utc ? new Date(s.created_utc).toLocaleDateString(es ? "es-ES" : "en-GB") : "—"}</p><pre className="whitespace-pre-wrap break-words font-sans text-muted-foreground">{JSON.stringify(s.market_data, null, 2)}</pre></div>)}
+      </div>
     </div>
   );
 }
@@ -165,7 +170,7 @@ export default function ListeningTab() {
       const ing = await invoke("listen-ingest");
       setResult(es ? "Resumiendo con IA…" : "Distilling with AI…");
       const dis = await invoke("listen-distil");
-      const per = Object.entries(ing.fetched ?? {}).map(([k, v]) => `r/${k}: ${v}`).join(" · ");
+      const per = (ing.sources ?? []).map((s: { source: string; items_found: number; items_new: number; status: string }) => `${s.source}: ${s.items_found} / +${s.items_new} (${s.status})`).join(" · ");
       return `${es ? "Nuevas señales" : "New signals"}: ${ing.new_signals} (${per}). ${es ? "Temas creados" : "Topics created"}: ${dis.topics_created} ${es ? "de" : "from"} ${dis.signals_used} ${es ? "señales" : "signals"}.`;
     },
     onSuccess: (msg) => { setResult(msg); refresh(); },
@@ -202,12 +207,14 @@ export default function ListeningTab() {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h3 className="font-semibold">{es ? "Escucha de foros" : "Forum listening"}</h3>
-            <p className="text-sm text-muted-foreground">{es ? "Lee foros públicos de Reddit y crea borradores de temas para revisar. Solo manual." : "Reads public Reddit forums and creates draft topics to review. Manual only."}</p>
+            <p className="text-sm text-muted-foreground">{es ? "Foros · fuentes públicas · revisión editorial" : "Forums · public sources · editorial review"}</p>
           </div>
           <Button disabled={run.isPending} onClick={() => run.mutate()}><Play className="size-4" /> {es ? "Ejecutar ahora" : "Run now"}</Button>
         </div>
         {result && <p className="text-sm rounded-md bg-muted p-3">{result}</p>}
       </Card>
+
+      <ListeningSources es={es} />
 
       <div className="space-y-3">
         <p className="text-sm text-muted-foreground">{es ? `${topics.length} temas · los más recientes primero` : `${topics.length} topics · newest first`}</p>

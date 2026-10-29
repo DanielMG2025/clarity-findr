@@ -4,6 +4,15 @@ import type { Tables } from "@/integrations/supabase/types";
 
 export type TopicRow = Tables<"conversation_topics">;
 
+export function useListeningForumCount(): number {
+  const { data } = useQuery({ queryKey: ["listening-forum-count"], queryFn: async () => {
+    const { data, error } = await supabase.rpc("listening_forum_count");
+    if (error) throw error;
+    return data;
+  } });
+  return data ?? 0;
+}
+
 /** Published forum-listening topics, newest first. Empty on error (the public section then hides). */
 export function usePublishedTopics(): TopicRow[] {
   const { data } = useQuery({
