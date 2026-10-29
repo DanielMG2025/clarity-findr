@@ -4,23 +4,18 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 import { json } from "../_shared/listenAuth.ts";
 
 const URLS = [
-  "https://www.reddit.com/r/IVF/new/.rss",
-  "https://www.reddit.com/r/infertility/new/.rss",
-  "https://www.reddit.com/r/eggfreezing/new/.rss",
-  "https://www.reddit.com/r/maleinfertility/new/.rss",
-  "https://www.reddit.com/r/queerception/new/.rss",
-  "https://www.reddit.com/r/IVFinfertility/new/.rss",
-  "https://www.reddit.com/r/40Plus_IVF/new/.rss",
-  "https://www.fertilityfriends.co.uk/forum/index.php?action=.xml;type=rss",
-  "https://www.fertilityfriends.co.uk/forum/index.php?action=.xml;type=rss;sa=news",
-  "https://www.fertilityfriends.co.uk/forum/index.php?type=rss2;action=.xml",
-  "https://www.mumsnet.com/talk/infertility/rss",
-  "https://www.mumsnet.com/Talk/rss",
-  "https://community.babycenter.com/rss",
-  "https://foro.enfemenino.com/rss",
-  "https://www.enfemenino.com/rss.xml",
   "https://www.reproduccionasistida.org/foro/feed/",
-  "https://www.reproduccionasistida.org/feed/",
+  "https://boards.hellobee.com/rss/board/ivf/topics",
+  "https://boards.hellobee.com/rss/board/pregnancy-amp-if/topics",
+  "https://boards.hellobee.com/rss/board/ttc/topics",
+  "https://boards.hellobee.com/rss/board/trying-to-conceive/topics",
+  "https://www.invitra.com/en/forums/feed/",
+  "https://www.invitra.com/forums/feed/",
+  "https://www.invitra.com/en/feed/",
+  "https://healthunlocked.com/essential-parent-fertility/posts.rss",
+  "https://healthunlocked.com/fertilitynetworkuk/posts.rss",
+  "https://www.ohbaby.co.nz/forum/rss",
+  "https://www.ohbaby.co.nz/forum/rss.php",
 ];
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
