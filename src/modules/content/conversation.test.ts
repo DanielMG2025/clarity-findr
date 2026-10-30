@@ -8,3 +8,30 @@ describe("topKeywords", () => {
     expect(r.find((k) => k.word === "the")).toBeUndefined();
   });
 });
+
+import { filterTopics, platformFamily } from "./conversation";
+describe("filterTopics", () => {
+  const base = { treatment_en: "", answer_en: "", answer_es: "", geography: null as string | null, audiences: ["men"] };
+  const rows = [
+    { ...base, period: "week", source_platform: "Reddit r/DOR", treatment: "PGT-A", question_en: "a", question_es: "Ovodonación" },
+    { ...base, period: "3m", source_platform: "Mumsnet", treatment: "cross-border", question_en: "b", question_es: "b", geography: "Chequia", audiences: ["lgbt"] },
+  ];
+  const f = { query: "", period: "week" as const, platform: null, audience: null, treatment: null };
+  it("week shows only week; 3m shows both", () => {
+    expect(filterTopics(rows, f)).toHaveLength(1);
+    expect(filterTopics(rows, { ...f, period: "3m" })).toHaveLength(2);
+  });
+  it("search is accent-insensitive and covers geography", () => {
+    expect(filterTopics(rows, { ...f, query: "ovodonacion" })).toHaveLength(1);
+    expect(filterTopics(rows, { ...f, period: "3m", query: "chequia" })).toHaveLength(1);
+  });
+  it("forum and audience filters", () => {
+    expect(filterTopics(rows, { ...f, period: "3m", platform: "Mumsnet" })).toHaveLength(1);
+    expect(filterTopics(rows, { ...f, period: "3m", audience: "lgbt" })[0].source_platform).toBe("Mumsnet");
+  });
+  it("platform family", () => {
+    expect(platformFamily("Reddit r/DOR")).toBe("Reddit");
+    expect(platformFamily("HealthUnlocked / Fertility Network UK")).toBe("HealthUnlocked");
+    expect(platformFamily("Reproducción Asistida ORG")).toBe("Reproducción Asistida");
+  });
+});
