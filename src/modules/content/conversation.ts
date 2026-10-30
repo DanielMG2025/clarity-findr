@@ -19,7 +19,7 @@ export function usePublishedTopics(): TopicRow[] {
     queryKey: ["topics", "published"],
     queryFn: async () => {
       const { data, error } = await supabase.from("conversation_topics").select("*")
-        .eq("status", "published").order("created_at", { ascending: false }).limit(6);
+        .eq("status", "published").order("created_at", { ascending: false }).limit(300);
       if (error) throw error;
       return data ?? [];
     },
@@ -44,4 +44,25 @@ export function topKeywords(texts: string[], n = 20): { word: string; count: num
     }
   }
   return [...freq.entries()].sort((a, b) => b[1] - a[1]).slice(0, n).map(([word, count]) => ({ word, count }));
+}
+
+export type Period = "week" | "3m";
+export interface TopicFilter { query: string; period: Period; platform: string | null; audience: string | null; treatment: string | null }
+
+/** Platform family shown in the "listening to" header: "Reddit r/DOR" -> "Reddit". */
+export function platformFamily(p: string): string {
+  return p.split(/\s+r\/|\s*\/\s*/)[0].replace(/ ORG$/, "").trim();
+}
+
+const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+/** Client-side filter: "week" shows only period=week; "3m" shows week + 3m. Search is accent-insensitive substring. */
+export function filterTopics<T extends Pick<TopicRow, "period" | "source_platform" | "audiences" | "treatment" | "treatment_en" | "question_en" | "question_es" | "answer_en" | "answer_es" | "geography">>(rows: T[], f: TopicFilter): T[] {
+  const q = norm(f.query.trim());
+  return rows.filter((r) =>
+    (f.period === "3m" || r.period === "week") &&
+    (!f.platform || r.source_platform === f.platform) &&
+    (!f.audience || r.audiences.includes(f.audience)) &&
+    (!f.treatment || r.treatment === f.treatment) &&
+    (!q || norm([r.question_en, r.question_es, r.answer_en, r.answer_es, r.treatment, r.treatment_en, r.geography ?? ""].join(" ")).includes(q)));
 }

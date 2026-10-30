@@ -1,9 +1,19 @@
-import { ExternalLink, MessageCircle, TrendingUp, Minus } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight, ExternalLink, MessageCircle, TrendingUp, Minus, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { AUDIENCE_LABEL, type Audience } from "./types";
-import { usePublishedTopics, useListeningForumCount, type TopicRow } from "./conversation";
+import { usePublishedTopics, filterTopics, platformFamily, type Period, type TopicRow } from "./conversation";
+
+const AUDS: Audience[] = ["planners", "first-steps", "experienced", "men", "lgbt"];
+const GEO_EN: Record<string, string> = { "España": "Spain", "Europa": "Europe", "Chequia": "Czechia", "España/Chequia": "Spain/Czechia", "Europa/EE. UU.": "Europe/US" };
+
+function Chip({ on, onClick, children }: { on: boolean; onClick: () => void; children: React.ReactNode }) {
+  return <button type="button" aria-pressed={on} onClick={onClick} className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${on ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-muted-foreground hover:border-accent hover:text-foreground"}`}>{children}</button>;
+}
 
 function TopicCard({ t }: { t: TopicRow }) {
   const { language } = useLanguage();
@@ -17,6 +27,8 @@ function TopicCard({ t }: { t: TopicRow }) {
             {AUDIENCE_LABEL[a]?.[language] ?? a}
           </Badge>
         ))}
+        {t.treatment && <Badge variant="secondary" className="text-[10px]">{es ? t.treatment : (t.treatment_en || t.treatment)}</Badge>}
+        {t.geography && <Badge variant="secondary" className="text-[10px]">{es ? t.geography : (GEO_EN[t.geography] ?? t.geography)}</Badge>}
         <span className="ml-auto inline-flex items-center gap-1 text-[11px] text-muted-foreground">
           {up ? <TrendingUp className="size-3 text-primary" /> : <Minus className="size-3" />}
           {up ? (es ? "en aumento" : "rising") : (es ? "estable" : "steady")}
@@ -35,31 +47,69 @@ function TopicCard({ t }: { t: TopicRow }) {
         </span>
         {t.source_url ? (
           <a href={t.source_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline">
-            {t.source_forum} <ExternalLink className="size-3" />
+            {t.source_platform || t.source_forum} <ExternalLink className="size-3" />
           </a>
-        ) : <span className="text-xs text-muted-foreground">{t.source_forum}</span>}
+        ) : <span className="text-xs text-muted-foreground">{t.source_platform || t.source_forum}</span>}
       </div>
+      <Link to="/situacion" className="mt-4 inline-flex items-center gap-1 border-t border-border/60 pt-3 text-sm font-medium text-primary hover:underline">
+        {es ? "¿Y en tu caso? → Brujulea tu situación" : "And in your case? → Check your situation"} <ArrowRight className="size-3.5" />
+      </Link>
     </Card>
   );
 }
 
-/** "This week's conversation" — hidden entirely when nothing is published. */
+/** Browsable forum conversation: search + time + forum + audience + treatment filters. Hidden when nothing is published. */
 export function ConversationSection() {
   const { language } = useLanguage();
   const es = language === "es";
   const topics = usePublishedTopics();
-  const forums = useListeningForumCount();
+  const [query, setQuery] = useState("");
+  const [period, setPeriod] = useState<Period>("week");
+  const [platform, setPlatform] = useState<string | null>(null);
+  const [audience, setAudience] = useState<string | null>(null);
+  const [treatment, setTreatment] = useState<string | null>(null);
+  const platforms = useMemo(() => [...new Set(topics.map((t) => t.source_platform || t.source_forum).filter(Boolean))].sort(), [topics]);
+  const families = useMemo(() => [...new Set(platforms.map(platformFamily))], [platforms]);
+  const treatments = useMemo(() => [...new Map(topics.filter((t) => t.treatment).map((t) => [t.treatment, es ? t.treatment : (t.treatment_en || t.treatment)])).entries()].sort((a, b) => a[1].localeCompare(b[1])), [topics, es]);
+  const rows = useMemo(() => filterTopics(topics.map((t) => ({ ...t, source_platform: t.source_platform || t.source_forum })), { query, period, platform, audience, treatment }), [topics, query, period, platform, audience, treatment]);
   if (topics.length === 0) return null;
   return (
     <section className="mt-12">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">{es ? `Escuchando ${forums} foros` : `Listening to ${forums} forums`}</p>
-      <h2 className="mt-2 font-display text-3xl font-medium">{es ? "La conversación de esta semana" : "This week's conversation"}</h2>
+      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">{es ? "Escuchando foros: " : "Listening to forums: "}{families.join(", ")}</p>
+      <h2 className="mt-2 font-display text-3xl font-medium">{es ? "La conversación" : "The conversation"}</h2>
       <p className="mt-2 max-w-[65ch] text-sm text-muted-foreground">
         {es
-          ? "Las preguntas que más se repiten en foros públicos de pacientes, resumidas sin nombres ni historias personales. Es lo que se dice, no consejo médico."
-          : "The questions people ask most in public patient forums, summarised with no names or personal stories. It is what people say, not medical advice."}
+          ? "Las preguntas que más se repiten en foros públicos de pacientes, resumidas sin nombres ni historias personales. Es lo que se dice, no consejo médico. Las menciones son aproximadas."
+          : "The questions people ask most in public patient forums, summarised with no names or personal stories. It is what people say, not medical advice. Mention counts are approximate."}
       </p>
-      <div className="mt-6 grid gap-6 md:grid-cols-2">{topics.map((t) => <TopicCard key={t.id} t={t} />)}</div>
+      <div className="mt-6 space-y-3">
+        <div className="relative max-w-xl">
+          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
+          <Input value={query} onChange={(e) => setQuery(e.target.value)} className="pl-9" aria-label={es ? "Busca un tema" : "Search a topic"}
+            placeholder={es ? "Busca un tema: baja reserva, ovodonación, Chequia…" : "Search a topic: low reserve, egg donation, Czechia…"} />
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Chip on={period === "week"} onClick={() => setPeriod("week")}>{es ? "Esta semana" : "This week"}</Chip>
+          <Chip on={period === "3m"} onClick={() => setPeriod("3m")}>{es ? "Últimos 3 meses" : "Last 3 months"}</Chip>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Chip on={!platform} onClick={() => setPlatform(null)}>{es ? "Todos los foros" : "All forums"}</Chip>
+          {platforms.map((p) => <Chip key={p} on={platform === p} onClick={() => setPlatform(p)}>{p}</Chip>)}
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <Chip on={!audience} onClick={() => setAudience(null)}>{es ? "Todas" : "All"}</Chip>
+          {AUDS.map((a) => <Chip key={a} on={audience === a} onClick={() => setAudience(a)}>{AUDIENCE_LABEL[a][language]}</Chip>)}
+          <select value={treatment ?? ""} onChange={(e) => setTreatment(e.target.value || null)} aria-label={es ? "Tratamiento" : "Treatment"}
+            className="h-8 max-w-full rounded-full border border-border bg-card px-3 text-xs text-foreground">
+            <option value="">{es ? "Todos los tratamientos" : "All treatments"}</option>
+            {treatments.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+          </select>
+        </div>
+        <p className="text-xs text-muted-foreground">{rows.length} {es ? "temas" : "topics"}</p>
+      </div>
+      {rows.length === 0
+        ? <p className="mt-6 text-sm text-muted-foreground">{es ? "No hay temas con estos filtros. Prueba «Últimos 3 meses» o quita algún filtro." : "No topics match these filters. Try “Last 3 months” or remove a filter."}</p>
+        : <div className="mt-6 grid gap-6 md:grid-cols-2">{rows.map((t) => <TopicCard key={t.id} t={t} />)}</div>}
     </section>
   );
 }
