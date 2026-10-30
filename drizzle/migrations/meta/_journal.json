@@ -36,6 +36,13 @@
       "when": 1793304172729,
       "tag": "0004_rss_listening_sources",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1793363257052,
+      "tag": "0005_conversation_topic_filters",
+      "breakpoints": true
     }
   ]
 }

@@ -252,17 +252,22 @@ export type Database = {
           audiences: string[]
           confidence: string
           created_at: string
+          geography: string | null
           id: string
           market_data: Json
           mentions_estimate: number
+          period: string
           question_en: string
           question_es: string
           run_id: string | null
           signal_ids: string[]
           source_forum: string
           source_lang: string | null
+          source_platform: string
           source_url: string | null
           status: string
+          treatment: string
+          treatment_en: string
           trend: string
         }
         Insert: {
@@ -271,17 +276,22 @@ export type Database = {
           audiences?: string[]
           confidence?: string
           created_at?: string
+          geography?: string | null
           id?: string
           market_data?: Json
           mentions_estimate?: number
+          period?: string
           question_en?: string
           question_es?: string
           run_id?: string | null
           signal_ids?: string[]
           source_forum?: string
           source_lang?: string | null
+          source_platform?: string
           source_url?: string | null
           status?: string
+          treatment?: string
+          treatment_en?: string
           trend?: string
         }
         Update: {
@@ -290,17 +300,22 @@ export type Database = {
           audiences?: string[]
           confidence?: string
           created_at?: string
+          geography?: string | null
           id?: string
           market_data?: Json
           mentions_estimate?: number
+          period?: string
           question_en?: string
           question_es?: string
           run_id?: string | null
           signal_ids?: string[]
           source_forum?: string
           source_lang?: string | null
+          source_platform?: string
           source_url?: string | null
           status?: string
+          treatment?: string
+          treatment_en?: string
           trend?: string
         }
         Relationships: [
