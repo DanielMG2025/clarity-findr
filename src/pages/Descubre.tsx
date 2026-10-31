@@ -1,16 +1,52 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowDown, ArrowRight, Compass, ExternalLink, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, ExternalLink, Library, Sparkles } from "lucide-react";
 import { BasicsSection } from "@/modules/content/BasicsSection";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { AUDIENCE_LABEL, RESOURCES, usePublishedPills, type Audience } from "@/modules/content";
+import { AUDIENCE_LABEL, LIBRARY, VOICES, usePublishedPills, type Audience, type Resource } from "@/modules/content";
 import { PillCard } from "@/modules/content/PillCard";
 import { ConversationSection } from "@/modules/content/ConversationSection";
 
 const FILTERS: (Audience | "all")[] = ["all", "planners", "first-steps", "experienced", "men", "lgbt"];
+
+/** Section nav — order matches the page order. */
+const SECTIONS = [
+  { id: "conversacion", es: "Conversación", en: "Conversation" },
+  { id: "pildoras", es: "Píldoras", en: "Pills" },
+  { id: "basicos", es: "Guías", en: "Guides" },
+  { id: "biblioteca", es: "Biblioteca", en: "Library" },
+  { id: "voces", es: "Voces", en: "Voices" },
+] as const;
+
+const eyebrow = "text-[11px] font-semibold uppercase tracking-[0.18em] text-primary";
+
+function SourceCard({ r, es, language }: { r: Resource; es: boolean; language: "en" | "es" }) {
+  return (
+    <Card className="flex min-w-0 flex-col rounded-lg border-border/70 bg-card/60 p-5 shadow-none">
+      <h3 className="font-display text-lg font-medium leading-snug break-words">{r.name}</h3>
+      <p className="mt-1 text-[11px] uppercase tracking-[0.12em] text-muted-foreground break-words">{r.platform}{r.handle ? ` · ${r.handle}` : ""}</p>
+      <p className="mt-3 flex-1 text-sm leading-relaxed">{r.blurb[language]}</p>
+      <div className="mt-4 space-y-1 border-t border-border pt-3">
+        <Badge variant="outline" className="border-accent/50 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">
+          {es ? "Transparencia" : "Why trust it"}
+        </Badge>
+        <p className="text-xs text-muted-foreground">{r.affiliation[language]}</p>
+      </div>
+      <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1">
+        <a href={r.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
+          {es ? "Visitar" : "Visit"} <ExternalLink className="size-3.5" />
+        </a>
+        {r.links?.map((l) => (
+          <a key={l.url} href={l.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
+            {l.label} <ExternalLink className="size-3.5" />
+          </a>
+        ))}
+      </div>
+    </Card>
+  );
+}
 
 export default function Descubre() {
   const { language } = useLanguage();
@@ -19,39 +55,51 @@ export default function Descubre() {
   const [today, ...rest] = usePublishedPills();
   const match = (a: Audience[]) => filter === "all" || a.includes(filter);
   const feed = rest.filter((p) => match(p.audiences));
-  const voices = RESOURCES.filter((r) => match(r.audiences));
+  const voices = VOICES.filter((r) => match(r.audiences));
+  const creators = voices.filter((r) => r.kind === "creator");
+  const communities = voices.filter((r) => r.kind === "community");
 
   useEffect(() => {
     const id = window.location.hash.slice(1);
     if (id) setTimeout(() => document.getElementById(id)?.scrollIntoView(), 100);
   }, []);
 
-  const eyebrow = "text-[11px] font-semibold uppercase tracking-[0.18em] text-primary";
+  const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <div className="container max-w-5xl px-6 py-14 md:py-20 [&_h2]:text-balance">
       <header className="max-w-3xl">
         <span className={`${eyebrow} inline-flex items-center gap-2`}><Sparkles className="size-3" /> {es ? "Descubre" : "Discover"}</span>
         <h1 className="mt-5 font-display text-4xl md:text-6xl font-medium leading-tight text-balance">
-          {es ? "Tu brújula para orientarte en el tratamiento de fertilidad." : "Your compass to navigate fertility treatment."}
+          {es ? "Recursos para aprender, estés donde estés en tu camino." : "Resources to learn, wherever you are on your journey."}
         </h1>
         <p className="mt-4 font-editorial italic text-xl md:text-2xl text-muted-foreground">
-          {es ? "Información de fuentes públicas y lo que se dice en los foros, seleccionado para ti." : "Information from public sources and what people say in forums, selected for you."}
+          {es
+            ? "Da igual si estás empezando o si llevas tiempo en fertilidad: aquí tienes todo para informarte, abierto y sin pedirte ningún dato."
+            : "Whether you're just starting or you've been in fertility for a while: everything to inform yourself, open and with no data asked."}
         </p>
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <Button asChild size="lg" className="gap-2">
-            <Link to="/situacion"><Compass className="size-4" /> {es ? "Explora tu caso" : "Explore your case"} <ArrowRight className="size-4" /></Link>
-          </Button>
-          <Button variant="ghost" size="lg" className="gap-2" onClick={() => document.getElementById("contenido")?.scrollIntoView({ behavior: "smooth" })}>
-            {es ? "Descubre lo que se mueve" : "See what's moving"} <ArrowDown className="size-4" />
-          </Button>
-        </div>
+        <p className="mt-5 text-sm text-muted-foreground">
+          {es ? "¿Quieres ver tu caso?" : "Want to look at your case?"}{" "}
+          <Link to="/situacion" className="inline-flex items-center gap-1 font-medium text-primary hover:underline">
+            {es ? "Estudia tu caso" : "Check your case"} <ArrowRight className="size-3.5" />
+          </Link>
+        </p>
       </header>
 
-      <div id="contenido" className="scroll-mt-24" />
-      <ConversationSection />
+      <nav aria-label={es ? "Secciones" : "Sections"} className="mt-8 flex flex-wrap gap-2">
+        {SECTIONS.map((s) => (
+          <a key={s.id} href={`#${s.id}`} onClick={(e) => { e.preventDefault(); go(s.id); }}
+            className="rounded-full border border-border bg-card px-4 py-1.5 text-sm text-foreground transition-colors hover:border-accent hover:text-primary">
+            {es ? s.es : s.en}
+          </a>
+        ))}
+      </nav>
 
-      <section className="mt-12">
+      <div id="conversacion" className="scroll-mt-24">
+        <ConversationSection />
+      </div>
+
+      <section id="pildoras" className="mt-12 scroll-mt-24">
         <p className={`${eyebrow} mb-4`}>{es ? "Píldora del día" : "Pill of the day"}</p>
         <PillCard pill={today} featured />
       </section>
@@ -77,33 +125,50 @@ export default function Descubre() {
         )}
       </section>
 
-      <section className="mt-16">
-        <h2 className="font-display text-3xl font-medium">{es ? "Voces de confianza" : "Trusted voices"}</h2>
-        <p className="mt-2 max-w-[65ch] text-sm text-muted-foreground">
-          {es ? "Personas e instituciones que nos gusta escuchar — con quién habla y qué interés tiene, siempre a la vista." : "People and institutions we like to listen to — with who is talking and their interest always in view."}
-        </p>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {voices.map((r) => (
-            <Card key={r.id} className="flex min-w-0 flex-col rounded-lg border-border/70 bg-card/60 p-5 shadow-none">
-              <h3 className="font-display text-lg font-medium leading-snug break-words">{r.name}</h3>
-              <p className="mt-1 text-[11px] uppercase tracking-[0.12em] text-muted-foreground break-words">{r.platform}{r.handle ? ` · ${r.handle}` : ""}</p>
-              <p className="mt-3 flex-1 text-sm leading-relaxed">{r.blurb[language]}</p>
-              <div className="mt-4 space-y-1 border-t border-border pt-3">
-                <Badge variant="outline" className="border-accent/50 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">
-                  {es ? "Transparencia" : "Why trust it"}
-                </Badge>
-                <p className="text-xs text-muted-foreground">{r.affiliation[language]}</p>
-              </div>
-              <a href={r.url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
-                {es ? "Visitar" : "Visit"} <ExternalLink className="size-3.5" />
-              </a>
-            </Card>
-          ))}
-        </div>
-      </section>
-
       <section className="mt-20 border-t border-border pt-12">
         <BasicsSection />
+      </section>
+
+      <section id="biblioteca" className="mt-20 scroll-mt-24 border-t border-border pt-12">
+        <h2 className="flex items-center gap-2 font-display text-3xl font-medium">
+          <Library className="size-6 text-primary" /> {es ? "Biblioteca científica" : "Scientific library"}
+        </h2>
+        <p className="mt-2 max-w-[65ch] text-sm text-muted-foreground">
+          {es
+            ? "Instituciones, registros y sociedades médicas: las fuentes de las que salen los datos de fertilidad."
+            : "Institutions, registries and medical societies: the sources fertility data comes from."}
+        </p>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {LIBRARY.map((r) => <SourceCard key={r.id} r={r} es={es} language={language} />)}
+        </div>
+        <Link to="/library" className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
+          {es ? "Ver la biblioteca de referencias completa, con cifras clave" : "See the full reference library, with key figures"} <ArrowRight className="size-4" />
+        </Link>
+      </section>
+
+      <section id="voces" className="mt-20 scroll-mt-24 border-t border-border pt-12">
+        <h2 className="font-display text-3xl font-medium">{es ? "Voces de confianza" : "Trusted voices"}</h2>
+        <p className="mt-2 max-w-[65ch] text-sm text-muted-foreground">
+          {es
+            ? "Médicos creadores en YouTube, Instagram y podcasts, y comunidades que nos gusta escuchar — con quién habla y qué interés tiene, siempre a la vista. El filtro de perfil de arriba también se aplica aquí."
+            : "Doctor-creators on YouTube, Instagram and podcasts, and communities we like to listen to — with who is talking and their interest always in view. The audience filter above applies here too."}
+        </p>
+        {creators.length > 0 && (
+          <>
+            <p className={`${eyebrow} mt-8`}>{es ? "Creadores y voces" : "Creators and voices"}</p>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {creators.map((r) => <SourceCard key={r.id} r={r} es={es} language={language} />)}
+            </div>
+          </>
+        )}
+        {communities.length > 0 && (
+          <>
+            <p className={`${eyebrow} mt-10`}>{es ? "Comunidades y organizaciones" : "Communities and organizations"}</p>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {communities.map((r) => <SourceCard key={r.id} r={r} es={es} language={language} />)}
+            </div>
+          </>
+        )}
       </section>
 
       <p className="mt-16 max-w-[65ch] border-t border-border pt-6 text-sm text-muted-foreground leading-relaxed">
