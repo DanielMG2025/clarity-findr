@@ -1,18 +1,37 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ExternalLink, MessageCircle, TrendingUp, Minus, Search } from "lucide-react";
+import { ArrowRight, ExternalLink, MessageCircle, TrendingUp, Minus, Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { AUDIENCE_LABEL, type Audience } from "./types";
-import { usePublishedTopics, filterTopics, platformFamily, type Period, type TopicRow } from "./conversation";
+import { usePublishedTopics, filterTopics, platformFamily, groupPlatforms, type Period, type TopicRow } from "./conversation";
 
 const AUDS: Audience[] = ["planners", "first-steps", "experienced", "men", "lgbt"];
-const GEO_EN: Record<string, string> = { "España": "Spain", "Europa": "Europe", "Chequia": "Czechia", "España/Chequia": "Spain/Czechia", "Europa/EE. UU.": "Europe/US" };
+const GEO_EN: Record<string, string> = { "España": "Spain", "Europa": "Europe", "Chequia": "Czechia", "España/Chequia": "Spain/Czechia", "Europa/EE. UU.": "Europe/US", "Chipre": "Cyprus", "Grecia": "Greece", "EE. UU.": "US" };
+const ALL = "__all";
+
+function GroupLabel({ children, id }: { children: React.ReactNode; id?: string }) {
+  return <span id={id} className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">{children}</span>;
+}
 
 function Chip({ on, onClick, children }: { on: boolean; onClick: () => void; children: React.ReactNode }) {
-  return <button type="button" aria-pressed={on} onClick={onClick} className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${on ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-muted-foreground hover:border-accent hover:text-foreground"}`}>{children}</button>;
+  return <button type="button" aria-pressed={on} onClick={onClick} className={`h-8 rounded-full border px-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${on ? "border-primary bg-primary text-primary-foreground" : "border-border/80 bg-background text-muted-foreground hover:border-accent hover:text-foreground"}`}>{children}</button>;
+}
+
+function Segmented<T extends string>({ value, onChange, options, label }: { value: T; onChange: (v: T) => void; options: [T, string][]; label: string }) {
+  return (
+    <div role="radiogroup" aria-label={label} className="grid h-10 grid-cols-2 rounded-md border border-border/80 bg-background p-1">
+      {options.map(([v, l]) => (
+        <button key={v} type="button" role="radio" aria-checked={value === v} onClick={() => onChange(v)}
+          className={`whitespace-nowrap rounded-[5px] px-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${value === v ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}>
+          {l}
+        </button>
+      ))}
+    </div>
+  );
 }
 
 function TopicCard({ t }: { t: TopicRow }) {
