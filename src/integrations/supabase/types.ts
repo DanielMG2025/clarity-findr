@@ -58,6 +58,7 @@ export type Database = {
           id: string
           last_link_sent_at: string | null
           name: string | null
+          segment: string | null
         }
         Insert: {
           active?: boolean
@@ -66,6 +67,7 @@ export type Database = {
           id?: string
           last_link_sent_at?: string | null
           name?: string | null
+          segment?: string | null
         }
         Update: {
           active?: boolean
@@ -74,6 +76,46 @@ export type Database = {
           id?: string
           last_link_sent_at?: string | null
           name?: string | null
+          segment?: string | null
+        }
+        Relationships: []
+      }
+      beta_feedback: {
+        Row: {
+          category: string | null
+          created_at: string
+          id: string
+          lang: string | null
+          message: string
+          page_path: string | null
+          segment: string | null
+          status: string
+          user_email: string
+          user_id: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          lang?: string | null
+          message: string
+          page_path?: string | null
+          segment?: string | null
+          status?: string
+          user_email: string
+          user_id?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          lang?: string | null
+          message?: string
+          page_path?: string | null
+          segment?: string | null
+          status?: string
+          user_email?: string
+          user_id?: string | null
         }
         Relationships: []
       }

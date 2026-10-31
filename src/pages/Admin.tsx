@@ -13,6 +13,7 @@ import {
   ExternalLink,
   Sparkle,
   Ear,
+  MessageSquareHeart,
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -69,11 +70,18 @@ const Admin = () => {
                 {language === "es" ? "Usuarios, píldoras y escucha disponibles para administradores. Las demás secciones conservan su estado actual." : "Users, pills and listening are available to admins. Other sections retain their existing functionality."}
               </p>
             </div>
+            <div className="flex flex-wrap gap-2">
+            <Button asChild>
+              <Link to="/admin/feedback">
+                <MessageSquareHeart className="size-4" /> {language === "es" ? "Comentarios de la beta" : "Beta feedback"}
+              </Link>
+            </Button>
             <Button asChild variant="outline">
               <Link to="/admin/pricing-dashboard">
                 Open standalone data dashboard <ExternalLink className="size-4" />
               </Link>
             </Button>
+            </div>
           </div>
 
           <Tabs defaultValue="overview" className="w-full">
