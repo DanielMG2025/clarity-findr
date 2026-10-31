@@ -70,7 +70,7 @@ export function BridgeCta() {
     <p className="mt-5 border-t border-border/70 pt-4 text-sm">
       <span className="text-muted-foreground">{es ? "¿Y en tu caso?" : "And in your case?"}</span>{" "}
       <Link to="/situacion" className="font-medium text-primary hover:underline">
-        {es ? "→ Brujulea tu situación" : "→ Check your situation"}
+        {es ? "→ Estudia tu situación" : "→ Check your situation"}
       </Link>
     </p>
   );
