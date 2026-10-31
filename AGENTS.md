@@ -3,7 +3,7 @@
 
 - Keep `/report` and `/summary` as read-only aggregations of existing master-record, journey, evidence, pricing, and regulatory outputs so printed figures never diverge from patient pages.
 
-- Both patient reports consume the shared `patientNarrative` presentation helper so their opening paragraphs cannot drift; keep it read-only.
+- Both patient reports consume the shared `patientNarrative` presentation helper (it takes the active language and builds each language's prose from the same inputs) so their opening paragraphs cannot drift; keep it read-only.
 
 - Localize display text through the context-aware JSX presentation boundary and exact-copy dictionaries in `src/i18n`; this keeps persisted form values, routes, clinical records and engine outputs untouched. Never mutate React-owned DOM text for translation. Basics guide copy is translated as exact-copy keys in `src/i18n/education.es.ts` (merged under the base dictionary), and text passed through `AutoGlossary` must be localized with `t()` first because it splits raw strings.
 
@@ -13,3 +13,5 @@
 - `/descubre` is the single general content hub (anchored sections: conversation, pills, Basics guides, scientific library, voices); `RESOURCES.kind` splits institutions (library) from creators/communities (voices). `/aprende` redirects to `/descubre#basicos` while `/aprende/:slug` stays the article route. `/library` stays in the case-tool area because `/sources` and the patient sidebar link to it as the evidence behind the orientation.
 - The landing `/` is a two-door fork (/descubre and /situacion as equals, /demo tertiary); its "hot this week" strip reuses `usePublishedTopics` read-only, so it never shows unpublished or non-week topics.
 - The patient route (`intent.goal`: preserve/treatment/unsure) is chosen at /situacion entry and only tailors framing and example cases; choosing "preserve" maps to the existing `social_freezing` treatment interest so engines stay unchanged until a dedicated preservation engine exists.
+- Engine/journey outputs (factors, plans, legal verdicts, citations, price notes) stay English in the engines and are localized at presentation by `src/i18n/journey.es.ts` (exact keys plus patterned sentences for ages, counts and countries), so engines and tests never depend on language.
+- Example cases are `DEMO_PATIENTS` seeds kept inside the engine vocabulary (unmodelled routes like ROPA, tandem, embryo donation or surrogacy map to the closest `treatment_interest` and are explained in the story); the "Legal case" badge comes from the regulatory engine, and a presentation-only marker (`exampleCase.ts`) frames reports as the example's recommendation until "Study your own case" resets the record.

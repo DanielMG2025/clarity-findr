@@ -1,8 +1,10 @@
 // Exact English presentation copy is the key; source records are never modified.
 import { EDUCATION_ES } from "./education.es";
+import { JOURNEY_ES } from "./journey.es";
 
 export const es: Record<string, string> = {
   ...EDUCATION_ES,
+  ...JOURNEY_ES,
   "Language": "Idioma",
   "Pills": "Píldoras",
   "Listening": "Escucha",

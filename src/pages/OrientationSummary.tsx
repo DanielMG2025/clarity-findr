@@ -5,12 +5,14 @@ import { ArrowRight, FileText, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/patient/PageHeader";
+import { ExampleCasePanel } from "@/components/patient/ExampleCasePanel";
 import { citation, ownEggCitationForAge } from "@/modules/evidence/citations";
 import { useMasterRecord, usePatientJourney } from "@/modules/master-record";
-import { patientNarrative, FAMILY_PHRASE, TREATMENT_PHRASE, joinNaturally } from "@/modules/master-record/patientNarrative";
+import { patientNarrative, FAMILY_PHRASE, FAMILY_PHRASE_ES, TREATMENT_PHRASE, TREATMENT_PHRASE_ES, joinNaturally } from "@/modules/master-record/patientNarrative";
 import { seedEstimateForProfile } from "@/modules/provenance";
 import { usePricingConfigurator } from "@/modules/pricing-configurator";
 import { byCode } from "@/modules/regulatory";
+import { needWithArticleEs } from "@/i18n/journey.es";
 
 function formatEuro(value: number) {
   return `€${Math.round(value).toLocaleString()}`;
@@ -32,7 +34,8 @@ function Section({ number, title, children }: { number: string; title: string; c
 }
 
 export default function OrientationSummary() {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
+  const es = language === "es";
   const mpr = useMasterRecord();
   const journey = usePatientJourney();
   const { profile, bundle } = usePricingConfigurator();
@@ -48,17 +51,24 @@ export default function OrientationSummary() {
     () => bundle.estimate ?? seedEstimateForProfile(profile.treatment, profile.country),
     [bundle.estimate, profile.country, profile.treatment],
   );
-  const situationParts = [
-    age != null ? `You're ${age}` : undefined,
-    country ? `living in ${country}` : undefined,
-    family ? FAMILY_PHRASE[family] : undefined,
-    treatment ? `considering ${TREATMENT_PHRASE[treatment]}` : undefined,
-  ].filter((part): part is string => Boolean(part));
+  const situationParts = (es
+    ? [
+        age != null ? `Tienes ${age} años` : undefined,
+        country ? `vives en ${t(country)}` : undefined,
+        family ? FAMILY_PHRASE_ES[family] : undefined,
+        treatment ? `estás valorando ${TREATMENT_PHRASE_ES[treatment]}` : undefined,
+      ]
+    : [
+        age != null ? `You're ${age}` : undefined,
+        country ? `living in ${country}` : undefined,
+        family ? FAMILY_PHRASE[family] : undefined,
+        treatment ? `considering ${TREATMENT_PHRASE[treatment]}` : undefined,
+      ]).filter((part): part is string => Boolean(part));
   const optionRows = journey.step4_costs.slice(0, 3);
   const blockedResult = journey.step0_regulatory?.results.find((result) => result.verdict === "not_allowed");
   const reportDate = new Intl.DateTimeFormat(language === "es" ? "es-ES" : "en-GB", { day: "numeric", month: "long", year: "numeric" }).format(new Date());
 
-  const narrative = patientNarrative(mpr, journey);
+  const narrative = patientNarrative(mpr, journey, language);
 
   return (
 
@@ -77,7 +87,7 @@ export default function OrientationSummary() {
           eyebrow="Fertility Compass"
           title="Your orientation summary"
           subtitle="A short, human explanation of your situation and the options that may be worth exploring."
-          note={`Prepared ${reportDate} · Orientation based on public data — not a diagnosis or a personalized prediction.`}
+          note={es ? `Preparado el ${reportDate} · Orientación basada en datos públicos: no es un diagnóstico ni una predicción personalizada.` : `Prepared ${reportDate} · Orientation based on public data — not a diagnosis or a personalized prediction.`}
         />
       </div>
 
@@ -92,6 +102,7 @@ export default function OrientationSummary() {
         </Card>
       ) : (
         <>
+          <ExampleCasePanel journey={journey} />
           <div className="max-w-[65ch] space-y-6 text-base leading-8 text-muted-foreground">
             {narrative.map((paragraph, index) => (
               <p key={index} className={index === 0 ? "font-editorial text-2xl italic leading-relaxed text-foreground sm:text-3xl first-letter:float-left first-letter:mr-2 first-letter:mt-1 first-letter:font-display first-letter:text-6xl first-letter:not-italic first-letter:leading-none first-letter:text-primary sm:first-letter:text-7xl" : index === narrative.length - 1 ? "font-medium text-foreground" : undefined}>
@@ -103,7 +114,7 @@ export default function OrientationSummary() {
 
           <div className="space-y-10">
             <Section number="01" title="Your situation">
-              <p>{joinNaturally(situationParts)}.</p>
+              <p>{joinNaturally(situationParts, language)}.</p>
               <p>This gives you a useful starting point. It helps frame the questions to ask, but it cannot tell us exactly how your body will respond or replace a consultation.</p>
             </Section>
 
@@ -131,7 +142,9 @@ export default function OrientationSummary() {
                 {blockedResult && blockedResult.alternatives.length > 0 && (
                   <li className="flex gap-3">
                     <span className="mt-0.5 font-semibold text-primary">{optionRows.length + 1}.</span>
-                    <span><strong className="font-semibold text-foreground">Explore treatment abroad.</strong> {blockedResult.label} is not currently available for your situation in {country ?? "your country"}, while existing regulatory data lists {joinNaturally(blockedResult.alternatives.slice(0, 3).map((item) => item.label))} as possible alternatives to confirm directly.</span>
+                    <span><strong className="font-semibold text-foreground">Explore treatment abroad.</strong> {es
+                      ? `Ahora mismo ${needWithArticleEs(blockedResult.label)} no está disponible para tu situación en ${country ? t(country) : "tu país"}; los datos legales disponibles señalan ${joinNaturally(blockedResult.alternatives.slice(0, 3).map((item) => t(item.label)), "es")} como alternativas posibles, que conviene confirmar directamente.`
+                      : `${blockedResult.label} is not currently available for your situation in ${country ?? "your country"}, while existing regulatory data lists ${joinNaturally(blockedResult.alternatives.slice(0, 3).map((item) => item.label))} as possible alternatives to confirm directly.`}</span>
                   </li>
                 )}
               </ol>
@@ -140,7 +153,11 @@ export default function OrientationSummary() {
 
             <Section number="04" title="What it might cost">
               {priceEstimate && !priceEstimate.empty ? (
+                es ? (
+                  <p>{`Los precios publicados para ${TREATMENT_PHRASE_ES[treatment ?? "unsure"]} en ${t(country ?? profile.country)} apuntan ahora a un rango de `}<strong className="font-semibold text-foreground">{formatEuro(priceEstimate.range_min)}–{formatEuro(priceEstimate.range_max)}</strong>{", con una estimación central de unos "}<strong className="font-semibold text-foreground">{formatEuro(priceEstimate.expected)}</strong>{` y una confianza ${priceEstimate.confidence === "high" ? "alta" : priceEstimate.confidence === "medium" ? "media" : "baja"}. Estos precios suelen ser por ciclo y a menudo no incluyen medicación, almacenamiento, viajes ni extras propios de cada caso, así que solo el presupuesto de una clínica puede confirmar tu total.`}</p>
+                ) : (
                 <p>Published prices for {TREATMENT_PHRASE[treatment ?? "unsure"]} in {country ?? profile.country} currently point to a range of <strong className="font-semibold text-foreground">{formatEuro(priceEstimate.range_min)}–{formatEuro(priceEstimate.range_max)}</strong>, with a central estimate of about <strong className="font-semibold text-foreground">{formatEuro(priceEstimate.expected)}</strong> and {priceEstimate.confidence} confidence. These prices are usually per cycle and often exclude medication, storage, travel and case-specific extras, so only a clinic quote can confirm your total.</p>
+                )
               ) : (
                 <p>There is not enough published price data for this exact treatment and country, so we have not shown a number. A clinic can give you an itemised quote once your treatment plan is clearer.</p>
               )}

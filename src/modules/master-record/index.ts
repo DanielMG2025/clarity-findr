@@ -7,3 +7,4 @@ export * from "./usePatientJourney";
 export * from "./toRecord";
 export * from "./loadDemo";
 export * from "./similarCases";
+export * from "./exampleCase";

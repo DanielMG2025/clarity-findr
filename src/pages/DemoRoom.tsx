@@ -6,7 +6,9 @@ import { RotateCcw, ArrowRight, Scale, MapPin, Users, Search, LayoutGrid, Snowfl
 import {
   DEMO_PATIENTS,
   completeness,
-  loadDemoPatient,
+  openExampleCase,
+  startOwnCase,
+  runDemo,
   useMasterRecord,
   findSimilarCases,
   type AgeBand,
@@ -15,6 +17,7 @@ import {
 import { byCode, type FamilyStructure } from "@/modules/regulatory";
 import { useLanguage } from "@/i18n/LanguageContext";
 import type { Language } from "@/i18n/translate";
+import { StudyOwnCaseCta } from "@/components/patient/ExampleCasePanel";
 
 const LEVEL_TONE: Record<DemoPatientSeed["data_level"], string> = {
   high: "bg-emerald-500/15 text-emerald-700 border-emerald-500/30",
@@ -33,12 +36,11 @@ const FAMILY_LABEL: Record<FamilyStructure, Record<Language, string>> = {
   male_couple: { en: "Male couple", es: "Pareja de hombres" },
   single_man: { en: "Single man", es: "Hombre solo" },
 };
-const COUNTRY_ES: Record<string, string> = { ES: "España", IT: "Italia", DE: "Alemania" };
 const AGE_BANDS: [AgeBand, string][] = [["under_32", "< 32"], ["32_35", "32–35"], ["36_39", "36–39"], ["40_plus", "40+"]];
-const FAMILIES: FamilyStructure[] = ["single_woman", "hetero_couple", "female_couple"];
+const FAMILIES: FamilyStructure[] = ["single_woman", "hetero_couple", "female_couple", "male_couple", "single_man"];
 
-/** Countries whose framework blocks some family structures — the regulatory example. */
-const RESTRICTIVE = new Set(["IT", "DE", "CH", "PL", "CZ", "CY", "GR"]);
+/** "Legal case" = the regulatory engine says something this case needs isn't available at home. */
+const LEGAL_CASE = new Set(DEMO_PATIENTS.filter((p) => runDemo(p).step0_regulatory?.needs_to_travel).map((p) => p.key));
 
 function Seg<T extends string>({ value, onChange, options, label }: { value: T | null; onChange: (v: T) => void; options: [T, string][]; label: string }) {
   return (
@@ -54,17 +56,17 @@ function Seg<T extends string>({ value, onChange, options, label }: { value: T |
 }
 
 function CaseCard({ p, onPick }: { p: DemoPatientSeed; onPick: (p: DemoPatientSeed) => void }) {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const es = language === "es";
   const family = p.family_structure ?? "hetero_couple";
-  const country = es ? (COUNTRY_ES[p.country] ?? byCode(p.country)?.label ?? p.country) : (byCode(p.country)?.label ?? p.country);
+  const country = t(byCode(p.country)?.label ?? p.country);
   return (
     <button type="button" onClick={() => onPick(p)}
       className="text-left rounded-2xl border border-border/70 bg-card p-5 flex flex-col gap-4 shadow-none hover:border-primary/40 hover:shadow-sm transition-smooth focus:outline-none focus:ring-2 focus:ring-primary/40">
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <div className="font-display text-lg font-medium tracking-tight">{p.name} · {p.age}</div>
-          <div className="text-xs text-muted-foreground leading-relaxed">{es ? (p.label_es ?? p.label) : p.label}</div>
+          <div className="text-xs text-muted-foreground leading-relaxed">{es ? p.label_es : p.label}</div>
         </div>
         <span className={`shrink-0 rounded-full border px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider ${LEVEL_TONE[p.data_level]}`}>
           {LEVEL_LABEL[p.data_level][language]}
@@ -77,12 +79,13 @@ function CaseCard({ p, onPick }: { p: DemoPatientSeed; onPick: (p: DemoPatientSe
         </span>
         <span className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5"><MapPin className="size-3" /> {country}</span>
         <span className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5"><Users className="size-3" /> {FAMILY_LABEL[family][language]}</span>
-        {RESTRICTIVE.has(p.country) && (
+        {LEGAL_CASE.has(p.key) && (
           <span className="inline-flex items-center gap-1 rounded-md bg-rose-500/10 text-rose-600 px-2 py-0.5 font-medium">
             <Scale className="size-3" /> {es ? "Caso legal" : "Legal case"}
           </span>
         )}
       </div>
+      <p className="text-sm leading-relaxed text-foreground/85">{es ? p.story_es : p.story}</p>
       <div className="mt-auto flex items-center justify-between border-t border-border/50 pt-3">
         <span className="text-[11px] text-muted-foreground">
           <span className="font-display tabular-nums">{completeness(p)}%</span> {es ? "del perfil completo" : "profile complete"}
@@ -100,7 +103,6 @@ export default function DemoRoom() {
   const { language } = useLanguage();
   const es = language === "es";
   const loadedName = useMasterRecord((s) => s.identity.name);
-  const reset = useMasterRecord((s) => s.reset);
   const [mode, setMode] = useState<"find" | "all">("find");
   const [goal, setGoal] = useState<"preserve" | "treatment" | null>(null);
   const [band, setBand] = useState<AgeBand | null>(null);
@@ -108,7 +110,7 @@ export default function DemoRoom() {
   const matches = useMemo(() => goal && band ? findSimilarCases(DEMO_PATIENTS, { goal, ageBand: band, family: family ?? undefined }) : [], [goal, band, family]);
 
   const pick = (seed: DemoPatientSeed) => {
-    loadDemoPatient(seed);
+    openExampleCase(seed);
     navigate("/report");
   };
 
@@ -133,7 +135,7 @@ export default function DemoRoom() {
             {es ? "Caso abierto ahora: " : "Case open now: "}<strong className="font-display font-medium">{loadedName}</strong>.
           </div>
           <div className="flex gap-2">
-            <Button size="sm" variant="outline" className="gap-1" onClick={() => reset()}>
+            <Button size="sm" variant="outline" className="gap-1" onClick={() => startOwnCase()}>
               <RotateCcw className="size-3.5" /> {es ? "Borrar" : "Reset"}
             </Button>
             <Button size="sm" className="gap-1" onClick={() => navigate("/report")}>
@@ -142,6 +144,7 @@ export default function DemoRoom() {
           </div>
         </Card>
       )}
+      {loadedName && <StudyOwnCaseCta />}
 
       <div role="tablist" aria-label={es ? "Modo" : "Mode"} className="inline-flex rounded-md border border-border/80 bg-card p-1">
         {([["find", Search, es ? "Búscame un caso parecido" : "Find a case like me"], ["all", LayoutGrid, es ? "Ver todos los casos" : "Browse all cases"]] as const).map(([m, Icon, l]) => (

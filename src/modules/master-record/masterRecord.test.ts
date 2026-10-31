@@ -20,9 +20,9 @@ describe("emptyRecord", () => {
 });
 
 describe("DEMO_PATIENTS", () => {
-  it("provides 16 patients with unique keys", () => {
-    expect(DEMO_PATIENTS).toHaveLength(16);
-    expect(new Set(DEMO_PATIENTS.map((p) => p.key)).size).toBe(16);
+  it("provides 24 patients with unique keys", () => {
+    expect(DEMO_PATIENTS).toHaveLength(24);
+    expect(new Set(DEMO_PATIENTS.map((p) => p.key)).size).toBe(24);
   });
 
   it("covers the required data levels", () => {

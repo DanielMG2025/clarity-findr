@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Compass, Wallet, ListChecks } from "lucide-react";
+import { useLanguage } from "@/i18n/LanguageContext";
 import { DEMO_PATIENTS, completeness, loadDemoPatient, type DemoPatientSeed } from "@/modules/master-record";
 
 const LEVEL_TONE: Record<DemoPatientSeed["data_level"], string> = {
@@ -11,8 +12,16 @@ const LEVEL_TONE: Record<DemoPatientSeed["data_level"], string> = {
   low: "bg-muted text-muted-foreground border-border",
 };
 
+const LEVEL_LABEL: Record<DemoPatientSeed["data_level"], { en: string; es: string }> = {
+  high: { en: "High data", es: "Muchos datos" },
+  medium: { en: "Medium data", es: "Datos medios" },
+  low: { en: "Low data", es: "Pocos datos" },
+};
+
 export function DemoPatientPicker() {
   const navigate = useNavigate();
+  const { language } = useLanguage();
+  const es = language === "es";
 
   const loadAndGo = (seed: DemoPatientSeed, to: string) => {
     loadDemoPatient(seed);
@@ -35,15 +44,15 @@ export function DemoPatientPicker() {
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
                 <div className="font-semibold">{p.name}</div>
-                <div className="text-xs text-muted-foreground">{p.label}</div>
+                <div className="text-xs text-muted-foreground">{es ? p.label_es : p.label}</div>
               </div>
               <Badge variant="outline" className={`text-[10px] shrink-0 ${LEVEL_TONE[p.data_level]}`}>
-                {p.data_level}
+                {LEVEL_LABEL[p.data_level][language]}
               </Badge>
             </div>
 
             <div className="text-[11px] text-muted-foreground">
-              {completeness(p)}% profile complete
+              {completeness(p)}% {es ? "del perfil completo" : "profile complete"}
             </div>
 
             <div className="flex flex-wrap gap-2 mt-auto">
