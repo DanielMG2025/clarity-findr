@@ -26,8 +26,8 @@ const COPY = {
     es: "Tu brújula para entender tus opciones, costes realistas y lo que de verdad influye — con cada dato explicado.",
   },
   doorsLabel: { en: "Choose where to start", es: "Elige por dónde empezar" },
-  demoLine: { en: "Just exploring the product?", es: "¿Solo quieres curiosear el producto?" },
-  demoLink: { en: "Enter demo mode with a sample case.", es: "Entra en modo demo con un caso de ejemplo." },
+  demoLine: { en: "Want to see how it would work for someone like you?", es: "¿Quieres ver cómo funcionaría con alguien parecido a ti?" },
+  demoLink: { en: "→ Example cases", es: "→ Casos de ejemplo" },
   disclaimer: {
     en: "Orientation based on public data and on what you choose to share. It does not replace a medical consultation.",
     es: "Orientación basada en datos públicos y en lo que eliges compartir. No sustituye una consulta médica.",

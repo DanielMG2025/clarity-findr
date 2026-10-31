@@ -21,7 +21,7 @@ export function AppLayout({ children }: Props) {
             <span className="ml-2 min-w-0 truncate font-editorial italic text-base text-sidebar-primary md:text-lg">Your fertility companion</span>
             <div className="ml-auto"><LanguageSwitch /></div>
             <Button asChild size="sm" variant="outline" className="mr-3 h-8 shrink-0 gap-1.5 rounded-full border-sidebar-primary/60 bg-sidebar-primary/10 text-sidebar-accent-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-sidebar-ring">
-              <Link to="/demo"><Play className="size-3.5" /> Demo mode</Link>
+              <Link to="/demo"><Play className="size-3.5" /> Example cases</Link>
             </Button>
           </header>
           <main className="flex-1 min-w-0">{children}</main>

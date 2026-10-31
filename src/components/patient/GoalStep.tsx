@@ -46,7 +46,6 @@ export function GoalStep() {
           );
         })}
       </div>
-      <ExampleCasesLink className="mt-6" />
     </section>
   );
 }

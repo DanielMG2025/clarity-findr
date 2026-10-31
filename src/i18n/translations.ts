@@ -10,6 +10,7 @@ export const es: Record<string, string> = {
   "Español": "Español",
   "Your fertility companion": "Tu compañera de fertilidad",
   "Demo mode": "Modo demo",
+  "Example cases": "Casos de ejemplo",
   "My situation": "Mi situación",
   "Your story and data": "Tu historia y tus datos",
   "My orientation": "Mi orientación",
