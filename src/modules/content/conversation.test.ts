@@ -25,6 +25,10 @@ describe("filterTopics", () => {
     expect(filterTopics(rows, { ...f, query: "ovodonacion" })).toHaveLength(1);
     expect(filterTopics(rows, { ...f, period: "3m", query: "chequia" })).toHaveLength(1);
   });
+  it("a non-empty search ignores the period filter", () => {
+    expect(filterTopics(rows, { ...f, query: "chequia" })).toHaveLength(1);
+    expect(filterTopics(rows, { ...f, query: "  " })).toHaveLength(1);
+  });
   it("forum and audience filters", () => {
     expect(filterTopics(rows, { ...f, period: "3m", platform: "Mumsnet" })).toHaveLength(1);
     expect(filterTopics(rows, { ...f, period: "3m", audience: "lgbt" })[0].source_platform).toBe("Mumsnet");

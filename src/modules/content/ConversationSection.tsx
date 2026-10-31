@@ -156,7 +156,7 @@ export function ConversationSection() {
           </div>
         </div>
         <div className="flex items-center justify-between gap-3">
-          <p className="font-display text-lg text-foreground" aria-live="polite">{rows.length} <span className="text-sm text-muted-foreground">{es ? (rows.length === 1 ? "tema" : "temas") : (rows.length === 1 ? "topic" : "topics")}</span></p>
+          <p className="font-display text-lg text-foreground" aria-live="polite">{rows.length} <span className="text-sm text-muted-foreground">{es ? (rows.length === 1 ? "tema" : "temas") : (rows.length === 1 ? "topic" : "topics")}</span>{query.trim() && <span className="ml-2 font-sans text-xs italic text-muted-foreground">· {es ? "buscando en todo el histórico" : "searching all time"}</span>}</p>
           {(query || platform || audience || treatment || period !== "week") && (
             <button type="button" onClick={() => { setQuery(""); setPlatform(null); setAudience(null); setTreatment(null); setPeriod("week"); }}
               className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline">
