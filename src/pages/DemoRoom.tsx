@@ -157,16 +157,16 @@ export default function DemoRoom() {
           <div className="grid gap-5 rounded-lg border border-border/70 bg-card/60 p-5 md:grid-cols-3">
             <div className="min-w-0">
               <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">{es ? "¿Qué buscas?" : "What are you looking for?"}</span>
-              <Seg value={goal} onChange={setGoal} label={es ? "¿Qué buscas?" : "What are you looking for?"}
+              <Seg<"preserve" | "treatment"> value={goal} onChange={setGoal} label={es ? "¿Qué buscas?" : "What are you looking for?"}
                 options={[["preserve", es ? "Preservar" : "Preserve"], ["treatment", es ? "Tratamiento" : "Treatment"]]} />
             </div>
             <div className="min-w-0">
               <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">{es ? "Edad" : "Age"}</span>
-              <Seg value={band} onChange={setBand} label={es ? "Edad" : "Age"} options={AGE_BANDS} />
+              <Seg<AgeBand> value={band} onChange={setBand} label={es ? "Edad" : "Age"} options={AGE_BANDS} />
             </div>
             <div className="min-w-0">
               <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">{es ? "Familia (opcional)" : "Family (optional)"}</span>
-              <Seg value={family} onChange={(v) => setFamily(v === family ? null : v)} label={es ? "Familia" : "Family"}
+              <Seg<FamilyStructure> value={family} onChange={(v) => setFamily(v === family ? null : v)} label={es ? "Familia" : "Family"}
                 options={FAMILIES.map((f) => [f, FAMILY_LABEL[f][language]] as [FamilyStructure, string])} />
             </div>
           </div>
