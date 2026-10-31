@@ -89,6 +89,7 @@ export function ConversationSection() {
   const [treatment, setTreatment] = useState<string | null>(null);
   const platforms = useMemo(() => [...new Set(topics.map((t) => t.source_platform || t.source_forum).filter(Boolean))].sort(), [topics]);
   const families = useMemo(() => [...new Set(platforms.map(platformFamily))], [platforms]);
+  const forumGroups = useMemo(() => groupPlatforms(platforms), [platforms]);
   const treatments = useMemo(() => [...new Map(topics.filter((t) => t.treatment).map((t) => [t.treatment, es ? t.treatment : (t.treatment_en || t.treatment)])).entries()].sort((a, b) => a[1].localeCompare(b[1])), [topics, es]);
   const rows = useMemo(() => filterTopics(topics.map((t) => ({ ...t, source_platform: t.source_platform || t.source_forum })), { query, period, platform, audience, treatment }), [topics, query, period, platform, audience, treatment]);
   if (topics.length === 0) return null;
@@ -101,30 +102,68 @@ export function ConversationSection() {
           ? "Las preguntas que más se repiten en foros públicos de pacientes, resumidas sin nombres ni historias personales. Es lo que se dice, no consejo médico. Las menciones son aproximadas."
           : "The questions people ask most in public patient forums, summarised with no names or personal stories. It is what people say, not medical advice. Mention counts are approximate."}
       </p>
-      <div className="mt-6 space-y-3">
+      <div className="mt-6 space-y-4">
         <div className="relative max-w-xl">
           <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
-          <Input value={query} onChange={(e) => setQuery(e.target.value)} className="pl-9" aria-label={es ? "Busca un tema" : "Search a topic"}
+          <Input value={query} onChange={(e) => setQuery(e.target.value)} className="h-11 pl-9" aria-label={es ? "Busca un tema" : "Search a topic"}
             placeholder={es ? "Busca un tema: baja reserva, ovodonación, Chequia…" : "Search a topic: low reserve, egg donation, Czechia…"} />
         </div>
-        <div className="flex flex-wrap gap-2">
-          <Chip on={period === "week"} onClick={() => setPeriod("week")}>{es ? "Esta semana" : "This week"}</Chip>
-          <Chip on={period === "3m"} onClick={() => setPeriod("3m")}>{es ? "Últimos 3 meses" : "Last 3 months"}</Chip>
+        <div className="rounded-lg border border-border/70 bg-card/60 p-4 sm:p-5">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_auto]">
+            <div className="min-w-0 border-l-2 border-accent pl-3">
+              <GroupLabel id="conv-theme">{es ? "Temática" : "Theme"}</GroupLabel>
+              <Select value={treatment ?? ALL} onValueChange={(v) => setTreatment(v === ALL ? null : v)}>
+                <SelectTrigger aria-labelledby="conv-theme" className={`h-10 bg-background font-medium ${treatment ? "border-primary text-primary" : ""}`}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="max-h-80">
+                  <SelectItem value={ALL}>{es ? "Todas las temáticas" : "All themes"}</SelectItem>
+                  <SelectSeparator />
+                  {treatments.map(([v, l]) => <SelectItem key={v} value={v}>{l}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="min-w-0">
+              <GroupLabel id="conv-forum">{es ? "Foro" : "Forum"}</GroupLabel>
+              <Select value={platform ?? ALL} onValueChange={(v) => setPlatform(v === ALL ? null : v)}>
+                <SelectTrigger aria-labelledby="conv-forum" className={`h-10 bg-background ${platform ? "border-primary text-primary" : ""}`}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="max-h-80">
+                  <SelectItem value={ALL}>{es ? "Todos los foros" : "All forums"}</SelectItem>
+                  {forumGroups.map((g) => g.items.length > 1 || g.items[0].label !== g.family ? (
+                    <SelectGroup key={g.family}>
+                      <SelectSeparator />
+                      <SelectLabel className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{g.family}</SelectLabel>
+                      {g.items.map((i) => <SelectItem key={i.value} value={i.value}>{i.label}</SelectItem>)}
+                    </SelectGroup>
+                  ) : <SelectItem key={g.family} value={g.items[0].value}>{g.items[0].label}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="min-w-0 md:col-span-2 lg:col-span-1">
+              <GroupLabel>{es ? "Tiempo" : "Time"}</GroupLabel>
+              <Segmented value={period} onChange={setPeriod} label={es ? "Tiempo" : "Time"}
+                options={[["week", es ? "Esta semana" : "This week"], ["3m", es ? "Últimos 3 meses" : "Last 3 months"]]} />
+            </div>
+          </div>
+          <div className="mt-4 border-t border-border/60 pt-4">
+            <GroupLabel id="conv-profile">{es ? "Perfil" : "Profile"}</GroupLabel>
+            <div role="group" aria-labelledby="conv-profile" className="flex flex-wrap gap-2">
+              <Chip on={!audience} onClick={() => setAudience(null)}>{es ? "Todos" : "All"}</Chip>
+              {AUDS.map((a) => <Chip key={a} on={audience === a} onClick={() => setAudience(a)}>{AUDIENCE_LABEL[a][language]}</Chip>)}
+            </div>
+          </div>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <Chip on={!platform} onClick={() => setPlatform(null)}>{es ? "Todos los foros" : "All forums"}</Chip>
-          {platforms.map((p) => <Chip key={p} on={platform === p} onClick={() => setPlatform(p)}>{p}</Chip>)}
+        <div className="flex items-center justify-between gap-3">
+          <p className="font-display text-lg text-foreground" aria-live="polite">{rows.length} <span className="text-sm text-muted-foreground">{es ? (rows.length === 1 ? "tema" : "temas") : (rows.length === 1 ? "topic" : "topics")}</span></p>
+          {(query || platform || audience || treatment || period !== "week") && (
+            <button type="button" onClick={() => { setQuery(""); setPlatform(null); setAudience(null); setTreatment(null); setPeriod("week"); }}
+              className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline">
+              <X className="size-3" aria-hidden /> {es ? "Quitar filtros" : "Clear filters"}
+            </button>
+          )}
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <Chip on={!audience} onClick={() => setAudience(null)}>{es ? "Todas" : "All"}</Chip>
-          {AUDS.map((a) => <Chip key={a} on={audience === a} onClick={() => setAudience(a)}>{AUDIENCE_LABEL[a][language]}</Chip>)}
-          <select value={treatment ?? ""} onChange={(e) => setTreatment(e.target.value || null)} aria-label={es ? "Tratamiento" : "Treatment"}
-            className="h-8 max-w-full rounded-full border border-border bg-card px-3 text-xs text-foreground">
-            <option value="">{es ? "Todos los tratamientos" : "All treatments"}</option>
-            {treatments.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-          </select>
-        </div>
-        <p className="text-xs text-muted-foreground">{rows.length} {es ? "temas" : "topics"}</p>
       </div>
       {rows.length === 0
         ? <p className="mt-6 text-sm text-muted-foreground">{es ? "No hay temas con estos filtros. Prueba «Últimos 3 meses» o quita algún filtro." : "No topics match these filters. Try “Last 3 months” or remove a filter."}</p>
