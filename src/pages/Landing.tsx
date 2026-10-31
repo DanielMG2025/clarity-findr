@@ -3,6 +3,7 @@ import {
   ArrowRight,
   ShieldCheck,
   Compass,
+  Heart,
   Lock,
   Lightbulb,
   Newspaper,
