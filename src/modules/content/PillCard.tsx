@@ -9,9 +9,9 @@ import { useLanguage } from "@/i18n/LanguageContext";
 import { CONFIDENCE_LABEL, MOLD_LABEL, type Pill } from "./types";
 
 export function PillSourceChip({ source }: { source: Pill["source"] }) {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const conf = CONFIDENCE_LABEL[source.confidence][language];
-  const label = [source.name, source.date, conf].filter(Boolean).join(" · ");
+  const label = [t(source.name), source.date, conf].filter(Boolean).join(" · ");
   const chip = (
     <span className="inline-flex max-w-full items-center gap-1 rounded-full border border-border bg-muted/50 px-2 py-0.5 text-[10px] font-medium text-muted-foreground align-middle">
       <Info className="size-2.5 shrink-0" aria-hidden />
