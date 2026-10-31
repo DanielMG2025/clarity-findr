@@ -210,11 +210,17 @@ const TREATMENT_KEY_ES: Record<string, string> = {
 
 const lookup = (text: string) => JOURNEY_ES[text] ?? text;
 const country = (label: string) => COUNTRY_ES[label] ?? label;
-/** Lower-cased need labels appear inside regulatory "why" sentences. */
-const needLower = (lower: string) => {
-  const key = Object.keys(NEED_ES).find((k) => k.toLowerCase() === lower);
-  return key ? NEED_ES[key].charAt(0).toLowerCase() + NEED_ES[key].slice(1) : lower;
+/** Need labels (lower-cased in regulatory "why" sentences), with their Spanish article. */
+const NEED_WITH_ARTICLE: Record<string, string> = {
+  "ivf with own eggs": "la FIV con óvulos propios",
+  "treatment with donor sperm": "el tratamiento con semen de donante",
+  "egg donation": "la ovodonación",
+  "insemination with donor sperm": "la inseminación con semen de donante",
+  "embryo genetic testing (pgt)": "el test genético embrionario (PGT)",
+  "egg freezing": "la congelación de óvulos",
+  "ropa method (shared motherhood)": "el método ROPA (maternidad compartida)",
 };
+const need = (lower: string) => NEED_WITH_ARTICLE[lower] ?? lower;
 const plural = (n: string, one: string, many: string) => (n === "1" ? one : many);
 
 type Rule = [RegExp, (...m: string[]) => string];
@@ -232,9 +238,9 @@ const RULES: Rule[] = [
   [/^Complete (\d+) data point\(s\) to refine your orientation: (.+)\.$/, (n, list) =>
     `Completa ${plural(n, "1 dato", `${n} datos`)} para afinar tu orientación: ${list.split(", ").map(lookup).join(", ")}.`],
   [/^It appears because of your age \((.+)\), a scenario where it often enters the conversation\.$/, (a) => `Aparece por tu edad (${a}), un escenario en el que suele entrar en la conversación.`],
-  [/^In (.+?), (.+) is available for your situation\.$/, (c, need) => `En ${country(c)}, la ${needLower(need)} está disponible para tu situación.`.replace("la fIV", "la FIV").replace("la tratamiento", "el tratamiento").replace("la test", "el test").replace("la método", "el método")],
-  [/^In (.+?), (.+) is not available for your situation under the current legal framework\.$/, (c, need) => `En ${country(c)}, la ${needLower(need)} no está disponible para tu situación con el marco legal actual.`.replace("la fIV", "la FIV").replace("la tratamiento", "el tratamiento").replace("la test", "el test").replace("la método", "el método")],
-  [/^We haven't confirmed the legal framework for (.+) in (.+)\.$/, (need, c) => `No hemos confirmado el marco legal de la ${needLower(need)} en ${country(c)}.`.replace("la fIV", "la FIV").replace("la tratamiento", "el tratamiento").replace("la test", "el test").replace("la método", "el método")],
+  [/^In (.+?), (.+) is available for your situation\.$/, (c, n) => `En ${country(c)}, ${need(n)} está disponible para tu situación.`],
+  [/^In (.+?), (.+) is not available for your situation under the current legal framework\.$/, (c, n) => `En ${country(c)}, ${need(n)} no está disponible para tu situación con el marco legal actual.`],
+  [/^We haven't confirmed the legal framework for (.+) in (.+)\.$/, (n, c) => `No hemos confirmado el marco legal de ${need(n).replace(/^(la|el) /, (a) => a === "el " ? "del " : "de la ")} en ${country(c)}.`],
   [/^In (.+) there are (\d+) option\(s\) out of your reach\. We show you where they would be available\.$/, (c, n) =>
     `En ${country(c)} ${plural(n, "hay 1 opción fuera de tu alcance", `hay ${n} opciones fuera de tu alcance`)}. Te mostramos dónde ${plural(n, "estaría disponible", "estarían disponibles")}.`],
   [/^In (.+), all the options you're looking for are available for your situation\.$/, (c) => `En ${country(c)}, todas las opciones que buscas están disponibles para tu situación.`],
