@@ -100,7 +100,7 @@ function SourceLines({ rows }: { rows: CitedRow[] }) {
 }
 
 export default function PatientReport() {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const mpr = useMasterRecord();
   const journey = usePatientJourney();
   const narrative = patientNarrative(mpr, journey, language);
@@ -120,7 +120,7 @@ export default function PatientReport() {
   const combinedEvidenceCaveat = [
     ownEggRows[0]?.caveat,
     otherFigureRows.find((row) => row.id === "cumulative_3_cycles")?.caveat,
-  ].filter(Boolean).join(" ");
+  ].filter((c): c is string => Boolean(c)).map(t).join(" ");
   const priceEstimate = useMemo(
     () => bundle.estimate ?? seedEstimateForProfile(profile.treatment, profile.country),
     [bundle.estimate, profile.country, profile.treatment],

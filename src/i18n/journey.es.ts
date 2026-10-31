@@ -201,6 +201,24 @@ export const JOURNEY_ES: Record<string, string> = {
   "We've added ICSI to the scenarios where it applies.": "Hemos añadido la ICSI en los escenarios en los que aplica.",
   "These estimates are indicative and don't replace an official clinic quote. They are not medical advice.":
     "Estas estimaciones son orientativas y no sustituyen el presupuesto oficial de una clínica. No son consejo médico.",
+  "Almost always EXCLUDED from the clinic's advertised price.": "Casi siempre EXCLUIDA del precio anunciado por la clínica.",
+  "The cost depends on how many embryos are analysed.": "El coste depende de cuántos embriones se analicen.",
+  "Subscription-like model: paid while you keep the material.": "Modelo tipo suscripción: se paga mientras conservas el material.",
+  "Guarantee (live-birth) programmes can exceed €15,000.": "Los programas de garantía (de nacido vivo) pueden superar los 15.000 €.",
+  "European low end; frequent treatment destination.": "Gama baja europea; destino de tratamiento frecuente.",
+  "Sparse data; to validate.": "Datos escasos; pendiente de validar.",
+  "Regulation varies by area.": "La normativa varía según la zona.",
+  "Ovarian stimulation guideline": "Guía de estimulación ovárica",
+  "Oocyte donation guidance": "Recomendaciones sobre donación de ovocitos",
+  "Diagnostic evaluation of infertility": "Evaluación diagnóstica de la infertilidad",
+  "Missing": "Falta",
+  // Raw treatment values shown in the orientation snapshot
+  "egg donation": "ovodonación",
+  "social freezing": "congelación de óvulos",
+  "ivf": "FIV",
+  "icsi": "ICSI",
+  "iui": "IA",
+  "unsure": "aún sin decidir",
   "Estimated range from prices published on clinic websites, reports and accessible studies.": "Rango estimado a partir de precios publicados en webs de clínicas, informes y estudios accesibles.",
 };
 
@@ -255,6 +273,7 @@ const RULES: Rule[] = [
     `Para tu caso, partimos de los precios habituales en ${country(c)} para un tratamiento de ${TREATMENT_KEY_ES[tr] ?? tr} y ajustamos el rango según tu edad (${a}).`],
   [/^Prices in (.+) are typically 20–35% lower than in Spain, but you should add travel and accommodation\.$/, (c) => `Los precios en ${country(c)} suelen ser un 20–35 % más bajos que en España, pero hay que sumar viaje y alojamiento.`],
   [/^Estimated by (.+)'s price level \(index (.+)\)\.$/, (c, i) => `Estimado según el nivel de precios de ${country(c)} (índice ${i}).`],
+  [/^(.+\.) Estimated by (.+)'s price level \(index (.+)\)\.$/, (note, c, i) => `${lookup(note)} Estimado según el nivel de precios de ${country(c)} (índice ${i}).`],
   [/^(.+) Range computed (for Spain|for (.+), adjusted by its price level relative to Spain), summing (\d+) treatment components \((.+)\)\.$/, (blurb, geo, c, n, tier) =>
     `${lookup(blurb)} Rango calculado ${c ? `para ${country(c)}, ajustado por su nivel de precios respecto a España` : "para España"}, sumando ${n} componentes del tratamiento (${lookup(tier.charAt(0).toUpperCase() + tier.slice(1)).toLowerCase()}).`],
   [/^Pregnancy rate with own eggs, ages (.+)$/, (b) => `Tasa de embarazo con óvulos propios, edades ${b}`],

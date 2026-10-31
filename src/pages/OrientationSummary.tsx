@@ -87,7 +87,7 @@ export default function OrientationSummary() {
           eyebrow="Fertility Compass"
           title="Your orientation summary"
           subtitle="A short, human explanation of your situation and the options that may be worth exploring."
-          note={`Prepared ${reportDate} · Orientation based on public data — not a diagnosis or a personalized prediction.`}
+          note={es ? `Preparado el ${reportDate} · Orientación basada en datos públicos: no es un diagnóstico ni una predicción personalizada.` : `Prepared ${reportDate} · Orientation based on public data — not a diagnosis or a personalized prediction.`}
         />
       </div>
 
