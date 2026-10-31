@@ -18,6 +18,10 @@ export interface Resource {
   handle?: string;
   url: string;
   platform: string;
+  /** creator = individual voices/channels; institution = scientific library; community = peer groups & NGOs. */
+  kind: "creator" | "institution" | "community";
+  /** Extra channels (e.g. a YouTube channel alongside Instagram). */
+  links?: { label: string; url: string }[];
   audiences: Audience[];
   blurb: Localized;
   affiliation: Localized;

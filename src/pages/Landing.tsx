@@ -58,6 +58,11 @@ const DOORS = [
       en: "What's moving in the forums this week, daily pills and resources. Come whenever you like — no data needed.",
       es: "Lo que se mueve en los foros esta semana, píldoras diarias y recursos. Ven cuando quieras, sin dejar ningún dato.",
     },
+    inside: {
+      en: "Daily pills · the forum conversation · guides · scientific library · trusted voices.",
+      es: "Píldoras diarias · la conversación de los foros · guías · biblioteca científica · voces de confianza.",
+    },
+    audience: { en: "For any stage: just starting or experienced.", es: "Para cualquier etapa: empezando o con experiencia." },
   },
   {
     to: "/situacion",
@@ -68,7 +73,7 @@ const DOORS = [
       es: "Una lectura personalizada de tu situación: los factores que influyen, costes normalizados y clínicas que encajan.",
     },
   },
-] as const;
+] as { to: string; icon: typeof Heart; title: L; desc: L; inside?: L; audience?: L }[];
 
 const TRUST: { icon: typeof Lock; title: L; desc: L; featured: boolean }[] = [
   {
@@ -131,6 +136,12 @@ function Doors({ language, tone = "cover" }: { language: Language; tone?: "cover
             <ArrowRight className="ml-auto size-5 shrink-0 text-accent transition-transform group-hover:translate-x-1" />
           </div>
           <p className="mt-4 text-sm leading-relaxed text-background/80 md:text-base">{d.desc[language]}</p>
+          {d.inside && (
+            <p className="mt-4 border-t border-accent/30 pt-3 text-xs leading-relaxed text-accent md:text-sm">{d.inside[language]}</p>
+          )}
+          {d.audience && (
+            <p className="mt-1.5 font-editorial text-sm italic text-background/70">{d.audience[language]}</p>
+          )}
         </Link>
       ))}
     </div>
