@@ -102,7 +102,7 @@ export default function PatientReport() {
   const { language } = useLanguage();
   const mpr = useMasterRecord();
   const journey = usePatientJourney();
-  const narrative = patientNarrative(mpr, journey);
+  const narrative = patientNarrative(mpr, journey, language);
   const { profile, bundle } = usePricingConfigurator();
   const orientation = journey.step0_regulatory;
   const patientAge = mpr.identity.age;
