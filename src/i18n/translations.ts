@@ -1244,5 +1244,6 @@ export const es: Record<string, string> = {
   "Podcast": "Podcast",
   "YouTube": "YouTube",
   "Instagram": "Instagram",
-  "Podcast ('As a Woman')": "Podcast ('As a Woman')"
+  "Podcast ('As a Woman')": "Podcast ('As a Woman')",
+  "Scientific debate (Levine et al. vs Cleveland Clinic)": "Debate científico (Levine et al. vs Cleveland Clinic)"
 };
