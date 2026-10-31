@@ -1,4 +1,5 @@
 import { es } from "./translations";
+import { translateJourneyPattern } from "./journey.es";
 
 export type Language = "en" | "es";
 export const LANGUAGE_KEY = "fertility-compass-language";
@@ -29,6 +30,7 @@ export function translate(text: string, language: Language): string {
     const confidence = normalized.match(/^Confidence (High|Medium|Low)$/);
     if (confidence) translated = `Confianza ${translate(confidence[1], language).toLowerCase()}`;
   }
+  if (translated === undefined) translated = translateJourneyPattern(normalized);
   if (translated === undefined) return text;
   return `${text.match(/^\s*/)?.[0] ?? ""}${translated}${text.match(/\s*$/)?.[0] ?? ""}`;
 }
