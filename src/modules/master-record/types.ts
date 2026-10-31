@@ -22,6 +22,9 @@ export type TreatmentInterest =
   | "iui"
   | "unsure";
 
+/** Route the person chose at the entry of "Check your case". */
+export type Goal = "preserve" | "treatment" | "unsure";
+
 export type DonorOpenness = "no" | "maybe" | "yes";
 
 export type Diagnosis =
@@ -50,6 +53,8 @@ export interface Identity {
 }
 
 export interface Intent {
+  /** preserve = egg freezing; treatment = trying to conceive now; unsure. */
+  goal?: Goal;
   trying_duration?: TryingDuration;
   treatment_interest?: TreatmentInterest;
   budget_eur?: number;

@@ -25,7 +25,7 @@ describe("landing two-door fork", () => {
     const study = screen.getAllByRole("link", { name: /^Check your case/ });
     expect(explore[0].getAttribute("href")).toBe("/descubre");
     expect(study[0].getAttribute("href")).toBe("/situacion");
-    expect(screen.getByRole("link", { name: /Enter demo mode/ }).getAttribute("href")).toBe("/demo");
+    expect(screen.getByRole("link", { name: /Example cases/ }).getAttribute("href")).toBe("/demo");
   });
 
   it("hot this week shows only week-period topics", () => {

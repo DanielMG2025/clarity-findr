@@ -26,6 +26,7 @@ export function demoPatientToRecord(seed: DemoPatientSeed): DemoRecordMapping {
       family_structure: seed.family_structure,
     },
     intent: {
+      goal: seed.goal,
       treatment_interest: seed.treatment_interest,
       trying_duration: seed.trying_duration,
       budget_eur: seed.budget_eur,

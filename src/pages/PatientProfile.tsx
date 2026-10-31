@@ -22,6 +22,8 @@ import {
 import { Calculator, Building2, ArrowRight, FileText, HeartHandshake } from "lucide-react";
 import { PageHeader } from "@/components/patient/PageHeader";
 import { cn } from "@/lib/utils";
+import { GoalStep, GoalBar, ExampleCasesLink } from "@/components/patient/GoalStep";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 const BLOCK_RENDERERS = {
   basic: <BasicInfoBlock />,
@@ -46,14 +48,20 @@ const PatientProfile = () => {
 
   const canPrice = completion >= 15;
   const canMatch = completion >= 25;
+  const { language } = useLanguage();
+  const goal = mpr.intent.goal;
+  const preserve = goal === "preserve";
+  const es = language === "es";
 
   return (
     <div className="container max-w-6xl py-10 space-y-10">
       <div className="space-y-6">
         <PageHeader
           eyebrow="My situation"
-          title="Your fertility story, all in one place"
-          subtitle="Fill in the blocks that feel useful, at your own pace. Each one improves the orientation on costs, success factors and clinics that may fit you."
+          title={preserve ? (es ? "Tu plan para congelar óvulos, en un solo lugar" : "Your egg-freezing plan, all in one place") : "Your fertility story, all in one place"}
+          subtitle={preserve
+            ? (es ? "Rellena los bloques que te sirvan, a tu ritmo. Cada uno mejora la orientación sobre costes de congelación, qué influye en el resultado y clínicas que pueden encajar." : "Fill in the blocks that feel useful, at your own pace. Each one improves the orientation on egg-freezing costs, what affects the outcome and clinics that may fit you.")
+            : "Fill in the blocks that feel useful, at your own pace. Each one improves the orientation on costs, success factors and clinics that may fit you."}
           note="Your data is yours. We use it to explain your options — it doesn't replace a medical consultation."
         />
 
@@ -69,7 +77,11 @@ const PatientProfile = () => {
         </div>
 
         <div className="h-px bg-border" aria-hidden="true" />
+        {goal && <GoalBar />}
+        <ExampleCasesLink />
       </div>
+
+      {!goal ? <GoalStep /> : (
 
       <div className="grid lg:grid-cols-[1fr_320px] gap-10">
         <div className="space-y-10 min-w-0">
@@ -143,6 +155,7 @@ const PatientProfile = () => {
           <UnlockedFeatures completion={completion} />
         </aside>
       </div>
+      )}
     </div>
   );
 };
