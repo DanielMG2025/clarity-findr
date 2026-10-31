@@ -11,6 +11,9 @@ describe("journey Spanish patterns", () => {
     expect(es("In Germany, egg donation is not available for your situation under the current legal framework.")).toBe("En Alemania, la ovodonación no está disponible para tu situación con el marco legal actual.");
     expect(es("In Italy there are 1 option(s) out of your reach. We show you where they would be available.")).toBe("En Italia hay 1 opción fuera de tu alcance. Te mostramos dónde estaría disponible.");
   });
+  it("translates the missing-data list, keeping parentheses intact", () => {
+    expect(es("Complete 2 data point(s) to refine your orientation: Hormone panel (FSH, estradiol), Confirmed diagnosis.")).toBe("Completa 2 datos para afinar tu orientación: Perfil hormonal (FSH, estradiol), Diagnóstico confirmado.");
+  });
   it("translates country lists and leaves other text alone", () => {
     expect(es("Belgium, Netherlands and France")).toBe("Bélgica, Países Bajos y Francia");
     expect(es("Salt and Pepper")).toBe("Salt and Pepper");

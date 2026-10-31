@@ -258,7 +258,7 @@ const RULES: Rule[] = [
   [/^(\d+) relevant data point\(s\) are missing\. The more you complete, the more accurate your orientation\.$/, (n) =>
     `${plural(n, "Falta 1 dato relevante", `Faltan ${n} datos relevantes`)}. Cuanto más completes, más precisa será tu orientación.`],
   [/^Complete (\d+) data point\(s\) to refine your orientation: (.+)\.$/, (n, list) =>
-    `Completa ${plural(n, "1 dato", `${n} datos`)} para afinar tu orientación: ${list.split(", ").map(lookup).join(", ")}.`],
+    `Completa ${plural(n, "1 dato", `${n} datos`)} para afinar tu orientación: ${list.split(/, (?![^()]*\))/).map(lookup).join(", ")}.`],
   [/^It appears because of your age \((.+)\), a scenario where it often enters the conversation\.$/, (a) => `Aparece por tu edad (${a}), un escenario en el que suele entrar en la conversación.`],
   [/^In (.+?), (.+) is available for your situation\.$/, (c, n) => `En ${country(c)}, ${need(n)} está disponible para tu situación.`],
   [/^In (.+?), (.+) is not available for your situation under the current legal framework\.$/, (c, n) => `En ${country(c)}, ${need(n)} no está disponible para tu situación con el marco legal actual.`],
