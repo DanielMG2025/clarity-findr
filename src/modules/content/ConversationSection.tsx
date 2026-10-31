@@ -131,7 +131,7 @@ export function ConversationSection() {
                 </SelectTrigger>
                 <SelectContent className="max-h-80">
                   <SelectItem value={ALL}>{es ? "Todos los foros" : "All forums"}</SelectItem>
-                  {forumGroups.map((g) => g.items.length > 1 || g.items[0].label !== g.family ? (
+                  {forumGroups.map((g) => g.items.length > 1 ? (
                     <SelectGroup key={g.family}>
                       <SelectSeparator />
                       <SelectLabel className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{g.family}</SelectLabel>
