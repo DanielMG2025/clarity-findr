@@ -41,12 +41,13 @@ export function ExampleCasePanel({ journey }: { journey: Journey }) {
   const places = blocked?.alternatives.slice(0, 3).map((a) => t(a.label)) ?? [];
   const missingStep = journey.step2_orientation.factors.some((f) => f.kind === "missing") ? journey.step6_next[0] : undefined;
   const homeCountry = reg ? t(reg.home.label) : undefined;
+  const lowerFirst = (text: string) => (/^[A-Z]{2}/.test(text) ? text : text.charAt(0).toLowerCase() + text.slice(1));
 
   const steps: { icon: typeof Compass; title: string; body: string; to?: string; link?: string }[] = [];
   if (first) {
     steps.push({
       icon: Stethoscope,
-      title: es ? `Una primera consulta para valorar ${t(first.estimate.plan_label)}` : `A first consultation to assess ${first.estimate.plan_label}`,
+      title: es ? `Una primera consulta para valorar ${lowerFirst(t(first.estimate.plan_label))}` : `A first consultation to assess ${lowerFirst(first.estimate.plan_label)}`,
       body: t(first.why_this_plan),
       to: "/costes",
       link: es ? "Ver costes orientativos" : "See indicative costs",
