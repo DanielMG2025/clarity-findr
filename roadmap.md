@@ -15,3 +15,4 @@
 - [x] Unify Door A name as Descubre/Discover
 - [x] Richer bilingual forum answers (30 published topics)
 - [x] Spanish Basics guides (titles, summaries, bodies) + voice platform labels
+- [x] Seed 26 more forum topics (56 published) + labelled Theme/Forum/Profile/Time filter bar

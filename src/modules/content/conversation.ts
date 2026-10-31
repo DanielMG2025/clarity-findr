@@ -54,6 +54,17 @@ export function platformFamily(p: string): string {
   return p.split(/\s+r\/|\s*\/\s*/)[0].replace(/ ORG$/, "").trim();
 }
 
+/** Groups platforms by family for the forum dropdown; items keep the full platform value and a short label ("r/IVF"). */
+export function groupPlatforms(platforms: string[]): { family: string; items: { value: string; label: string }[] }[] {
+  const map = new Map<string, { value: string; label: string }[]>();
+  for (const p of [...new Set(platforms)].sort((a, b) => a.localeCompare(b))) {
+    const fam = platformFamily(p);
+    const label = p.startsWith(`${fam} r/`) ? p.slice(fam.length + 1) : p;
+    map.set(fam, [...(map.get(fam) ?? []), { value: p, label }]);
+  }
+  return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0])).map(([family, items]) => ({ family, items }));
+}
+
 const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
 /** Client-side filter: "week" shows only period=week; "3m" shows week + 3m. Search is accent-insensitive substring. */
