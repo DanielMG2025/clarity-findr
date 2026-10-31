@@ -19,9 +19,9 @@ const renderLanding = () =>
 afterEach(() => { cleanup(); localStorage.clear(); });
 
 describe("landing two-door fork", () => {
-  it("routes Explore to /descubre and Check your case to /situacion, demo to /demo", () => {
+  it("routes Discover to /descubre and Check your case to /situacion, demo to /demo", () => {
     renderLanding();
-    const explore = screen.getAllByRole("link", { name: /^Explore/ });
+    const explore = screen.getAllByRole("link", { name: /^Discover/ });
     const study = screen.getAllByRole("link", { name: /^Check your case/ });
     expect(explore[0].getAttribute("href")).toBe("/descubre");
     expect(study[0].getAttribute("href")).toBe("/situacion");
@@ -37,7 +37,7 @@ describe("landing two-door fork", () => {
   it("renders Spanish doors when Spanish is chosen", () => {
     localStorage.setItem(LANGUAGE_KEY, "es");
     renderLanding();
-    expect(screen.getAllByRole("link", { name: /^Infórmate/ })[0].getAttribute("href")).toBe("/descubre");
+    expect(screen.getAllByRole("link", { name: /^Descubre/ })[0].getAttribute("href")).toBe("/descubre");
     expect(screen.getAllByRole("link", { name: /^Estudia tu caso/ })[0].getAttribute("href")).toBe("/situacion");
     expect(screen.getByText("¿Espera beta?")).toBeTruthy();
   });
