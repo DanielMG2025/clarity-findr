@@ -29,6 +29,8 @@ import LearnArticle from "./pages/LearnArticle.tsx";
 import DemoRoom from "./pages/DemoRoom.tsx";
 import Descubre from "./pages/Descubre.tsx";
 import Admin from "./pages/Admin.tsx";
+import AdminFeedback from "./pages/AdminFeedback.tsx";
+import { FeedbackWidget } from "./modules/feedback/FeedbackWidget";
 import NotFound from "./pages/NotFound.tsx";
 import { LanguageProvider } from "./i18n/LanguageContext";
 import { AccessGate } from "./modules/access/AccessGate";
@@ -100,11 +102,13 @@ const App = () => (
 
             {/* Admin — tabbed control surface (Pills tab is role-gated) */}
             <Route path="/admin" element={<Admin />} />
+            <Route path="/admin/feedback" element={<AdminFeedback />} />
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </LayoutSwitch>
+        <FeedbackWidget />
         </WithGlossary>
         </AccessGate>
       </BrowserRouter>
