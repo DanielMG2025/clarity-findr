@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getArticle, AutoGlossary, type Article } from "@/modules/education";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 const KIND_LABEL: Record<Article["kind"], string> = {
   glosario: "Glossary",
@@ -14,6 +15,7 @@ const KIND_LABEL: Record<Article["kind"], string> = {
 
 export default function LearnArticle() {
   const { slug } = useParams();
+  const { t } = useLanguage();
   const article = slug ? getArticle(slug) : undefined;
 
   if (!article) {
@@ -22,7 +24,7 @@ export default function LearnArticle() {
         <h1 className="text-2xl font-bold">Article not found</h1>
         <p className="text-muted-foreground">This explainer doesn't exist or was moved.</p>
         <Button asChild variant="outline">
-          <Link to="/descubre#basicos"><ArrowLeft className="size-4 mr-1" /> Back to Basics</Link>
+          <Link to="/descubre#basicos"><ArrowLeft className="size-4 mr-1" /> Back to Guides</Link>
         </Button>
       </div>
     );
@@ -33,7 +35,7 @@ export default function LearnArticle() {
   return (
     <article className="container max-w-2xl py-10 space-y-6">
       <Link to="/descubre#basicos" className="text-sm text-muted-foreground hover:text-primary inline-flex items-center gap-1">
-        <ArrowLeft className="size-4" /> Basics
+        <ArrowLeft className="size-4" /> Guides
       </Link>
 
       <header className="space-y-3">
@@ -47,10 +49,10 @@ export default function LearnArticle() {
         <p className="text-lg text-muted-foreground leading-relaxed">{a.hook}</p>
       </header>
 
-      <p className="leading-relaxed"><AutoGlossary>{a.summary}</AutoGlossary></p>
+      <p className="leading-relaxed"><AutoGlossary>{t(a.summary)}</AutoGlossary></p>
 
       {a.body?.map((p, i) => (
-        <p key={i} className="leading-relaxed text-foreground/90"><AutoGlossary>{p}</AutoGlossary></p>
+        <p key={i} className="leading-relaxed text-foreground/90"><AutoGlossary>{t(p)}</AutoGlossary></p>
       ))}
 
       {a.steps && a.steps.length > 0 && (

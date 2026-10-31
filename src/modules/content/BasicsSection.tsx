@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { BridgeCta } from "./PillCard";
 import { ALL_ARTICLES, type Article } from "@/modules/education";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 const CATEGORIES: { kind: Article["kind"]; label: string; blurb: string }[] = [
   { kind: "glosario", label: "Glossary", blurb: "20-second answers to “what is…?”" },
@@ -33,20 +34,23 @@ function ArticleCard({ a }: { a: Article }) {
 
 export function BasicsSection() {
   const [q, setQ] = useState("");
+  const { t, language } = useLanguage();
+  const es = language === "es";
 
   const query = q.trim().toLowerCase();
   const filtered = useMemo(() => {
     if (!query) return null;
+    // Search the English source and the active-language copy, so Spanish terms (FIV, congelación…) match too.
     return ALL_ARTICLES.filter((a) =>
-      [a.title, a.hook, a.summary, ...a.tags].join(" ").toLowerCase().includes(query),
+      [a.title, a.hook, a.summary, t(a.title), t(a.hook), t(a.summary), ...a.tags].join(" ").toLowerCase().includes(query),
     );
-  }, [query]);
+  }, [query, t]);
 
   return (
     <div id="basicos" className="scroll-mt-24 space-y-8">
       <header className="space-y-3 max-w-2xl">
         <h2 className="font-display text-3xl font-medium flex items-center gap-2">
-          <BookOpen className="size-6 text-primary" /> Basics
+          <BookOpen className="size-6 text-primary" /> Guides
         </h2>
         <p className="text-muted-foreground leading-relaxed">
           Plain-language explainers of every treatment, term and journey — orientative and sourced,
@@ -66,10 +70,12 @@ export function BasicsSection() {
       {filtered ? (
         <section className="space-y-3">
           <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            {filtered.length} result{filtered.length === 1 ? "" : "s"}
+            {es
+              ? `${filtered.length} resultado${filtered.length === 1 ? "" : "s"}`
+              : `${filtered.length} result${filtered.length === 1 ? "" : "s"}`}
           </div>
           {filtered.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No articles match “{q}”.</p>
+            <p className="text-sm text-muted-foreground">{es ? `Ninguna guía coincide con «${q}».` : `No articles match “${q}”.`}</p>
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {filtered.map((a) => (
