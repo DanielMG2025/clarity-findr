@@ -71,7 +71,7 @@ function TopicCard({ t }: { t: TopicRow }) {
         ) : <span className="text-xs text-muted-foreground">{t.source_platform || t.source_forum}</span>}
       </div>
       <Link to="/situacion" className="mt-4 inline-flex items-center gap-1 border-t border-border/60 pt-3 text-sm font-medium text-primary hover:underline">
-        {es ? "¿Y en tu caso? → Brujulea tu situación" : "And in your case? → Check your situation"} <ArrowRight className="size-3.5" />
+        {es ? "¿Y en tu caso? → Estudia tu situación" : "And in your case? → Check your situation"} <ArrowRight className="size-3.5" />
       </Link>
     </Card>
   );
