@@ -43,6 +43,13 @@
       "when": 1793363257052,
       "tag": "0005_conversation_topic_filters",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793450824371,
+      "tag": "0006_richer_conversation_answers",
+      "breakpoints": true
     }
   ]
 }
