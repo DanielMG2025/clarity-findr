@@ -15,6 +15,6 @@ it("renders spanish", () => {
   console.log("ARTICLE:", r2.container.textContent?.slice(0, 2500));
   const r3 = render(<QueryClientProvider client={new QueryClient()}><LanguageProvider><TooltipProvider><MemoryRouter><Descubre /></MemoryRouter></TooltipProvider></LanguageProvider></QueryClientProvider>);
   const txt = r3.container.textContent ?? "";
-  const i = txt.indexOf("Biblioteca"); console.log("DESCUBRE-LIB:", txt.slice(i, i + 2500));
-  const j = txt.indexOf("Voces"); console.log("DESCUBRE-VOCES:", txt.slice(j, j + 3000));
+  const i = txt.lastIndexOf("Biblioteca científica"); console.log("DESCUBRE-LIB:", txt.slice(i, i + 2500));
+  const j = txt.lastIndexOf("Voces de confianza"); require("fs").writeFileSync("/tmp/descubre_es.txt", txt); console.log("DESCUBRE-VOCES:", txt.slice(j, j + 3000));
 });
