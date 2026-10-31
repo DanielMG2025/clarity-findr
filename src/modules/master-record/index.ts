@@ -6,3 +6,4 @@ export * from "./runDemo";
 export * from "./usePatientJourney";
 export * from "./toRecord";
 export * from "./loadDemo";
+export * from "./similarCases";
