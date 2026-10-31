@@ -38,7 +38,7 @@ const COPY = {
     en: "Themes patients are discussing right now, summarized neutrally. Anecdotal, not medical advice.",
     es: "Temas que las pacientes comentan ahora mismo, resumidos de forma neutral. Experiencias, no consejo médico.",
   },
-  hotAll: { en: "See everything in Explore", es: "Ver todo en Infórmate" },
+  hotAll: { en: "See everything in Discover", es: "Ver todo en Descubre" },
   trustEyebrow: { en: "Trust and privacy", es: "Confianza y privacidad" },
   trustTitle: { en: "Confidential, transparent and respectful.", es: "Confidencial, transparente y respetuoso." },
   sdc: { en: "Source · date · confidence", es: "Fuente · fecha · confianza" },
@@ -53,7 +53,7 @@ const DOORS = [
   {
     to: "/descubre",
     icon: Newspaper,
-    title: { en: "Explore", es: "Infórmate" },
+    title: { en: "Discover", es: "Descubre" },
     desc: {
       en: "What's moving in the forums this week, daily pills and resources. Come whenever you like — no data needed.",
       es: "Lo que se mueve en los foros esta semana, píldoras diarias y recursos. Ven cuando quieras, sin dejar ningún dato.",
@@ -265,7 +265,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* 1. HOT THIS WEEK — substantiates the Explore door */}
+      {/* 1. HOT THIS WEEK — substantiates the Discover door */}
       <HotThisWeek language={language} />
 
       {/* 3. TRUST & PRIVACY */}
