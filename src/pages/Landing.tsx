@@ -3,13 +3,8 @@ import {
   ArrowRight,
   ShieldCheck,
   Compass,
-  Wallet,
-  Building2,
-  Heart,
-  Stethoscope,
   Lock,
   Lightbulb,
-  HeartHandshake,
   Newspaper,
   MessageCircle,
 } from "lucide-react";
@@ -43,14 +38,6 @@ const COPY = {
     es: "Temas que las pacientes comentan ahora mismo, resumidos de forma neutral. Experiencias, no consejo médico.",
   },
   hotAll: { en: "See everything in Explore", es: "Ver todo en Infórmate" },
-  caseEyebrow: { en: "The other door", es: "La otra puerta" },
-  caseTitle: { en: "If you want to study your case", es: "Si quieres estudiar tu caso" },
-  caseIntro: {
-    en: "We help you understand — we don't decide for you. Five steps, at your own pace; pause and come back whenever you want.",
-    es: "Te ayudamos a entender, no decidimos por ti. Cinco pasos, a tu ritmo; puedes pausar y volver cuando quieras.",
-  },
-  helpLabel: { en: "What you'll understand", es: "Lo que entenderás" },
-  stepsLabel: { en: "Five steps", es: "Cinco pasos" },
   trustEyebrow: { en: "Trust and privacy", es: "Confianza y privacidad" },
   trustTitle: { en: "Confidential, transparent and respectful.", es: "Confidencial, transparente y respetuoso." },
   sdc: { en: "Source · date · confidence", es: "Fuente · fecha · confianza" },
@@ -58,11 +45,6 @@ const COPY = {
   notice: {
     en: "Fertility Compass provides orientation based on public data, statistical models and information you choose to share. It does not replace a medical consultation, diagnosis or treatment recommendation.",
     es: "Fertility Compass ofrece orientación basada en datos públicos, modelos estadísticos y la información que eliges compartir. No sustituye una consulta médica, un diagnóstico ni una recomendación de tratamiento.",
-  },
-  ctaTitle: { en: "Take the first step toward your clarity.", es: "Da el primer paso hacia tu claridad." },
-  ctaText: {
-    en: "Start by getting informed, or go straight to your own case. Both doors stay open.",
-    es: "Empieza informándote o ve directamente a tu caso. Las dos puertas siguen abiertas.",
   },
 } satisfies Record<string, L>;
 
@@ -86,22 +68,6 @@ const DOORS = [
     },
   },
 ] as const;
-
-const HELP: { icon: typeof Lock; title: L }[] = [
-  { icon: Lightbulb, title: { en: "What factors may influence your case", es: "Qué factores pueden influir en tu caso" } },
-  { icon: Stethoscope, title: { en: "What treatments are usually considered", es: "Qué tratamientos se suelen valorar" } },
-  { icon: Wallet, title: { en: "How much it could cost", es: "Cuánto podría costar" } },
-  { icon: Building2, title: { en: "Which clinics may fit", es: "Qué clínicas pueden encajar" } },
-  { icon: HeartHandshake, title: { en: "When to talk to an expert", es: "Cuándo hablar con un experto" } },
-];
-
-const STEPS: L[] = [
-  { en: "Share your situation", es: "Comparte tu situación" },
-  { en: "Get an explained orientation", es: "Recibe una orientación explicada" },
-  { en: "Explore normalized costs", es: "Explora costes normalizados" },
-  { en: "Compare clinics", es: "Compara clínicas" },
-  { en: "Decide your next steps", es: "Decide tus siguientes pasos" },
-];
 
 const TRUST: { icon: typeof Lock; title: L; desc: L; featured: boolean }[] = [
   {
@@ -290,46 +256,6 @@ export default function Landing() {
       {/* 1. HOT THIS WEEK — substantiates the Explore door */}
       <HotThisWeek language={language} />
 
-      {/* 2. SUPPORTING THE OTHER DOOR — slim, secondary */}
-      <section id="how-it-works" className="border-y border-border bg-muted/20">
-        <div className="container max-w-6xl px-6 py-16 md:py-20">
-          <div className="mb-10 max-w-3xl">
-            <Eyebrow>{c("caseEyebrow")}</Eyebrow>
-            <h2 className="mt-4 font-display text-3xl font-medium leading-tight md:text-4xl">{c("caseTitle")}</h2>
-            <p className="mt-3 max-w-[65ch] text-sm leading-relaxed text-muted-foreground md:text-base">{c("caseIntro")}</p>
-          </div>
-          <div className="grid gap-10 md:grid-cols-2">
-            <div className="min-w-0">
-              <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">{c("helpLabel")}</p>
-              <ul className="space-y-3">
-                {HELP.map((h) => (
-                  <li key={h.title.en} className="flex items-center gap-3">
-                    <IconChip icon={h.icon} size="sm" />
-                    <span className="text-base leading-snug">{h.title[language]}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="min-w-0">
-              <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">{c("stepsLabel")}</p>
-              <ol className="space-y-3">
-                {STEPS.map((s, i) => (
-                  <li key={s.en} className="flex items-center gap-3">
-                    <span className="grid size-8 shrink-0 place-items-center rounded-full border border-accent/60 bg-card font-display text-base font-medium tabular-nums text-primary">
-                      {i + 1}
-                    </span>
-                    <span className="text-base leading-snug">{s[language]}</span>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </div>
-          <Link to="/situacion" className="mt-10 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
-            {DOORS[1].title[language]} <ArrowRight className="size-4" />
-          </Link>
-        </div>
-      </section>
-
       {/* 3. TRUST & PRIVACY */}
       <section className="container max-w-6xl px-6 py-16 md:py-20">
         <div className="mb-10 max-w-3xl">
@@ -356,18 +282,6 @@ export default function Landing() {
         </p>
       </section>
 
-      {/* 4. FINAL CTA — both doors again */}
-      <section className="relative overflow-hidden bg-foreground text-background dark:[--foreground:var(--sidebar-background)] dark:[--background:var(--sidebar-accent-foreground)] dark:[--primary:var(--sidebar-accent)] before:absolute before:inset-x-0 before:top-0 before:z-10 before:h-px before:bg-gradient-to-r before:from-transparent before:via-accent before:to-transparent">
-        <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_-5%,hsl(var(--primary))_0%,hsl(var(--foreground))_55%,hsl(var(--foreground))_100%)]" />
-        <div className="relative container max-w-4xl px-6 py-16 md:py-24 text-center">
-          <Heart className="mx-auto size-8 text-accent" />
-          <h2 className="mt-6 font-display text-3xl font-medium leading-tight md:text-5xl">{c("ctaTitle")}</h2>
-          <p className="mx-auto mt-4 max-w-[60ch] leading-relaxed text-background/85">{c("ctaText")}</p>
-          <div className="mt-10">
-            <Doors language={language} />
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
