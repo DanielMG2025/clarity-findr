@@ -11,7 +11,7 @@ function articleStrings() {
     ...(a.differences ?? []).flatMap((d) => [d.vs, d.note]),
     ...(a.faqs ?? []).flatMap((f) => [f.q, f.a]),
     ...a.sources.map((s) => s.label).filter((l) => !/^(ESHRE|HFEA|URMC|CCRM|Monash)$/.test(l)),
-  ]).filter(Boolean);
+  ]).filter((s) => Boolean(s) && s !== "PGT-M"); // technical term, identical in Spanish
 }
 
 describe("Basics guides in Spanish", () => {
