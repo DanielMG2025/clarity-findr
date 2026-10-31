@@ -23,9 +23,9 @@ function ArticleCard({ a }: { a: Article }) {
       <p className="text-sm text-muted-foreground leading-relaxed">{a.hook}</p>
       <div className="mt-auto flex items-center gap-2 text-[11px] text-muted-foreground">
         <Clock className="size-3" /> {a.reading_time_min} min
-        <span className="text-primary ml-auto inline-flex items-center gap-0.5">
+        <Link to={`/aprende/${a.slug}`} className="text-primary ml-auto inline-flex items-center gap-0.5 hover:underline">
           Read <ArrowRight className="size-3" />
-        </span>
+        </Link>
       </div>
       <BridgeCta />
     </Card>
