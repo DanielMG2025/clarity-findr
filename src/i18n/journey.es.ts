@@ -221,6 +221,8 @@ const NEED_WITH_ARTICLE: Record<string, string> = {
   "ropa method (shared motherhood)": "el método ROPA (maternidad compartida)",
 };
 const need = (lower: string) => NEED_WITH_ARTICLE[lower] ?? lower;
+/** "Egg donation" → "la ovodonación" — for Spanish prose built around a need label. */
+export const needWithArticleEs = (label: string) => need(label.toLowerCase());
 const plural = (n: string, one: string, many: string) => (n === "1" ? one : many);
 
 type Rule = [RegExp, (...m: string[]) => string];

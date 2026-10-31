@@ -3,6 +3,7 @@ import { byCode, type FamilyStructure } from "@/modules/regulatory";
 import type { MasterPatientRecord, TreatmentInterest } from "./types";
 import type { Journey } from "./runDemo";
 import { translate, type Language } from "@/i18n/translate";
+import { needWithArticleEs } from "@/i18n/journey.es";
 
 export const FAMILY_PHRASE: Record<FamilyStructure, string> = {
   hetero_couple: "part of a heterosexual couple",
@@ -112,7 +113,7 @@ function patientNarrativeEs(mpr: MasterPatientRecord, journey: Journey): string[
   const lowerFirst = (text: string) => /^[A-Z]{2}/.test(text) ? text : text.charAt(0).toLowerCase() + text.slice(1);
   const titles = (factors: typeof orientation.factors) => joinNaturally(factors.map((factor) => lowerFirst(t(factor.title))), "es");
   const join = (parts: string[]) => joinNaturally(parts, "es");
-  const blockedLabel = travelBlocked ? lowerFirst(t(travelBlocked.label)) : "";
+  const blockedLabel = travelBlocked ? needWithArticleEs(travelBlocked.label) : "";
   const lead = join(
     [
       age != null ? `tienes ${age} años` : undefined,
@@ -137,7 +138,7 @@ function patientNarrativeEs(mpr: MasterPatientRecord, journey: Journey): string[
         ? `Con ${age} años, la cifra de tu franja de edad te da algo de contexto: ${t(ageEvidence.source.publisher)} recoge alrededor de un ${ageEvidence.value} % de embarazos por embrión transferido en fresco con los óvulos de la propia paciente (${t(ageEvidence.source.year)}). Es una media de la población de Reino Unido, no tu probabilidad personal, ni una tasa de nacido vivo, ni la probabilidad por ciclo iniciado, porque algunos ciclos no llegan a la transferencia.${ageEvidence.pending_review ? " La cita aún está pendiente de revisión, así que tómala como orientación y no como una estimación personal cerrada." : ""}${treatment === "egg_donation" ? " Describe el tratamiento con óvulos propios, no el camino con óvulos de donante que estás valorando." : treatment === "social_freezing" ? " No indica la probabilidad de tener un bebé con los óvulos que congeles ahora." : " Tus propios resultados y tu historia médica siguen importando cuando un especialista comente qué significa para ti."}`
         : `Sin una cifra publicada para la franja de edad de tu perfil, aquí no hay ningún porcentaje que asociarte. ${missing.length > 0 ? `Completar ${titles(missing)} daría a un especialista un punto de partida más claro.` : "Tus análisis hormonales, el recuento ecográfico de folículos pequeños en los ovarios y tu historia médica son el punto de partida para una conversación más personal."}`,
     options.length > 0
-      ? `Con lo que has compartido, las opciones que aparecen aquí son: ${join(options.map((option) => t(option.estimate.plan_label)))}. La primera es ${t(options[0]?.estimate.plan_label ?? "")}: ${lowerFirst(t(options[0]?.why_this_plan ?? ""))}${travelBlocked ? ` En tu caso, explorarlas también implica comprobar dónde está permitida ${blockedLabel.replace(/^(la|el) /, "")} antes de planificar el tratamiento.` : ""} Son caminos para explorar con un especialista, no instrucciones ni la promesa de que alguno vaya a encajar.`
+      ? `Con lo que has compartido, las opciones que aparecen aquí son: ${join(options.map((option) => t(option.estimate.plan_label)))}. La primera es ${t(options[0]?.estimate.plan_label ?? "")}: ${lowerFirst(t(options[0]?.why_this_plan ?? ""))}${travelBlocked ? ` En tu caso, explorarlas también implica comprobar en qué países se permite ${blockedLabel} antes de planificar el tratamiento.` : ""} Son caminos para explorar con un especialista, no instrucciones ni la promesa de que alguno vaya a encajar.`
       : "Todavía no aparecen opciones de tratamiento para tu perfil; una consulta puede ayudarte a aclarar qué caminos son relevantes antes de comparar costes.",
     "A continuación puedes revisar la evidencia, los costes y los próximos pasos de tu situación, a tu ritmo.",
   ];
