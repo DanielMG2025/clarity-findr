@@ -12,3 +12,6 @@
 - Pills content pipeline: DB + admin tab + /descubre reads (done)
 - [x] Fill the Experienced and LGBTI+ trusted-voices filters so neither grid is empty.
 - [x] Forum-listening MVP: ingest → distil → admin Listening tab → /descubre weekly conversation
+- [x] Unify Door A name as Descubre/Discover
+- [x] Richer bilingual forum answers (30 published topics)
+- [x] Spanish Basics guides (titles, summaries, bodies) + voice platform labels
