@@ -8,7 +8,8 @@ import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ConfidenceBadge } from "@/components/patient/ConfidenceBadge";
 import { SourceChip } from "@/components/patient/SourceChip";
-import { useMasterRecord, usePatientJourney, type FactorKind, type TreatmentInterest } from "@/modules/master-record";
+import { ExampleCasePanel, StudyOwnCaseCta } from "@/components/patient/ExampleCasePanel";
+import { useActiveExampleCase, useMasterRecord, usePatientJourney, type FactorKind, type TreatmentInterest } from "@/modules/master-record";
 import { patientNarrative } from "@/modules/master-record/patientNarrative";
 import { citation, ownEggCitationForAge, type Citation, type Source } from "@/modules/evidence/citations";
 import { seedEstimateForProfile, type PriceEstimate } from "@/modules/provenance";
@@ -125,6 +126,7 @@ export default function PatientReport() {
     [bundle.estimate, profile.country, profile.treatment],
   );
   const hasPriceEstimate = Boolean(priceEstimate && !priceEstimate.empty);
+  const isExample = Boolean(useActiveExampleCase());
   const reportDate = new Intl.DateTimeFormat(language === "es" ? "es-ES" : "en-GB", { day: "numeric", month: "long", year: "numeric" }).format(new Date());
   const country = mpr.identity.country_of_residence ? byCode(mpr.identity.country_of_residence)?.label : undefined;
 
@@ -190,6 +192,7 @@ export default function PatientReport() {
         </Card>
       ) : (
         <>
+          <ExampleCasePanel journey={journey} />
           <div className="max-w-[65ch] space-y-6 text-base leading-8 text-muted-foreground">
             {narrative.map((paragraph, index) => (
               <p key={index} className={index === 0 ? "font-editorial text-2xl italic leading-relaxed text-foreground sm:text-3xl first-letter:float-left first-letter:mr-2 first-letter:mt-1 first-letter:font-display first-letter:text-6xl first-letter:not-italic first-letter:leading-none first-letter:text-primary sm:first-letter:text-7xl print:first-letter:text-4xl" : index === narrative.length - 1 ? "font-medium text-foreground" : undefined}>
@@ -332,6 +335,7 @@ export default function PatientReport() {
             </ul>
             <p className="min-w-0 border-l-2 border-primary/35 bg-primary-soft/25 p-4 text-sm leading-relaxed text-muted-foreground">Every figure in this report carries its source. You don't need to leave this document to see the evidence.</p>
           </footer>
+          {isExample && <StudyOwnCaseCta />}
           <div className="flex flex-wrap items-center gap-5 rounded-lg bg-foreground px-6 py-7 text-background [print-color-adjust:exact] [-webkit-print-color-adjust:exact] sm:px-8 print:break-inside-avoid print:py-4">
             <span className="font-display text-2xl font-medium">Fertility Compass</span>
             <span aria-hidden="true" className="h-px min-w-12 flex-1 bg-accent" />

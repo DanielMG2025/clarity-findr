@@ -5,6 +5,7 @@ import { ArrowRight, FileText, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/patient/PageHeader";
+import { ExampleCasePanel } from "@/components/patient/ExampleCasePanel";
 import { citation, ownEggCitationForAge } from "@/modules/evidence/citations";
 import { useMasterRecord, usePatientJourney } from "@/modules/master-record";
 import { patientNarrative, FAMILY_PHRASE, FAMILY_PHRASE_ES, TREATMENT_PHRASE, TREATMENT_PHRASE_ES, joinNaturally } from "@/modules/master-record/patientNarrative";
@@ -101,6 +102,7 @@ export default function OrientationSummary() {
         </Card>
       ) : (
         <>
+          <ExampleCasePanel journey={journey} />
           <div className="max-w-[65ch] space-y-6 text-base leading-8 text-muted-foreground">
             {narrative.map((paragraph, index) => (
               <p key={index} className={index === 0 ? "font-editorial text-2xl italic leading-relaxed text-foreground sm:text-3xl first-letter:float-left first-letter:mr-2 first-letter:mt-1 first-letter:font-display first-letter:text-6xl first-letter:not-italic first-letter:leading-none first-letter:text-primary sm:first-letter:text-7xl" : index === narrative.length - 1 ? "font-medium text-foreground" : undefined}>
