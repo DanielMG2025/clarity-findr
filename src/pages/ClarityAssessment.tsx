@@ -13,6 +13,7 @@ import { byCode } from "@/modules/regulatory";
 import { SuccessOrientationCard } from "@/components/patient/SuccessOrientationCard";
 import { RegulatoryFrameworkPanel } from "@/components/patient/RegulatoryFrameworkPanel";
 import { EvidenceBasePanel } from "@/components/patient/EvidenceBasePanel";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 /** A single legible segment of the situation summary. */
 function SummaryChip({
@@ -104,6 +105,7 @@ function SupportingCard({
 }
 
 export default function ClarityAssessment() {
+  const { language } = useLanguage();
   const mpr = useMasterRecord();
   const patchDerived = useMasterRecord((s) => s.patchDerived);
   const journey = usePatientJourney();
