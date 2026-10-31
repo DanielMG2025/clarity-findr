@@ -1235,5 +1235,14 @@ export const es: Record<string, string> = {
   "Sample shipped": "Muestra enviada",
   "Full panel": "Perfil completo",
   "AMH test": "Prueba de AMH",
-  "Active · routed by Decision Engine when biomarkers missing": "Activo · asignado por el motor de decisión cuando faltan biomarcadores"
+  "Active · routed by Decision Engine when biomarkers missing": "Activo · asignado por el motor de decisión cuando faltan biomarcadores",
+  // Trusted-voice platform labels (resources.ts), split on " · " by translate()
+  "Institutional": "Institucional",
+  "News": "Noticias",
+  "Charity": "Organización benéfica",
+  "Articles": "Artículos",
+  "Podcast": "Podcast",
+  "YouTube": "YouTube",
+  "Instagram": "Instagram",
+  "Podcast ('As a Woman')": "Podcast ('As a Woman')"
 };
