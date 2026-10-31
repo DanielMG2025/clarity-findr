@@ -11,3 +11,4 @@
 
 - Forum listening uses active database-configured RSS sources, neutral thematic intake and structured metadata only; manual admin-only ingest/distil reuse existing tables, with item-date freshness and validated support IDs. /descubre reads published topics and an authorized aggregate source count, never the admin-only source configuration.
 - `/descubre` is the single content hub (conversation, pills, trusted voices, Basics guides via `BasicsSection`); `/aprende` redirects to `/descubre#basicos` while `/aprende/:slug` stays the article route for glossary deep links.
+- The landing `/` is a two-door fork (/descubre and /situacion as equals, /demo tertiary); its "hot this week" strip reuses `usePublishedTopics` read-only, so it never shows unpublished or non-week topics.
