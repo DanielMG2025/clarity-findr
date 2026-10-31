@@ -212,6 +212,8 @@ export const JOURNEY_ES: Record<string, string> = {
   "Oocyte donation guidance": "Recomendaciones sobre donación de ovocitos",
   "Diagnostic evaluation of infertility": "Evaluación diagnóstica de la infertilidad",
   "Missing": "Falta",
+  "ESHRE — Clinical guidelines": "ESHRE — Guías clínicas",
+  "ASRM — Practice committee documents": "ASRM — Documentos del comité de práctica clínica",
   // Raw treatment values shown in the orientation snapshot
   "egg donation": "ovodonación",
   "social freezing": "congelación de óvulos",

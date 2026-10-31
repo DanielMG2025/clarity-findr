@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/i18n/LanguageContext";
 import { WhyDisclosure, WhyLine } from "@/components/patient/WhyDisclosure";
 import { ConfidenceBadge } from "./ConfidenceBadge";
 import type { Confidence, Scenario } from "../logic/types";
@@ -31,6 +32,9 @@ interface Props {
 }
 
 export function ScenarioCard({ scenario, selected, onSelect, compact, confidence, market }: Props) {
+  const { language, t: tr } = useLanguage();
+  const es = language === "es";
+  const items = scenario.components.slice(0, 3).map((c) => tr(c.label).toLowerCase()).join(", ");
 
   const t = TONE[scenario.tone];
   return (
@@ -85,14 +89,17 @@ export function ScenarioCard({ scenario, selected, onSelect, compact, confidence
       {!compact && (
         <WhyDisclosure label="Why this range" className="mt-4">
           <WhyLine label="What drives it">
-            The {scenario.components.length} cost items in this scenario — {scenario.components.slice(0, 3).map((c) => c.label.toLowerCase()).join(", ")}
-            {scenario.components.length > 3 ? " and others" : ""} — each priced as a market range rather than a single figure.
+            {es
+              ? `Las ${scenario.components.length} partidas de coste de este escenario (${items}${scenario.components.length > 3 ? " y otras" : ""}), cada una con un rango de mercado en lugar de una cifra única.`
+              : `The ${scenario.components.length} cost items in this scenario — ${items}${scenario.components.length > 3 ? " and others" : ""} — each priced as a market range rather than a single figure.`}
           </WhyLine>
           <WhyLine label="Risk profile">
-            {scenario.riskLabel.toLowerCase()} — {scenario.riskHint}
+            {tr(scenario.riskLabel).toLowerCase()} — {scenario.riskHint}
           </WhyLine>
           <WhyLine label="Market">
-            Anchored to published and reported prices for {market ?? "your selected country"}, then adjusted for your profile.
+            {es
+              ? `Basado en precios publicados y declarados para ${market ? tr(market) : "el país que has elegido"}, y ajustado después a tu perfil.`
+              : `Anchored to published and reported prices for ${market ?? "your selected country"}, then adjusted for your profile.`}
           </WhyLine>
           <p>This is an orientative range, not a quote. Your clinic's final figure can sit outside it.</p>
         </WhyDisclosure>

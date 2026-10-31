@@ -161,7 +161,7 @@ export default function ClarityAssessment() {
           <SummaryChip
             icon={CalendarDays}
             label="Age"
-            value={identity.age ? `${identity.age} years old` : "Not shared yet"}
+            value={identity.age ? (language === "es" ? `${identity.age} años` : `${identity.age} years old`) : "Not shared yet"}
             muted={!identity.age}
           />
           <SummaryChip
