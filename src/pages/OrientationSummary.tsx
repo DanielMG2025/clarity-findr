@@ -151,7 +151,11 @@ export default function OrientationSummary() {
 
             <Section number="04" title="What it might cost">
               {priceEstimate && !priceEstimate.empty ? (
+                es ? (
+                  <p>{`Los precios publicados para ${TREATMENT_PHRASE_ES[treatment ?? "unsure"]} en ${t(country ?? profile.country)} apuntan ahora a un rango de `}<strong className="font-semibold text-foreground">{formatEuro(priceEstimate.range_min)}–{formatEuro(priceEstimate.range_max)}</strong>{", con una estimación central de unos "}<strong className="font-semibold text-foreground">{formatEuro(priceEstimate.expected)}</strong>{` y una confianza ${priceEstimate.confidence === "high" ? "alta" : priceEstimate.confidence === "medium" ? "media" : "baja"}. Estos precios suelen ser por ciclo y a menudo no incluyen medicación, almacenamiento, viajes ni extras propios de cada caso, así que solo el presupuesto de una clínica puede confirmar tu total.`}</p>
+                ) : (
                 <p>Published prices for {TREATMENT_PHRASE[treatment ?? "unsure"]} in {country ?? profile.country} currently point to a range of <strong className="font-semibold text-foreground">{formatEuro(priceEstimate.range_min)}–{formatEuro(priceEstimate.range_max)}</strong>, with a central estimate of about <strong className="font-semibold text-foreground">{formatEuro(priceEstimate.expected)}</strong> and {priceEstimate.confidence} confidence. These prices are usually per cycle and often exclude medication, storage, travel and case-specific extras, so only a clinic quote can confirm your total.</p>
+                )
               ) : (
                 <p>There is not enough published price data for this exact treatment and country, so we have not shown a number. A clinic can give you an itemised quote once your treatment plan is clearer.</p>
               )}
