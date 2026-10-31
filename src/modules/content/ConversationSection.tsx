@@ -143,7 +143,7 @@ export function ConversationSection() {
             </div>
             <div className="min-w-0 md:col-span-2 lg:col-span-1">
               <GroupLabel>{es ? "Tiempo" : "Time"}</GroupLabel>
-              <Segmented value={period} onChange={setPeriod} label={es ? "Tiempo" : "Time"}
+              <Segmented<Period> value={period} onChange={setPeriod} label={es ? "Tiempo" : "Time"}
                 options={[["week", es ? "Esta semana" : "This week"], ["3m", es ? "Últimos 3 meses" : "Last 3 months"]]} />
             </div>
           </div>
