@@ -45,7 +45,7 @@ describe("runDemo", () => {
   });
 
   it("derives a donor-sperm need for single women / female couples", () => {
-    const r = runDemo(byKey("julia_27_minima")); // single_woman, ivf intent
+    const r = runDemo(byKey("giulia_34_italy_single")); // single_woman, ivf intent
     expect(r.step0_regulatory!.results.map((x) => x.need)).toContain("sperm_donation");
   });
 
