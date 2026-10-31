@@ -67,11 +67,11 @@ export function groupPlatforms(platforms: string[]): { family: string; items: { 
 
 const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-/** Client-side filter: "week" shows only period=week; "3m" shows week + 3m. Search is accent-insensitive substring. */
+/** Client-side filter: "week" shows only period=week; "3m" shows week + 3m; a non-empty query ignores period. Search is accent-insensitive substring. */
 export function filterTopics<T extends Pick<TopicRow, "period" | "source_platform" | "audiences" | "treatment" | "treatment_en" | "question_en" | "question_es" | "answer_en" | "answer_es" | "geography">>(rows: T[], f: TopicFilter): T[] {
   const q = norm(f.query.trim());
   return rows.filter((r) =>
-    (f.period === "3m" || r.period === "week") &&
+    (!!q || f.period === "3m" || r.period === "week") &&
     (!f.platform || r.source_platform === f.platform) &&
     (!f.audience || r.audiences.includes(f.audience)) &&
     (!f.treatment || r.treatment === f.treatment) &&
