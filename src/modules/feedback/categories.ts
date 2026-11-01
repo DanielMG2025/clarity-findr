@@ -51,4 +51,4 @@ export function countByCategory(rows: FeedbackLike[]): Record<FeedbackCategory, 
 }
 
 /** The widget is shown on every gated page except chromeless embeds. */
-export const showsFeedbackLauncher = (pathname: string) => !pathname.startsWith("/widgets/");
+export const showsFeedbackLauncher = (pathname: string) => !pathname.startsWith("/widgets/") && !pathname.startsWith("/unirse");

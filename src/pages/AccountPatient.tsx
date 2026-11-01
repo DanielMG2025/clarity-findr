@@ -7,6 +7,7 @@ import { KpiCard } from "@/components/admin/AdminShared";
 import { PATIENTS, PAYMENTS, LEADS, FUNNEL_LABEL, PAYMENT_SOURCE_LABEL } from "@/lib/adminMocks";
 import { Heart, Activity, Wallet, Sparkles, Receipt, FileText, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { InvitePanel } from "@/modules/referrals/InvitePanel";
 
 // Pretend we're logged in as P-2032 (premium referral, advanced module purchased)
 const ME = PATIENTS.find((p) => p.ref === "P-2032")!;
@@ -56,6 +57,8 @@ const AccountPatient = () => {
             <Button asChild size="sm"><Link to="/situacion">Refine my profile</Link></Button>
           </div>
         </div>
+
+        <InvitePanel />
 
         {/* KPIs */}
         <div className="grid md:grid-cols-4 gap-3">

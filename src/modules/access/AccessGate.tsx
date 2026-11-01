@@ -4,6 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { GatePage } from "./GatePage";
+import { isOpenPath } from "./policy";
 
 type State = "checking" | "out" | "allowed" | "denied" | "error";
 export function AccessGate({ children }: { children: ReactNode }) {
@@ -57,6 +58,8 @@ export function AccessGate({ children }: { children: ReactNode }) {
     return () => { disposed = true; sequence.current++; sub.subscription.unsubscribe(); window.removeEventListener("focus", focus); };
   }, [check]);
   useEffect(() => { void check(); }, [pathname, check]);
+  // The invite-join page is the only route reachable without access.
+  if (isOpenPath(pathname)) return <>{children}</>;
   if (state === "checking") return <div role="status" className="flex min-h-screen items-center justify-center bg-background text-muted-foreground">{language === "es" ? "Comprobando acceso…" : "Checking access…"}</div>;
   if (state !== "allowed") return <GatePage denied={state === "denied"} unavailable={state === "error"} retry={() => void check()} />;
   return <>{children}</>;
