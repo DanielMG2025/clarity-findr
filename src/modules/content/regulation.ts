@@ -8,6 +8,19 @@
  */
 export type RegConfidence = "alta" | "media" | "media-baja";
 
+export type SourceTier = "primaria" | "oficial" | "secundaria";
+
+export const SOURCE_TIER_LABEL: Record<"primaria"|"oficial"|"secundaria", { es: string; en: string }> = {
+  primaria: { es: "Fuente primaria", en: "Primary source" },
+  oficial: { es: "Fuente oficial", en: "Official source" },
+  secundaria: { es: "Fuente secundaria", en: "Secondary source" },
+};
+
+export const SOURCE_TIER_HELP = {
+  es: "Primaria = texto de la norma en el boletín oficial; Oficial = web del regulador o del gobierno; Secundaria = referencia profesional (p. ej. ESHRE).",
+  en: "Primary = the law's text in the official gazette; Official = the regulator's or government's site; Secondary = a professional reference (e.g. ESHRE).",
+};
+
 export type RegRow = {
   country_es: string;
   country_en: string;
@@ -25,6 +38,7 @@ export type RegRow = {
   legal_basis_en?: string;
   source_label: string;
   source_url: string;
+  source_tier: SourceTier;
   updated_es: string;
   updated_en: string;
   confidence: RegConfidence;
@@ -41,7 +55,7 @@ export const REGULATION: RegRow[] = [
     surrogacy_es: "Prohibida", surrogacy_en: "Not allowed",
     anonymity_es: "Sí (en debate)", anonymity_en: "Yes (under debate)",
     legal_basis: "Ley 14/2006",
-    source_label: "BOE", source_url: "https://www.boe.es/buscar/act.php?id=BOE-A-2006-9292",
+    source_label: "BOE", source_url: "https://www.boe.es/buscar/act.php?id=BOE-A-2006-9292", source_tier: "primaria",
     updated_es: "Ley 2006; anonimato en revisión", updated_en: "2006 law; anonymity under review",
     confidence: "alta",
     change_es: "El Comité de Bioética de España recomendó reconsiderar el anonimato del donante (2023).",
@@ -55,7 +69,7 @@ export const REGULATION: RegRow[] = [
     surrogacy_es: "Muy restringida (solo médica, gratuita)", surrogacy_en: "Very restricted (medical only, unpaid)",
     anonymity_es: "No (donante identificable)", anonymity_en: "No (donor identifiable)",
     legal_basis: "Lei 32/2006",
-    source_label: "CNPMA", source_url: "https://www.cnpma.org.pt/",
+    source_label: "Diário da República", source_url: "https://diariodarepublica.pt/dr/detalhe/lei/32-2006-539239", source_tier: "primaria",
     updated_es: "rev. nov 2026", updated_en: "rev. Nov 2026",
     confidence: "media",
     change_es: "Donante identificable desde el fallo del Tribunal Constitucional de 2018.",
@@ -69,7 +83,7 @@ export const REGULATION: RegRow[] = [
     surrogacy_es: "Altruista legal (no comercial)", surrogacy_en: "Altruistic legal (not commercial)",
     anonymity_es: "No", anonymity_en: "No",
     legal_basis: "HFE Act 1990/2008",
-    source_label: "HFEA", source_url: "https://www.hfea.gov.uk/",
+    source_label: "legislation.gov.uk", source_url: "https://www.legislation.gov.uk/ukpga/1990/37", source_tier: "primaria",
     updated_es: "rev. nov 2026", updated_en: "rev. Nov 2026",
     confidence: "alta",
   },
@@ -81,7 +95,7 @@ export const REGULATION: RegRow[] = [
     surrogacy_es: "Prohibida", surrogacy_en: "Not allowed",
     anonymity_es: "No (desde 2021)", anonymity_en: "No (since 2021)",
     legal_basis: "Loi 2021-1017 (bioéthique)",
-    source_label: "Légifrance", source_url: "https://www.legifrance.gouv.fr/",
+    source_label: "Vie-publique", source_url: "https://www.vie-publique.fr/loi/268659-loi-bioethique-pma", source_tier: "oficial",
     updated_es: "Ley ago 2021", updated_en: "Aug 2021 law",
     confidence: "alta",
     change_es: "La ley de bioética de 2021 abrió la PMA a todas las mujeres y puso fin al anonimato del donante.",
@@ -95,7 +109,7 @@ export const REGULATION: RegRow[] = [
     surrogacy_es: "Prohibida y perseguida incluso en el extranjero", surrogacy_en: "Banned and prosecuted even abroad",
     anonymity_es: "Sí", anonymity_en: "Yes",
     legal_basis: "Legge 40/2004 + ley 2024", legal_basis_en: "Legge 40/2004 + 2024 law",
-    source_label: "Gazzetta Ufficiale", source_url: "https://www.gazzettaufficiale.it/",
+    source_label: "Normattiva", source_url: "https://www.normattiva.it/eli/id/2024/11/18/24G00187/ORIGINAL", source_tier: "primaria",
     updated_es: "Ley oct–nov 2024", updated_en: "Oct–Nov 2024 law",
     confidence: "alta",
     change_es: "Desde finales de 2024 la subrogación es 'delito universal': perseguible aunque se realice fuera de Italia.",
@@ -109,7 +123,7 @@ export const REGULATION: RegRow[] = [
     surrogacy_es: "Prohibida", surrogacy_en: "Not allowed",
     anonymity_es: "Semen: no (registro)", anonymity_en: "Sperm: no (registry)",
     legal_basis: "Embryonenschutzgesetz 1990",
-    source_label: "Gesetze im Internet", source_url: "https://www.gesetze-im-internet.de/eschg/",
+    source_label: "Gesetze im Internet", source_url: "https://www.gesetze-im-internet.de/eschg/", source_tier: "primaria",
     updated_es: "Estado nov 2026", updated_en: "As of Nov 2026",
     confidence: "alta",
     change_es: "La ovodonación sigue prohibida, pero una comisión federal recomendó legalizarla (2024); aún no es ley.",
@@ -123,7 +137,7 @@ export const REGULATION: RegRow[] = [
     surrogacy_es: "No regulada (zona gris)", surrogacy_en: "Unregulated (grey area)",
     anonymity_es: "Sí", anonymity_en: "Yes",
     legal_basis: "Zákon 373/2011",
-    source_label: "ESHRE", source_url: "https://www.eshre.eu/",
+    source_label: "Zákon 373/2011", source_url: "https://www.zakonyprolidi.cz/cs/2011-373", source_tier: "secundaria",
     updated_es: "rev. nov 2026", updated_en: "rev. Nov 2026",
     confidence: "media",
   },
@@ -135,23 +149,35 @@ export const REGULATION: RegRow[] = [
     surrogacy_es: "Gestacional altruista (autorización judicial)", surrogacy_en: "Altruistic gestational (court authorization)",
     anonymity_es: "Sí", anonymity_en: "Yes",
     legal_basis: "Ley 3305/2005", legal_basis_en: "Law 3305/2005",
-    source_label: "ESHRE", source_url: "https://www.eshre.eu/",
+    source_label: "ESHRE", source_url: "https://www.eshre.eu/", source_tier: "secundaria",
     updated_es: "rev. nov 2026", updated_en: "rev. Nov 2026",
     confidence: "media",
   },
   {
-    country_es: "Chipre", country_en: "Cyprus",
+    country_es: "Chipre (Sur · UE)", country_en: "Cyprus (South · EU)",
     access_es: "Amplio", access_en: "Broad",
     egg_es: "Permitida", egg_en: "Allowed",
     sperm_es: "Permitido", sperm_en: "Allowed",
-    surrogacy_es: "Variable según jurisdicción", surrogacy_en: "Varies by jurisdiction",
+    surrogacy_es: "Regulada (marco de la República de Chipre)", surrogacy_en: "Regulated (Republic of Cyprus framework)",
     anonymity_es: "Variable", anonymity_en: "Varies",
-    legal_basis: "Dos jurisdicciones (Sur UE / Norte TRNC)", legal_basis_en: "Two jurisdictions (EU South / TRNC North)",
-    source_label: "ESHRE", source_url: "https://www.eshre.eu/",
+    legal_basis: "Ley de reproducción asistida (República de Chipre)", legal_basis_en: "Assisted reproduction law (Republic of Cyprus)",
+    source_label: "ESHRE", source_url: "https://www.eshre.eu/", source_tier: "secundaria",
     updated_es: "rev. nov 2026", updated_en: "rev. Nov 2026",
     confidence: "media-baja",
-    change_es: "Dos marcos distintos: la República de Chipre (UE) y el norte (TRNC), mucho más permisivo.",
-    change_en: "Two different frameworks: the Republic of Cyprus (EU) and the north (TRNC), far more permissive.",
+    change_es: "Estado miembro de la UE: aplica el marco regulador europeo.", change_en: "EU member state: the European regulatory framework applies.",
+  },
+  {
+    country_es: "Chipre (Norte · TRNC)", country_en: "Cyprus (North · TRNC)",
+    access_es: "Muy amplio", access_en: "Very broad",
+    egg_es: "Permitida (incl. donación)", egg_en: "Allowed (incl. donation)",
+    sperm_es: "Permitido", sperm_en: "Allowed",
+    surrogacy_es: "Disponible (marco propio)", surrogacy_en: "Available (own framework)",
+    anonymity_es: "Anónima", anonymity_en: "Anonymous",
+    legal_basis: "Marco propio del TRNC (fuera de la UE)", legal_basis_en: "TRNC's own framework (outside the EU)",
+    source_label: "ESHRE", source_url: "https://www.eshre.eu/", source_tier: "secundaria",
+    updated_es: "rev. nov 2026", updated_en: "rev. Nov 2026",
+    confidence: "media-baja",
+    change_es: "No pertenece a la UE; marco propio mucho más permisivo. Verificación por clínica recomendada.", change_en: "Not part of the EU; a much more permissive framework of its own. Per-clinic verification recommended.",
   },
   {
     country_es: "Polonia", country_en: "Poland",
@@ -161,7 +187,7 @@ export const REGULATION: RegRow[] = [
     surrogacy_es: "No reconocida", surrogacy_en: "Not recognized",
     anonymity_es: "Sí", anonymity_en: "Yes",
     legal_basis: "Ley de infertilidad 2015", legal_basis_en: "2015 infertility act",
-    source_label: "ESHRE", source_url: "https://www.eshre.eu/",
+    source_label: "Dziennik Ustaw", source_url: "https://eli.gov.pl/eli/DU/2015/1087/ogl", source_tier: "primaria",
     updated_es: "rev. nov 2026", updated_en: "rev. Nov 2026",
     confidence: "media",
   },
@@ -173,7 +199,7 @@ export const REGULATION: RegRow[] = [
     surrogacy_es: "Prohibida", surrogacy_en: "Not allowed",
     anonymity_es: "N/A", anonymity_en: "N/A",
     legal_basis: "Reglamento ART 2014", legal_basis_en: "ART Regulation 2014",
-    source_label: "ESHRE", source_url: "https://www.eshre.eu/",
+    source_label: "T.C. Sağlık Bakanlığı", source_url: "https://www.saglik.gov.tr/", source_tier: "oficial",
     updated_es: "verif. nov 2026", updated_en: "verified Nov 2026",
     confidence: "alta",
     change_es: "Solo gametos propios de la pareja casada; la donación de óvulos, semen o embriones está prohibida. Los pacientes suelen salir del país.",
