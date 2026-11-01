@@ -6,41 +6,50 @@ import { Button } from "@/components/ui/button";
 import { getArticle, AutoGlossary, type Article } from "@/modules/education";
 import { useLanguage } from "@/i18n/LanguageContext";
 
-const KIND_LABEL: Record<Article["kind"], string> = {
-  glosario: "Glossary",
-  tratamiento: "Treatment",
-  journey: "Journey",
-  negocio: "How it's paid",
+const KIND_LABEL: Record<Article["kind"], { en: string; es: string }> = {
+  glosario: { en: "Glossary", es: "Glosario" },
+  tratamiento: { en: "Treatment", es: "Tratamiento" },
+  journey: { en: "Journey", es: "Recorrido" },
+  negocio: { en: "How it's paid", es: "Cómo se paga" },
 };
+
+/** The expanded body in the active language; legacy English-only bodies go through the dictionary. */
+function depthParagraphs(a: Article, es: boolean, t: (s: string) => string): string[] {
+  const own = es ? a.body_es : a.body_en;
+  if (own?.length) return own;
+  return (a.body ?? []).map((p) => t(p));
+}
 
 export default function LearnArticle() {
   const { slug } = useParams();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const es = language === "es";
   const article = slug ? getArticle(slug) : undefined;
 
   if (!article) {
     return (
       <div className="container max-w-2xl py-16 text-center space-y-4">
-        <h1 className="text-2xl font-bold">Article not found</h1>
-        <p className="text-muted-foreground">This explainer doesn't exist or was moved.</p>
+        <h1 className="text-2xl font-bold">{es ? "Guía no encontrada" : "Article not found"}</h1>
+        <p className="text-muted-foreground">{es ? "Esta guía no existe o se ha movido." : "This explainer doesn't exist or was moved."}</p>
         <Button asChild variant="outline">
-          <Link to="/descubre#basicos"><ArrowLeft className="size-4 mr-1" /> Back to Guides</Link>
+          <Link to="/descubre#basicos"><ArrowLeft className="size-4 mr-1" /> {es ? "Volver a Guías" : "Back to Guides"}</Link>
         </Button>
       </div>
     );
   }
 
   const a = article;
+  const depth = depthParagraphs(a, es, t);
 
   return (
     <article className="container max-w-2xl py-10 space-y-6">
       <Link to="/descubre#basicos" className="text-sm text-muted-foreground hover:text-primary inline-flex items-center gap-1">
-        <ArrowLeft className="size-4" /> Guides
+        <ArrowLeft className="size-4" /> {es ? "Guías" : "Guides"}
       </Link>
 
       <header className="space-y-3">
         <div className="flex items-center gap-2">
-          <Badge variant="secondary" className="text-[11px]">{KIND_LABEL[a.kind]}</Badge>
+          <Badge variant="secondary" className="text-[11px]">{es ? KIND_LABEL[a.kind].es : KIND_LABEL[a.kind].en}</Badge>
           <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
             <Clock className="size-3" /> {a.reading_time_min} min
           </span>
@@ -49,11 +58,23 @@ export default function LearnArticle() {
         <p className="text-lg text-muted-foreground leading-relaxed">{a.hook}</p>
       </header>
 
-      <p className="leading-relaxed"><AutoGlossary>{t(a.summary)}</AutoGlossary></p>
+      <section aria-label={es ? "Resumen" : "Summary"} className="rounded-lg border-l-2 border-accent bg-accent-soft/30 px-5 py-4">
+        <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">{es ? "En breve" : "In short"}</div>
+        <p className="leading-relaxed"><AutoGlossary>{t(a.summary)}</AutoGlossary></p>
+      </section>
 
-      {a.body?.map((p, i) => (
-        <p key={i} className="leading-relaxed text-foreground/90"><AutoGlossary>{t(p)}</AutoGlossary></p>
-      ))}
+      {depth.length > 0 && (
+        <section aria-labelledby="in-depth" className="space-y-4 border-t border-border pt-6">
+          <h2 id="in-depth" className="font-display text-2xl font-medium">{es ? "En detalle" : "In depth"}</h2>
+          {depth.map((p, i) =>
+            p.startsWith("### ") ? (
+              <h3 key={i} className="pt-2 text-base font-semibold text-foreground">{p.slice(4)}</h3>
+            ) : (
+              <p key={i} className="leading-relaxed text-foreground/90"><AutoGlossary>{p}</AutoGlossary></p>
+            ),
+          )}
+        </section>
+      )}
 
       {a.steps && a.steps.length > 0 && (
         <div className="space-y-3">
@@ -74,7 +95,7 @@ export default function LearnArticle() {
       {a.differences && a.differences.length > 0 && (
         <div className="rounded-xl border p-4 space-y-2">
           <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-            <GitCompare className="size-3.5" /> How it differs
+            <GitCompare className="size-3.5" /> {es ? "En qué se diferencia" : "How it differs"}
           </div>
           {a.differences.map((d, i) => (
             <p key={i} className="text-sm leading-relaxed">
@@ -88,7 +109,7 @@ export default function LearnArticle() {
       {a.faqs && a.faqs.length > 0 && (
         <div className="space-y-2">
           <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-            <HelpCircle className="size-3.5" /> FAQ
+            <HelpCircle className="size-3.5" /> {es ? "Preguntas frecuentes" : "FAQ"}
           </div>
           {a.faqs.map((f, i) => (
             <details key={i} className="rounded-lg border p-3">
@@ -100,7 +121,7 @@ export default function LearnArticle() {
       )}
 
       <div className="rounded-lg bg-muted/40 border p-3">
-        <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Sources</div>
+        <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">{es ? "Fuentes" : "Sources"}</div>
         <ul className="flex flex-wrap gap-x-4 gap-y-1">
           {a.sources.map((s) => (
             <li key={s.label} className="text-xs">
