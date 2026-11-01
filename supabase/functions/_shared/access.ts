@@ -21,3 +21,28 @@ export function accessOrigin(candidate?: string) {
     return (u.origin === fallback || u.origin === "http://localhost:8080" || (u.protocol === "https:" && preview)) ? u.origin : fallback;
   } catch { return fallback; }
 }
+type AccessClients = ReturnType<typeof clients>;
+/**
+ * The single magic-link sender used by request-access and join-via-referral.
+ * Sends only to eligible addresses, with an atomic 60 s per-address cooldown.
+ */
+export async function sendAccessLink({ admin, sender }: AccessClients, email: string, origin?: string) {
+  const { data: allowed, error } = await admin.rpc("access_email_allowed", { candidate: email });
+  if (error || !allowed) return false;
+  // An admin remains eligible even if their access-list entry was deleted.
+  // Insert only when absent; do not reactivate a deliberately inactive row.
+  await admin.from("allowed_users").upsert({ email }, { onConflict: "email", ignoreDuplicates: true });
+  // Atomic per-address cooldown prevents parallel requests from flooding an authorized mailbox.
+  const cutoff = new Date(Date.now() - 60_000).toISOString();
+  const { data: claimed, error: claimError } = await admin.from("allowed_users")
+    .update({ last_link_sent_at: new Date().toISOString() }).eq("email", email)
+    .or(`last_link_sent_at.is.null,last_link_sent_at.lt.${cutoff}`).select("id");
+  if (claimError || !claimed?.length) return false;
+  const { error: sendError } = await sender.auth.signInWithOtp({ email, options: { emailRedirectTo: accessOrigin(origin), shouldCreateUser: true } });
+  if (sendError) {
+    await admin.from("allowed_users").update({ last_link_sent_at: null }).eq("email", email);
+    console.error("Access email delivery failed", sendError.status);
+    return false;
+  }
+  return true;
+}
