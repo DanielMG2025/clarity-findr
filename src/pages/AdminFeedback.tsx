@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Search, Trash2 } from "lucide-react";
+import { ArrowLeft, Mic, Search, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -16,6 +16,8 @@ import {
   countByCategory, filterFeedback, type FeedbackCategory, type FeedbackFilters, type FeedbackStatus,
 } from "@/modules/feedback/categories";
 import type { Database } from "@/integrations/supabase/types";
+import { AudioNote } from "@/modules/feedback/AudioNote";
+import { AUDIO_BUCKET, formatSeconds } from "@/modules/feedback/voice";
 
 type Row = Database["public"]["Tables"]["beta_feedback"]["Row"];
 
@@ -46,6 +48,7 @@ export default function AdminFeedback() {
         ? await supabase.from("beta_feedback").update({ status: a.status }).eq("id", a.row.id)
         : await supabase.from("beta_feedback").delete().eq("id", a.row.id);
       if (res.error) throw res.error;
+      if (a.kind === "delete" && a.row.audio_path) await supabase.storage.from(AUDIO_BUCKET).remove([a.row.audio_path]);
     },
     onSuccess: () => { setRemove(null); void qc.invalidateQueries({ queryKey: ["beta-feedback"] }); toast.success(es ? "Comentario actualizado" : "Feedback updated"); },
     onError: () => toast.error(es ? "No se ha podido guardar el cambio." : "Could not save the change."),
@@ -105,9 +108,11 @@ export default function AdminFeedback() {
             <span className="break-all font-medium text-foreground">{row.user_email}</span>
             {row.segment && <Badge variant="secondary" className="text-[10px]">{row.segment}</Badge>}
             {row.category && row.category in CATEGORY_LABEL && <Badge variant="outline" className="border-primary/40 text-[10px] text-primary">{CATEGORY_LABEL[row.category as FeedbackCategory][language]}</Badge>}
+            {row.audio_path && <Badge variant="secondary" className="gap-1 text-[10px]"><Mic className="size-3" /> {es ? "Voz" : "Voice"}{row.audio_duration_seconds != null && ` · ${formatSeconds(row.audio_duration_seconds)}`}</Badge>}
             {row.lang && <span className="uppercase">{row.lang}</span>}
           </div>
-          <p className="whitespace-pre-wrap break-words">{row.message}</p>
+          {row.message && <p className="whitespace-pre-wrap break-words">{row.message}</p>}
+          {row.audio_path && <AudioNote path={row.audio_path} />}
           {row.page_path && <code className="block break-all font-mono text-xs text-muted-foreground">{row.page_path}</code>}
         </div>
         <div className="flex items-start gap-2">
@@ -123,7 +128,7 @@ export default function AdminFeedback() {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{es ? "¿Eliminar este comentario?" : "Delete this feedback?"}</AlertDialogTitle>
-            <AlertDialogDescription className="line-clamp-4 break-words">{remove?.message}</AlertDialogDescription>
+            <AlertDialogDescription className="line-clamp-4 break-words">{remove?.message || (es ? "Mensaje de voz" : "Voice message")}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>{es ? "Cancelar" : "Cancel"}</AlertDialogCancel>

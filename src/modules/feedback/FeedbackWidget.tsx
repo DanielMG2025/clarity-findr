@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useLocation } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CheckCircle2, ChevronDown, MessageSquareHeart } from "lucide-react";
+import { CheckCircle2, ChevronDown, MessageSquareHeart, Mic } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -12,6 +12,9 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { CATEGORY_LABEL, FEEDBACK_CATEGORIES, showsFeedbackLauncher, type FeedbackCategory } from "./categories";
+import { VoiceRecorder, type VoiceNote } from "./VoiceRecorder";
+import { AudioNote } from "./AudioNote";
+import { AUDIO_BUCKET, audioPathFor, canSubmitFeedback } from "./voice";
 
 const MAX = 5000;
 
@@ -24,6 +27,7 @@ export function FeedbackWidget() {
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState<FeedbackCategory | null>(null);
   const [message, setMessage] = useState("");
+  const [voice, setVoice] = useState<VoiceNote | null>(null);
   const [thanks, setThanks] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const pagePath = pathname + search;
@@ -38,7 +42,7 @@ export function FeedbackWidget() {
     enabled: open && !!userId,
     queryFn: async () => {
       const { data, error } = await supabase.from("beta_feedback")
-        .select("id, created_at, category, message, page_path")
+        .select("id, created_at, category, message, page_path, audio_path, audio_duration_seconds")
         .eq("user_id", userId!).order("created_at", { ascending: false });
       if (error) throw error;
       return data;
@@ -49,6 +53,13 @@ export function FeedbackWidget() {
     mutationFn: async () => {
       const { data, error: userError } = await supabase.auth.getUser();
       if (userError || !data.user) throw new Error("No session");
+      // Upload the voice note first (into the sender's own folder), then stamp its path on the row.
+      let audio_path: string | null = null;
+      if (voice) {
+        audio_path = audioPathFor(data.user.id, crypto.randomUUID(), voice.mime);
+        const up = await supabase.storage.from(AUDIO_BUCKET).upload(audio_path, voice.blob, { contentType: voice.mime, upsert: false });
+        if (up.error) throw up.error;
+      }
       const { error } = await supabase.from("beta_feedback").insert({
         user_id: data.user.id,
         user_email: (data.user.email ?? "").toLowerCase(),
@@ -56,11 +67,16 @@ export function FeedbackWidget() {
         message: message.trim(),
         page_path: pagePath,
         lang: language,
+        audio_path,
+        audio_duration_seconds: voice ? voice.seconds : null,
       });
-      if (error) throw error;
+      if (error) {
+        if (audio_path) await supabase.storage.from(AUDIO_BUCKET).remove([audio_path]);
+        throw error;
+      }
     },
     onSuccess: () => {
-      setMessage(""); setCategory(null); setThanks(true);
+      setMessage(""); setVoice(null); setCategory(null); setThanks(true);
       void qc.invalidateQueries({ queryKey: ["beta-feedback"] });
     },
     onError: () => toast.error(es ? "No se ha podido enviar tu comentario. Inténtalo de nuevo." : "Could not send your comment. Please try again."),
@@ -68,7 +84,7 @@ export function FeedbackWidget() {
 
   if (!showsFeedbackLauncher(pathname)) return null;
 
-  const onSubmit = (e: FormEvent) => { e.preventDefault(); if (message.trim()) submit.mutate(); };
+  const onSubmit = (e: FormEvent) => { e.preventDefault(); if (canSubmitFeedback(message, !!voice)) submit.mutate(); };
   const date = (v: string) => new Intl.DateTimeFormat(es ? "es-ES" : "en-GB", { dateStyle: "medium", timeStyle: "short" }).format(new Date(v));
 
   return <>
@@ -112,7 +128,6 @@ export function FeedbackWidget() {
             })}
           </div>
           <Textarea
-            required
             aria-label={es ? "Tu comentario" : "Your comment"}
             rows={5}
             maxLength={MAX}
@@ -120,9 +135,10 @@ export function FeedbackWidget() {
             onChange={(e) => { setMessage(e.target.value); if (thanks) setThanks(false); }}
             placeholder={es ? "¿Qué mejorarías? ¿Qué te falta? ¿Qué te sobra? ¿Qué no te funciona?" : "What would you improve? What's missing? What's too much? What doesn't work?"}
           />
+          <VoiceRecorder value={voice} onChange={(v) => { setVoice(v); if (thanks) setThanks(false); }} />
           <p className="truncate text-xs text-muted-foreground">{es ? "Se adjuntará a la página: " : "Attached to page: "}<code className="font-mono">{pagePath}</code></p>
           <div className="flex justify-end">
-            <Button type="submit" disabled={!message.trim() || submit.isPending}>
+            <Button type="submit" disabled={!canSubmitFeedback(message, !!voice) || submit.isPending}>
               {submit.isPending ? (es ? "Enviando…" : "Sending…") : (es ? "Enviar" : "Submit")}
             </Button>
           </div>
@@ -142,9 +158,11 @@ export function FeedbackWidget() {
                 <div className="mb-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                   <span>{date(row.created_at)}</span>
                   {row.category && row.category in CATEGORY_LABEL && <Badge variant="outline" className="text-[10px]">{CATEGORY_LABEL[row.category as FeedbackCategory][language]}</Badge>}
+                  {row.audio_path && <Badge variant="secondary" className="gap-1 text-[10px]"><Mic className="size-3" /> {es ? "Voz" : "Voice"}</Badge>}
                   {row.page_path && <code className="truncate font-mono">{row.page_path}</code>}
                 </div>
-                <p className="whitespace-pre-wrap break-words">{row.message}</p>
+                {row.message && <p className="whitespace-pre-wrap break-words">{row.message}</p>}
+                {row.audio_path && <div className="mt-2"><AudioNote path={row.audio_path} /></div>}
               </li>)}
             </ul>
           </CollapsibleContent>
