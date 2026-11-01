@@ -33,13 +33,35 @@ export interface Article {
   hook: string; // one-line, plain-language, for cards and video intros
   summary: string; // 2–3 sentences
   reading_time_min: number;
-  body?: string[]; // short paragraphs (plain language)
+  /** @deprecated legacy English-only paragraphs; the "In depth" body now lives in body_en/body_es. */
+  body?: string[];
+  /** Expanded "In depth" body, one entry per paragraph ("### " prefix = subheading). */
+  body_en?: string[];
+  body_es?: string[];
   steps?: Step[]; // for treatments / journeys
   differences?: { vs: string; note: string }[]; // "how it differs from X"
   faqs?: { q: string; a: string }[];
   disclaimer: string;
   sources: Source[];
   tags: string[];
+}
+
+import { GLOSSARY_DEPTH } from "./depth.glossary";
+import { GUIDES_DEPTH } from "./depth.guides";
+
+const DEPTH = { ...GLOSSARY_DEPTH, ...GUIDES_DEPTH };
+const WORDS_PER_MIN = 200;
+
+/** Attach the bilingual "In depth" body and keep reading time honest for the longer text. */
+function withDepth(list: Article[]): Article[] {
+  return list.map((a) => {
+    const d = DEPTH[a.slug];
+    if (!d) return a;
+    const words = [a.summary, ...d.body_en, ...(a.steps ?? []).map((x) => x.detail), ...(a.faqs ?? []).map((f) => f.a)]
+      .join(" ").split(/\s+/).length;
+    const { body: _legacy, ...rest } = a;
+    return { ...rest, ...d, reading_time_min: Math.max(a.reading_time_min, Math.ceil(words / WORDS_PER_MIN)) };
+  });
 }
 
 // Shared sources (composed from concordant clinical/educational materials)
@@ -55,7 +77,7 @@ const S = {
 // ---------------------------------------------------------------------------
 // 1) GLOSSARY — 20-second answers ("what is ICSI?")
 // ---------------------------------------------------------------------------
-export const GLOSSARY: Article[] = [
+export const GLOSSARY: Article[] = withDepth([
   {
     slug: "what-is-ivf",
     kind: "glosario",
@@ -131,12 +153,12 @@ export const GLOSSARY: Article[] = [
     sources: [S.eshre, S.sef],
     tags: ["freezing", "vitrification"],
   },
-];
+]);
 
 // ---------------------------------------------------------------------------
 // 2) TREATMENTS — step by step
 // ---------------------------------------------------------------------------
-export const TREATMENTS: Article[] = [
+export const TREATMENTS: Article[] = withDepth([
   {
     slug: "ivf-step-by-step",
     kind: "tratamiento",
@@ -189,12 +211,12 @@ export const TREATMENTS: Article[] = [
     sources: [S.eshre, S.sef],
     tags: ["freezing", "journey"],
   },
-];
+]);
 
 // ---------------------------------------------------------------------------
 // 3) JOURNEYS — patient, donor, freezing (full journey)
 // ---------------------------------------------------------------------------
-export const JOURNEYS: Article[] = [
+export const JOURNEYS: Article[] = withDepth([
   {
     slug: "patient-journey",
     kind: "journey",
@@ -254,7 +276,7 @@ export const JOURNEYS: Article[] = [
     sources: [S.eshre, S.sef],
     tags: ["journey", "freezing"],
   },
-];
+]);
 
 // ---------------------------------------------------------------------------
 // 4) HOW IT WORKS FINANCIALLY (for the patient / the donor)
@@ -269,7 +291,7 @@ const Ssrc = {
   boe: { label: "BOE — Law 14/2006 on assisted human reproduction techniques" },
 };
 
-export const ECONOMICS: Article[] = [
+export const ECONOMICS: Article[] = withDepth([
   {
     slug: "how-egg-freezing-is-paid",
     kind: "negocio",
@@ -340,12 +362,12 @@ export const ECONOMICS: Article[] = [
     sources: [Ssrc.placid, Ssrc.seen],
     tags: ["financing", "economics"],
   },
-];
+]);
 
 // ---------------------------------------------------------------------------
 // Extended glossary (terms that show up unexplained in every clinic)
 // ---------------------------------------------------------------------------
-export const GLOSSARY_EXTRA: Article[] = [
+export const GLOSSARY_EXTRA: Article[] = withDepth([
   { slug: "what-is-ovarian-reserve", kind: "glosario", title: "What is ovarian reserve?", hook: "Roughly, the 'quantity' of eggs you have left.", summary: "Ovarian reserve is an estimate of the quantity of available eggs. It's assessed mainly with AMH and the antral follicle count, and declines with age.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.eshre, S.sef], tags: ["reserve", "basics"] },
   { slug: "what-is-amh", kind: "glosario", title: "What is AMH?", hook: "A blood test that gives a sense of your ovarian reserve.", summary: "Anti-Müllerian hormone (AMH) is a blood marker that helps estimate ovarian reserve. Low values suggest fewer available eggs, but don't predict success on their own.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.sef, S.eshre], tags: ["amh", "reserve"] },
   { slug: "what-is-afc", kind: "glosario", title: "What is the antral follicle count (AFC)?", hook: "Counting the small follicles in your ovaries by ultrasound.", summary: "The AFC is the number of antral follicles seen on ultrasound at the start of the cycle. Together with AMH, it helps estimate how you might respond to stimulation.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.eshre], tags: ["afc", "reserve"] },
@@ -355,7 +377,7 @@ export const GLOSSARY_EXTRA: Article[] = [
   { slug: "what-is-egg-retrieval", kind: "glosario", title: "What is egg retrieval (follicular puncture)?", hook: "Retrieving the eggs, under sedation and quickly.", summary: "The retrieval is the procedure that collects the eggs from the ovaries, ultrasound-guided and under sedation. It's short and outpatient.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.urmc, S.ccrm], tags: ["retrieval", "ivf"] },
   { slug: "what-is-ropa-method", kind: "glosario", title: "What is the ROPA method?", hook: "Shared motherhood: one provides the egg, the other carries.", summary: "The ROPA method (Reception of Oocytes from the Partner) lets a female couple share motherhood: one provides the eggs and the other carries the pregnancy. It's regulated in Spain.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.sef], tags: ["ropa", "legal"] },
   { slug: "anonymous-donation", kind: "glosario", title: "What does anonymous donation mean?", hook: "Donor and recipient don't know each other's identity.", summary: "In Spain egg donation is anonymous by law: neither the donor nor the recipient knows the other's identity, and only data such as blood group and age are shared. In other countries the regulation differs.", reading_time_min: 1, disclaimer: CONTENT_DISCLAIMER, sources: [S.sef, Ssrc.ivi], tags: ["donor", "legal"] },
-];
+]);
 
 export const ALL_ARTICLES: Article[] = [...GLOSSARY, ...GLOSSARY_EXTRA, ...TREATMENTS, ...JOURNEYS, ...ECONOMICS];
 

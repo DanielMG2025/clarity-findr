@@ -5,7 +5,7 @@
 
 - Both patient reports consume the shared `patientNarrative` presentation helper (it takes the active language and builds each language's prose from the same inputs) so their opening paragraphs cannot drift; keep it read-only.
 
-- Localize display text through the context-aware JSX presentation boundary and exact-copy dictionaries in `src/i18n`; this keeps persisted form values, routes, clinical records and engine outputs untouched. Never mutate React-owned DOM text for translation. Basics guide copy is translated as exact-copy keys in `src/i18n/education.es.ts` (merged under the base dictionary), and text passed through `AutoGlossary` must be localized with `t()` first because it splits raw strings.
+- Localize display text through the context-aware JSX presentation boundary and exact-copy dictionaries in `src/i18n`; this keeps persisted form values, routes, clinical records and engine outputs untouched. Never mutate React-owned DOM text for translation. Basics guide short copy (titles, hooks, summaries, steps, FAQs, sources) is translated as exact-copy keys in `src/i18n/education.es.ts` and rendered through explicit `t()`; the long "In depth" bodies are stored bilingually as `body_en`/`body_es` in `src/modules/education/depth.*.ts` because dictionary lookup is fragile for paragraphs, and text passed through `AutoGlossary` must be localized with `t()` first because it splits raw strings.
 
 - Learn pills are read from the `pills` table via `usePublishedPills`, which falls back to the static seed in `src/modules/content/pills.ts`, so /descubre never renders empty; writes are gated by the `admin` role in `user_roles` (RLS + `has_role`).
 
