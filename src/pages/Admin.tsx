@@ -14,6 +14,7 @@ import {
   Sparkle,
   Ear,
   MessageSquareHeart,
+  Ticket,
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -30,10 +31,12 @@ import AnalyticsTab from "@/components/admin/AnalyticsTab";
 import PillsTab from "@/components/admin/PillsTab";
 import ListeningTab from "@/components/admin/ListeningTab";
 import UsersTab from "@/components/admin/UsersTab";
+import InvitesTab from "@/components/admin/InvitesTab";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 const TABS = [
   { v: "users", icon: Users, label: "Users" },
+  { v: "invites", icon: Ticket, label: "Invites" },
   { v: "overview", icon: LayoutDashboard, label: "Overview" },
   { v: "patients", icon: Users, label: "Patients" },
   { v: "clinics", icon: Building2, label: "Clinics" },
@@ -89,7 +92,7 @@ const Admin = () => {
               <TabsList className="inline-flex w-auto">
                 {TABS.map((t) => (
                   <TabsTrigger key={t.v} value={t.v} className="text-xs md:text-sm">
-                    <t.icon className="size-3.5 mr-1.5" /> {t.v === "users" && language === "es" ? "Usuarios" : t.label}
+                    <t.icon className="size-3.5 mr-1.5" /> {language === "es" && t.v === "users" ? "Usuarios" : language === "es" && t.v === "invites" ? "Invitaciones" : t.label}
                   </TabsTrigger>
                 ))}
               </TabsList>
@@ -97,6 +100,9 @@ const Admin = () => {
 
             <TabsContent value="users" className="mt-6">
               <UsersTab />
+            </TabsContent>
+            <TabsContent value="invites" className="mt-6">
+              <InvitesTab />
             </TabsContent>
             <TabsContent value="overview" className="mt-6">
               <OverviewTab />

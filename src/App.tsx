@@ -30,6 +30,7 @@ import DemoRoom from "./pages/DemoRoom.tsx";
 import Descubre from "./pages/Descubre.tsx";
 import Regulation from "./pages/Regulation.tsx";
 import Science from "./pages/Science.tsx";
+import Unirse from "./pages/Unirse.tsx";
 import Admin from "./pages/Admin.tsx";
 import AdminFeedback from "./pages/AdminFeedback.tsx";
 import { FeedbackWidget } from "./modules/feedback/FeedbackWidget";
@@ -39,7 +40,7 @@ import { AccessGate } from "./modules/access/AccessGate";
 
 const queryClient = new QueryClient();
 
-const PUBLIC_PATHS = new Set<string>(["/", "/demo", "/descubre"]);
+const PUBLIC_PATHS = new Set<string>(["/", "/demo", "/descubre", "/unirse"]);
 
 function LayoutSwitch({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
@@ -75,6 +76,8 @@ const App = () => (
             <Route path="/descubre" element={<Descubre />} />
             <Route path="/descubre/regulacion" element={<Regulation />} />
             <Route path="/descubre/ciencia" element={<Science />} />
+            {/* Invite-only join page — the one route AccessGate lets through without access */}
+            <Route path="/unirse" element={<Unirse />} />
 
             {/* Patient journey — the core modules */}
             <Route path="/situacion" element={<PatientProfile />} />
