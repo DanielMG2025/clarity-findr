@@ -77,3 +77,10 @@ export function filterTopics<T extends Pick<TopicRow, "period" | "source_platfor
     (!f.treatment || r.treatment === f.treatment) &&
     (!q || norm([r.question_en, r.question_es, r.answer_en, r.answer_es, r.treatment, r.treatment_en, r.geography ?? ""].join(" ")).includes(q)));
 }
+
+/** Live provenance totals for the topics in view: summed mention estimates (null → 0) and distinct forum families. Never padded. */
+export function provenanceSummary(rows: Pick<TopicRow, "mentions_estimate" | "source_platform" | "source_forum">[]): { conversations: number; forums: number } {
+  const conversations = rows.reduce((s, r) => s + (r.mentions_estimate && r.mentions_estimate > 0 ? r.mentions_estimate : 0), 0);
+  const forums = new Set(rows.map((r) => r.source_platform || r.source_forum).filter(Boolean).map((p) => platformFamily(p as string))).size;
+  return { conversations, forums };
+}
