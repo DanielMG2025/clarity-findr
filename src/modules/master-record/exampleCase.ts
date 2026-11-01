@@ -7,6 +7,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { useMasterRecord } from "./store";
 import { DEMO_PATIENTS, type DemoPatientSeed } from "./demoPatients";
 import { loadDemoPatient } from "./loadDemo";
+import { emptyRecord, type MasterPatientRecord } from "./types";
 
 interface ExampleCaseState {
   key: string | null;
@@ -33,14 +34,52 @@ export function useActiveExampleCase(): DemoPatientSeed | null {
   return activeExampleCase(key, name);
 }
 
-/** Load an example case into the live record and remember which one it is. */
+/**
+ * The user's OWN record, parked while an example case occupies the live record.
+ * Example viewing never overwrites it; /situacion restores it on entry, so the
+ * personal flow only ever shows what the user entered (or nothing).
+ */
+interface OwnRecordState {
+  saved: MasterPatientRecord | null;
+  setSaved: (saved: MasterPatientRecord | null) => void;
+}
+
+export const useOwnRecordStore = create<OwnRecordState>()(
+  persist((set) => ({ saved: null, setSaved: (saved) => set({ saved }) }), {
+    name: "fc:mpr-own",
+    storage: createJSONStorage(() => localStorage),
+  }),
+);
+
+function snapshotLiveRecord(): MasterPatientRecord {
+  const s = useMasterRecord.getState();
+  const out = emptyRecord();
+  for (const k of Object.keys(out) as (keyof MasterPatientRecord)[]) {
+    (out as unknown as Record<string, unknown>)[k] = structuredClone(s[k]);
+  }
+  return out;
+}
+
+/** Load an example case into the live record, parking the user's own data first. */
 export function openExampleCase(seed: DemoPatientSeed) {
+  // Only snapshot when leaving the user's own data — switching between examples keeps the original snapshot.
+  if (!useExampleCaseStore.getState().key) useOwnRecordStore.getState().setSaved(snapshotLiveRecord());
   loadDemoPatient(seed);
   useExampleCaseStore.getState().setKey(seed.key);
 }
 
-/** Leave the example: clear the demo data so the user's own flow starts from the route question. */
+/** Close any example and put the user's own data (or an empty record) back. Idempotent. */
+export function restoreOwnCase() {
+  if (!useExampleCaseStore.getState().key) return;
+  const saved = useOwnRecordStore.getState().saved;
+  useMasterRecord.setState({ ...emptyRecord(), ...(saved ?? {}) });
+  useOwnRecordStore.getState().setSaved(null);
+  useExampleCaseStore.getState().setKey(null);
+}
+
+/** Leave the example: start the user's own flow empty, from the route question. */
 export function startOwnCase() {
   useMasterRecord.getState().reset();
+  useOwnRecordStore.getState().setSaved(null);
   useExampleCaseStore.getState().setKey(null);
 }
