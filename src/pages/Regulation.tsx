@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { CONFIDENCE_LABEL, EU_SOHO, REGULATION, type RegRow } from "@/modules/content/regulation";
+import { CONFIDENCE_LABEL, EU_SOHO, REGULATION, SOURCE_TIER_HELP, SOURCE_TIER_LABEL, type RegRow } from "@/modules/content/regulation";
 
 const eyebrow = "text-[11px] font-semibold uppercase tracking-[0.18em] text-primary";
 const CONF_HELP = {
@@ -52,6 +52,15 @@ function Row({ r, es }: { r: RegRow; es: boolean }) {
               className="mt-1 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
               {r.source_label} <ExternalLink className="size-3.5" />
             </a>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button type="button" className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
+                  {SOURCE_TIER_LABEL[r.source_tier][es ? "es" : "en"]}
+                  <Info className="size-3" aria-hidden />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent className="max-w-xs text-xs">{SOURCE_TIER_HELP[es ? "es" : "en"]}</TooltipContent>
+            </Tooltip>
           </div>
           <div>
             <p className={eyebrow}>{L("Actualización", "Updated")}</p>
