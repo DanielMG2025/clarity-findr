@@ -25,6 +25,8 @@ export interface Resource {
   audiences: Audience[];
   blurb: Localized;
   affiliation: Localized;
+  /** Subjects the voice covers, in the guides' tag vocabulary (channel-level, not per video). */
+  topics?: string[];
 }
 
 export const AUDIENCE_LABEL: Record<Audience, Localized> = {

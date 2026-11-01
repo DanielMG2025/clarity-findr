@@ -1,10 +1,11 @@
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, Clock, ExternalLink, HelpCircle, GitCompare } from "lucide-react";
+import { ArrowLeft, Clock, ExternalLink, HelpCircle, GitCompare, Users } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getArticle, AutoGlossary, type Article } from "@/modules/education";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { voicesForArticle, primaryVoiceLink } from "@/modules/content";
 
 const KIND_LABEL: Record<Article["kind"], { en: string; es: string }> = {
   glosario: { en: "Glossary", es: "Glosario" },
@@ -40,6 +41,7 @@ export default function LearnArticle() {
 
   const a = article;
   const depth = depthParagraphs(a, es, t);
+  const voices = voicesForArticle(a);
 
   return (
     <article className="container max-w-2xl py-10 space-y-6">
@@ -118,6 +120,39 @@ export default function LearnArticle() {
             </details>
           ))}
         </div>
+      )}
+
+      {voices.length > 0 && (
+        <section aria-labelledby="voices-on-topic" className="space-y-3 border-t border-border pt-6">
+          <div>
+            <h2 id="voices-on-topic" className="font-display text-xl font-medium flex items-center gap-2">
+              <Users className="size-4 text-primary" /> {es ? "Voces que tratan este tema" : "Voices on this topic"}
+            </h2>
+            <p className="mt-1 text-xs text-muted-foreground">
+              {es
+                ? "Divulgadores y comunidades que hablan a menudo de esta área en sus canales. No es un vídeo concreto sobre este término."
+                : "Creators and communities who often cover this area on their channels. Not a specific video about this exact term."}
+            </p>
+          </div>
+          <ul className="grid gap-3 sm:grid-cols-2">
+            {voices.map((r) => (
+              <li key={r.id} className="flex min-w-0 flex-col rounded-lg border border-border/70 bg-card/60 p-4">
+                <div className="font-display text-base font-medium leading-snug break-words">{r.name}</div>
+                <p className="mt-0.5 text-[11px] uppercase tracking-[0.12em] text-muted-foreground break-words">{r.platform}</p>
+                <p className="mt-2 flex-1 text-sm leading-relaxed">{r.blurb[language]}</p>
+                <div className="mt-3 space-y-1 border-t border-border pt-2">
+                  <Badge variant="outline" className="border-accent/50 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">
+                    {es ? "Transparencia" : "Why trust it"}
+                  </Badge>
+                  <p className="text-xs text-muted-foreground">{r.affiliation[language]}</p>
+                </div>
+                <a href={primaryVoiceLink(r)} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
+                  {es ? "Ver su canal" : "See their channel"} <ExternalLink className="size-3.5" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
 
       <div className="rounded-lg bg-muted/40 border p-3">
