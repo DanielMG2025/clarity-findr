@@ -54,8 +54,8 @@ export default function LearnArticle() {
             <Clock className="size-3" /> {a.reading_time_min} min
           </span>
         </div>
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight">{a.title}</h1>
-        <p className="text-lg text-muted-foreground leading-relaxed">{a.hook}</p>
+        <h1 className="text-3xl md:text-4xl font-bold tracking-tight">{t(a.title)}</h1>
+        <p className="text-lg text-muted-foreground leading-relaxed">{t(a.hook)}</p>
       </header>
 
       <section aria-label={es ? "Resumen" : "Summary"} className="rounded-lg border-l-2 border-accent bg-accent-soft/30 px-5 py-4">
@@ -81,12 +81,12 @@ export default function LearnArticle() {
           {a.steps.map((s, i) => (
             <Card key={i} className="p-4">
               <div className="flex items-start justify-between gap-3">
-                <div className="font-semibold">{s.title}</div>
+                <div className="font-semibold">{t(s.title)}</div>
                 {s.typical_duration && (
-                  <Badge variant="outline" className="text-[10px] shrink-0">{s.typical_duration}</Badge>
+                  <Badge variant="outline" className="text-[10px] shrink-0">{t(s.typical_duration)}</Badge>
                 )}
               </div>
-              <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{s.detail}</p>
+              <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{t(s.detail)}</p>
             </Card>
           ))}
         </div>
@@ -99,8 +99,8 @@ export default function LearnArticle() {
           </div>
           {a.differences.map((d, i) => (
             <p key={i} className="text-sm leading-relaxed">
-              <strong className="text-foreground">vs {d.vs}:</strong>{" "}
-              <span className="text-muted-foreground">{d.note}</span>
+              <strong className="text-foreground">{es ? "frente a" : "vs"} {t(d.vs)}:</strong>{" "}
+              <span className="text-muted-foreground">{t(d.note)}</span>
             </p>
           ))}
         </div>
@@ -113,8 +113,8 @@ export default function LearnArticle() {
           </div>
           {a.faqs.map((f, i) => (
             <details key={i} className="rounded-lg border p-3">
-              <summary className="cursor-pointer font-medium text-sm">{f.q}</summary>
-              <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{f.a}</p>
+              <summary className="cursor-pointer font-medium text-sm">{t(f.q)}</summary>
+              <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{t(f.a)}</p>
             </details>
           ))}
         </div>
@@ -127,17 +127,17 @@ export default function LearnArticle() {
             <li key={s.label} className="text-xs">
               {s.url ? (
                 <a href={s.url} target="_blank" rel="noreferrer" className="text-primary hover:underline inline-flex items-center gap-0.5">
-                  {s.label} <ExternalLink className="size-3" />
+                  {t(s.label)} <ExternalLink className="size-3" />
                 </a>
               ) : (
-                <span className="text-muted-foreground">{s.label}</span>
+                <span className="text-muted-foreground">{t(s.label)}</span>
               )}
             </li>
           ))}
         </ul>
       </div>
 
-      <p className="text-xs text-muted-foreground border-t pt-4 leading-relaxed">{a.disclaimer}</p>
+      <p className="text-xs text-muted-foreground border-t pt-4 leading-relaxed">{t(a.disclaimer)}</p>
     </article>
   );
 }

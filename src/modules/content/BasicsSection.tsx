@@ -15,14 +15,14 @@ const CATEGORIES: { kind: Article["kind"]; en: [string, string]; es: [string, st
 ];
 
 function ArticleCard({ a }: { a: Article }) {
-  const { language } = useLanguage();
+  const { t, language } = useLanguage();
   const es = language === "es";
   return (
     <Card className="p-4 hover:border-primary/40 transition-smooth flex flex-col gap-2">
       <Link to={`/aprende/${a.slug}`} className="font-semibold hover:text-primary">
-        {a.title}
+        {t(a.title)}
       </Link>
-      <p className="text-sm text-muted-foreground leading-relaxed">{a.hook}</p>
+      <p className="text-sm text-muted-foreground leading-relaxed">{t(a.hook)}</p>
       <div className="mt-auto flex items-center gap-2 text-[11px] text-muted-foreground">
         <Clock className="size-3" /> {a.reading_time_min} min
         <Link to={`/aprende/${a.slug}`} className="text-primary ml-auto inline-flex items-center gap-0.5 hover:underline">
