@@ -2,19 +2,19 @@ import type { Resource } from "./types";
 
 /** Curated sources — creators and communities feed "Trusted voices"; institutions feed the scientific library. */
 export const RESOURCES: Resource[] = [
-  { id: "crawford", kind: "creator", name: "Natalie Crawford, MD", handle: "@nataliecrawfordmd", url: "https://www.instagram.com/nataliecrawfordmd", platform: "YouTube · Instagram · Podcast ('As a Woman')", links: [{ label: "YouTube", url: "https://www.youtube.com/@NatalieCrawfordMD" }], audiences: ["planners", "first-steps", "experienced"],
+  { id: "crawford", topics: ["ivf",  "freezing",  "vitrification",  "reserve",  "amh",  "afc",  "iui",  "transfer",  "fet",  "pgt",  "basics"], kind: "creator", name: "Natalie Crawford, MD", handle: "@nataliecrawfordmd", url: "https://www.instagram.com/nataliecrawfordmd", platform: "YouTube · Instagram · Podcast ('As a Woman')", links: [{ label: "YouTube", url: "https://www.youtube.com/@NatalieCrawfordMD" }], audiences: ["planners", "first-steps", "experienced"],
     blurb: { en: "Evidence-based women's fertility, explained warmly.", es: "Fertilidad femenina basada en la evidencia, explicada con cariño." },
     affiliation: { en: "Reproductive endocrinologist — co-owns a clinic.", es: "Endocrinóloga reproductiva — copropietaria de una clínica." } },
-  { id: "fdu", kind: "creator", name: "Fertility Docs Uncensored", url: "https://www.youtube.com/@fertilitydocsuncensored/videos", platform: "Podcast · YouTube", audiences: ["first-steps", "planners", "men", "experienced"],
+  { id: "fdu", topics: ["ivf",  "icsi",  "male-factor",  "pgt",  "genetics",  "egg-donation",  "freezing",  "vitrification",  "transfer",  "fet",  "iui",  "retrieval",  "stimulation",  "basics"], kind: "creator", name: "Fertility Docs Uncensored", url: "https://www.youtube.com/@fertilitydocsuncensored/videos", platform: "Podcast · YouTube", audiences: ["first-steps", "planners", "men", "experienced"],
     blurb: { en: "Q&A by several fertility doctors — plain answers.", es: "Preguntas y respuestas con varios médicos de fertilidad — respuestas claras." },
     affiliation: { en: "Hosts are practising clinicians.", es: "Los presentadores ejercen en clínica." } },
-  { id: "eyvazzadeh", kind: "creator", name: "Aimee Eyvazzadeh ('The Egg Whisperer')", handle: "@eggwhisperer", url: "https://www.youtube.com/@eggwhisperer", platform: "YouTube · Instagram", links: [{ label: "Instagram", url: "https://www.instagram.com/eggwhisperer" }], audiences: ["planners", "first-steps"],
+  { id: "eyvazzadeh", topics: ["freezing",  "vitrification",  "ivf",  "reserve",  "amh",  "basics"], kind: "creator", name: "Aimee Eyvazzadeh ('The Egg Whisperer')", handle: "@eggwhisperer", url: "https://www.youtube.com/@eggwhisperer", platform: "YouTube · Instagram", links: [{ label: "Instagram", url: "https://www.instagram.com/eggwhisperer" }], audiences: ["planners", "first-steps"],
     blurb: { en: "Egg freezing and IVF explainers.", es: "Explicaciones sobre congelación de óvulos y FIV." },
     affiliation: { en: "Reproductive endocrinologist in private practice.", es: "Endocrinóloga reproductiva en consulta privada." } },
-  { id: "sekhon", kind: "creator", name: "Lucky Sekhon, MD", handle: "@lucky.sekhon", url: "https://www.instagram.com/lucky.sekhon", platform: "Instagram", audiences: ["planners"],
+  { id: "sekhon", topics: ["freezing",  "vitrification",  "ivf",  "pgt",  "genetics"], kind: "creator", name: "Lucky Sekhon, MD", handle: "@lucky.sekhon", url: "https://www.instagram.com/lucky.sekhon", platform: "Instagram", audiences: ["planners"],
     blurb: { en: "Egg freezing and IVF, myth-busting.", es: "Congelación de óvulos y FIV, desmontando mitos." },
     affiliation: { en: "Reproductive endocrinologist — clinic-affiliated.", es: "Endocrinóloga reproductiva — vinculada a una clínica." } },
-  { id: "bryk", kind: "creator", name: "Darren Bryk, MD", url: "https://cofertility.com/all-authors/darren-bryk", platform: "Articles", audiences: ["men"],
+  { id: "bryk", topics: ["male-factor",  "icsi"], kind: "creator", name: "Darren Bryk, MD", url: "https://cofertility.com/all-authors/darren-bryk", platform: "Articles", audiences: ["men"],
     blurb: { en: "Male fertility, from a urologist — one of the few clear voices on the male side.", es: "Fertilidad masculina contada por un urólogo — una de las pocas voces claras sobre el lado masculino." },
     affiliation: { en: "Urologist.", es: "Urólogo." } },
   { id: "asrm", kind: "institution", name: "ASRM — reproductivefacts.org", url: "https://www.reproductivefacts.org", platform: "Institutional", audiences: ["first-steps", "planners", "men", "experienced"],
@@ -32,10 +32,10 @@ export const RESOURCES: Resource[] = [
   { id: "rao", kind: "institution", name: "Reproducción Asistida ORG", url: "https://www.reproduccionasistida.org", platform: "Divulgación (ES)", audiences: ["first-steps", "planners", "men", "lgbt"],
     blurb: { en: "A Spanish-language patient portal with specialist-reviewed content.", es: "Portal de divulgación en español con contenidos revisados por especialistas." },
     affiliation: { en: "Reviewed media outlet; it also runs a clinic directory.", es: "Medio divulgativo revisado; también tiene un directorio de clínicas." } },
-  { id: "queerception", kind: "community", name: "r/queerception", url: "https://www.reddit.com/r/queerception", platform: "Reddit · Comunidad", audiences: ["lgbt"],
+  { id: "queerception", topics: ["ropa",  "donor",  "egg-donation",  "iui",  "lgbt"], kind: "community", name: "r/queerception", url: "https://www.reddit.com/r/queerception", platform: "Reddit · Comunidad", audiences: ["lgbt"],
     blurb: { en: "A peer community for LGBTQ+ people trying to conceive.", es: "Comunidad de apoyo entre iguales para personas LGTBI+ que buscan tener hijos." },
     affiliation: { en: "Community forum — anonymous peer support, not medical advice.", es: "Foro comunitario — apoyo entre iguales y anónimo, no es consejo médico." } },
-  { id: "family-equality", kind: "community", name: "Family Equality", url: "https://www.familyequality.org", platform: "Organización (EE. UU.)", audiences: ["lgbt"],
+  { id: "family-equality", topics: ["donor",  "egg-donation",  "ropa",  "lgbt",  "legal"], kind: "community", name: "Family Equality", url: "https://www.familyequality.org", platform: "Organización (EE. UU.)", audiences: ["lgbt"],
     blurb: { en: "A US nonprofit with family-building guides for LGBTQ+ people.", es: "ONG estadounidense con guías de formación de familia para personas LGTBI+." },
     affiliation: { en: "Nonprofit — no clinic sales.", es: "ONG — no vende servicios de clínica." } },
   { id: "eshre", kind: "institution", name: "ESHRE", url: "https://www.eshre.eu", platform: "Institutional · Europe", audiences: ["first-steps", "planners", "men", "experienced"],
@@ -51,3 +51,19 @@ export const RESOURCES: Resource[] = [
 
 export const VOICES = RESOURCES.filter((r) => r.kind !== "institution");
 export const LIBRARY = RESOURCES.filter((r) => r.kind === "institution");
+
+/** Voices whose topics overlap an article's tags: most shared tags first, then list order; max 3. */
+export function voicesForArticle(article: { tags: string[] }, limit = 3): Resource[] {
+  const tags = new Set(article.tags);
+  return VOICES
+    .map((r, i) => ({ r, i, n: (r.topics ?? []).filter((t) => tags.has(t)).length }))
+    .filter((x) => x.n > 0)
+    .sort((a, b) => b.n - a.n || a.i - b.i)
+    .slice(0, limit)
+    .map((x) => x.r);
+}
+
+/** Where to send someone from a guide: the YouTube channel when there is one, otherwise the main link. */
+export function primaryVoiceLink(r: Resource): string {
+  return r.links?.find((l) => /youtube/i.test(l.label) || /youtube\.com/.test(l.url))?.url ?? r.url;
+}
