@@ -13,6 +13,7 @@ import { byCode } from "@/modules/regulatory";
 import { SuccessOrientationCard } from "@/components/patient/SuccessOrientationCard";
 import { RegulatoryFrameworkPanel } from "@/components/patient/RegulatoryFrameworkPanel";
 import { EvidenceBasePanel } from "@/components/patient/EvidenceBasePanel";
+import { CaseReferences } from "@/components/patient/CaseReferences";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 /** A single legible segment of the situation summary. */
@@ -206,6 +207,8 @@ export default function ClarityAssessment() {
         <SuccessOrientationCard />
         <RegulatoryFrameworkPanel orientation={regulatory} />
       </div>
+
+      <CaseReferences />
 
       {/* Supporting routes: costs, clinics, expert */}
       <div className="grid gap-6 md:grid-cols-3 items-stretch">
