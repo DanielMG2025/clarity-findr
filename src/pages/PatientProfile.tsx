@@ -1,8 +1,9 @@
+import { useLayoutEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { TransparencyBlock } from "@/components/shared/TransparencyBlock";
-import { useMasterRecord } from "@/modules/master-record";
+import { useMasterRecord, restoreOwnCase } from "@/modules/master-record";
 import {
   BLOCKS,
   blockProgressMPR,
@@ -41,6 +42,8 @@ const FLAT_BLOCK = "[&>div]:rounded-none [&>div]:border-x-0 [&>div]:border-t-0 [
 const FLAT_ASIDE = "[&>div]:rounded-none [&>div]:border-0 [&>div]:border-t [&>div]:border-border/70 [&>div]:bg-transparent [&>div]:p-0 [&>div]:pt-6 [&>div]:shadow-none";
 
 const PatientProfile = () => {
+  // The personal flow never inherits an example case: put the user's own data back before paint.
+  useLayoutEffect(() => { restoreOwnCase(); }, []);
   const mpr = useMasterRecord();
   const completion = overallCompletionMPR(mpr);
   const confidence = profileConfidence(completion);
@@ -76,9 +79,9 @@ const PatientProfile = () => {
           </Button>
         </div>
 
+        <ExampleCasesLink />
         <div className="h-px bg-border" aria-hidden="true" />
         {goal && <GoalBar />}
-        <ExampleCasesLink />
       </div>
 
       {!goal ? <GoalStep /> : (

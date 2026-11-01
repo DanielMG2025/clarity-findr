@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Snowflake, Baby, Compass, Info } from "lucide-react";
+import { ArrowRight, Snowflake, Baby, Compass, Info, BookOpen } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useMasterRecord, type Goal } from "@/modules/master-record";
 
@@ -83,13 +83,28 @@ export function GoalBar() {
   );
 }
 
+/** Prominent, help-framed entry to the example cases at the top of "Estudia tu caso". */
 export function ExampleCasesLink({ className = "" }: { className?: string }) {
   const { language } = useLanguage();
   const es = language === "es";
   return (
-    <p className={`text-sm text-muted-foreground ${className}`}>
-      {es ? "¿Prefieres ver primero un caso parecido al tuyo?" : "Would you rather see a case like yours first?"}{" "}
-      <Link to="/demo" className="font-medium text-primary underline-offset-4 hover:underline">{es ? "→ Casos de ejemplo" : "→ Example cases"}</Link>
-    </p>
+    <Link
+      to="/demo"
+      className={`group flex flex-col gap-4 rounded-lg border border-accent/60 bg-accent-soft/40 p-5 transition-colors hover:border-accent hover:bg-accent-soft/60 sm:flex-row sm:items-center sm:justify-between sm:p-6 ${className}`}
+    >
+      <div className="flex min-w-0 items-start gap-4">
+        <span className="grid size-11 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground" aria-hidden="true">
+          <BookOpen className="size-5" />
+        </span>
+        <p className="font-display text-lg leading-snug text-foreground text-balance md:text-xl">
+          {es
+            ? "¿Quieres ver casos de ejemplo que te inspiren o te ayuden a entender tu situación?"
+            : "Want to see example cases that inspire you or help you understand your situation?"}
+        </p>
+      </div>
+      <span className="inline-flex shrink-0 items-center gap-2 self-start rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-transform group-hover:translate-x-0.5 sm:self-center">
+        {es ? "Ver casos de ejemplo" : "See example cases"} <ArrowRight className="size-4" />
+      </span>
+    </Link>
   );
 }

@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Compass, Wallet, ListChecks } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { DEMO_PATIENTS, completeness, loadDemoPatient, type DemoPatientSeed } from "@/modules/master-record";
+import { DEMO_PATIENTS, completeness, openExampleCase, type DemoPatientSeed } from "@/modules/master-record";
 
 const LEVEL_TONE: Record<DemoPatientSeed["data_level"], string> = {
   high: "bg-emerald-500/15 text-emerald-700 border-emerald-500/30",
@@ -24,7 +24,7 @@ export function DemoPatientPicker() {
   const es = language === "es";
 
   const loadAndGo = (seed: DemoPatientSeed, to: string) => {
-    loadDemoPatient(seed);
+    openExampleCase(seed);
     navigate(to);
   };
 

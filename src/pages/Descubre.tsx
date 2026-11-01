@@ -71,7 +71,7 @@ export default function Descubre() {
       <header className="max-w-3xl">
         <span className={`${eyebrow} inline-flex items-center gap-2`}><Sparkles className="size-3" /> {es ? "Descubre" : "Discover"}</span>
         <h1 className="mt-5 font-display text-4xl md:text-6xl font-medium leading-tight text-balance">
-          {es ? "Recursos para aprender, estés donde estés en tu camino." : "Resources to learn, wherever you are on your journey."}
+          {es ? "Recursos para apoyarte, estés donde estés en tu camino." : "Resources to support you, wherever you are on your journey."}
         </h1>
         <p className="mt-4 font-editorial italic text-xl md:text-2xl text-muted-foreground">
           {es

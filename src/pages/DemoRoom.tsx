@@ -7,9 +7,9 @@ import {
   DEMO_PATIENTS,
   completeness,
   openExampleCase,
-  startOwnCase,
   runDemo,
-  useMasterRecord,
+  useActiveExampleCase,
+  restoreOwnCase,
   findSimilarCases,
   type AgeBand,
   type DemoPatientSeed,
@@ -102,7 +102,7 @@ export default function DemoRoom() {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const es = language === "es";
-  const loadedName = useMasterRecord((s) => s.identity.name);
+  const loadedName = useActiveExampleCase()?.name;
   const [mode, setMode] = useState<"find" | "all">("find");
   const [goal, setGoal] = useState<"preserve" | "treatment" | null>(null);
   const [band, setBand] = useState<AgeBand | null>(null);
@@ -135,8 +135,8 @@ export default function DemoRoom() {
             {es ? "Caso abierto ahora: " : "Case open now: "}<strong className="font-display font-medium">{loadedName}</strong>.
           </div>
           <div className="flex gap-2">
-            <Button size="sm" variant="outline" className="gap-1" onClick={() => startOwnCase()}>
-              <RotateCcw className="size-3.5" /> {es ? "Borrar" : "Reset"}
+            <Button size="sm" variant="outline" className="gap-1" onClick={() => restoreOwnCase()}>
+              <RotateCcw className="size-3.5" /> {es ? "Cerrar ejemplo" : "Close example"}
             </Button>
             <Button size="sm" className="gap-1" onClick={() => navigate("/report")}>
               {es ? "Ver informe" : "See report"} <ArrowRight className="size-3.5" />

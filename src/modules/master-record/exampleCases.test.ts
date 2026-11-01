@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { DEMO_PATIENTS } from "./demoPatients";
 import { runDemo } from "./runDemo";
 import { useMasterRecord } from "./store";
-import { activeExampleCase, openExampleCase, startOwnCase, useExampleCaseStore } from "./exampleCase";
+import { activeExampleCase, openExampleCase, restoreOwnCase, startOwnCase, useExampleCaseStore, useOwnRecordStore } from "./exampleCase";
 
 const byKey = (k: string) => DEMO_PATIENTS.find((p) => p.key === k)!;
 
@@ -46,7 +46,7 @@ describe("example cases", () => {
 });
 
 describe("leaving an example for your own case", () => {
-  beforeEach(() => { useMasterRecord.getState().reset(); useExampleCaseStore.getState().setKey(null); });
+  beforeEach(() => { useMasterRecord.getState().reset(); useExampleCaseStore.getState().setKey(null); useOwnRecordStore.getState().setSaved(null); });
 
   it("opening a case marks it active while the record still matches it", () => {
     openExampleCase(byKey("ana_31_favorable"));
@@ -62,5 +62,33 @@ describe("leaving an example for your own case", () => {
     expect(s.intent.goal).toBeUndefined();
     expect(s.identity.name).toBeUndefined();
     expect(useExampleCaseStore.getState().key).toBeNull();
+  });
+
+  it("returning to your own case after an example brings back only your own data", () => {
+    useMasterRecord.getState().patchIdentity({ name: "Me", age: 38 });
+    useMasterRecord.getState().patchIntent({ goal: "treatment" });
+    openExampleCase(byKey("irene_30_preserve_high"));
+    openExampleCase(byKey("ana_31_favorable"));
+    restoreOwnCase();
+    const s = useMasterRecord.getState();
+    expect(s.identity.name).toBe("Me");
+    expect(s.identity.age).toBe(38);
+    expect(s.intent.goal).toBe("treatment");
+    expect(useExampleCaseStore.getState().key).toBeNull();
+  });
+
+  it("with no own data, returning after an example starts empty", () => {
+    openExampleCase(byKey("irene_30_preserve_high"));
+    restoreOwnCase();
+    const s = useMasterRecord.getState();
+    expect(s.identity.name).toBeUndefined();
+    expect(s.intent.goal).toBeUndefined();
+    expect(s.history).toHaveLength(0);
+  });
+
+  it("restoring without an open example leaves your own data untouched", () => {
+    useMasterRecord.getState().patchIdentity({ name: "Me" });
+    restoreOwnCase();
+    expect(useMasterRecord.getState().identity.name).toBe("Me");
   });
 });
