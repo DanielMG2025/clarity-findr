@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ExternalLink, Library, Sparkles } from "lucide-react";
+import { ArrowRight, ExternalLink, Library, Scale, Sparkles } from "lucide-react";
 import { BasicsSection } from "@/modules/content/BasicsSection";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -94,6 +94,17 @@ export default function Descubre() {
           </a>
         ))}
       </nav>
+
+      <Link to="/descubre/regulacion" className="group mt-6 block">
+        <Card className="flex items-center gap-4 rounded-lg border-accent/50 bg-card/60 p-5 shadow-none transition-colors group-hover:border-accent">
+          <Scale className="size-6 shrink-0 text-primary" aria-hidden />
+          <div className="min-w-0 flex-1">
+            <h2 className="font-display text-xl font-medium leading-snug">{es ? "Regulación comparada en Europa" : "Regulation compared across Europe"}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">{es ? "Qué permite cada país, con fuente y fecha" : "What each country allows, with source and date"}</p>
+          </div>
+          <ArrowRight className="size-5 shrink-0 text-primary transition-transform group-hover:translate-x-1" aria-hidden />
+        </Card>
+      </Link>
 
       <div id="conversacion" className="scroll-mt-24">
         <ConversationSection />
