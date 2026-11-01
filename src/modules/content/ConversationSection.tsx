@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { ArrowRight, ExternalLink, MessageCircle, TrendingUp, Minus, Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -82,7 +82,11 @@ export function ConversationSection() {
   const { language } = useLanguage();
   const es = language === "es";
   const topics = usePublishedTopics();
-  const [query, setQuery] = useState("");
+  // A guide can deep-link here with ?q=<term>; it only seeds the search box, every filter stays editable.
+  const [params] = useSearchParams();
+  const seeded = params.get("q") ?? "";
+  const [query, setQuery] = useState(seeded);
+  useEffect(() => { if (seeded) setQuery(seeded); }, [seeded]);
   const [period, setPeriod] = useState<Period>("week");
   const [platform, setPlatform] = useState<string | null>(null);
   const [audience, setAudience] = useState<string | null>(null);

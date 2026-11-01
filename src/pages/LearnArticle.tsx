@@ -1,11 +1,13 @@
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, Clock, ExternalLink, HelpCircle, GitCompare, Users } from "lucide-react";
+import { ArrowLeft, ArrowRight, Clock, ExternalLink, HelpCircle, GitCompare, MessageCircle, Minus, TrendingUp, Users } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getArticle, AutoGlossary, type Article } from "@/modules/education";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { voicesForArticle, primaryVoiceLink } from "@/modules/content";
+import { usePublishedTopics, platformFamily } from "@/modules/content/conversation";
+import { forumTopicsForArticle, forumSearchTerm, conversationLink } from "@/modules/content/forumLinks";
 
 const KIND_LABEL: Record<Article["kind"], { en: string; es: string }> = {
   glosario: { en: "Glossary", es: "Glosario" },
@@ -26,6 +28,7 @@ export default function LearnArticle() {
   const { t, language } = useLanguage();
   const es = language === "es";
   const article = slug ? getArticle(slug) : undefined;
+  const topics = usePublishedTopics();
 
   if (!article) {
     return (
@@ -42,6 +45,8 @@ export default function LearnArticle() {
   const a = article;
   const depth = depthParagraphs(a, es, t);
   const voices = voicesForArticle(a);
+  const forum = forumTopicsForArticle(a, topics);
+  const term = forumSearchTerm(a);
 
   return (
     <article className="container max-w-2xl py-10 space-y-6">
@@ -152,6 +157,46 @@ export default function LearnArticle() {
               </li>
             ))}
           </ul>
+        </section>
+      )}
+
+      {forum.length > 0 && (
+        <section aria-labelledby="forums-on-topic" className="space-y-3 border-t border-border pt-6">
+          <div>
+            <h2 id="forums-on-topic" className="font-display text-xl font-medium flex items-center gap-2">
+              <MessageCircle className="size-4 text-primary" /> {es ? "En los foros se habla de esto" : "What the forums are saying"}
+            </h2>
+            <p className="mt-1 text-xs text-muted-foreground">
+              {es
+                ? "Preguntas que se repiten en foros públicos de pacientes, resumidas sin nombres. Es lo que se dice · señal anecdótica, no evidencia verificada."
+                : "Questions that keep coming up in public patient forums, summarised with no names. It's what people say · anecdotal signal, not verified evidence."}
+            </p>
+          </div>
+          <ul className="space-y-2">
+            {forum.map((ft) => {
+              const question = es ? ft.question_es : ft.question_en;
+              const up = ft.trend === "up";
+              return (
+                <li key={ft.id}>
+                  <Link to={conversationLink(question)} className="group block rounded-lg border border-border/70 bg-card/60 p-4 transition-colors hover:border-accent">
+                    <p className="font-display text-base font-medium leading-snug text-foreground group-hover:text-primary">{question}</p>
+                    <p className="mt-1.5 flex flex-wrap items-center gap-x-2 text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
+                      <span>{platformFamily(ft.source_platform || ft.source_forum)}</span>
+                      {ft.trend && <span className="inline-flex items-center gap-1 normal-case tracking-normal">
+                        · {up ? <TrendingUp className="size-3 text-primary" /> : <Minus className="size-3" />}
+                        {up ? (es ? "en aumento" : "rising") : (es ? "estable" : "steady")}
+                      </span>}
+                    </p>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+          {term && (
+            <Link to={conversationLink(es ? term.es : term.en)} className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+              {es ? "Ver más en los foros" : "See more in the forums"} <ArrowRight className="size-3.5" />
+            </Link>
+          )}
         </section>
       )}
 
