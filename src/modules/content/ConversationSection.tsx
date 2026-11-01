@@ -131,6 +131,18 @@ export function ConversationSection() {
           ? "Las preguntas que más se repiten en foros públicos de pacientes, resumidas sin nombres ni historias personales. Es lo que se dice, no consejo médico. Las menciones son aproximadas."
           : "The questions people ask most in public patient forums, summarised with no names or personal stories. It is what people say, not medical advice. Mention counts are approximate."}
       </p>
+      {totals.conversations > 0 && totals.forums > 0 && (
+        <div className="mt-4 max-w-[65ch] border-l-2 border-accent pl-3" aria-live="polite">
+          <p className="font-display text-lg leading-snug text-foreground">
+            {es
+              ? <>Hemos destilado <span className="text-primary">~{totals.conversations}</span> conversaciones de <span className="text-primary">{totals.forums}</span> {totals.forums === 1 ? "foro" : "foros"}</>
+              : <>We've distilled <span className="text-primary">~{totals.conversations}</span> conversations from <span className="text-primary">{totals.forums}</span> {totals.forums === 1 ? "forum" : "forums"}</>}
+          </p>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            {es ? "Señal anecdótica de foros públicos, anonimizada — no es evidencia verificada." : "Anecdotal signal from public forums, anonymized — not verified evidence."}
+          </p>
+        </div>
+      )}
       <div className="mt-6 space-y-4">
         <div className="relative max-w-xl">
           <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
