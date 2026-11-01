@@ -120,6 +120,7 @@ export function ConversationSection() {
   const forumGroups = useMemo(() => groupPlatforms(platforms), [platforms]);
   const treatments = useMemo(() => [...new Map(topics.filter((t) => t.treatment).map((t) => [t.treatment, es ? t.treatment : (t.treatment_en || t.treatment)])).entries()].sort((a, b) => a[1].localeCompare(b[1])), [topics, es]);
   const rows = useMemo(() => filterTopics(topics.map((t) => ({ ...t, source_platform: t.source_platform || t.source_forum })), { query, period, platform, audience, treatment }), [topics, query, period, platform, audience, treatment]);
+  const totals = useMemo(() => provenanceSummary(rows), [rows]);
   if (topics.length === 0) return null;
   return (
     <section className="mt-12">
