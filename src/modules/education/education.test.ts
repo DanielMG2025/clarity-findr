@@ -35,6 +35,38 @@ describe("content library", () => {
   });
 });
 
+describe("in-depth bodies", () => {
+  const paragraphs = (b: string[]) => b.filter((p) => !p.startsWith("### "));
+
+  it("every guide has an expanded body in both languages, with matching structure", () => {
+    for (const a of ALL_ARTICLES) {
+      expect(a.body_en?.length, a.slug).toBeGreaterThan(0);
+      expect(a.body_es?.length, a.slug).toBe(a.body_en!.length);
+      a.body_en!.forEach((p, i) => expect(a.body_es![i].startsWith("### "), `${a.slug}#${i}`).toBe(p.startsWith("### ")));
+    }
+  });
+
+  it("glossary entries run 3–5 paragraphs of roughly 150–300 words", () => {
+    for (const a of [...GLOSSARY, ...GLOSSARY_EXTRA]) {
+      const ps = paragraphs(a.body_en!);
+      expect(ps.length, a.slug).toBeGreaterThanOrEqual(3);
+      expect(ps.length, a.slug).toBeLessThanOrEqual(5);
+      const words = ps.join(" ").split(/\s+/).length;
+      expect(words, a.slug).toBeGreaterThanOrEqual(150);
+      expect(words, a.slug).toBeLessThanOrEqual(330);
+    }
+  });
+
+  it("economics guides keep their original paragraphs at the top of the expanded body", () => {
+    expect(getArticle("how-egg-freezing-is-paid")!.body_en![2]).toContain("medication (~€1,000–1,400)");
+    expect(getArticle("donor-compensation-explained")!.body_en![2]).toContain("~€800–1,100 per cycle");
+  });
+
+  it("reading time grows with the longer text (at least 2 min for every guide)", () => {
+    for (const a of ALL_ARTICLES) expect(a.reading_time_min, a.slug).toBeGreaterThanOrEqual(2);
+  });
+});
+
 describe("getArticle", () => {
   it("finds by slug and returns undefined for unknowns", () => {
     expect(getArticle("ivf-step-by-step")?.title).toBe("IVF, step by step");

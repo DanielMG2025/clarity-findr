@@ -44,7 +44,7 @@ export function BasicsSection() {
     if (!query) return null;
     // Search the English source and the active-language copy, so Spanish terms (FIV, congelación…) match too.
     return ALL_ARTICLES.filter((a) =>
-      [a.title, a.hook, a.summary, t(a.title), t(a.hook), t(a.summary), ...a.tags].join(" ").toLowerCase().includes(query),
+      [a.title, a.hook, a.summary, t(a.title), t(a.hook), t(a.summary), ...(a.body_en ?? []), ...(a.body_es ?? []), ...a.tags].join(" ").toLowerCase().includes(query),
     );
   }, [query, t]);
 
