@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { ArrowRight, ExternalLink, MessageCircle, TrendingUp, Minus, Search, X } from "lucide-react";
+import { ArrowRight, ExternalLink, Info, MessageCircle, TrendingUp, Minus, Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { AUDIENCE_LABEL, type Audience } from "./types";
-import { usePublishedTopics, filterTopics, platformFamily, groupPlatforms, type Period, type TopicRow } from "./conversation";
+import { usePublishedTopics, filterTopics, platformFamily, groupPlatforms, provenanceSummary, type Period, type TopicRow } from "./conversation";
 
 const AUDS: Audience[] = ["planners", "first-steps", "experienced", "men", "lgbt"];
 const GEO_EN: Record<string, string> = { "España": "Spain", "Europa": "Europe", "Chequia": "Czechia", "España/Chequia": "Spain/Czechia", "Europa/EE. UU.": "Europe/US", "Chipre": "Cyprus", "Grecia": "Greece", "EE. UU.": "US" };
@@ -34,10 +35,18 @@ function Segmented<T extends string>({ value, onChange, options, label }: { valu
   );
 }
 
+const CONF_LABEL: Record<string, { es: string; en: string }> = { high: { es: "Confianza alta", en: "High confidence" }, medium: { es: "Confianza media", en: "Medium confidence" }, low: { es: "Confianza baja", en: "Low confidence" } };
+const CONF_HELP = {
+  es: "La confianza refleja cuántas conversaciones, de cuántos foros y en qué periodo se basa el tema",
+  en: "Confidence reflects how many conversations, from how many forums, and over what period this topic draws on.",
+};
+
 function TopicCard({ t }: { t: TopicRow }) {
   const { language } = useLanguage();
   const es = language === "es";
   const up = t.trend === "up";
+  const forum = t.source_platform || t.source_forum;
+  const conf = CONF_LABEL[t.confidence]?.[language] ?? t.confidence;
   return (
     <Card className="flex min-w-0 flex-col rounded-lg border-border/70 bg-card/60 p-6 shadow-none">
       <div className="flex flex-wrap items-center gap-2">
@@ -54,12 +63,27 @@ function TopicCard({ t }: { t: TopicRow }) {
         </span>
       </div>
       <p className="mt-3 text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
-        ≈ {t.mentions_estimate} {es ? "menciones · anónimo" : "mentions · anonymous"}
+        {[
+          t.mentions_estimate && t.mentions_estimate > 0 ? (es ? `Basado en ~${t.mentions_estimate} conversaciones` : `Based on ~${t.mentions_estimate} conversations`) : null,
+          forum ? platformFamily(forum) : null,
+          t.period === "3m" ? (es ? "últimos 3 meses" : "last 3 months") : (es ? "últimos 7 días" : "last 7 days"),
+        ].filter(Boolean).join(" · ")}
       </p>
-      <p className="mt-1 text-[10px] text-muted-foreground">{es ? "Publicaciones del feed, no personas únicas" : "Feed items, not unique people"}</p>
+      <p className="mt-1 text-[10px] text-muted-foreground">{es ? "Publicaciones del feed, no personas únicas · anónimo" : "Feed items, not unique people · anonymous"}</p>
       <h3 className="mt-2 font-display text-xl font-medium leading-snug text-balance">{es ? t.question_es : t.question_en}</h3>
       <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{es ? t.answer_es : t.answer_en}</p>
-      <p className="mt-3 text-xs text-muted-foreground">{new Date(t.created_at).toLocaleDateString(es ? "es-ES" : "en-GB")} · {es ? "Confianza" : "Confidence"}: {es ? ({ low: "baja", medium: "media", high: "alta" }[t.confidence] ?? t.confidence) : t.confidence}</p>
+      <p className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+        {new Date(t.created_at).toLocaleDateString(es ? "es-ES" : "en-GB")} ·
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button type="button" aria-label={`${conf}. ${CONF_HELP[language]}`}
+              className="inline-flex items-center gap-1 rounded-full border border-accent/60 bg-accent/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              {conf} <Info className="size-3" aria-hidden />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent className="max-w-xs text-xs">{CONF_HELP[language]}</TooltipContent>
+        </Tooltip>
+      </p>
       <div className="mt-5 flex flex-wrap items-center gap-2">
         <span className="inline-flex items-center gap-1 rounded-full border border-border bg-muted/50 px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
           <MessageCircle className="size-2.5" aria-hidden /> {es ? "lo que se dice · señal anecdótica" : "what people say · anecdotal signal"}
