@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { ArrowLeft, ExternalLink, FlaskConical, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -50,11 +51,11 @@ function AddonsTable({ es }: { es: boolean }) {
   );
 }
 
-function FindingCard({ f, es }: { f: Finding; es: boolean }) {
+function FindingCard({ f, es, highlight }: { f: Finding; es: boolean; highlight?: boolean }) {
   const L = (e: string, n: string) => (es ? e : n);
   const strength = STRENGTH_LABEL[f.strength];
   return (
-    <Card className="rounded-lg border-border bg-card p-5 shadow-none md:p-6">
+    <Card id={f.id} className={`scroll-mt-24 rounded-lg border-border bg-card p-5 shadow-none ring-accent transition-shadow duration-700 md:p-6 ${highlight ? "ring-2" : "ring-0"}`}>
       <h3 className="font-display text-xl font-medium leading-snug md:text-2xl">{L(f.title_es, f.title_en)}</h3>
       <p className="mt-3 leading-relaxed">{L(f.summary_es, f.summary_en)}</p>
       {f.is_addons && <AddonsTable es={es} />}
@@ -91,6 +92,18 @@ export default function Science() {
   const { language } = useLanguage();
   const es = language === "es";
   const L = (e: string, n: string) => (es ? e : n);
+  const [params] = useSearchParams();
+  const deepFinding = params.get("finding");
+  const target = deepFinding && FINDINGS.some((f) => f.id === deepFinding) ? deepFinding : null;
+  const [highlighted, setHighlighted] = useState<string | null>(target);
+
+  useEffect(() => {
+    if (!target) return;
+    setHighlighted(target);
+    const scroll = window.setTimeout(() => document.getElementById(target)?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+    const fade = window.setTimeout(() => setHighlighted(null), 2200);
+    return () => { window.clearTimeout(scroll); window.clearTimeout(fade); };
+  }, [target]);
 
   const themes: { key: string; es: string; en: string; items: Finding[] }[] = [];
   for (const f of FINDINGS) {
@@ -119,7 +132,7 @@ export default function Science() {
         <section key={t.key} className="mt-12" aria-label={L(t.es, t.en)}>
           <h2 className={`${eyebrow} border-b-2 border-primary/40 pb-2`}>{L(t.es, t.en)}</h2>
           <div className="mt-5 space-y-5">
-            {t.items.map((f) => <FindingCard key={f.id} f={f} es={es} />)}
+            {t.items.map((f) => <FindingCard key={f.id} f={f} es={es} highlight={highlighted === f.id} />)}
           </div>
         </section>
       ))}

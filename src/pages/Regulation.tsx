@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { ArrowLeft, ExternalLink, Info, Scale } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
@@ -29,7 +30,7 @@ function Row({ r, es }: { r: RegRow; es: boolean }) {
   const conf = CONFIDENCE_LABEL[r.confidence];
   const change = es ? r.change_es : r.change_en;
   return (
-    <AccordionItem value={r.country_en} className="border-border">
+    <AccordionItem value={r.country_en} id={`reg-${encodeURIComponent(r.country_en)}`} className="scroll-mt-24 border-border">
       <AccordionTrigger className="items-start gap-3 text-left hover:no-underline [&>svg]:mt-2">
         <div className={`flex-1 space-y-2 md:space-y-0 ${GRID}`}>
           <Cell strong label={L("País", "Country")} value={L(r.country_es, r.country_en)} />
@@ -94,6 +95,19 @@ export default function Regulation() {
   const { language } = useLanguage();
   const es = language === "es";
   const L = (e: string, n: string) => (es ? e : n);
+  const [params] = useSearchParams();
+  const deepCountry = params.get("country");
+  const target = deepCountry && REGULATION.some((r) => r.country_en === deepCountry) ? deepCountry : null;
+  const [open, setOpen] = useState<string[]>(target ? [target] : []);
+
+  useEffect(() => {
+    if (!target) return;
+    setOpen((v) => (v.includes(target) ? v : [...v, target]));
+    const id = window.setTimeout(() => {
+      document.getElementById(`reg-${encodeURIComponent(target)}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
+    return () => window.clearTimeout(id);
+  }, [target]);
 
   return (
     <div className="container max-w-6xl px-6 py-14 md:py-20">
@@ -127,7 +141,7 @@ export default function Regulation() {
             <span key={h} className="text-[11px] font-semibold uppercase tracking-[0.14em] text-primary">{h}</span>
           ))}
         </div>
-        <Accordion type="multiple">
+        <Accordion type="multiple" value={open} onValueChange={setOpen}>
           {REGULATION.map((r) => <Row key={r.country_en} r={r} es={es} />)}
         </Accordion>
         <p className="mt-3 text-xs text-muted-foreground">
