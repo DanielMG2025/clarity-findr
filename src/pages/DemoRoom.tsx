@@ -7,7 +7,6 @@ import {
   DEMO_PATIENTS,
   completeness,
   openExampleCase,
-  startOwnCase,
   runDemo,
   useActiveExampleCase,
   restoreOwnCase,
