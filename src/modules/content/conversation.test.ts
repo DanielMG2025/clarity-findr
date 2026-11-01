@@ -45,3 +45,18 @@ describe("filterTopics", () => {
     expect(g[0].items[0]).toEqual({ value: "Mumsnet", label: "Mumsnet" });
   });
 });
+
+import { provenanceSummary } from "./conversation";
+describe("provenanceSummary", () => {
+  it("sums real mention estimates (null as 0) and counts distinct forum families", () => {
+    const r = provenanceSummary([
+      { mentions_estimate: 12, source_platform: "Reddit r/IVF", source_forum: "" },
+      { mentions_estimate: null, source_platform: "Reddit r/DOR", source_forum: "" },
+      { mentions_estimate: 5, source_platform: "", source_forum: "Mumsnet" },
+    ] as never);
+    expect(r).toEqual({ conversations: 17, forums: 2 });
+  });
+  it("is zero for no topics", () => {
+    expect(provenanceSummary([])).toEqual({ conversations: 0, forums: 0 });
+  });
+});
