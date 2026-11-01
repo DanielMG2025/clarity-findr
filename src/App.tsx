@@ -28,6 +28,7 @@ import { GlossaryProvider } from "@/modules/education";
 import LearnArticle from "./pages/LearnArticle.tsx";
 import DemoRoom from "./pages/DemoRoom.tsx";
 import Descubre from "./pages/Descubre.tsx";
+import Regulation from "./pages/Regulation.tsx";
 import Admin from "./pages/Admin.tsx";
 import AdminFeedback from "./pages/AdminFeedback.tsx";
 import { FeedbackWidget } from "./modules/feedback/FeedbackWidget";
@@ -71,6 +72,7 @@ const App = () => (
             <Route path="/" element={<Landing />} />
             <Route path="/demo" element={<DemoRoom />} />
             <Route path="/descubre" element={<Descubre />} />
+            <Route path="/descubre/regulacion" element={<Regulation />} />
 
             {/* Patient journey — the core modules */}
             <Route path="/situacion" element={<PatientProfile />} />
