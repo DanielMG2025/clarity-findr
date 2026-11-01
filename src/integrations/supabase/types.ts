@@ -58,6 +58,7 @@ export type Database = {
           id: string
           last_link_sent_at: string | null
           name: string | null
+          referred_by_code: string | null
           segment: string | null
         }
         Insert: {
@@ -67,6 +68,7 @@ export type Database = {
           id?: string
           last_link_sent_at?: string | null
           name?: string | null
+          referred_by_code?: string | null
           segment?: string | null
         }
         Update: {
@@ -76,6 +78,7 @@ export type Database = {
           id?: string
           last_link_sent_at?: string | null
           name?: string | null
+          referred_by_code?: string | null
           segment?: string | null
         }
         Relationships: []
@@ -682,6 +685,84 @@ export type Database = {
         }
         Relationships: []
       }
+      referral_codes: {
+        Row: {
+          active: boolean
+          code: string
+          created_at: string
+          id: string
+          owner_email: string | null
+          owner_label: string
+          parent_code: string | null
+          revshare_note: string | null
+          seats_cap: number | null
+          seats_used: number
+          type: string
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          created_at?: string
+          id?: string
+          owner_email?: string | null
+          owner_label: string
+          parent_code?: string | null
+          revshare_note?: string | null
+          seats_cap?: number | null
+          seats_used?: number
+          type?: string
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          created_at?: string
+          id?: string
+          owner_email?: string | null
+          owner_label?: string
+          parent_code?: string | null
+          revshare_note?: string | null
+          seats_cap?: number | null
+          seats_used?: number
+          type?: string
+        }
+        Relationships: []
+      }
+      referral_join_attempts: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      referral_settings: {
+        Row: {
+          id: boolean
+          paused: boolean
+          updated_at: string
+        }
+        Insert: {
+          id?: boolean
+          paused?: boolean
+          updated_at?: string
+        }
+        Update: {
+          id?: boolean
+          paused?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       scraped_pricing: {
         Row: {
           base_price: number | null
@@ -837,6 +918,29 @@ export type Database = {
         Returns: boolean
       }
       listening_forum_count: { Args: never; Returns: number }
+      my_referral_code: {
+        Args: never
+        Returns: {
+          active: boolean
+          code: string
+          seats_cap: number
+          seats_used: number
+        }[]
+      }
+      new_referral_code: { Args: never; Returns: string }
+      referral_code_info: {
+        Args: { p_code: string }
+        Returns: {
+          active: boolean
+          has_capacity: boolean
+          owner_label: string
+          type: string
+        }[]
+      }
+      referral_join: {
+        Args: { p_code: string; p_email: string }
+        Returns: Json
+      }
       refresh_aggregated_pricing: { Args: never; Returns: undefined }
       refresh_clinic_insights: { Args: never; Returns: undefined }
     }
