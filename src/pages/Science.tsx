@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { ArrowLeft, ExternalLink, FlaskConical, Info } from "lucide-react";
+import { ArrowLeft, BookOpen, ExternalLink, FlaskConical, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLanguage } from "@/i18n/LanguageContext";
 import {
-  ADDONS, ADDON_RATING_LABEL, ADDON_RATING_MEANING, FINDINGS, STRENGTH_HELP, STRENGTH_LABEL,
+  ADDONS, ADDON_RATING_LABEL, AGE_BANDS, AGE_BANDS_CAPTION, AGE_BANDS_NOTE, ADDON_RATING_MEANING, FINDINGS, STRENGTH_HELP, STRENGTH_LABEL,
   type AddonRating, type Finding,
 } from "@/modules/content/science";
 
@@ -51,6 +51,24 @@ function AddonsTable({ es }: { es: boolean }) {
   );
 }
 
+function AgeBands({ es }: { es: boolean }) {
+  const lang = es ? "es" : "en";
+  return (
+    <div className="mt-4">
+      <p className="text-xs font-medium text-muted-foreground">{AGE_BANDS_CAPTION[lang]}</p>
+      <ul className="mt-2 divide-y divide-border rounded-md border border-border/70 bg-muted/40">
+        {AGE_BANDS.map((b) => (
+          <li key={b.band} className="flex items-center justify-between gap-3 px-3 py-2 text-sm">
+            <span>{b.band}</span>
+            <span className="font-semibold tabular-nums text-primary">{b.rate}</span>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-2 text-xs text-muted-foreground">{AGE_BANDS_NOTE[lang]}</p>
+    </div>
+  );
+}
+
 function FindingCard({ f, es, highlight }: { f: Finding; es: boolean; highlight?: boolean }) {
   const L = (e: string, n: string) => (es ? e : n);
   const strength = STRENGTH_LABEL[f.strength];
@@ -58,6 +76,7 @@ function FindingCard({ f, es, highlight }: { f: Finding; es: boolean; highlight?
     <Card id={f.id} className={`scroll-mt-24 rounded-lg border-border bg-card p-5 shadow-none ring-accent transition-shadow duration-700 md:p-6 ${highlight ? "ring-2" : "ring-0"}`}>
       <h3 className="font-display text-xl font-medium leading-snug md:text-2xl">{L(f.title_es, f.title_en)}</h3>
       <p className="mt-3 leading-relaxed">{L(f.summary_es, f.summary_en)}</p>
+      {f.id === "edad" && <AgeBands es={es} />}
       {f.is_addons && <AddonsTable es={es} />}
       <div className="mt-4 border-l-2 border-accent pl-3">
         <p className={eyebrow}>{L("Qué significa para ti", "What it means for you")}</p>
@@ -84,6 +103,11 @@ function FindingCard({ f, es, highlight }: { f: Finding; es: boolean; highlight?
           {f.source_label} <ExternalLink className="size-3.5" />
         </a>{" "}· {f.source_year}
       </p>
+      {f.library_slug && (
+        <Link to={`/aprende/${f.library_slug}`} className="mt-2 inline-flex items-center gap-1 text-sm text-primary hover:underline">
+          <BookOpen className="size-3.5" aria-hidden /> {L("Más en la biblioteca", "More in the library")}
+        </Link>
+      )}
     </Card>
   );
 }
