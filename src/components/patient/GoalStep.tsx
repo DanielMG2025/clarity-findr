@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Snowflake, Baby, Compass, Info, BookOpen } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useMasterRecord, type Goal } from "@/modules/master-record";
+import { logBetaClick } from "@/modules/beta-analytics/logger";
 
 const OPTIONS: { goal: Goal; icon: typeof Snowflake; en: [string, string]; es: [string, string] }[] = [
   { goal: "preserve", icon: Snowflake, en: ["Preserve — freeze my eggs", "Keep options open for later"], es: ["Preservar — congelar óvulos", "Dejar opciones abiertas para más adelante"] },
@@ -34,7 +35,7 @@ export function GoalStep() {
         {OPTIONS.map(({ goal, icon: Icon, en, es: esCopy }) => {
           const [title, sub] = es ? esCopy : en;
           return (
-            <button key={goal} type="button" onClick={() => choose(goal)}
+            <button key={goal} type="button" onClick={() => { logBetaClick("start_case", { from: "goal_step" }); choose(goal); }}
               className="group flex min-w-0 items-start gap-3 rounded-lg border border-border bg-background p-4 text-left transition-colors hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
               <span className="grid size-10 shrink-0 place-items-center rounded-full bg-accent/15 text-primary"><Icon className="size-5" aria-hidden /></span>
               <span className="min-w-0">

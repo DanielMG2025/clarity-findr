@@ -83,6 +83,45 @@ export type Database = {
         }
         Relationships: []
       }
+      beta_events: {
+        Row: {
+          cohort: string
+          created_at: string
+          event_type: string
+          id: string
+          label: string | null
+          meta: Json | null
+          path: string
+          session_id: string
+          user_email: string | null
+          user_id: string | null
+        }
+        Insert: {
+          cohort?: string
+          created_at?: string
+          event_type: string
+          id?: string
+          label?: string | null
+          meta?: Json | null
+          path: string
+          session_id: string
+          user_email?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          cohort?: string
+          created_at?: string
+          event_type?: string
+          id?: string
+          label?: string | null
+          meta?: Json | null
+          path?: string
+          session_id?: string
+          user_email?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       beta_feedback: {
         Row: {
           admin_reply: string | null

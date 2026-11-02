@@ -34,6 +34,7 @@ import Unirse from "./pages/Unirse.tsx";
 import Admin from "./pages/Admin.tsx";
 import AdminFeedback from "./pages/AdminFeedback.tsx";
 import { FeedbackWidget } from "./modules/feedback/FeedbackWidget";
+import { BetaPageViews } from "./modules/beta-analytics/BetaPageViews";
 import NotFound from "./pages/NotFound.tsx";
 import { LanguageProvider } from "./i18n/LanguageContext";
 import { AccessGate } from "./modules/access/AccessGate";
@@ -79,6 +80,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        {FEATURES.betaBanner && <BetaPageViews />}
         <MaybeGate>
         <WithGlossary>
         <LayoutSwitch>

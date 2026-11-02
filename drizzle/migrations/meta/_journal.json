@@ -78,6 +78,13 @@
       "when": 1793649053350,
       "tag": "0010_beta_feedback_admin_reply",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1793652210642,
+      "tag": "0011_create_beta_events",
+      "breakpoints": true
     }
   ]
 }

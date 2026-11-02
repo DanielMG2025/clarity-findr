@@ -8,6 +8,7 @@ import { overallCompletionMPR } from "@/modules/patient-profile/blocks";
 import { useState, type MouseEvent } from "react";
 import { NotActiveYetDialog } from "@/components/beta/NotActiveYetDialog";
 import { shouldInterceptClinicAction } from "@/components/beta/betaCopy";
+import { logBetaClick } from "@/modules/beta-analytics/logger";
 
 type Confidence = "low" | "medium" | "high";
 type SourceLabel = "reviewed" | "public" | "external" | "pending";
@@ -158,6 +159,7 @@ export function ReviewedClinicPricing() {
   const interceptContact = (e: MouseEvent) => {
     if (!shouldInterceptClinicAction()) return;
     e.preventDefault();
+    logBetaClick("contact_clinic_blocked", { from: "price_comparison" });
     setBetaNotice(true);
   };
 
