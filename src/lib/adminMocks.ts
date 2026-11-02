@@ -6,7 +6,11 @@
 export type FunnelStage = "free_discovery" | "intent_decision" | "full_access" | "advanced" | "premium_referral";
 export type PatientStatus = "active" | "dormant" | "converted" | "lost";
 
+/** Cohort is only a label: beta patients get exactly the same treatment as real ones. */
+export type PatientCohort = "demo" | "beta" | "real";
+
 export interface AdminPatient {
+  cohort: PatientCohort;
   ref: string; // anonymized
   age: number;
   country: string;
@@ -30,18 +34,18 @@ export const FUNNEL_LABEL: Record<FunnelStage, string> = {
 };
 
 export const PATIENTS: AdminPatient[] = [
-  { ref: "P-2041", age: 34, country: "Spain", treatment: "IVF", budget_band: "€5–8k", funnel_stage: "premium_referral", status: "converted", match_score: 92, conversion_probability: 78, modules: { advanced: true, genetic: true, home_kit: false }, spent_eur: 19, joined_days_ago: 2 },
-  { ref: "P-2039", age: 38, country: "France", treatment: "Egg Donation", budget_band: "€8–12k", funnel_stage: "advanced", status: "active", match_score: 88, conversion_probability: 71, modules: { advanced: true, genetic: false, home_kit: true }, spent_eur: 19, joined_days_ago: 4 },
-  { ref: "P-2037", age: 31, country: "Spain", treatment: "Social Freezing", budget_band: "€3–5k", funnel_stage: "full_access", status: "active", match_score: 81, conversion_probability: 54, modules: { advanced: false, genetic: false, home_kit: false }, spent_eur: 19, joined_days_ago: 6 },
-  { ref: "P-2035", age: 29, country: "Portugal", treatment: "IVF", budget_band: "<€5k", funnel_stage: "intent_decision", status: "active", match_score: 73, conversion_probability: 42, modules: { advanced: false, genetic: false, home_kit: false }, spent_eur: 0, joined_days_ago: 1 },
-  { ref: "P-2032", age: 41, country: "UK", treatment: "IVF", budget_band: "€8–12k", funnel_stage: "premium_referral", status: "active", match_score: 76, conversion_probability: 48, modules: { advanced: true, genetic: false, home_kit: false }, spent_eur: 49, joined_days_ago: 3 },
-  { ref: "P-2028", age: 29, country: "Portugal", treatment: "IVF", budget_band: "<€5k", funnel_stage: "full_access", status: "lost", match_score: 64, conversion_probability: 22, modules: { advanced: false, genetic: false, home_kit: false }, spent_eur: 7, joined_days_ago: 12 },
-  { ref: "P-2024", age: 36, country: "Spain", treatment: "ICSI", budget_band: "€5–8k", funnel_stage: "advanced", status: "converted", match_score: 84, conversion_probability: 62, modules: { advanced: true, genetic: true, home_kit: false }, spent_eur: 19, joined_days_ago: 8 },
-  { ref: "P-2018", age: 33, country: "Germany", treatment: "IVF", budget_band: "€5–8k", funnel_stage: "intent_decision", status: "dormant", match_score: 70, conversion_probability: 35, modules: { advanced: false, genetic: false, home_kit: false }, spent_eur: 0, joined_days_ago: 21 },
-  { ref: "P-2011", age: 39, country: "Spain", treatment: "Egg Donation", budget_band: "€8–12k", funnel_stage: "free_discovery", status: "active", match_score: 0, conversion_probability: 0, modules: { advanced: false, genetic: false, home_kit: false }, spent_eur: 0, joined_days_ago: 0 },
-  { ref: "P-1998", age: 27, country: "Spain", treatment: "Social Freezing", budget_band: "€3–5k", funnel_stage: "premium_referral", status: "converted", match_score: 89, conversion_probability: 70, modules: { advanced: true, genetic: false, home_kit: true }, spent_eur: 49, joined_days_ago: 11 },
-  { ref: "P-1995", age: 42, country: "Italy", treatment: "Egg Donation", budget_band: "€8–12k", funnel_stage: "advanced", status: "active", match_score: 79, conversion_probability: 55, modules: { advanced: true, genetic: true, home_kit: true }, spent_eur: 19, joined_days_ago: 5 },
-  { ref: "P-1989", age: 35, country: "Spain", treatment: "IVF", budget_band: "€5–8k", funnel_stage: "free_discovery", status: "active", match_score: 0, conversion_probability: 0, modules: { advanced: false, genetic: false, home_kit: false }, spent_eur: 0, joined_days_ago: 0 },
+  { cohort: "demo", ref: "P-2041", age: 34, country: "Spain", treatment: "IVF", budget_band: "€5–8k", funnel_stage: "premium_referral", status: "converted", match_score: 92, conversion_probability: 78, modules: { advanced: true, genetic: true, home_kit: false }, spent_eur: 19, joined_days_ago: 2 },
+  { cohort: "demo", ref: "P-2039", age: 38, country: "France", treatment: "Egg Donation", budget_band: "€8–12k", funnel_stage: "advanced", status: "active", match_score: 88, conversion_probability: 71, modules: { advanced: true, genetic: false, home_kit: true }, spent_eur: 19, joined_days_ago: 4 },
+  { cohort: "demo", ref: "P-2037", age: 31, country: "Spain", treatment: "Social Freezing", budget_band: "€3–5k", funnel_stage: "full_access", status: "active", match_score: 81, conversion_probability: 54, modules: { advanced: false, genetic: false, home_kit: false }, spent_eur: 19, joined_days_ago: 6 },
+  { cohort: "demo", ref: "P-2035", age: 29, country: "Portugal", treatment: "IVF", budget_band: "<€5k", funnel_stage: "intent_decision", status: "active", match_score: 73, conversion_probability: 42, modules: { advanced: false, genetic: false, home_kit: false }, spent_eur: 0, joined_days_ago: 1 },
+  { cohort: "demo", ref: "P-2032", age: 41, country: "UK", treatment: "IVF", budget_band: "€8–12k", funnel_stage: "premium_referral", status: "active", match_score: 76, conversion_probability: 48, modules: { advanced: true, genetic: false, home_kit: false }, spent_eur: 49, joined_days_ago: 3 },
+  { cohort: "demo", ref: "P-2028", age: 29, country: "Portugal", treatment: "IVF", budget_band: "<€5k", funnel_stage: "full_access", status: "lost", match_score: 64, conversion_probability: 22, modules: { advanced: false, genetic: false, home_kit: false }, spent_eur: 7, joined_days_ago: 12 },
+  { cohort: "demo", ref: "P-2024", age: 36, country: "Spain", treatment: "ICSI", budget_band: "€5–8k", funnel_stage: "advanced", status: "converted", match_score: 84, conversion_probability: 62, modules: { advanced: true, genetic: true, home_kit: false }, spent_eur: 19, joined_days_ago: 8 },
+  { cohort: "demo", ref: "P-2018", age: 33, country: "Germany", treatment: "IVF", budget_band: "€5–8k", funnel_stage: "intent_decision", status: "dormant", match_score: 70, conversion_probability: 35, modules: { advanced: false, genetic: false, home_kit: false }, spent_eur: 0, joined_days_ago: 21 },
+  { cohort: "demo", ref: "P-2011", age: 39, country: "Spain", treatment: "Egg Donation", budget_band: "€8–12k", funnel_stage: "free_discovery", status: "active", match_score: 0, conversion_probability: 0, modules: { advanced: false, genetic: false, home_kit: false }, spent_eur: 0, joined_days_ago: 0 },
+  { cohort: "demo", ref: "P-1998", age: 27, country: "Spain", treatment: "Social Freezing", budget_band: "€3–5k", funnel_stage: "premium_referral", status: "converted", match_score: 89, conversion_probability: 70, modules: { advanced: true, genetic: false, home_kit: true }, spent_eur: 49, joined_days_ago: 11 },
+  { cohort: "demo", ref: "P-1995", age: 42, country: "Italy", treatment: "Egg Donation", budget_band: "€8–12k", funnel_stage: "advanced", status: "active", match_score: 79, conversion_probability: 55, modules: { advanced: true, genetic: true, home_kit: true }, spent_eur: 19, joined_days_ago: 5 },
+  { cohort: "demo", ref: "P-1989", age: 35, country: "Spain", treatment: "IVF", budget_band: "€5–8k", funnel_stage: "free_discovery", status: "active", match_score: 0, conversion_probability: 0, modules: { advanced: false, genetic: false, home_kit: false }, spent_eur: 0, joined_days_ago: 0 },
 ];
 
 // ---------- Clinic subscriptions / monetization ----------

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Users, Filter, Search } from "lucide-react";
+import { Users, Filter, Search, Info, Layers } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -19,7 +19,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { KpiCard, SectionHeader } from "./AdminShared";
-import { PATIENTS, FUNNEL_LABEL, type FunnelStage, type PatientStatus } from "@/lib/adminMocks";
+import { PATIENTS, FUNNEL_LABEL, type FunnelStage, type PatientStatus, type PatientCohort } from "@/lib/adminMocks";
+import { COHORTS, COHORT_LABEL, countByCohort, filterPatients } from "./patientCohort";
+
+const COHORT_STYLE: Record<PatientCohort, string> = {
+  demo: "bg-muted text-muted-foreground border-border",
+  beta: "bg-accent/15 text-accent border-accent/30",
+  real: "bg-primary/10 text-primary border-primary/30",
+};
 
 const STAGE_STYLE: Record<FunnelStage, string> = {
   free_discovery: "bg-muted text-muted-foreground border-border",
@@ -38,15 +45,14 @@ const STATUS_STYLE: Record<PatientStatus, string> = {
 
 export const PatientsTab = () => {
   const [stageFilter, setStageFilter] = useState<FunnelStage | "all">("all");
+  const [cohortFilter, setCohortFilter] = useState<PatientCohort | "all">("all");
   const [q, setQ] = useState("");
 
-  const filtered = useMemo(() => {
-    return PATIENTS.filter((p) => {
-      if (stageFilter !== "all" && p.funnel_stage !== stageFilter) return false;
-      if (q && !`${p.ref} ${p.country} ${p.treatment}`.toLowerCase().includes(q.toLowerCase())) return false;
-      return true;
-    });
-  }, [stageFilter, q]);
+  const filtered = useMemo(
+    () => filterPatients(PATIENTS, { stage: stageFilter, cohort: cohortFilter, q }),
+    [stageFilter, cohortFilter, q],
+  );
+  const cohortCounts = useMemo(() => countByCohort(PATIENTS), []);
 
   const totals = useMemo(() => {
     const total = PATIENTS.length;
@@ -67,11 +73,22 @@ export const PatientsTab = () => {
         description="Anonymized patient profiles, questionnaire results, funnel stage and matching scores. No personal identifiers stored."
       />
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="flex items-start gap-2 rounded-md border border-border bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
+        <Info className="size-4 shrink-0 mt-0.5" aria-hidden />
+        <p>Rows tagged <span className="font-medium text-foreground">Demo</span> are sample data, not real people. Beta and real patients get the same treatment; the cohort is only a label.</p>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         <KpiCard label="Patients" value={totals.total} icon={<Users className="size-5" />} hint="all stages" />
         <KpiCard label="Advanced + premium" value={totals.advanced} icon={<Users className="size-5" />} accent="accent" />
         <KpiCard label="Converted" value={totals.converted} icon={<Users className="size-5" />} accent="accent" />
         <KpiCard label="Avg match score" value={`${totals.avgScore}%`} icon={<Users className="size-5" />} />
+        <KpiCard
+          label="By cohort"
+          value={COHORTS.map((c) => cohortCounts[c]).join(" / ")}
+          icon={<Layers className="size-5" />}
+          hint="demo / beta / real"
+        />
       </div>
 
       <Card className="p-5">
@@ -98,6 +115,17 @@ export const PatientsTab = () => {
                 ))}
               </SelectContent>
             </Select>
+            <Select value={cohortFilter} onValueChange={(v) => setCohortFilter(v as PatientCohort | "all")}>
+              <SelectTrigger className="w-[160px]" aria-label="Cohort">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All cohorts</SelectItem>
+                {COHORTS.map((c) => (
+                  <SelectItem key={c} value={c}>{COHORT_LABEL[c]}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
@@ -119,7 +147,10 @@ export const PatientsTab = () => {
               {filtered.map((p) => (
                 <TableRow key={p.ref}>
                   <TableCell>
-                    <div className="font-medium">{p.ref}</div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-medium">{p.ref}</span>
+                      <Badge variant="outline" className={`text-[10px] ${COHORT_STYLE[p.cohort]}`}>{COHORT_LABEL[p.cohort]}</Badge>
+                    </div>
                     <div className="text-xs text-muted-foreground">
                       {p.joined_days_ago === 0 ? "today" : `${p.joined_days_ago}d ago`}
                     </div>
