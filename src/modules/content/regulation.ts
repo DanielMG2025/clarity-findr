@@ -44,11 +44,15 @@ export type RegRow = {
   confidence: RegConfidence;
   change_es?: string;
   change_en?: string;
+  summary_es: string;
+  summary_en: string;
 };
 
 export const REGULATION: RegRow[] = [
   {
     country_es: "España", country_en: "Spain",
+    summary_es: "En España el acceso es amplio: parejas heterosexuales, mujeres solas y parejas de mujeres (método ROPA). La donación de óvulos y de semen está permitida y es anónima —ni la donante ni la receptora conocen la identidad de la otra—, aunque ese anonimato está hoy en debate. La gestación subrogada no está permitida.",
+    summary_en: "In Spain access is broad: heterosexual couples, single women and female couples (the ROPA method). Egg and sperm donation are allowed and anonymous —neither donor nor recipient knows the other's identity— though that anonymity is currently under debate. Surrogacy is not allowed.",
     access_es: "Hetero, mujer sola y pareja de mujeres (ROPA)", access_en: "Heterosexual, single women, female couples (ROPA)",
     egg_es: "Permitida · anónima", egg_en: "Allowed · anonymous",
     sperm_es: "Permitido · anónimo", sperm_en: "Allowed · anonymous",
@@ -63,6 +67,8 @@ export const REGULATION: RegRow[] = [
   },
   {
     country_es: "Portugal", country_en: "Portugal",
+    summary_es: "Portugal da acceso amplio, incluidas mujeres solas y parejas de mujeres. La donación está permitida pero no es anónima: desde una sentencia de 2018, la persona nacida puede llegar a conocer la identidad del donante. La subrogación es muy restringida.",
+    summary_en: "Portugal gives broad access, including single women and female couples. Donation is allowed but not anonymous: since a 2018 ruling, the person born can come to know the donor's identity. Surrogacy is very restricted.",
     access_es: "Hetero, mujer sola y pareja de mujeres", access_en: "Heterosexual, single women, female couples",
     egg_es: "Permitida · no anónima", egg_en: "Allowed · not anonymous",
     sperm_es: "Permitido · no anónimo", sperm_en: "Allowed · not anonymous",
@@ -77,6 +83,8 @@ export const REGULATION: RegRow[] = [
   },
   {
     country_es: "Reino Unido", country_en: "United Kingdom",
+    summary_es: "El Reino Unido abre el tratamiento a todas las estructuras familiares. La donación no es anónima: la persona nacida puede conocer al donante al cumplir los 18. La gestación subrogada altruista (no comercial) es legal.",
+    summary_en: "The UK opens treatment to all family structures. Donation is not anonymous: the person born can learn the donor's identity at 18. Altruistic (non-commercial) surrogacy is legal.",
     access_es: "Todas las estructuras familiares", access_en: "All family structures",
     egg_es: "Permitida · no anónima (identificable a los 18)", egg_en: "Allowed · not anonymous (identifiable at 18)",
     sperm_es: "Permitido · no anónimo", sperm_en: "Allowed · not anonymous",
@@ -89,6 +97,8 @@ export const REGULATION: RegRow[] = [
   },
   {
     country_es: "Francia", country_en: "France",
+    summary_es: "Desde la ley de bioética de 2021, Francia abrió el acceso a mujeres solas y parejas de mujeres. Desde esa reforma la donación es no anónima, y hay listas de espera. La subrogación está prohibida.",
+    summary_en: "Since the 2021 bioethics law, France opened access to single women and female couples. Since that reform donation is non-anonymous, and there are waiting lists. Surrogacy is banned.",
     access_es: "Hetero, mujer sola y pareja de mujeres (desde 2021)", access_en: "Heterosexual, single women, female couples (since 2021)",
     egg_es: "Permitida · no anónima; listas de espera", egg_en: "Allowed · not anonymous; waiting lists",
     sperm_es: "Permitido · no anónimo", sperm_en: "Allowed · not anonymous",
@@ -103,6 +113,8 @@ export const REGULATION: RegRow[] = [
   },
   {
     country_es: "Italia", country_en: "Italy",
+    summary_es: "Italia limita el acceso a parejas heterosexuales. La donación se permite (desde 2014) y es anónima. La subrogación está prohibida y, desde finales de 2024, se persigue incluso cuando se realiza en el extranjero.",
+    summary_en: "Italy limits access to heterosexual couples. Donation is allowed (since 2014) and anonymous. Surrogacy is banned and, since late 2024, prosecuted even when done abroad.",
     access_es: "Solo parejas hetero", access_en: "Heterosexual couples only",
     egg_es: "Permitida (desde 2014) · anónima", egg_en: "Allowed (since 2014) · anonymous",
     sperm_es: "Permitido · anónimo", sperm_en: "Allowed · anonymous",
@@ -117,6 +129,8 @@ export const REGULATION: RegRow[] = [
   },
   {
     country_es: "Alemania", country_en: "Germany",
+    summary_es: "En Alemania la ovodonación está prohibida (una comisión recomendó legalizarla en 2024, pero aún no es ley); la donación de semen sí se permite, con registro de donantes. La subrogación está prohibida, así que muchos casos salen del país.",
+    summary_en: "In Germany egg donation is banned (a commission recommended legalizing it in 2024, but it is not yet law); sperm donation is allowed, with a donor registry. Surrogacy is banned, so many cases go abroad.",
     access_es: "Parejas (acceso de mujer sola limitado)", access_en: "Couples (single-woman access limited)",
     egg_es: "Prohibida", egg_en: "Not allowed",
     sperm_es: "Permitido (registro de donantes)", sperm_en: "Allowed (donor registry)",
@@ -131,6 +145,8 @@ export const REGULATION: RegRow[] = [
   },
   {
     country_es: "Chequia", country_en: "Czech Republic",
+    summary_es: "Chequia da acceso a parejas hombre-mujer, no a mujeres solas ni a parejas de mujeres. La donación es anónima. La subrogación no está regulada (una zona gris legal).",
+    summary_en: "Czechia gives access to opposite-sex couples, not to single women or female couples. Donation is anonymous. Surrogacy is unregulated (a legal grey area).",
     access_es: "Parejas hombre-mujer; no mujer sola ni pareja de mujeres", access_en: "Opposite-sex couples; not single women or female couples",
     egg_es: "Permitida · anónima", egg_en: "Allowed · anonymous",
     sperm_es: "Permitido · anónimo", sperm_en: "Allowed · anonymous",
@@ -143,6 +159,8 @@ export const REGULATION: RegRow[] = [
   },
   {
     country_es: "Grecia", country_en: "Greece",
+    summary_es: "Grecia permite el tratamiento a mujeres solas y a parejas. La donación es anónima. Permite la gestación subrogada altruista con autorización judicial previa.",
+    summary_en: "Greece allows treatment for single women and couples. Donation is anonymous. It allows altruistic surrogacy with prior court authorization.",
     access_es: "Mujer sola y parejas", access_en: "Single women and couples",
     egg_es: "Permitida · anónima", egg_en: "Allowed · anonymous",
     sperm_es: "Permitido · anónimo", sperm_en: "Allowed · anonymous",
@@ -155,6 +173,8 @@ export const REGULATION: RegRow[] = [
   },
   {
     country_es: "Chipre (Sur · UE)", country_en: "Cyprus (South · EU)",
+    summary_es: "La República de Chipre (el sur, miembro de la UE) aplica el marco europeo: acceso amplio y donación permitida. Conviene no confundirla con el norte de la isla.",
+    summary_en: "The Republic of Cyprus (the south, an EU member) applies the European framework: broad access and donation allowed. Don't confuse it with the north of the island.",
     access_es: "Amplio", access_en: "Broad",
     egg_es: "Permitida", egg_en: "Allowed",
     sperm_es: "Permitido", sperm_en: "Allowed",
@@ -168,6 +188,8 @@ export const REGULATION: RegRow[] = [
   },
   {
     country_es: "Chipre (Norte · TRNC)", country_en: "Cyprus (North · TRNC)",
+    summary_es: "El norte de Chipre (TRNC) no pertenece a la UE y tiene un marco propio mucho más permisivo. Al ser menos regulado, conviene verificar cada detalle con la clínica.",
+    summary_en: "Northern Cyprus (TRNC) is not part of the EU and has a much more permissive framework of its own. Being less regulated, it's worth checking every detail with the clinic.",
     access_es: "Muy amplio", access_en: "Very broad",
     egg_es: "Permitida (incl. donación)", egg_en: "Allowed (incl. donation)",
     sperm_es: "Permitido", sperm_en: "Allowed",
@@ -181,6 +203,8 @@ export const REGULATION: RegRow[] = [
   },
   {
     country_es: "Polonia", country_en: "Poland",
+    summary_es: "Polonia limita el acceso a parejas hombre-mujer. La donación es anónima. La subrogación no está reconocida legalmente.",
+    summary_en: "Poland limits access to opposite-sex couples. Donation is anonymous. Surrogacy is not legally recognized.",
     access_es: "Solo parejas hombre-mujer; no mujer sola ni pareja de mujeres", access_en: "Opposite-sex couples only; not single women or female couples",
     egg_es: "Permitida · anónima", egg_en: "Allowed · anonymous",
     sperm_es: "Permitido · anónimo", sperm_en: "Allowed · anonymous",
@@ -193,6 +217,8 @@ export const REGULATION: RegRow[] = [
   },
   {
     country_es: "Turquía", country_en: "Turkey",
+    summary_es: "Turquía solo permite el tratamiento a parejas heterosexuales casadas y con sus propios óvulos y semen; la donación de óvulos, semen o embriones está prohibida, por lo que muchos pacientes salen del país.",
+    summary_en: "Turkey only allows treatment for married heterosexual couples using their own eggs and sperm; egg, sperm and embryo donation are banned, so many patients travel abroad.",
     access_es: "Solo parejas hetero casadas, con gametos propios", access_en: "Married heterosexual couples only, own gametes",
     egg_es: "Prohibida", egg_en: "Not allowed",
     sperm_es: "Prohibido", sperm_en: "Not allowed",
@@ -223,3 +249,12 @@ export const CONFIDENCE_LABEL: Record<RegConfidence, { es: string; en: string }>
   media: { es: "Media", en: "Medium" },
   "media-baja": { es: "Media-baja", en: "Medium-low" },
 };
+
+/** Plain-language definitions of the comparison's dimensions, for people new to the topic. */
+export const TERM_HELP = {
+  access: { es: "Quién puede recibir tratamiento según la ley de ese país (según el tipo de pareja o la situación familiar).", en: "Who the law of that country allows to receive treatment (by type of couple or family situation)." },
+  egg: { es: "Usar óvulos de una donante en lugar de los propios.", en: "Using a donor's eggs instead of your own." },
+  sperm: { es: "Usar semen de un donante.", en: "Using donor sperm." },
+  surrogacy: { es: "Que otra persona geste el embarazo por ti (gestación por sustitución).", en: "Another person carrying the pregnancy for you (surrogacy)." },
+  anonymity: { es: "Si el donante es ANÓNIMO (su identidad no se conoce) o NO ANÓNIMO / identificable (la persona nacida puede llegar a conocerla, normalmente al cumplir 18 años).", en: "Whether the donor is ANONYMOUS (identity not disclosed) or NON-ANONYMOUS / identifiable (the person born can come to know it, usually at 18)." },
+} as const;
