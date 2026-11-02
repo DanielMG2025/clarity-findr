@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { AdminLink } from "@/components/admin/AdminLink";
 
 const SiteFooter = () => {
   const { language } = useLanguage();
