@@ -20,7 +20,7 @@ export function AppLayout({ children }: Props) {
           <header className="no-print sticky top-0 z-30 border-b border-sidebar-border bg-sidebar text-sidebar-foreground">
           <div className="h-14 flex items-center gap-2">
             <SidebarTrigger className="ml-3 shrink-0 text-sidebar-accent-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-sidebar-ring" />
-            <span className="ml-2 hidden min-w-0 truncate font-editorial italic text-lg text-sidebar-primary xl:inline">Your fertility companion</span>
+            <span className="ml-2 min-w-0 truncate font-editorial italic text-base text-sidebar-primary md:hidden xl:inline xl:text-lg">Your fertility companion</span>
             <MainNav className="ml-3 hidden md:flex" />
             <div className="ml-auto"><LanguageSwitch /></div>
             <Button asChild size="sm" variant="outline" className="mr-3 h-8 shrink-0 gap-1.5 rounded-full border-sidebar-primary/60 bg-sidebar-primary/10 text-sidebar-accent-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-sidebar-ring">
