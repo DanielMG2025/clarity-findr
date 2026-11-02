@@ -4,6 +4,7 @@ import { LanguageProvider } from "@/i18n/LanguageContext";
 import { LANGUAGE_KEY } from "@/i18n/translate";
 import { ClinicCardV2 } from "@/components/shared/ClinicCardV2";
 import { BetaBanner } from "./BetaBanner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const clinic = { id: "c1", name: "Clinic 1", country: "Spain", estimatedPrice: 6000, matchScore: 90, highlights: ["A"], reason: "Fits." };
 
@@ -17,7 +18,7 @@ describe("beta notices", () => {
   });
 
   it("requesting an appointment shows the notice instead of the contact form", () => {
-    render(<LanguageProvider><ClinicCardV2 clinic={clinic} /></LanguageProvider>);
+    render(<LanguageProvider><TooltipProvider><ClinicCardV2 clinic={clinic} /></TooltipProvider></LanguageProvider>);
     fireEvent.click(screen.getByRole("button", { name: /Request appointment/ }));
     expect(screen.getByText(/This isn't active yet during testing/)).toBeTruthy();
     expect(screen.queryByText("Send request")).toBeNull();
