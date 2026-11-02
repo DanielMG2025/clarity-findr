@@ -6,14 +6,12 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
-  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { AdminLink } from "@/components/admin/AdminLink";
 
 const items = [
   { title: "My situation",        url: "/situacion",     icon: Heart,        desc: "Your story and data" },
@@ -79,9 +77,6 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      {!collapsed && <SidebarFooter className="border-t border-sidebar-border px-4 py-3">
-        <AdminLink className="text-xs text-sidebar-foreground/80 hover:text-sidebar-primary" />
-      </SidebarFooter>}
     </Sidebar>
   );
 }
