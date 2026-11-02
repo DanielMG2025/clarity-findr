@@ -32,6 +32,9 @@ import PillsTab from "@/components/admin/PillsTab";
 import ListeningTab from "@/components/admin/ListeningTab";
 import UsersTab from "@/components/admin/UsersTab";
 import InvitesTab from "@/components/admin/InvitesTab";
+import BetaNavigationTab from "@/components/admin/BetaNavigationTab";
+import { FEATURES } from "@/config/features";
+import { Footprints } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 const TABS = [
@@ -48,6 +51,7 @@ const TABS = [
   { v: "analytics", icon: BarChart3, label: "Analytics" },
   { v: "pills", icon: Sparkle, label: "Pills" },
   { v: "listening", icon: Ear, label: "Listening" },
+  ...(FEATURES.betaBanner ? [{ v: "beta-nav", icon: Footprints, label: "Beta · Navigation" }] : []),
 ];
 
 const Admin = () => {
@@ -92,7 +96,7 @@ const Admin = () => {
               <TabsList className="inline-flex w-auto">
                 {TABS.map((t) => (
                   <TabsTrigger key={t.v} value={t.v} className="text-xs md:text-sm">
-                    <t.icon className="size-3.5 mr-1.5" /> {language === "es" && t.v === "users" ? "Usuarios" : language === "es" && t.v === "invites" ? "Invitaciones" : t.label}
+                    <t.icon className="size-3.5 mr-1.5" /> {language === "es" && t.v === "users" ? "Usuarios" : language === "es" && t.v === "invites" ? "Invitaciones" : language === "es" && t.v === "beta-nav" ? "Beta · Navegación" : t.label}
                   </TabsTrigger>
                 ))}
               </TabsList>
@@ -147,6 +151,11 @@ const Admin = () => {
             <TabsContent value="listening" className="mt-6">
               <ListeningTab />
             </TabsContent>
+            {FEATURES.betaBanner && (
+              <TabsContent value="beta-nav" className="mt-6">
+                <BetaNavigationTab />
+              </TabsContent>
+            )}
           </Tabs>
         </div>
       </main>
