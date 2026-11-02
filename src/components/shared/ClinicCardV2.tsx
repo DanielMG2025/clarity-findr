@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { SourceChip } from "@/components/patient/SourceChip";
 import { NotActiveYetDialog } from "@/components/beta/NotActiveYetDialog";
 import { shouldInterceptClinicAction } from "@/components/beta/betaCopy";
+import { logBetaClick } from "@/modules/beta-analytics/logger";
 
 export interface ClinicCardData {
   id: string;
@@ -91,7 +92,7 @@ export function ClinicCardV2({ clinic }: { clinic: ClinicCardData }) {
         <p className="max-w-[65ch] text-sm leading-7 text-muted-foreground">{clinic.reason}</p>
       </div>
 
-      <Button className="w-full" onClick={() => (shouldInterceptClinicAction() ? setBetaNotice(true) : setOpen(true))}>
+      <Button className="w-full" onClick={() => (shouldInterceptClinicAction() ? (logBetaClick("contact_clinic_blocked", { from: "clinic_card" }), setBetaNotice(true)) : setOpen(true))}>
         <Calendar className="size-4" /> Request appointment
       </Button>
 

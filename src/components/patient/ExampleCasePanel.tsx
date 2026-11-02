@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import { logBetaClick } from "@/modules/beta-analytics/logger";
 import { ArrowRight, Compass, Stethoscope, Plane, ListChecks, HeartHandshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -10,7 +11,7 @@ export function StudyOwnCaseCta({ compact = false }: { compact?: boolean }) {
   const { language } = useLanguage();
   const es = language === "es";
   const navigate = useNavigate();
-  const go = () => { startOwnCase(); navigate("/situacion"); };
+  const go = () => { logBetaClick("start_case", { from: "example_case" }); startOwnCase(); navigate("/situacion"); };
   return (
     <div className={`no-print flex flex-wrap items-center justify-between gap-4 rounded-lg border border-accent/50 bg-accent-soft/40 ${compact ? "p-4" : "p-5 sm:p-6"}`}>
       <div className="min-w-0">

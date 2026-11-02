@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { logBetaClick } from "@/modules/beta-analytics/logger";
 import {
   ArrowRight,
   ShieldCheck,
@@ -123,6 +124,7 @@ function Doors({ language, tone = "cover" }: { language: Language; tone?: "cover
         <Link
           key={d.to}
           to={d.to}
+          onClick={() => { if (d.to === "/situacion") logBetaClick("start_case", { from: "landing" }); }}
           className="group flex min-w-0 flex-col rounded-2xl border border-accent/60 bg-background/[0.06] p-6 text-left shadow-elegant backdrop-blur-sm transition-colors hover:border-accent hover:bg-accent/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent md:p-7"
           data-tone={tone}
         >

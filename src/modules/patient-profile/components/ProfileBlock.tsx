@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ChevronDown, ChevronUp, Sparkles, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { logBetaClick } from "@/modules/beta-analytics/logger";
 
 interface Props {
   icon: LucideIcon;
@@ -24,7 +25,7 @@ export function ProfileBlock({ icon: Icon, title, subtitle, required, progress, 
     <Card className={cn("p-5 transition-smooth", done && "border-accent/40")}>
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => { if (!open) logBetaClick("open_module", { module: title }); setOpen((v) => !v); }}
         className="w-full flex items-start gap-4 text-left"
       >
         <div
