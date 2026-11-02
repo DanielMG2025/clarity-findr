@@ -9,6 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { SourceChip } from "@/components/patient/SourceChip";
+import { NotActiveYetDialog } from "@/components/beta/NotActiveYetDialog";
+import { shouldInterceptClinicAction } from "@/components/beta/betaCopy";
 
 export interface ClinicCardData {
   id: string;
@@ -34,6 +36,7 @@ const BADGE_LABELS: Record<NonNullable<ClinicCardData["badge"]>, { label: string
 
 export function ClinicCardV2({ clinic }: { clinic: ClinicCardData }) {
   const [open, setOpen] = useState(false);
+  const [betaNotice, setBetaNotice] = useState(false);
   const label = clinic.displayLabel ?? clinic.name;
   return (
     <Card className="rounded-none border-0 border-t border-border/70 bg-transparent px-0 pb-2 pt-6 shadow-none transition-smooth hover:border-accent/50">
@@ -88,9 +91,11 @@ export function ClinicCardV2({ clinic }: { clinic: ClinicCardData }) {
         <p className="max-w-[65ch] text-sm leading-7 text-muted-foreground">{clinic.reason}</p>
       </div>
 
-      <Button className="w-full" onClick={() => setOpen(true)}>
+      <Button className="w-full" onClick={() => (shouldInterceptClinicAction() ? setBetaNotice(true) : setOpen(true))}>
         <Calendar className="size-4" /> Request appointment
       </Button>
+
+      <NotActiveYetDialog open={betaNotice} onOpenChange={setBetaNotice} />
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>

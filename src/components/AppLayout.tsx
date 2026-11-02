@@ -7,6 +7,7 @@ import { AppSidebar } from "./AppSidebar";
 import { LanguageSwitch } from "@/i18n/LanguageSwitch";
 import { MainNav } from "./nav/MainNav";
 import { SessionChip } from "./nav/SessionChip";
+import { BetaBanner } from "./beta/BetaBanner";
 
 interface Props {
   children: ReactNode;
@@ -18,6 +19,7 @@ export function AppLayout({ children }: Props) {
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
         <div className="flex-1 flex flex-col min-w-0">
+          <BetaBanner />
           <header className="no-print sticky top-0 z-30 border-b border-sidebar-border bg-sidebar text-sidebar-foreground">
           <div className="h-14 flex items-center gap-2">
             <SidebarTrigger className="ml-3 shrink-0 text-sidebar-accent-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-sidebar-ring" />

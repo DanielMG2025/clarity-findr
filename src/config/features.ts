@@ -16,6 +16,8 @@ export interface FeatureFlags {
   widgets: boolean;
   feedback: boolean;
   accessGate: boolean;
+  /** Private-beta ribbon + "not active yet" notices on clinic contact/booking actions. */
+  betaBanner: boolean;
 }
 
 export const FEATURES: FeatureFlags = {
@@ -31,6 +33,7 @@ export const FEATURES: FeatureFlags = {
   widgets: true,
   feedback: true,
   accessGate: true,
+  betaBanner: true,
 };
 
 export type FeatureFlag = keyof FeatureFlags;

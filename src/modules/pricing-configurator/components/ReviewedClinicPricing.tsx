@@ -5,6 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useMasterRecord } from "@/modules/master-record";
 import { overallCompletionMPR } from "@/modules/patient-profile/blocks";
+import { useState, type MouseEvent } from "react";
+import { NotActiveYetDialog } from "@/components/beta/NotActiveYetDialog";
+import { shouldInterceptClinicAction } from "@/components/beta/betaCopy";
 
 type Confidence = "low" | "medium" | "high";
 type SourceLabel = "reviewed" | "public" | "external" | "pending";
@@ -258,7 +261,7 @@ export function ReviewedClinicPricing() {
                       <Link to="/clinicas">Compare clinics</Link>
                     </Button>
                     <Button size="sm" asChild>
-                      <Link to={`/clinicas?contact=${encodeURIComponent(c.id)}`}>
+                      <Link to={`/clinicas?contact=${encodeURIComponent(c.id)}`} onClick={interceptContact}>
                         <MessageSquare className="size-3.5 mr-1" /> Request contact
                       </Link>
                     </Button>
@@ -288,7 +291,7 @@ export function ReviewedClinicPricing() {
             <Link to="/clinicas">Compare clinics</Link>
           </Button>
           <Button asChild>
-            <Link to="/clinicas?contact=m1">
+            <Link to="/clinicas?contact=m1" onClick={interceptContact}>
               Request contact <ArrowRight className="size-4 ml-1" />
             </Link>
           </Button>
