@@ -1,0 +1,41 @@
+/**
+ * Feature flags — hide, never delete. Every flag defaults TRUE: this is a
+ * control surface, not a way to hide anything today. Flip one to false only
+ * to deliberately take a surface down.
+ */
+export interface FeatureFlags {
+  discover: boolean;
+  demoRoom: boolean;
+  costsLab: boolean;
+  sourcesDossier: boolean;
+  referenceLibrary: boolean;
+  community: boolean;
+  guidancePage: boolean;
+  accountArea: boolean;
+  clinicSide: boolean;
+  widgets: boolean;
+  feedback: boolean;
+  accessGate: boolean;
+}
+
+export const FEATURES: FeatureFlags = {
+  discover: true,
+  demoRoom: true,
+  costsLab: true,
+  sourcesDossier: true,
+  referenceLibrary: true,
+  community: true,
+  guidancePage: true,
+  accountArea: true,
+  clinicSide: true,
+  widgets: true,
+  feedback: true,
+  accessGate: true,
+};
+
+export type FeatureFlag = keyof FeatureFlags;
+
+export const isEnabled = (flag: FeatureFlag): boolean => FEATURES[flag] === true;
+
+/** Where a switched-off surface sends the visitor. */
+export const FLAG_FALLBACK_PATH = "/";
