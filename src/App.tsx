@@ -37,6 +37,7 @@ import { FeedbackWidget } from "./modules/feedback/FeedbackWidget";
 import NotFound from "./pages/NotFound.tsx";
 import { LanguageProvider } from "./i18n/LanguageContext";
 import { AccessGate } from "./modules/access/AccessGate";
+import { FEATURES, type FeatureFlag, FLAG_FALLBACK_PATH } from "@/config/features";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,18 @@ function WithGlossary({ children }: { children: ReactNode }) {
   return <GlossaryProvider openGuide={(slug) => navigate(`/aprende/${slug}`)}>{children}</GlossaryProvider>;
 }
 
+/** Hide, never delete: a switched-off surface redirects to the fallback path. */
+function Flagged({ flag, children }: { flag: FeatureFlag; children: ReactNode }) {
+  if (!FEATURES[flag]) return <Navigate to={FLAG_FALLBACK_PATH} replace />;
+  return <>{children}</>;
+}
+
+/** The invite gate itself is switch-controlled (default on). */
+function MaybeGate({ children }: { children: ReactNode }) {
+  if (!FEATURES.accessGate) return <>{children}</>;
+  return <AccessGate>{children}</AccessGate>;
+}
+
 const App = () => (
   <LanguageProvider>
   <QueryClientProvider client={queryClient}>
@@ -66,16 +79,16 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <AccessGate>
+        <MaybeGate>
         <WithGlossary>
         <LayoutSwitch>
           <Routes>
             {/* Public landing + demo room */}
             <Route path="/" element={<Landing />} />
-            <Route path="/demo" element={<DemoRoom />} />
-            <Route path="/descubre" element={<Descubre />} />
-            <Route path="/descubre/regulacion" element={<Regulation />} />
-            <Route path="/descubre/ciencia" element={<Science />} />
+            <Route path="/demo" element={<Flagged flag="demoRoom"><DemoRoom /></Flagged>} />
+            <Route path="/descubre" element={<Flagged flag="discover"><Descubre /></Flagged>} />
+            <Route path="/descubre/regulacion" element={<Flagged flag="discover"><Regulation /></Flagged>} />
+            <Route path="/descubre/ciencia" element={<Flagged flag="discover"><Science /></Flagged>} />
             {/* Invite-only join page — the one route AccessGate lets through without access */}
             <Route path="/unirse" element={<Unirse />} />
 
@@ -84,28 +97,28 @@ const App = () => (
             <Route path="/summary" element={<OrientationSummary />} />
             <Route path="/report" element={<PatientReport />} />
             <Route path="/orientacion" element={<ClarityAssessment />} />
-            <Route path="/sources" element={<SourcesDossier />} />
-            <Route path="/library" element={<ReferenceCentre />} />
-            <Route path="/costes" element={<PricingLab />} />
+            <Route path="/sources" element={<Flagged flag="sourcesDossier"><SourcesDossier /></Flagged>} />
+            <Route path="/library" element={<Flagged flag="referenceLibrary"><ReferenceCentre /></Flagged>} />
+            <Route path="/costes" element={<Flagged flag="costsLab"><PricingLab /></Flagged>} />
             <Route path="/clinicas" element={<Clinics />} />
-            <Route path="/asesoramiento" element={<Partners />} />
+            <Route path="/asesoramiento" element={<Flagged flag="guidancePage"><Partners /></Flagged>} />
             <Route path="/aprende" element={<Navigate to="/descubre#basicos" replace />} />
             <Route path="/aprende/:slug" element={<LearnArticle />} />
-            <Route path="/community" element={<CommunityV2 />} />
+            <Route path="/community" element={<Flagged flag="community"><CommunityV2 /></Flagged>} />
 
             {/* Personal space */}
             <Route path="/me" element={<Navigate to="/situacion" replace />} />
-            <Route path="/account" element={<AccountPatient />} />
-            <Route path="/account/patient" element={<AccountPatient />} />
-            <Route path="/account/clinic" element={<AccountClinic />} />
-            <Route path="/account/partner" element={<AccountPartner />} />
+            <Route path="/account" element={<Flagged flag="accountArea"><AccountPatient /></Flagged>} />
+            <Route path="/account/patient" element={<Flagged flag="accountArea"><AccountPatient /></Flagged>} />
+            <Route path="/account/clinic" element={<Flagged flag="accountArea"><AccountClinic /></Flagged>} />
+            <Route path="/account/partner" element={<Flagged flag="accountArea"><AccountPartner /></Flagged>} />
 
             {/* Clinic-facing (B2B) */}
-            <Route path="/clinic" element={<ClinicLanding />} />
-            <Route path="/clinic/dashboard" element={<ClinicDashboard />} />
+            <Route path="/clinic" element={<Flagged flag="clinicSide"><ClinicLanding /></Flagged>} />
+            <Route path="/clinic/dashboard" element={<Flagged flag="clinicSide"><ClinicDashboard /></Flagged>} />
 
             {/* Embeddable widgets — chromeless layout for iframe distribution */}
-            <Route path="/widgets/fiv-madrid" element={<WidgetFivMadrid />} />
+            <Route path="/widgets/fiv-madrid" element={<Flagged flag="widgets"><WidgetFivMadrid /></Flagged>} />
 
             {/* Admin — tabbed control surface (Pills tab is role-gated) */}
             <Route path="/admin" element={<Admin />} />
@@ -115,9 +128,9 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </LayoutSwitch>
-        <FeedbackWidget />
+        {FEATURES.feedback && <FeedbackWidget />}
         </WithGlossary>
-        </AccessGate>
+        </MaybeGate>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
