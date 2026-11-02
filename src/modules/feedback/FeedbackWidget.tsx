@@ -44,7 +44,7 @@ export function FeedbackWidget() {
     queryFn: async () => {
       const { data, error } = await supabase.from("beta_feedback")
         .select("id, created_at, category, message, page_path, audio_path, audio_duration_seconds, admin_reply, admin_reply_at")
-        .or(userEmail ? `user_id.eq.${userId},user_email.eq.${userEmail}` : `user_id.eq.${userId}`).order("created_at", { ascending: false });
+        .or(userEmail ? `user_id.eq.${userId},user_email.eq."${userEmail}"` : `user_id.eq.${userId}`).order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
