@@ -9,7 +9,6 @@ const SiteFooter = () => {
       <div className="container py-10 text-sm text-muted-foreground space-y-3">
         <nav className="flex gap-5 text-xs font-medium">
           <Link to="/descubre" className="hover:text-primary">{language === "es" ? "Descubre" : "Discover"}</Link>
-          <AdminLink className="hover:text-primary" />
         </nav>
         <p className="max-w-3xl">
           This platform provides informational insights based on aggregated user data. It is not

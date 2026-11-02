@@ -79,9 +79,6 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      {!collapsed && <SidebarFooter className="border-t border-sidebar-border px-4 py-3">
-        <AdminLink className="text-xs text-sidebar-foreground/80 hover:text-sidebar-primary" />
-      </SidebarFooter>}
     </Sidebar>
   );
 }
