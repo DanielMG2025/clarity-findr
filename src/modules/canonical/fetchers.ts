@@ -11,6 +11,7 @@ import {
   userQuoteToPriceRecord,
   type PriceRecord,
 } from "./pricing";
+import { clinicToCentre, type Centre } from "./centres";
 
 export async function fetchAggregatedAsPriceRecords(): Promise<PriceRecord[]> {
   const { data, error } = await supabase.from("aggregated_pricing").select("*");
@@ -28,4 +29,10 @@ export async function fetchUserQuotesAsPriceRecords(): Promise<PriceRecord[]> {
   const { data, error } = await supabase.from("user_submitted_quotes").select("*");
   if (error) throw error;
   return (data ?? []).map(userQuoteToPriceRecord);
+}
+
+export async function fetchClinicsAsCentres(): Promise<Centre[]> {
+  const { data, error } = await supabase.from("clinics").select("*");
+  if (error) throw error;
+  return (data ?? []).map(clinicToCentre);
 }
