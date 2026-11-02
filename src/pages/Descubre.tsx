@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ExternalLink, FlaskConical, Library, Scale, Sparkles } from "lucide-react";
+import { ArrowRight, ArrowUp, ChevronDown, ExternalLink, FlaskConical, Library, Scale, Sparkles } from "lucide-react";
 import { BasicsSection } from "@/modules/content/BasicsSection";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { AUDIENCE_LABEL, LIBRARY, VOICES, usePublishedPills, type Audience, type Resource } from "@/modules/content";
 import { PillCard } from "@/modules/content/PillCard";
@@ -13,12 +14,50 @@ const FILTERS: (Audience | "all")[] = ["all", "planners", "first-steps", "experi
 
 /** Section nav — order matches the page order. */
 const SECTIONS = [
+  { id: "referencias", es: "Regulación y evidencia", en: "Regulation and evidence" },
   { id: "conversacion", es: "Conversación", en: "Conversation" },
   { id: "pildoras", es: "Píldoras", en: "Pills" },
   { id: "basicos", es: "Guías", en: "Guides" },
   { id: "biblioteca", es: "Biblioteca", en: "Library" },
   { id: "voces", es: "Voces", en: "Voices" },
 ] as const;
+type SectionId = (typeof SECTIONS)[number]["id"];
+const ALL_OPEN = Object.fromEntries(SECTIONS.map((s) => [s.id, true])) as Record<SectionId, boolean>;
+
+/** Collapsible top-level section of the hub; the wrapper carries the section id for index and deep links. */
+function Panel({ id, open, onOpenChange, es, children }: { id: SectionId; open: boolean; onOpenChange: (o: boolean) => void; es: boolean; children: ReactNode }) {
+  const s = SECTIONS.find((x) => x.id === id)!;
+  return (
+    <Collapsible id={id} open={open} onOpenChange={onOpenChange} className="mt-12 scroll-mt-28 border-t border-border pt-4">
+      <CollapsibleTrigger className="group flex w-full items-center justify-between gap-3 rounded-sm py-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">{es ? s.es : s.en}</span>
+        <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground group-hover:text-primary">
+          {open ? (es ? "Plegar" : "Collapse") : (es ? "Desplegar" : "Expand")}
+          <ChevronDown className="size-4 transition-transform duration-200 group-data-[state=open]:rotate-180" aria-hidden />
+        </span>
+      </CollapsibleTrigger>
+      <CollapsibleContent className="pt-6">{children}</CollapsibleContent>
+    </Collapsible>
+  );
+}
+
+function BackToTop({ es }: { es: boolean }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShow(window.scrollY > 600);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  if (!show) return null;
+  const label = es ? "Volver arriba" : "Back to top";
+  return (
+    <button type="button" aria-label={label} title={label} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      className="no-print fixed bottom-20 right-4 z-40 grid size-11 place-items-center rounded-full border border-accent/70 bg-card text-primary shadow-lg transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:bottom-24 sm:right-6">
+      <ArrowUp className="size-5" aria-hidden />
+    </button>
+  );
+}
 
 const eyebrow = "text-[11px] font-semibold uppercase tracking-[0.18em] text-primary";
 
@@ -59,12 +98,19 @@ export default function Descubre() {
   const creators = voices.filter((r) => r.kind === "creator");
   const communities = voices.filter((r) => r.kind === "community");
 
+  const [open, setOpen] = useState<Record<SectionId, boolean>>(ALL_OPEN);
+  const setPanel = (id: SectionId) => (o: boolean) => setOpen((prev) => ({ ...prev, [id]: o }));
+
   useEffect(() => {
     const id = window.location.hash.slice(1);
     if (id) setTimeout(() => document.getElementById(id)?.scrollIntoView(), 100);
   }, []);
 
-  const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const go = (id: SectionId) => {
+    setOpen((prev) => ({ ...prev, [id]: true }));
+    window.history.replaceState(null, "", `#${id}`);
+    requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }));
+  };
 
   return (
     <div className="container max-w-5xl px-6 py-14 md:py-20 [&_h2]:text-balance">
@@ -86,16 +132,18 @@ export default function Descubre() {
         </p>
       </header>
 
-      <nav aria-label={es ? "Secciones" : "Sections"} className="mt-8 flex flex-wrap gap-2">
+      <nav aria-label={es ? "Secciones" : "Sections"}
+        className="no-print sticky top-10 z-30 -mx-6 mt-8 flex gap-2 overflow-x-auto border-b border-border/60 bg-background/95 px-6 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/80 md:flex-wrap">
         {SECTIONS.map((s) => (
           <a key={s.id} href={`#${s.id}`} onClick={(e) => { e.preventDefault(); go(s.id); }}
-            className="rounded-full border border-border bg-card px-4 py-1.5 text-sm text-foreground transition-colors hover:border-accent hover:text-primary">
+            className="shrink-0 rounded-full border border-border bg-card px-3.5 py-1 text-sm text-foreground transition-colors hover:border-accent hover:text-primary">
             {es ? s.es : s.en}
           </a>
         ))}
       </nav>
 
-      <Link to="/descubre/regulacion" className="group mt-6 block">
+      <Panel id="referencias" open={open.referencias} onOpenChange={setPanel("referencias")} es={es}>
+      <Link to="/descubre/regulacion" className="group block">
         <Card className="flex items-center gap-4 rounded-lg border-accent/50 bg-card/60 p-5 shadow-none transition-colors group-hover:border-accent">
           <Scale className="size-6 shrink-0 text-primary" aria-hidden />
           <div className="min-w-0 flex-1">
@@ -116,12 +164,14 @@ export default function Descubre() {
           <ArrowRight className="size-5 shrink-0 text-primary transition-transform group-hover:translate-x-1" aria-hidden />
         </Card>
       </Link>
+      </Panel>
 
-      <div id="conversacion" className="scroll-mt-24">
+      <Panel id="conversacion" open={open.conversacion} onOpenChange={setPanel("conversacion")} es={es}>
         <ConversationSection />
-      </div>
+      </Panel>
 
-      <section id="pildoras" className="mt-12 scroll-mt-24">
+      <Panel id="pildoras" open={open.pildoras} onOpenChange={setPanel("pildoras")} es={es}>
+      <section>
         <p className={`${eyebrow} mb-4`}>{es ? "Píldora del día" : "Pill of the day"}</p>
         <PillCard pill={today} featured />
       </section>
@@ -146,12 +196,14 @@ export default function Descubre() {
           <div className="mt-6 grid gap-6 md:grid-cols-2">{feed.map((p) => <PillCard key={p.id} pill={p} />)}</div>
         )}
       </section>
+      </Panel>
 
-      <section className="mt-20 border-t border-border pt-12">
+      <Panel id="basicos" open={open.basicos} onOpenChange={setPanel("basicos")} es={es}>
         <BasicsSection />
-      </section>
+      </Panel>
 
-      <section id="biblioteca" className="mt-20 scroll-mt-24 border-t border-border pt-12">
+      <Panel id="biblioteca" open={open.biblioteca} onOpenChange={setPanel("biblioteca")} es={es}>
+      <section>
         <h2 className="flex items-center gap-2 font-display text-3xl font-medium">
           <Library className="size-6 text-primary" /> {es ? "Biblioteca científica" : "Scientific library"}
         </h2>
@@ -167,8 +219,10 @@ export default function Descubre() {
           {es ? "Ver la biblioteca de referencias completa, con cifras clave" : "See the full reference library, with key figures"} <ArrowRight className="size-4" />
         </Link>
       </section>
+      </Panel>
 
-      <section id="voces" className="mt-20 scroll-mt-24 border-t border-border pt-12">
+      <Panel id="voces" open={open.voces} onOpenChange={setPanel("voces")} es={es}>
+      <section>
         <h2 className="font-display text-3xl font-medium">{es ? "Voces de confianza" : "Trusted voices"}</h2>
         <p className="mt-2 max-w-[65ch] text-sm text-muted-foreground">
           {es
@@ -192,12 +246,14 @@ export default function Descubre() {
           </>
         )}
       </section>
+      </Panel>
 
       <p className="mt-16 max-w-[65ch] border-t border-border pt-6 text-sm text-muted-foreground leading-relaxed">
         {es
           ? "Una nota de transparencia: la mayoría de las voces sobre fertilidad son médicos que ejercen en clínicas. Por eso siempre indicamos quién habla y qué interés tiene."
           : "A note on transparency: most fertility voices are practising clinicians. That is why we always label who is talking and what their interest is."}
       </p>
+      <BackToTop es={es} />
     </div>
   );
 }

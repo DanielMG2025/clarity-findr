@@ -49,7 +49,7 @@ export function BasicsSection() {
   }, [query, t]);
 
   return (
-    <div id="basicos" className="scroll-mt-24 space-y-8">
+    <div className="space-y-8">
       <header className="space-y-3 max-w-2xl">
         <h2 className="font-display text-3xl font-medium flex items-center gap-2">
           <BookOpen className="size-6 text-primary" /> {es ? "Guías" : "Guides"}
