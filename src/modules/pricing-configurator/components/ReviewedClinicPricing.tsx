@@ -154,8 +154,16 @@ const fmt = (n: number) => `€${n.toLocaleString()}`;
 export function ReviewedClinicPricing() {
   const mpr = useMasterRecord();
   const completion = overallCompletionMPR(mpr);
+  const [betaNotice, setBetaNotice] = useState(false);
+  const interceptContact = (e: MouseEvent) => {
+    if (!shouldInterceptClinicAction()) return;
+    e.preventDefault();
+    setBetaNotice(true);
+  };
 
   return (
+    <>
+    <NotActiveYetDialog open={betaNotice} onOpenChange={setBetaNotice} />
     <Card className="overflow-hidden rounded-none border-0 border-y border-border/70 bg-transparent shadow-none">
       <CardHeader>
         <div className="flex items-start justify-between gap-3 flex-wrap">
@@ -298,5 +306,6 @@ export function ReviewedClinicPricing() {
         </div>
       </CardContent>
     </Card>
+    </>
   );
 }
