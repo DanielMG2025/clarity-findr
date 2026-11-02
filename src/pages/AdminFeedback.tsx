@@ -1,19 +1,21 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Mic, Search, Trash2 } from "lucide-react";
+import { ArrowLeft, ChevronDown, Mic, Reply, Search, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useAdminSession } from "@/components/admin/PillsTab";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import {
   CATEGORY_LABEL, FEEDBACK_CATEGORIES, FEEDBACK_STATUSES, STATUS_LABEL,
-  countByCategory, filterFeedback, type FeedbackCategory, type FeedbackFilters, type FeedbackStatus,
+  countByCategory, filterFeedback, hasTeamReply, normalizeReply, type FeedbackCategory, type FeedbackFilters, type FeedbackStatus,
 } from "@/modules/feedback/categories";
 import type { Database } from "@/integrations/supabase/types";
 import { AudioNote } from "@/modules/feedback/AudioNote";
@@ -114,6 +116,7 @@ export default function AdminFeedback() {
           {row.message && <p className="whitespace-pre-wrap break-words">{row.message}</p>}
           {row.audio_path && <AudioNote path={row.audio_path} />}
           {row.page_path && <code className="block break-all font-mono text-xs text-muted-foreground">{row.page_path}</code>}
+          <ReplyBox row={row} es={es} date={date} />
         </div>
         <div className="flex items-start gap-2">
           <Select value={row.status} disabled={change.isPending} onValueChange={(v) => change.mutate({ kind: "status", row, status: v as FeedbackStatus })}>
@@ -137,5 +140,45 @@ export default function AdminFeedback() {
         </AlertDialogContent>
       </AlertDialog>
     </>}
+  </div>;
+}
+
+function ReplyBox({ row, es, date }: { row: Row; es: boolean; date: (v: string) => string }) {
+  const qc = useQueryClient();
+  const [open, setOpen] = useState(false);
+  const [text, setText] = useState(row.admin_reply ?? "");
+  const replied = hasTeamReply(row);
+  const save = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.from("beta_feedback").update({ admin_reply: normalizeReply(text) }).eq("id", row.id);
+      if (error) throw error;
+    },
+    onSuccess: () => { setOpen(false); void qc.invalidateQueries({ queryKey: ["beta-feedback"] }); toast.success(es ? "Respuesta guardada" : "Reply saved"); },
+    onError: () => toast.error(es ? "No se ha podido guardar la respuesta." : "Could not save the reply."),
+  });
+  return <div className="space-y-2 pt-1">
+    {replied && <div className="rounded-md border-l-2 border-primary bg-primary/5 px-3 py-2 text-sm">
+      <p className="mb-1 text-xs text-muted-foreground">{es ? "Respuesta del equipo" : "Team reply"}{row.admin_reply_at && <> · <time dateTime={row.admin_reply_at}>{date(row.admin_reply_at)}</time></>}</p>
+      <p className="whitespace-pre-wrap break-words">{row.admin_reply}</p>
+    </div>}
+    <Collapsible open={open} onOpenChange={(o) => { setOpen(o); if (o) setText(row.admin_reply ?? ""); }}>
+      <CollapsibleTrigger asChild>
+        <Button variant="ghost" size="sm" className="group -ml-2 h-8 gap-1.5 text-xs">
+          <Reply className="size-3.5" />{replied ? (es ? "Editar respuesta" : "Edit reply") : (es ? "Responder" : "Reply")}
+          <ChevronDown className="size-3.5 transition-transform group-data-[state=open]:rotate-180" />
+        </Button>
+      </CollapsibleTrigger>
+      <CollapsibleContent className="space-y-2 pt-1">
+        <Textarea rows={3} maxLength={5000} value={text} onChange={(e) => setText(e.target.value)}
+          aria-label={es ? "Respuesta del equipo" : "Team reply"}
+          placeholder={es ? "Escribe una respuesta para esta persona…" : "Write a reply for this tester…"} />
+        <div className="flex justify-end gap-2">
+          <Button variant="ghost" size="sm" onClick={() => setOpen(false)}>{es ? "Cancelar" : "Cancel"}</Button>
+          <Button size="sm" disabled={save.isPending || (!replied && !normalizeReply(text))} onClick={() => save.mutate()}>
+            {save.isPending ? (es ? "Enviando…" : "Sending…") : (es ? "Enviar" : "Send")}
+          </Button>
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
   </div>;
 }
