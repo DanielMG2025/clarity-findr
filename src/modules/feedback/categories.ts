@@ -52,3 +52,9 @@ export function countByCategory(rows: FeedbackLike[]): Record<FeedbackCategory, 
 
 /** The widget is shown on every gated page except chromeless embeds. */
 export const showsFeedbackLauncher = (pathname: string) => !pathname.startsWith("/widgets/") && !pathname.startsWith("/unirse");
+
+/** A team reply counts only when it has visible text. */
+export const hasTeamReply = (r: { admin_reply?: string | null }) => !!r.admin_reply && r.admin_reply.trim().length > 0;
+
+/** Draft a reply edit: trimmed text, or null to clear an existing reply. */
+export const normalizeReply = (text: string): string | null => (text.trim() ? text.trim() : null);

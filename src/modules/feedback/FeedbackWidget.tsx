@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useLocation } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CheckCircle2, ChevronDown, MessageSquareHeart, Mic } from "lucide-react";
+import { CheckCircle2, ChevronDown, MessageSquareHeart, Mic, Reply } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { CATEGORY_LABEL, FEEDBACK_CATEGORIES, showsFeedbackLauncher, type FeedbackCategory } from "./categories";
+import { CATEGORY_LABEL, FEEDBACK_CATEGORIES, hasTeamReply, showsFeedbackLauncher, type FeedbackCategory } from "./categories";
 import { VoiceRecorder, type VoiceNote } from "./VoiceRecorder";
 import { AudioNote } from "./AudioNote";
 import { AUDIO_BUCKET, audioPathFor, canSubmitFeedback } from "./voice";
@@ -30,20 +30,21 @@ export function FeedbackWidget() {
   const [voice, setVoice] = useState<VoiceNote | null>(null);
   const [thanks, setThanks] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
+  const [userEmail, setUserEmail] = useState("");
   const pagePath = pathname + search;
 
   useEffect(() => {
     if (!open) return;
-    void supabase.auth.getUser().then(({ data }) => setUserId(data.user?.id ?? null));
+    void supabase.auth.getUser().then(({ data }) => { setUserId(data.user?.id ?? null); setUserEmail((data.user?.email ?? "").toLowerCase()); });
   }, [open]);
 
   const mine = useQuery({
-    queryKey: ["beta-feedback", "mine", userId],
+    queryKey: ["beta-feedback", "mine", userId, userEmail],
     enabled: open && !!userId,
     queryFn: async () => {
       const { data, error } = await supabase.from("beta_feedback")
-        .select("id, created_at, category, message, page_path, audio_path, audio_duration_seconds")
-        .eq("user_id", userId!).order("created_at", { ascending: false });
+        .select("id, created_at, category, message, page_path, audio_path, audio_duration_seconds, admin_reply, admin_reply_at")
+        .or(userEmail ? `user_id.eq.${userId},user_email.eq."${userEmail}"` : `user_id.eq.${userId}`).order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
@@ -83,6 +84,7 @@ export function FeedbackWidget() {
   });
 
   if (!showsFeedbackLauncher(pathname)) return null;
+  const replies = mine.data?.filter(hasTeamReply).length ?? 0;
 
   const onSubmit = (e: FormEvent) => { e.preventDefault(); if (canSubmitFeedback(message, !!voice)) submit.mutate(); };
   const date = (v: string) => new Intl.DateTimeFormat(es ? "es-ES" : "en-GB", { dateStyle: "medium", timeStyle: "short" }).format(new Date(v));
@@ -144,15 +146,14 @@ export function FeedbackWidget() {
           </div>
         </form>
 
-        <Collapsible className="border-t pt-3">
+        {userId && !!mine.data?.length && <Collapsible className="border-t pt-3">
           <CollapsibleTrigger className="group flex w-full items-center justify-between text-sm font-semibold">
-            <span>{es ? "Tus comentarios" : "Your comments"}{mine.data ? ` (${mine.data.length})` : ""}</span>
+            <span className="flex items-center gap-2">{es ? "Tus comentarios" : "Your comments"} ({mine.data.length})
+              {replies > 0 && <Badge variant="secondary" className="gap-1 text-[10px] font-medium"><Reply className="size-3" />{es ? (replies === 1 ? "1 respuesta" : `${replies} respuestas`) : (replies === 1 ? "1 reply" : `${replies} replies`)}</Badge>}
+            </span>
             <ChevronDown className="size-4 transition-transform group-data-[state=open]:rotate-180" />
           </CollapsibleTrigger>
           <CollapsibleContent className="mt-3 space-y-3">
-            {mine.isLoading && <p role="status" className="text-xs text-muted-foreground">{es ? "Cargando…" : "Loading…"}</p>}
-            {mine.isError && <p className="text-xs text-muted-foreground">{es ? "No se han podido cargar tus comentarios." : "Could not load your comments."}</p>}
-            {mine.data?.length === 0 && <p className="text-xs text-muted-foreground">{es ? "Aún no has dejado comentarios." : "You haven't left any comments yet."}</p>}
             <ul className="space-y-3">
               {mine.data?.map((row) => <li key={row.id} className="rounded-md border bg-muted/30 p-3 text-sm">
                 <div className="mb-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
@@ -163,10 +164,17 @@ export function FeedbackWidget() {
                 </div>
                 {row.message && <p className="whitespace-pre-wrap break-words">{row.message}</p>}
                 {row.audio_path && <div className="mt-2"><AudioNote path={row.audio_path} /></div>}
+                {hasTeamReply(row) && <div className="mt-3 rounded-md border-l-2 border-primary bg-background px-3 py-2">
+                  <p className="mb-1 text-xs text-muted-foreground">
+                    <span className="font-semibold text-primary">{es ? "El equipo te ha respondido" : "The team replied"}</span>
+                    {row.admin_reply_at && <> · <time dateTime={row.admin_reply_at}>{date(row.admin_reply_at)}</time></>}
+                  </p>
+                  <p className="whitespace-pre-wrap break-words">{row.admin_reply}</p>
+                </div>}
               </li>)}
             </ul>
           </CollapsibleContent>
-        </Collapsible>
+        </Collapsible>}
       </DialogContent>
     </Dialog>
   </>;

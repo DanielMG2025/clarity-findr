@@ -85,6 +85,8 @@ export type Database = {
       }
       beta_feedback: {
         Row: {
+          admin_reply: string | null
+          admin_reply_at: string | null
           audio_duration_seconds: number | null
           audio_path: string | null
           category: string | null
@@ -99,6 +101,8 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          admin_reply?: string | null
+          admin_reply_at?: string | null
           audio_duration_seconds?: number | null
           audio_path?: string | null
           category?: string | null
@@ -113,6 +117,8 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          admin_reply?: string | null
+          admin_reply_at?: string | null
           audio_duration_seconds?: number | null
           audio_path?: string | null
           category?: string | null
