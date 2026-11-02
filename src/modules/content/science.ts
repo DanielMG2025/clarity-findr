@@ -208,3 +208,30 @@ export const FINDINGS: Finding[] = [
     source_label: "NICE", source_url: "https://www.nice.org.uk/", source_year: "guías vigentes",
   },
 ];
+
+/** Plain one-line definition of each add-on, keyed by `name_en`. */
+export const ADDON_WHAT: Record<string, { es: string; en: string }> = {
+  "Androgen supplementation": { es: "Andrógenos (p. ej. DHEA o testosterona) antes de la estimulación, para intentar mejorar la respuesta ovárica.", en: "Androgens (e.g. DHEA or testosterone) before stimulation, to try to improve ovarian response." },
+  "Assisted hatching": { es: "Abrir o adelgazar la capa externa del embrión para 'ayudarle a salir' e implantar.", en: "Opening or thinning the embryo's outer shell to 'help it hatch' and implant." },
+  "Elective freeze-all cycles": { es: "Congelar todos los embriones y transferirlos en un ciclo posterior, en vez de en fresco.", en: "Freezing all embryos and transferring them in a later cycle, instead of fresh." },
+  "Endometrial receptivity testing": { es: "Una biopsia del endometrio (test ERA) para estimar la 'ventana' en la que estaría más receptivo a la transferencia.", en: "An endometrial biopsy (ERA test) to estimate the 'window' when the lining would be most receptive to transfer." },
+  "Endometrial scratching": { es: "Un pequeño rascado del endometrio en el ciclo previo, con la idea de favorecer la implantación.", en: "A small scratch of the endometrial lining in the prior cycle, intended to aid implantation." },
+  "Hyaluronate-enriched medium (EmbryoGlue)": { es: "Un medio de cultivo con hialuronato en el que se coloca el embrión antes de transferirlo, por si mejora la adherencia.", en: "A culture medium with hyaluronate the embryo is placed in before transfer, in case it helps it stick." },
+  "Immunological: Intralipids": { es: "Una infusión de lípidos por vía intravenosa usada como 'tratamiento inmunológico' para favorecer la implantación.", en: "An intravenous lipid infusion used as an 'immune treatment' to aid implantation." },
+  "Immunological: IVIG": { es: "Inmunoglobulinas por vía intravenosa, otro 'tratamiento inmunológico' para supuestos fallos de implantación.", en: "Intravenous immunoglobulins, another 'immune treatment' for presumed implantation failure." },
+  "Immunological: steroids": { es: "Corticoides para 'modular el sistema inmune' durante el tratamiento.", en: "Corticosteroids to 'modulate the immune system' during treatment." },
+  "IMSI": { es: "Una ICSI con un microscopio de muchos más aumentos para elegir el espermatozoide por su aspecto.", en: "An ICSI using a much higher-magnification microscope to pick the sperm by its appearance." },
+  "Intrauterine culture": { es: "Un dispositivo que incuba óvulos/embriones dentro del útero unas horas, en lugar de solo en el laboratorio.", en: "A device that incubates eggs/embryos inside the uterus for a few hours, instead of only in the lab." },
+  "Microbiome testing": { es: "Analizar las bacterias del endometrio para ver si influyen en la implantación.", en: "Testing the bacteria of the endometrial lining to see if they affect implantation." },
+  "PICSI (male factor)": { es: "Una variante de ICSI que selecciona el espermatozoide por su capacidad de unirse al ácido hialurónico.", en: "A variant of ICSI that selects the sperm by its ability to bind hyaluronic acid." },
+  "Platelet-rich plasma (PRP)": { es: "Plasma rico en plaquetas de la propia paciente, inyectado en el ovario o el endometrio para 'rejuvenecerlo'.", en: "The patient's own platelet-rich plasma, injected into the ovary or lining to 'rejuvenate' it." },
+  "PGT-A (preimplantation genetic testing for aneuploidy)": { es: "Un test genético que cuenta los cromosomas del embrión (biopsia de día 5–6) para transferir los que tienen el número correcto.", en: "A genetic test that counts the embryo's chromosomes (day 5–6 biopsy) to transfer those with the right number." },
+  "Time-lapse imaging and incubation": { es: "Una incubadora con cámara que fotografía el embrión de forma continua, para observarlo sin sacarlo del incubador.", en: "An incubator with a camera that films the embryo continuously, so it can be watched without taking it out." },
+  "Sperm DNA fragmentation": { es: "Una prueba que mide el daño en el ADN de los espermatozoides.", en: "A test that measures damage in the sperm's DNA." },
+};
+
+/** Neutral framing shown above the add-ons traffic-light. */
+export const ADDONS_FRAMING = {
+  es: "Qué mide este semáforo: la evidencia de que cada 'extra' mejore tu probabilidad de bebé en casa para la mayoría de pacientes — no si la técnica funciona en sí misma. Un color bajo no significa que sea inútil o dañino para todo el mundo: algunos tienen indicaciones concretas, y la práctica varía por país (en España, por ejemplo, el PGT-A es muy habitual y el time-lapse se ofrece como opción premium). Lo útil es preguntar en tu clínica por qué te lo recomiendan a ti en concreto y qué cuesta.",
+  en: "What this traffic-light rates: the evidence that each 'add-on' improves your chance of a baby at home for most patients — not whether the technique works in itself. A low colour does not mean it is useless or harmful for everyone: some have specific indications, and practice varies by country (in Spain, for example, PGT-A is very common and time-lapse is offered as a premium option). The useful move is to ask your clinic why it is being recommended for you specifically, and what it costs.",
+};

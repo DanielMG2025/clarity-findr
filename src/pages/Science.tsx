@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLanguage } from "@/i18n/LanguageContext";
 import {
-  ADDONS, ADDON_RATING_LABEL, AGE_BANDS, AGE_BANDS_CAPTION, AGE_BANDS_NOTE, ADDON_RATING_MEANING, FINDINGS, STRENGTH_HELP, STRENGTH_LABEL,
+  ADDONS, ADDON_RATING_LABEL, ADDON_WHAT, ADDONS_FRAMING, AGE_BANDS, AGE_BANDS_CAPTION, AGE_BANDS_NOTE, ADDON_RATING_MEANING, FINDINGS, STRENGTH_HELP, STRENGTH_LABEL,
   type AddonRating, type Finding,
 } from "@/modules/content/science";
 
@@ -27,13 +27,26 @@ function AddonsTable({ es }: { es: boolean }) {
   const sorted = [...ADDONS].sort((a, b) => RATING_ORDER.indexOf(a.rating) - RATING_ORDER.indexOf(b.rating));
   return (
     <div className="mt-4">
+      <p className="mb-4 rounded-md border-l-2 border-accent bg-accent/10 px-4 py-3 text-sm leading-relaxed">{ADDONS_FRAMING[lang]}</p>
       <ul className="divide-y divide-border rounded-md border border-border/70 bg-muted/40">
         {sorted.map((a) => {
           const label = ADDON_RATING_LABEL[a.rating][lang];
           return (
             <li key={a.name_en} className="flex items-center gap-3 px-3 py-2 text-sm">
               <Dot rating={a.rating} label={label} />
-              <span className="min-w-0 flex-1">{es ? a.name_es : a.name_en}</span>
+              <span className="flex min-w-0 flex-1 items-center gap-1.5">
+                <span className="min-w-0">{es ? a.name_es : a.name_en}</span>
+                {ADDON_WHAT[a.name_en] && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button type="button" aria-label={es ? `Qué es: ${a.name_es}` : `What it is: ${a.name_en}`} className="shrink-0 text-muted-foreground hover:text-primary">
+                        <Info className="size-3.5" aria-hidden />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs text-xs">{ADDON_WHAT[a.name_en][lang]}</TooltipContent>
+                  </Tooltip>
+                )}
+              </span>
               <span className="shrink-0 text-xs font-medium text-muted-foreground">{label}</span>
             </li>
           );

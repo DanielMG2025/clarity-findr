@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ADDONS, AGE_BANDS, FINDINGS } from "./science";
+import { ADDONS, ADDONS_FRAMING, ADDON_WHAT, AGE_BANDS, FINDINGS } from "./science";
 import { getArticle } from "@/modules/education/contentLibrary";
 
 describe("science dataset", () => {
@@ -46,5 +46,13 @@ describe("science dataset", () => {
 
   it("every library_slug resolves to a real article", () => {
     for (const f of FINDINGS) if (f.library_slug) expect(getArticle(f.library_slug)).toBeDefined();
+  });
+  it("every add-on has a plain definition and the framing is filled", () => {
+    for (const a of ADDONS) {
+      expect(ADDON_WHAT[a.name_en]?.es.length).toBeGreaterThan(0);
+      expect(ADDON_WHAT[a.name_en]?.en.length).toBeGreaterThan(0);
+    }
+    expect(ADDONS_FRAMING.es.length).toBeGreaterThan(0);
+    expect(ADDONS_FRAMING.en.length).toBeGreaterThan(0);
   });
 });
