@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { countByCategory, filterFeedback, FEEDBACK_CATEGORIES, showsFeedbackLauncher } from "./categories";
+import { countByCategory, filterFeedback, FEEDBACK_CATEGORIES, hasTeamReply, normalizeReply, showsFeedbackLauncher } from "./categories";
 
 const rows = [
   { category: "broken", status: "new", user_email: "a@x.com", message: "El botón de costes no funciona" },
@@ -24,5 +24,14 @@ describe("beta feedback", () => {
   it("hides the launcher only on chromeless embeds", () => {
     expect(showsFeedbackLauncher("/descubre")).toBe(true);
     expect(showsFeedbackLauncher("/widgets/fiv-madrid")).toBe(false);
+  });
+  it("treats only non-blank text as a team reply", () => {
+    expect(hasTeamReply({ admin_reply: "Gracias, lo miramos" })).toBe(true);
+    expect(hasTeamReply({ admin_reply: "   " })).toBe(false);
+    expect(hasTeamReply({ admin_reply: null })).toBe(false);
+  });
+  it("saves a trimmed reply, or clears it when blank", () => {
+    expect(normalizeReply("  Hecho  ")).toBe("Hecho");
+    expect(normalizeReply("  ")).toBeNull();
   });
 });
