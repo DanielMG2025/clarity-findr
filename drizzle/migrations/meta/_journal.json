@@ -71,6 +71,13 @@
       "when": 1793553238894,
       "tag": "0009_referral_invitations",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1793649053350,
+      "tag": "0010_beta_feedback_admin_reply",
+      "breakpoints": true
     }
   ]
 }
