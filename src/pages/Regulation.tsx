@@ -1,18 +1,43 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { ArrowLeft, ExternalLink, Info, Scale } from "lucide-react";
+import { ArrowLeft, ChevronDown, ExternalLink, Info, Scale } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { CONFIDENCE_LABEL, EU_SOHO, REGULATION, SOURCE_TIER_HELP, SOURCE_TIER_LABEL, type RegRow } from "@/modules/content/regulation";
+import { CONFIDENCE_LABEL, EU_SOHO, REGULATION, SOURCE_TIER_HELP, SOURCE_TIER_LABEL, TERM_HELP, type RegRow } from "@/modules/content/regulation";
 
 const eyebrow = "text-[11px] font-semibold uppercase tracking-[0.18em] text-primary";
 const CONF_HELP = {
   es: "La confianza refleja cuántas fuentes concuerdan y cómo de reciente es el dato",
   en: "Confidence reflects how many sources agree and how recent the datum is",
 };
+
+type Term = keyof typeof TERM_HELP;
+const TERM_LABEL: Record<Term, { es: string; en: string }> = {
+  access: { es: "Quién puede acceder", en: "Who can access" },
+  egg: { es: "Ovodonación", en: "Egg donation" },
+  sperm: { es: "Semen donante", en: "Donor sperm" },
+  surrogacy: { es: "Subrogación", en: "Surrogacy" },
+  anonymity: { es: "Anonimato", en: "Anonymity" },
+};
+
+/** A dimension label with a plain-language definition on hover/tap. */
+function TermLabel({ term, es, className }: { term: Term; es: boolean; className: string }) {
+  const lang = es ? "es" : "en";
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button type="button" className={`inline-flex items-center gap-1 text-left ${className}`}>
+          {TERM_LABEL[term][lang]} <Info className="size-3 shrink-0 opacity-70" aria-hidden />
+        </button>
+      </TooltipTrigger>
+      <TooltipContent className="max-w-xs text-xs">{TERM_HELP[term][lang]}</TooltipContent>
+    </Tooltip>
+  );
+}
 
 const GRID = "md:grid md:grid-cols-[1.1fr_2fr_1.6fr_1.6fr_1.2fr] md:gap-4";
 
@@ -41,9 +66,10 @@ function Row({ r, es }: { r: RegRow; es: boolean }) {
         </div>
       </AccordionTrigger>
       <AccordionContent>
+        <p className="mb-4 max-w-[70ch] text-base leading-relaxed">{L(r.summary_es, r.summary_en)}</p>
         <div className="grid gap-4 rounded-md border border-border/70 bg-muted/40 p-4 sm:grid-cols-2">
           <div>
-            <p className={eyebrow}>{L("Semen donante", "Donor sperm")}</p>
+            <TermLabel term="sperm" es={es} className={eyebrow} />
             <p className="mt-1">{L(r.sperm_es, r.sperm_en)}</p>
           </div>
           <div>
@@ -135,18 +161,38 @@ export default function Regulation() {
       </Card>
 
       <section className="mt-10" aria-label={L("Tabla comparativa", "Comparison table")}>
-        <div className={`hidden border-b-2 border-primary/40 pb-2 pr-8 ${GRID}`}>
-          {[L("País", "Country"), L("Quién puede acceder", "Who can access"), L("Ovodonación", "Egg donation"),
-            L("Subrogación", "Surrogacy"), L("Anonimato", "Anonymity")].map((h) => (
-            <span key={h} className="text-[11px] font-semibold uppercase tracking-[0.14em] text-primary">{h}</span>
+        <p className="max-w-[70ch] text-sm leading-relaxed text-muted-foreground">
+          {L("Cada país decide quién puede tratarse, qué donación permite y bajo qué condiciones. Toca un país para leer su resumen y el detalle, con la norma, su fuente y su fecha. Pasa el cursor por los términos para ver qué significan.",
+            "Each country decides who can be treated, what donation it allows and under what conditions. Tap a country to read its summary and the detail, with the law, its source and its date. Hover the terms to see what they mean.")}
+        </p>
+        <Collapsible className="mt-3">
+          <CollapsibleTrigger className="group inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+            {L("¿Qué significan estos términos?", "What do these terms mean?")}
+            <ChevronDown className="size-4 transition-transform group-data-[state=open]:rotate-180" aria-hidden />
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <dl className="mt-3 grid gap-3 rounded-md border border-border/70 bg-card p-4 text-sm sm:grid-cols-2">
+              {(Object.keys(TERM_HELP) as Term[]).map((k) => (
+                <div key={k}>
+                  <dt className="font-semibold text-primary">{TERM_LABEL[k][es ? "es" : "en"]}</dt>
+                  <dd className="mt-0.5 leading-relaxed text-muted-foreground">{TERM_HELP[k][es ? "es" : "en"]}</dd>
+                </div>
+              ))}
+            </dl>
+          </CollapsibleContent>
+        </Collapsible>
+        <div className={`mt-6 hidden border-b-2 border-primary/40 pb-2 pr-8 ${GRID}`}>
+          <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-primary">{L("País", "Country")}</span>
+          {(["access", "egg", "surrogacy", "anonymity"] as Term[]).map((k) => (
+            <TermLabel key={k} term={k} es={es} className="text-[11px] font-semibold uppercase tracking-[0.14em] text-primary" />
           ))}
         </div>
         <Accordion type="multiple" value={open} onValueChange={setOpen}>
           {REGULATION.map((r) => <Row key={r.country_en} r={r} es={es} />)}
         </Accordion>
         <p className="mt-3 text-xs text-muted-foreground">
-          {L("Toca un país para ver semen donante, base legal, fuente, fecha y confianza.",
-            "Tap a country to see donor sperm, legal basis, source, date and confidence.")}
+          {L("Toca un país para ver su resumen, semen donante, base legal, fuente, fecha y confianza.",
+            "Tap a country to see its summary, donor sperm, legal basis, source, date and confidence.")}
         </p>
       </section>
 

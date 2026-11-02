@@ -33,4 +33,10 @@ describe("regulation dataset", () => {
   it("cites the SoHO regulation on EUR-Lex", () => {
     expect(EU_SOHO.source_url).toBe("https://eur-lex.europa.eu/eli/reg/2024/1938/oj");
   });
+  it("every row has a friendly summary in both languages", () => {
+    for (const r of REGULATION) {
+      expect(r.summary_es.trim().length).toBeGreaterThan(0);
+      expect(r.summary_en.trim().length).toBeGreaterThan(0);
+    }
+  });
 });
