@@ -33,13 +33,15 @@ import ListeningTab from "@/components/admin/ListeningTab";
 import UsersTab from "@/components/admin/UsersTab";
 import InvitesTab from "@/components/admin/InvitesTab";
 import BetaNavigationTab from "@/components/admin/BetaNavigationTab";
+import AccountTab from "@/components/admin/AccountTab";
 import { FEATURES } from "@/config/features";
-import { Footprints } from "lucide-react";
+import { Footprints, UserCog } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 const TABS = [
   { v: "users", icon: Users, label: "Users" },
   { v: "invites", icon: Ticket, label: "Invites" },
+  { v: "account", icon: UserCog, label: "Account & admins" },
   { v: "overview", icon: LayoutDashboard, label: "Overview" },
   { v: "patients", icon: Users, label: "Patients" },
   { v: "clinics", icon: Building2, label: "Clinics" },
@@ -96,7 +98,7 @@ const Admin = () => {
               <TabsList className="inline-flex w-auto">
                 {TABS.map((t) => (
                   <TabsTrigger key={t.v} value={t.v} className="text-xs md:text-sm">
-                    <t.icon className="size-3.5 mr-1.5" /> {language === "es" && t.v === "users" ? "Usuarios" : language === "es" && t.v === "invites" ? "Invitaciones" : language === "es" && t.v === "beta-nav" ? "Beta · Navegación" : t.label}
+                    <t.icon className="size-3.5 mr-1.5" /> {language === "es" && t.v === "users" ? "Usuarios" : language === "es" && t.v === "invites" ? "Invitaciones" : language === "es" && t.v === "account" ? "Cuenta y administradores" : language === "es" && t.v === "beta-nav" ? "Beta · Navegación" : t.label}
                   </TabsTrigger>
                 ))}
               </TabsList>
@@ -107,6 +109,9 @@ const Admin = () => {
             </TabsContent>
             <TabsContent value="invites" className="mt-6">
               <InvitesTab />
+            </TabsContent>
+            <TabsContent value="account" className="mt-6">
+              <AccountTab />
             </TabsContent>
             <TabsContent value="overview" className="mt-6">
               <OverviewTab />
