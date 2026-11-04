@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { DEMO_PATIENTS } from "./demoPatients";
 import { runDemo } from "./runDemo";
+import { SITUATION_TAGS, TREATMENT_TAGS, deriveExampleTags, filterExampleCases } from "./exampleCaseTags";
 import { useMasterRecord } from "./store";
 import { activeExampleCase, openExampleCase, restoreOwnCase, startOwnCase, useExampleCaseStore, useOwnRecordStore } from "./exampleCase";
 
@@ -90,5 +91,58 @@ describe("leaving an example for your own case", () => {
     useMasterRecord.getState().patchIdentity({ name: "Me" });
     restoreOwnCase();
     expect(useMasterRecord.getState().identity.name).toBe("Me");
+  });
+});
+
+describe("example case tags and filters", () => {
+  const keys = (xs: { key: string }[]) => xs.map((x) => x.key).sort();
+
+  it("every treatment tag and situation tag in the vocabulary is used by at least one case", () => {
+    for (const t of TREATMENT_TAGS) expect(DEMO_PATIENTS.some((p) => p.treatment_tag === t), t).toBe(true);
+    for (const s of SITUATION_TAGS) expect(DEMO_PATIENTS.some((p) => p.situation_tags?.includes(s)), s).toBe(true);
+  });
+
+  it("no case uses a tag outside the vocabulary", () => {
+    for (const p of DEMO_PATIENTS) {
+      if (p.treatment_tag) expect(TREATMENT_TAGS, p.key).toContain(p.treatment_tag);
+      for (const s of p.situation_tags ?? []) expect(SITUATION_TAGS, p.key).toContain(s);
+    }
+  });
+
+  it("each case's tags follow the stated rule", () => {
+    for (const p of DEMO_PATIENTS) {
+      const d = deriveExampleTags(p);
+      expect(p.treatment_tag, p.key).toBe(d.treatment_tag);
+      expect([...(p.situation_tags ?? [])].sort(), p.key).toEqual([...d.situation_tags].sort());
+    }
+  });
+
+  it("ROPA/surrogacy and cross-border are exactly the curated cases", () => {
+    expect(keys(DEMO_PATIENTS.filter((p) => p.situation_tags?.includes("ropa_surrogacy"))))
+      .toEqual(["chiara_35_italy_female_couple", "james_oliver_38_uk", "laura_sara_33_ropa", "tomas_41_single_man"]);
+    expect(keys(DEMO_PATIENTS.filter((p) => p.situation_tags?.includes("cross_border"))))
+      .toEqual(["anna_37_poland_single", "chiara_35_italy_female_couple", "eleni_daphne_32_greece", "giulia_34_italy_single", "hannah_36_switzerland_single", "klara_35_germany_preserve", "lena_39_germany_donor", "tomas_41_single_man"]);
+  });
+
+  it("cross-border + egg donation gives Lena and Tomás", () => {
+    expect(keys(filterExampleCases(DEMO_PATIENTS, { situation: "cross_border", treatment: "donation" })))
+      .toEqual(["lena_39_germany_donor", "tomas_41_single_man"]);
+  });
+
+  it("egg freezing + rest of Europe gives Klara and Charlotte", () => {
+    expect(keys(filterExampleCases(DEMO_PATIENTS, { treatment: "freezing", geo: "rest_of_europe" })))
+      .toEqual(["charlotte_36_france_preserve", "klara_35_germany_preserve"]);
+  });
+
+  it("ROPA/surrogacy in Spain gives Laura & Sara and Tomás", () => {
+    expect(keys(filterExampleCases(DEMO_PATIENTS, { treatment: "ropa_surrogacy", geo: "spain" })))
+      .toEqual(["laura_sara_33_ropa", "tomas_41_single_man"]);
+  });
+
+  it("age band and family combine with the other filters; no filters returns every case", () => {
+    expect(keys(filterExampleCases(DEMO_PATIENTS, { treatment: "own_ivf", ageBand: "36_39", family: "single_woman" })))
+      .toEqual(["hannah_36_switzerland_single", "maria_36_cyprus_single"]);
+    expect(filterExampleCases(DEMO_PATIENTS, {})).toHaveLength(DEMO_PATIENTS.length);
+    expect(filterExampleCases(DEMO_PATIENTS, { situation: "male_factor", geo: "rest_of_europe" })).toHaveLength(0);
   });
 });

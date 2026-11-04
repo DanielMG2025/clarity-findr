@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -91,7 +91,7 @@ function Chips<T extends string>({ label, value, onChange, options }: { label: s
   );
 }
 
-function FilterBar({ count, active, onClear, children }: { count: number; active: number; onClear: () => void; children: React.ReactNode }) {
+function FilterBar({ count, active, onClear, children }: { count: number; active: number; onClear: () => void; children: ReactNode }) {
   const { language } = useLanguage();
   const es = language === "es";
   return (
