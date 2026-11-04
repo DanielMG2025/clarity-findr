@@ -147,7 +147,7 @@ export default function Descubre() {
         <Card className="flex items-center gap-4 rounded-lg border-accent/50 bg-card/60 p-5 shadow-none transition-colors group-hover:border-accent">
           <Scale className="size-6 shrink-0 text-primary" aria-hidden />
           <div className="min-w-0 flex-1">
-            <h2 className="font-display text-xl font-medium leading-snug">{es ? "Regulación comparada en Europa" : "Regulation compared across Europe"}</h2>
+            <h2 className="font-display text-xl font-medium leading-snug">{es ? "Regulación comparada por país" : "Regulation compared by country"}</h2>
             <p className="mt-1 text-sm text-muted-foreground">{es ? "Qué permite cada país, con fuente y fecha" : "What each country allows, with source and date"}</p>
           </div>
           <ArrowRight className="size-5 shrink-0 text-primary transition-transform group-hover:translate-x-1" aria-hidden />

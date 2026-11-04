@@ -55,7 +55,7 @@ export function CaseReferences() {
             </Link>
           </BridgeRow>
         ) : (
-          <BridgeRow icon={Scale} title={L("Regulación comparada en Europa", "Regulation compared across Europe")}>
+          <BridgeRow icon={Scale} title={L("Regulación comparada por país", "Regulation compared by country")}>
             <Link to="/descubre/regulacion" className={linkCls}>
               {L("Ver la ficha comparada", "See the comparison")} <ArrowRight className="size-3.5" />
             </Link>
