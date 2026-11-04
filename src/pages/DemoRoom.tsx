@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { RotateCcw, ArrowRight, Scale, MapPin, Users, Search, LayoutGrid, Snowflake, Baby } from "lucide-react";
+import { RotateCcw, ArrowRight, Scale, MapPin, Users, Search, LayoutGrid, Snowflake, Baby, X, SearchX } from "lucide-react";
 import {
   DEMO_PATIENTS,
   completeness,
@@ -11,6 +11,14 @@ import {
   useActiveExampleCase,
   restoreOwnCase,
   findSimilarCases,
+  filterExampleCases,
+  activeFilterCount,
+  SITUATION_TAG_LABEL,
+  TREATMENT_TAG_LABEL,
+  type ExampleCaseFilters,
+  type GeoFilter,
+  type SituationTag,
+  type TreatmentFilter,
   type AgeBand,
   type DemoPatientSeed,
 } from "@/modules/master-record";
@@ -39,6 +47,14 @@ const FAMILY_LABEL: Record<FamilyStructure, Record<Language, string>> = {
 const AGE_BANDS: [AgeBand, string][] = [["under_32", "< 32"], ["32_35", "32–35"], ["36_39", "36–39"], ["40_plus", "40+"]];
 const FAMILIES: FamilyStructure[] = ["single_woman", "hetero_couple", "female_couple", "male_couple", "single_man"];
 
+const SITUATION_CHIPS: SituationTag[] = ["cross_border", "low_reserve", "male_factor", "endometriosis", "unexplained"];
+const TREATMENT_CHIPS: TreatmentFilter[] = ["own_ivf", "donation", "iui", "freezing", "ropa_surrogacy"];
+const treatmentLabel = (v: TreatmentFilter, l: Language) => v === "ropa_surrogacy" ? SITUATION_TAG_LABEL.ropa_surrogacy[l] : TREATMENT_TAG_LABEL[v][l];
+const GEO_LABEL: Record<GeoFilter, Record<Language, string>> = {
+  spain: { en: "Spain", es: "España" },
+  rest_of_europe: { en: "Rest of Europe", es: "Resto de Europa" },
+};
+
 /** "Legal case" = the regulatory engine says something this case needs isn't available at home. */
 const LEGAL_CASE = new Set(DEMO_PATIENTS.filter((p) => runDemo(p).step0_regulatory?.needs_to_travel).map((p) => p.key));
 
@@ -51,6 +67,58 @@ function Seg<T extends string>({ value, onChange, options, label }: { value: T |
           {l}
         </button>
       ))}
+    </div>
+  );
+}
+
+/** Optional single-choice chips: click again to clear. */
+function Chips<T extends string>({ label, value, onChange, options }: { label: string; value: T | null | undefined; onChange: (v: T | null) => void; options: [T, string][] }) {
+  return (
+    <div className="min-w-0">
+      <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">{label}</span>
+      <div role="group" aria-label={label} className="flex flex-wrap gap-1.5">
+        {options.map(([v, l]) => {
+          const on = value === v;
+          return (
+            <button key={v} type="button" aria-pressed={on} onClick={() => onChange(on ? null : v)}
+              className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${on ? "border-primary bg-primary text-primary-foreground" : "border-border/80 bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground"}`}>
+              {l}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function FilterBar({ count, active, onClear, children }: { count: number; active: number; onClear: () => void; children: React.ReactNode }) {
+  const { language } = useLanguage();
+  const es = language === "es";
+  return (
+    <div className="space-y-4 rounded-lg border border-border/70 bg-card/60 p-5">
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{children}</div>
+      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border/50 pt-3">
+        <p className="text-sm text-muted-foreground" aria-live="polite">
+          <span className="font-display tabular-nums text-foreground">{count}</span> {count === 1 ? (es ? "caso" : "case") : (es ? "casos" : "cases")}
+        </p>
+        {active > 0 && (
+          <Button size="sm" variant="ghost" className="gap-1" onClick={onClear}>
+            <X className="size-3.5" /> {es ? "Quitar filtros" : "Clear filters"}
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function NoCases({ onClear }: { onClear: () => void }) {
+  const { language } = useLanguage();
+  const es = language === "es";
+  return (
+    <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border/80 p-8 text-center">
+      <SearchX className="size-6 text-muted-foreground" aria-hidden />
+      <p className="text-sm text-muted-foreground">{es ? "Ningún caso con estos filtros — prueba a quitar alguno." : "No cases with these filters — try removing one."}</p>
+      <Button size="sm" variant="outline" className="gap-1" onClick={onClear}><X className="size-3.5" /> {es ? "Quitar filtros" : "Clear filters"}</Button>
     </div>
   );
 }
@@ -107,7 +175,29 @@ export default function DemoRoom() {
   const [goal, setGoal] = useState<"preserve" | "treatment" | null>(null);
   const [band, setBand] = useState<AgeBand | null>(null);
   const [family, setFamily] = useState<FamilyStructure | null>(null);
-  const matches = useMemo(() => goal && band ? findSimilarCases(DEMO_PATIENTS, { goal, ageBand: band, family: family ?? undefined }) : [], [goal, band, family]);
+  // Shared theme/treatment/geography filters; age and family also apply in "Browse all".
+  const [filters, setFilters] = useState<ExampleCaseFilters>({});
+  const setF = <K extends keyof ExampleCaseFilters>(k: K) => (v: ExampleCaseFilters[K]) => setFilters((f) => ({ ...f, [k]: v }));
+  const refine: ExampleCaseFilters = { situation: filters.situation, treatment: filters.treatment, geo: filters.geo };
+  const refineActive = activeFilterCount(refine);
+  const clearRefine = () => setFilters((f) => ({ ...f, situation: null, treatment: null, geo: null }));
+  const clearAll = () => setFilters({});
+
+  const pool = useMemo(() => filterExampleCases(DEMO_PATIENTS, refine), [filters.situation, filters.treatment, filters.geo]); // eslint-disable-line react-hooks/exhaustive-deps
+  const poolForGoal = goal ? pool.filter((p) => p.goal === goal) : pool;
+  const matches = useMemo(() => goal && band ? findSimilarCases(pool, { goal, ageBand: band, family: family ?? undefined }) : [], [pool, goal, band, family]);
+  const allCases = useMemo(() => filterExampleCases(DEMO_PATIENTS, filters), [filters]);
+
+  const sharedChips = (
+    <>
+      <Chips<SituationTag> label={es ? "Temática" : "Theme"} value={filters.situation} onChange={setF("situation")}
+        options={SITUATION_CHIPS.map((v) => [v, SITUATION_TAG_LABEL[v][language]] as [SituationTag, string])} />
+      <Chips<TreatmentFilter> label={es ? "Tratamiento" : "Treatment"} value={filters.treatment} onChange={setF("treatment")}
+        options={TREATMENT_CHIPS.map((v) => [v, treatmentLabel(v, language)] as [TreatmentFilter, string])} />
+      <Chips<GeoFilter> label={es ? "Geografía" : "Location"} value={filters.geo} onChange={setF("geo")}
+        options={(["spain", "rest_of_europe"] as GeoFilter[]).map((v) => [v, GEO_LABEL[v][language]] as [GeoFilter, string])} />
+    </>
+  );
 
   const pick = (seed: DemoPatientSeed) => {
     openExampleCase(seed);
@@ -173,7 +263,13 @@ export default function DemoRoom() {
                 options={FAMILIES.map((f) => [f, FAMILY_LABEL[f][language]] as [FamilyStructure, string])} />
             </div>
           </div>
-          {matches.length === 0
+          <div className="space-y-2">
+            <p className="text-sm font-medium">{es ? "Afina el resultado (opcional)" : "Narrow it down (optional)"}</p>
+            <FilterBar count={poolForGoal.length} active={refineActive} onClear={clearRefine}>{sharedChips}</FilterBar>
+          </div>
+          {poolForGoal.length === 0
+            ? <NoCases onClear={clearRefine} />
+            : matches.length === 0
             ? <p className="text-sm text-muted-foreground">{es ? "Elige qué buscas y tu franja de edad para ver los casos más parecidos." : "Choose what you're looking for and your age band to see the closest cases."}</p>
             : (
               <>
@@ -183,7 +279,17 @@ export default function DemoRoom() {
             )}
         </section>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{DEMO_PATIENTS.map((p) => <CaseCard key={p.key} p={p} onPick={pick} />)}</div>
+        <section className="space-y-6">
+          <FilterBar count={allCases.length} active={activeFilterCount(filters)} onClear={clearAll}>
+            {sharedChips}
+            <Chips<AgeBand> label={es ? "Edad" : "Age"} value={filters.ageBand} onChange={setF("ageBand")} options={AGE_BANDS} />
+            <Chips<FamilyStructure> label={es ? "Familia" : "Family"} value={filters.family} onChange={setF("family")}
+              options={FAMILIES.map((f) => [f, FAMILY_LABEL[f][language]] as [FamilyStructure, string])} />
+          </FilterBar>
+          {allCases.length === 0
+            ? <NoCases onClear={clearAll} />
+            : <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{allCases.map((p) => <CaseCard key={p.key} p={p} onPick={pick} />)}</div>}
+        </section>
       )}
 
       <p className="max-w-[65ch] border-t border-accent/40 pt-6 font-editorial text-base italic leading-loose text-muted-foreground">
