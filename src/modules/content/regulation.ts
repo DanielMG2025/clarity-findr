@@ -332,7 +332,7 @@ export const REGULATION: RegRow[] = [
   {
     region: "latam",
     country_es: "Chile", country_en: "Chile",
-    summary_es: "Sin ley integral de reproducción asistida; la Ley 20.120 (2006) protege el embrión; FONASA ofrece un programa de fertilización asistida con cupos. El anonimato de facto está por verificar (por verificar).",
+    summary_es: "Sin ley integral de reproducción asistida; la Ley 20.120 (2006) protege el embrión; FONASA ofrece un programa de fertilización asistida con cupos. El anonimato de facto aún no está confirmado (por verificar).",
     summary_en: "No comprehensive assisted-reproduction law; Law 20.120 (2006) protects the embryo; FONASA offers an assisted-fertilization programme with limited places. De facto anonymity is unconfirmed (to be verified).",
     access_es: "Práctica amplia; acceso creciente de mujeres solas y parejas del mismo sexo", access_en: "Broad practice; growing access for single women and same-sex couples",
     egg_es: "De facto anónima; sin estatuto integral", egg_en: "De facto anonymous; no comprehensive statute",
