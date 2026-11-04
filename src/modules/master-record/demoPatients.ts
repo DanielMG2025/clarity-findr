@@ -17,6 +17,7 @@ import {
   type Goal,
 } from "@/modules/master-record/types";
 import type { FamilyStructure } from "@/modules/regulatory";
+import type { SituationTag, TreatmentTag } from "./exampleCaseTags";
 
 export interface DemoPatientSeed {
   key: string;
@@ -45,6 +46,9 @@ export interface DemoPatientSeed {
   diagnosis?: Diagnosis[];
   prior_ivf?: number;
   prior_iui?: number;
+  /** Presentation-only tags for the Example cases filters (see exampleCaseTags.ts). Engines never read them. */
+  treatment_tag?: TreatmentTag;
+  situation_tags?: SituationTag[];
 }
 
 // Treatments the engine does not model separately (ROPA, tandem, embryo
@@ -60,6 +64,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Lleva 9 meses buscando embarazo con su pareja. Las pruebas salen normales y no hay una causa clara, así que la clínica le propuso FIV.",
     goal: "treatment",
     data_level: "high",
+    treatment_tag: "own_ivf", situation_tags: ["unexplained"],
     name: "Ana", age: 31, country: "ES", family_structure: "hetero_couple", trying_duration: "6_12m",
     treatment_interest: "ivf", budget_eur: 6000,
     amh: 2.8, afc: 14, fsh: 6.5, diagnosis: ["unexplained"], prior_ivf: 0,
@@ -72,6 +77,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Le diagnosticaron endometriosis hace años. Una inseminación no funcionó y su AMH ha bajado; duda entre intentar FIV o valorar óvulos de donante.",
     goal: "treatment",
     data_level: "high",
+    situation_tags: ["low_reserve", "endometriosis"],
     name: "Marta", age: 38, country: "ES", family_structure: "hetero_couple", trying_duration: "1_2y",
     treatment_interest: "unsure", budget_eur: 9000, donor_openness: "maybe",
     amh: 0.8, afc: 6, fsh: 11, diagnosis: ["low_ovarian_reserve", "endometriosis"], prior_iui: 1,
@@ -84,6 +90,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Sus resultados son buenos, pero el seminograma de su pareja muestra muy pocos espermatozoides móviles. El urólogo les habló de ICSI.",
     goal: "treatment",
     data_level: "high",
+    treatment_tag: "own_ivf", situation_tags: ["male_factor"],
     name: "Elena", age: 36, country: "ES", family_structure: "hetero_couple", trying_duration: "1_2y",
     treatment_interest: "icsi", budget_eur: 7000,
     amh: 2.1, afc: 12, fsh: 7.2, diagnosis: ["male_factor"], prior_ivf: 0,
@@ -96,6 +103,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Laura aportará los óvulos y Sara gestará, con semen de donante. No tienen ningún problema de fertilidad conocido; quieren entender los pasos y los costes.",
     goal: "treatment",
     data_level: "high",
+    situation_tags: ["unexplained", "ropa_surrogacy"],
     name: "Laura & Sara", age: 33, country: "ES", family_structure: "female_couple", trying_duration: "under_6m",
     treatment_interest: "ivf", budget_eur: 7500,
     amh: 2.6, afc: 14, fsh: 6.8, diagnosis: ["other"], prior_ivf: 0,
@@ -108,6 +116,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Rosa y su pareja hicieron una FIV con los óvulos de Rosa y no obtuvieron embriones. A los 45, la clínica ya les habla de ovodonación.",
     goal: "treatment",
     data_level: "high",
+    treatment_tag: "donation", situation_tags: ["low_reserve"],
     name: "Rosa", age: 45, country: "ES", family_structure: "female_couple", trying_duration: "over_2y",
     treatment_interest: "egg_donation", budget_eur: 11000, donor_openness: "yes",
     amh: 0.2, afc: 3, diagnosis: ["low_ovarian_reserve"], prior_ivf: 1,
@@ -120,6 +129,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Tras dos FIV con sus óvulos y semen de donante, se plantea la donación de embriones (embriones donados). La ruta más parecida que modelamos aquí es la de óvulos de donante.",
     goal: "treatment",
     data_level: "medium",
+    treatment_tag: "donation", situation_tags: [],
     name: "Isabel", age: 44, country: "ES", family_structure: "single_woman", trying_duration: "over_2y",
     treatment_interest: "egg_donation", budget_eur: 4500, donor_openness: "yes",
     amh: 0.3, prior_ivf: 2,
@@ -132,6 +142,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Necesitaría óvulos de donante y una gestante. La gestación subrogada está prohibida en España, así que en su caso el marco legal pesa más que nada.",
     goal: "treatment",
     data_level: "low",
+    treatment_tag: "donation", situation_tags: ["ropa_surrogacy", "cross_border"],
     name: "Tomás", age: 41, country: "ES", family_structure: "single_man",
     treatment_interest: "egg_donation", budget_eur: 30000,
   },
@@ -144,6 +155,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Vive en Francia y lleva menos de un año buscando embarazo. Aún no tiene pruebas, así que la orientación solo puede ser muy general.",
     goal: "treatment",
     data_level: "low",
+    situation_tags: [],
     name: "Sofía", age: 34, country: "FR", trying_duration: "6_12m",
   },
   {
@@ -154,6 +166,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Vive en Reino Unido. Tiene las dos trompas obstruidas y dos FIV terminaron sin embarazo; quiere saber qué cambiar antes de un tercer intento.",
     goal: "treatment",
     data_level: "high",
+    treatment_tag: "own_ivf", situation_tags: ["tubal_factor"],
     name: "Nadia", age: 40, country: "UK", family_structure: "hetero_couple", trying_duration: "over_2y",
     treatment_interest: "ivf", budget_eur: 8000, donor_openness: "maybe",
     amh: 1.0, afc: 7, diagnosis: ["tubal_factor"], prior_ivf: 2,
@@ -166,6 +179,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Vive en Portugal. Una FIV dio un único embrión de mala calidad. Allí la ovodonación es legal, pero la donación no es anónima.",
     goal: "treatment",
     data_level: "high",
+    treatment_tag: "donation", situation_tags: ["low_reserve"],
     name: "Lucía", age: 42, country: "PT", family_structure: "hetero_couple", trying_duration: "over_2y",
     treatment_interest: "egg_donation", budget_eur: 10000, donor_openness: "yes",
     amh: 0.4, afc: 4, diagnosis: ["low_ovarian_reserve"], prior_ivf: 1,
@@ -178,6 +192,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Vive en Chequia. Quiere un último intento con sus óvulos, respaldado por óvulos de donante en el mismo ciclo. La ruta modelada aquí es la ovodonación.",
     goal: "treatment",
     data_level: "high",
+    treatment_tag: "donation", situation_tags: ["low_reserve"],
     name: "Kateřina", age: 41, country: "CZ", family_structure: "hetero_couple", trying_duration: "over_2y",
     treatment_interest: "egg_donation", budget_eur: 7000, donor_openness: "maybe",
     amh: 0.7, afc: 5, fsh: 12.5, diagnosis: ["low_ovarian_reserve"], prior_ivf: 1,
@@ -190,6 +205,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Vive en Chipre, donde las mujeres solas pueden acceder a tratamiento con semen de donante. Su AMH está en rango y quiere empezar este año.",
     goal: "treatment",
     data_level: "medium",
+    treatment_tag: "own_ivf", situation_tags: [],
     name: "Maria", age: 36, country: "CY", family_structure: "single_woman", trying_duration: "not_trying",
     treatment_interest: "ivf", budget_eur: 5500,
     amh: 1.9, afc: 10,
@@ -202,6 +218,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Viven en Reino Unido, donde la ovodonación está abierta a parejas de hombres y la gestación subrogada altruista es legal. Aún no tienen datos clínicos.",
     goal: "treatment",
     data_level: "low",
+    treatment_tag: "donation", situation_tags: ["ropa_surrogacy"],
     name: "James & Oliver", age: 38, country: "UK", family_structure: "male_couple", trying_duration: "not_trying",
     treatment_interest: "egg_donation", budget_eur: 45000,
   },
@@ -214,6 +231,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "La ley italiana no permite a las mujeres solas usar semen de donante, así que tendría que tratarse en otro país.",
     goal: "treatment",
     data_level: "medium",
+    treatment_tag: "own_ivf", situation_tags: ["cross_border"],
     name: "Giulia", age: 34, country: "IT", family_structure: "single_woman", trying_duration: "1_2y",
     treatment_interest: "ivf", budget_eur: 6000,
     amh: 1.8, afc: 11,
@@ -226,6 +244,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Les gustaría hacer FIV recíproca, pero en Italia las parejas de mujeres no tienen acceso a la reproducción asistida.",
     goal: "treatment",
     data_level: "medium",
+    situation_tags: ["ropa_surrogacy", "cross_border"],
     name: "Chiara & Giorgia", age: 35, country: "IT", family_structure: "female_couple", trying_duration: "1_2y",
     treatment_interest: "ivf", budget_eur: 7000,
     amh: 2.2, afc: 13,
@@ -238,6 +257,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Su reserva es muy baja tras una FIV. La ovodonación está prohibida en Alemania, así que valora clínicas en el extranjero.",
     goal: "treatment",
     data_level: "high",
+    treatment_tag: "donation", situation_tags: ["low_reserve", "cross_border"],
     name: "Lena", age: 39, country: "DE", family_structure: "hetero_couple", trying_duration: "over_2y",
     treatment_interest: "egg_donation", budget_eur: 9000, donor_openness: "yes",
     amh: 0.5, afc: 5, diagnosis: ["low_ovarian_reserve"], prior_ivf: 1,
@@ -250,6 +270,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "La ley suiza limita el semen de donante a las parejas, así que como mujer sola no puede tratarse en su país.",
     goal: "treatment",
     data_level: "medium",
+    treatment_tag: "own_ivf", situation_tags: ["cross_border"],
     name: "Hannah", age: 36, country: "CH", family_structure: "single_woman", trying_duration: "not_trying",
     treatment_interest: "ivf", budget_eur: 9000,
     amh: 1.5, afc: 9,
@@ -262,6 +283,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Empezaría por una inseminación con semen de donante, pero la ley polaca solo permite el tratamiento a parejas heterosexuales.",
     goal: "treatment",
     data_level: "medium",
+    treatment_tag: "iui", situation_tags: ["cross_border"],
     name: "Anna", age: 37, country: "PL", family_structure: "single_woman", trying_duration: "6_12m",
     treatment_interest: "iui", budget_eur: 3000,
     amh: 1.3,
@@ -274,6 +296,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Grecia permite el tratamiento a mujeres solas pero no a parejas de mujeres, así que buscan países donde puedan tratarse juntas.",
     goal: "treatment",
     data_level: "low",
+    treatment_tag: "own_ivf", situation_tags: ["cross_border"],
     name: "Eleni & Daphne", age: 32, country: "GR", family_structure: "female_couple", trying_duration: "under_6m",
     treatment_interest: "ivf",
   },
@@ -286,6 +309,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Aún no tiene planes de ser madre. Se hizo un chequeo completo y quiere congelar óvulos mientras sus marcadores son buenos.",
     goal: "preserve",
     data_level: "high",
+    treatment_tag: "freezing", situation_tags: ["unexplained"],
     name: "Irene", age: 30, country: "ES", family_structure: "single_woman", trying_duration: "not_trying",
     treatment_interest: "social_freezing", budget_eur: 4000,
     amh: 3.1, afc: 16, fsh: 6.2, diagnosis: ["unexplained"], prior_ivf: 0,
@@ -298,6 +322,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Centrada en su carrera y sin pareja, quiere mantener abiertas sus opciones. Tiene una AMH y una ecografía.",
     goal: "preserve",
     data_level: "medium",
+    treatment_tag: "freezing", situation_tags: [],
     name: "Paula", age: 33, country: "ES", family_structure: "single_woman",
     treatment_interest: "social_freezing", budget_eur: 3500,
     amh: 1.9, afc: 10,
@@ -310,6 +335,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Su AMH es algo baja para su edad. En el marco que usamos, la congelación social de óvulos no figura como disponible en Alemania, así que compara opciones en otros países.",
     goal: "preserve",
     data_level: "medium",
+    treatment_tag: "freezing", situation_tags: ["cross_border"],
     name: "Klara", age: 35, country: "DE", family_structure: "single_woman", trying_duration: "not_trying",
     treatment_interest: "social_freezing", budget_eur: 4500,
     amh: 1.2, afc: 8,
@@ -322,6 +348,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Desde la ley de 2021, en Francia se puede congelar óvulos sin motivo médico. Tiene resultados completos y quiere comparar costes.",
     goal: "preserve",
     data_level: "high",
+    treatment_tag: "freezing", situation_tags: ["unexplained"],
     name: "Charlotte", age: 36, country: "FR", family_structure: "single_woman", trying_duration: "not_trying",
     treatment_interest: "social_freezing", budget_eur: 5000,
     amh: 1.7, afc: 11, fsh: 7.5, diagnosis: ["unexplained"], prior_ivf: 0,
@@ -334,6 +361,7 @@ export const DEMO_PATIENTS: DemoPatientSeed[] = [
     story_es: "Empieza a pensar en congelar óvulos, pero aún no tiene pruebas. Con tan pocos datos, la orientación es general.",
     goal: "preserve",
     data_level: "low",
+    treatment_tag: "freezing", situation_tags: [],
     name: "Beatriz", age: 38, country: "ES", family_structure: "single_woman",
     treatment_interest: "social_freezing",
   },
