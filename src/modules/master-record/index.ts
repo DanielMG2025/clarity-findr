@@ -7,4 +7,5 @@ export * from "./usePatientJourney";
 export * from "./toRecord";
 export * from "./loadDemo";
 export * from "./similarCases";
+export * from "./exampleCaseTags";
 export * from "./exampleCase";
