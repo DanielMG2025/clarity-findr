@@ -59,7 +59,8 @@ export function scopeLabel(scope: GeoScope, lang: "en" | "es"): string {
 export function countryRank(scope: GeoScope, userCountry?: string | null): number {
   if (scope.kind !== "country") return 1;
   if (!userCountry) return 1;
-  return scope.code === scopeFromMarket(userCountry).code ? 0 : 2;
+  const own = scopeFromMarket(userCountry);
+  return own.kind === "country" && scope.code === own.code ? 0 : 2;
 }
 
 /** True when the figure is from a single country that is not the case's country. */
