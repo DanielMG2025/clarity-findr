@@ -6,6 +6,12 @@ import { useMasterRecord, usePatientJourney } from "@/modules/master-record";
 import { ownEggCitationForAge } from "@/modules/evidence/citations";
 import { EvidencePopover } from "@/components/patient/EvidencePopover";
 import type { RouteHint } from "@/modules/evidence";
+import { EVIDENCE_SOURCE_MAP } from "@/modules/evidence/evidenceBase";
+import { prioritizeByCountry, scopeFromMarket, scopeLabel, type GeoScope } from "@/modules/evidence/geoScope";
+import { useLanguage } from "@/i18n/LanguageContext";
+
+const MARKET_BY_LABEL = new Map([...EVIDENCE_SOURCE_MAP.values()].map((s) => [s.label, s.market ?? null]));
+const scopeOfLabel = (label: string): GeoScope => scopeFromMarket(MARKET_BY_LABEL.get(label));
 
 const ROUTE_LABEL: Record<RouteHint["route"], string> = {
   ivf_own: "IVF with your own eggs",
@@ -40,6 +46,8 @@ export function EvidenceBasePanel() {
   // Same evidence the shared journey engine computes (buildEvidence under the hood).
   const evidence = usePatientJourney().step2_orientation.evidence;
   const patientAge = useMasterRecord((state) => state.identity.age);
+  const userCountry = useMasterRecord((state) => state.identity.country_of_residence);
+  const { language } = useLanguage();
 
   // Distinct sources cited across statements + routes, for a references footer.
   const sources = useMemo(() => {
@@ -50,8 +58,9 @@ export function EvidenceBasePanel() {
     for (const r of evidence.routes) {
       map.set(r.citation.label, { label: r.citation.label, url: r.citation.url });
     }
-    return [...map.values()];
-  }, [evidence]);
+    // Own-country sources first when the case names a country.
+    return prioritizeByCountry([...map.values()], (s) => scopeOfLabel(s.label), userCountry);
+  }, [evidence, userCountry]);
 
   // Real, sourced figures. Own-egg band follows the patient's age when known.
   const figures = useMemo(() => {
@@ -123,6 +132,7 @@ export function EvidenceBasePanel() {
                     <span>{r.citation.label}</span>
                   )}
                   <span>· {r.citation.locator}</span>
+                  <Badge variant="outline" className="text-[10px]">{scopeLabel(scopeOfLabel(r.citation.label), language)}</Badge>
                 </div>
               </li>
             ))}
@@ -167,6 +177,7 @@ export function EvidenceBasePanel() {
                 ) : (
                   <span className="text-muted-foreground">{s.label}</span>
                 )}
+                <span className="text-muted-foreground"> · {scopeLabel(scopeOfLabel(s.label), language)}</span>
               </li>
             ))}
           </ul>
