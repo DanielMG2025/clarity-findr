@@ -7,6 +7,10 @@ import {
   DENOMINATOR_EXPLAINER,
   type SourceKind,
 } from "@/modules/evidence/citations";
+import { citationScope, isOtherCountry, scopeLabel } from "@/modules/evidence/geoScope";
+import { useMasterRecord } from "@/modules/master-record";
+import { useLanguage } from "@/i18n/LanguageContext";
+import { MapPin } from "lucide-react";
 
 const KIND_LABEL: Record<SourceKind, string> = {
   registry: "National registry",
@@ -23,7 +27,11 @@ export function EvidencePopover({
   children?: React.ReactNode;
 }) {
   const c = citation(citationId);
+  const userCountry = useMasterRecord((state) => state.identity.country_of_residence);
+  const { language } = useLanguage();
   if (!c) return <>{children}</>;
+  const scope = citationScope(c.source_id);
+  const otherCountry = isOtherCountry(scope, userCountry);
 
   return (
     <Popover>
@@ -49,6 +57,16 @@ export function EvidencePopover({
             )}
           </div>
           <p className="mt-0.5 font-medium leading-snug">{c.claim}</p>
+          <Badge variant="outline" className="mt-1.5 gap-1 text-[10px]">
+            <MapPin className="size-3" aria-hidden /> {scopeLabel(scope, language)}
+          </Badge>
+          {otherCountry && (
+            <p className="mt-1 text-[11px] leading-snug text-muted-foreground">
+              {language === "es"
+                ? "No hay un dato equivalente publicado para tu país en esta fuente; se muestra como referencia."
+                : "No equivalent published figure for your country in this source; shown as a reference."}
+            </p>
+          )}
         </div>
 
         <div className="space-y-3 px-4 py-3">

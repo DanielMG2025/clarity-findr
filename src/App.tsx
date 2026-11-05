@@ -35,6 +35,7 @@ import Admin from "./pages/Admin.tsx";
 import AdminFeedback from "./pages/AdminFeedback.tsx";
 import { FeedbackWidget } from "./modules/feedback/FeedbackWidget";
 import { BetaPageViews } from "./modules/beta-analytics/BetaPageViews";
+import { BackToTopButton, ScrollToTopOnNavigate } from "./components/nav/PageScroll";
 import NotFound from "./pages/NotFound.tsx";
 import { LanguageProvider } from "./i18n/LanguageContext";
 import { AccessGate } from "./modules/access/AccessGate";
@@ -80,6 +81,8 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTopOnNavigate />
+        <BackToTopButton />
         {FEATURES.betaBanner && <BetaPageViews />}
         <MaybeGate>
         <WithGlossary>

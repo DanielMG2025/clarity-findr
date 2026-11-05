@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ArrowUp, ChevronDown, ExternalLink, FlaskConical, Library, Scale, Sparkles } from "lucide-react";
+import { ArrowRight, ChevronDown, ExternalLink, FlaskConical, Library, Scale, Sparkles } from "lucide-react";
 import { BasicsSection } from "@/modules/content/BasicsSection";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -38,24 +38,6 @@ function Panel({ id, open, onOpenChange, es, children }: { id: SectionId; open: 
       </CollapsibleTrigger>
       <CollapsibleContent className="pt-6">{children}</CollapsibleContent>
     </Collapsible>
-  );
-}
-
-function BackToTop({ es }: { es: boolean }) {
-  const [show, setShow] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setShow(window.scrollY > 600);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-  if (!show) return null;
-  const label = es ? "Volver arriba" : "Back to top";
-  return (
-    <button type="button" aria-label={label} title={label} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className="no-print fixed bottom-20 right-4 z-40 grid size-11 place-items-center rounded-full border border-accent/70 bg-card text-primary shadow-lg transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:bottom-24 sm:right-6">
-      <ArrowUp className="size-5" aria-hidden />
-    </button>
   );
 }
 
@@ -253,7 +235,6 @@ export default function Descubre() {
           ? "Una nota de transparencia: la mayoría de las voces sobre fertilidad son médicos que ejercen en clínicas. Por eso siempre indicamos quién habla y qué interés tiene."
           : "A note on transparency: most fertility voices are practising clinicians. That is why we always label who is talking and what their interest is."}
       </p>
-      <BackToTop es={es} />
     </div>
   );
 }
