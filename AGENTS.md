@@ -27,4 +27,4 @@
 - Admin role management (`/admin` → "Account & admins") goes only through the `manage-admins` function: it verifies the caller with `getUser` + `has_role` in code, uses the service role server-side, refuses to promote emails without an auth account (`no_account`), and applies the pure anti-lockout rule in `manage-admins/logic.ts` (never remove the last admin; self-revoke needs `confirm_self`). Admins set only their own password client-side via `auth.updateUser`.
 - Scroll-to-top and the floating back-to-top button (`components/nav/PageScroll.tsx`) mount once in App; pages must not add copies.
 - Evidence geography labels/ordering (`modules/evidence/geoScope.ts`) are presentation-only; never alter figures or sources.
-- No-email join (`noEmailBetaJoin`): `join_direct` returns a token hash redeemed via `verifyOtp`; email-free re-entry only for `no_email_join` rows, never admins.
+- `noEmailBetaJoin`: `join_direct` token redeemed by `verifyOtp`; re-entry only `no_email_join` rows, not admins.
