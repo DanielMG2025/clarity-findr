@@ -1,0 +1,1 @@
+ALTER TABLE public.allowed_users ADD COLUMN IF NOT EXISTS no_email_join boolean NOT NULL DEFAULT false;

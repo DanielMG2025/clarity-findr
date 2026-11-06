@@ -58,6 +58,7 @@ export type Database = {
           id: string
           last_link_sent_at: string | null
           name: string | null
+          no_email_join: boolean
           referred_by_code: string | null
           segment: string | null
         }
@@ -68,6 +69,7 @@ export type Database = {
           id?: string
           last_link_sent_at?: string | null
           name?: string | null
+          no_email_join?: boolean
           referred_by_code?: string | null
           segment?: string | null
         }
@@ -78,6 +80,7 @@ export type Database = {
           id?: string
           last_link_sent_at?: string | null
           name?: string | null
+          no_email_join?: boolean
           referred_by_code?: string | null
           segment?: string | null
         }
