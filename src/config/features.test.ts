@@ -4,7 +4,7 @@ import { FEATURES, FLAG_FALLBACK_PATH, isEnabled, type FeatureFlag } from "./fea
 describe("feature flags", () => {
   it("every flag is enabled by default", () => {
     const keys = Object.keys(FEATURES) as FeatureFlag[];
-    expect(keys.length).toBe(13);
+    expect(keys.length).toBe(14);
     for (const key of keys) {
       expect(isEnabled(key), key).toBe(true);
     }
