@@ -14,19 +14,21 @@ const FILTERS: (Audience | "all")[] = ["all", "planners", "first-steps", "experi
 
 /** Section nav — order matches the page order. */
 const SECTIONS = [
-  { id: "referencias", es: "Regulación y evidencia", en: "Regulation and evidence" },
-  { id: "conversacion", es: "Conversación", en: "Conversation" },
   { id: "pildoras", es: "Píldoras", en: "Pills" },
+  { id: "conversacion", es: "Conversación", en: "Conversation" },
+  { id: "voces", es: "Voces", en: "Voices" },
+  { id: "referencias", es: "Regulación comparada por país", en: "Regulation compared by country" },
+  { id: "evidencia", es: "Qué dice la evidencia", en: "What the evidence says" },
   { id: "basicos", es: "Guías", en: "Guides" },
   { id: "biblioteca", es: "Biblioteca", en: "Library" },
-  { id: "voces", es: "Voces", en: "Voices" },
 ] as const;
 type SectionId = (typeof SECTIONS)[number]["id"];
 const ALL_OPEN = Object.fromEntries(SECTIONS.map((s) => [s.id, true])) as Record<SectionId, boolean>;
 
 /** Collapsible top-level section of the hub; the wrapper carries the section id for index and deep links. */
 function Panel({ id, open, onOpenChange, es, children }: { id: SectionId; open: boolean; onOpenChange: (o: boolean) => void; es: boolean; children: ReactNode }) {
-  const s = SECTIONS.find((x) => x.id === id)!;
+  const s = SECTIONS.find((x) => x.id === id);
+  if (!s) return null;
   return (
     <Collapsible id={id} open={open} onOpenChange={onOpenChange} className="mt-12 scroll-mt-28 border-t border-border pt-4">
       <CollapsibleTrigger className="group flex w-full items-center justify-between gap-3 rounded-sm py-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
@@ -124,34 +126,6 @@ export default function Descubre() {
         ))}
       </nav>
 
-      <Panel id="referencias" open={open.referencias} onOpenChange={setPanel("referencias")} es={es}>
-      <Link to="/descubre/regulacion" className="group block">
-        <Card className="flex items-center gap-4 rounded-lg border-accent/50 bg-card/60 p-5 shadow-none transition-colors group-hover:border-accent">
-          <Scale className="size-6 shrink-0 text-primary" aria-hidden />
-          <div className="min-w-0 flex-1">
-            <h2 className="font-display text-xl font-medium leading-snug">{es ? "Regulación comparada por país" : "Regulation compared by country"}</h2>
-            <p className="mt-1 text-sm text-muted-foreground">{es ? "Qué permite cada país, con fuente y fecha" : "What each country allows, with source and date"}</p>
-          </div>
-          <ArrowRight className="size-5 shrink-0 text-primary transition-transform group-hover:translate-x-1" aria-hidden />
-        </Card>
-      </Link>
-
-      <Link to="/descubre/ciencia" className="group mt-3 block">
-        <Card className="flex items-center gap-4 rounded-lg border-accent/50 bg-card/60 p-5 shadow-none transition-colors group-hover:border-accent">
-          <FlaskConical className="size-6 shrink-0 text-primary" aria-hidden />
-          <div className="min-w-0 flex-1">
-            <h2 className="font-display text-xl font-medium leading-snug">{es ? "Qué dice la evidencia" : "What the evidence says"}</h2>
-            <p className="mt-1 text-sm text-muted-foreground">{es ? "Edad, técnicas y 'extras': lo que mueve de verdad tus probabilidades" : "Age, techniques and 'add-ons': what really moves your odds"}</p>
-          </div>
-          <ArrowRight className="size-5 shrink-0 text-primary transition-transform group-hover:translate-x-1" aria-hidden />
-        </Card>
-      </Link>
-      </Panel>
-
-      <Panel id="conversacion" open={open.conversacion} onOpenChange={setPanel("conversacion")} es={es}>
-        <ConversationSection />
-      </Panel>
-
       <Panel id="pildoras" open={open.pildoras} onOpenChange={setPanel("pildoras")} es={es}>
       <section>
         <p className={`${eyebrow} mb-4`}>{es ? "Píldora del día" : "Pill of the day"}</p>
@@ -180,27 +154,8 @@ export default function Descubre() {
       </section>
       </Panel>
 
-      <Panel id="basicos" open={open.basicos} onOpenChange={setPanel("basicos")} es={es}>
-        <BasicsSection />
-      </Panel>
-
-      <Panel id="biblioteca" open={open.biblioteca} onOpenChange={setPanel("biblioteca")} es={es}>
-      <section>
-        <h2 className="flex items-center gap-2 font-display text-3xl font-medium">
-          <Library className="size-6 text-primary" /> {es ? "Biblioteca científica" : "Scientific library"}
-        </h2>
-        <p className="mt-2 max-w-[65ch] text-sm text-muted-foreground">
-          {es
-            ? "Instituciones, registros y sociedades médicas: las fuentes de las que salen los datos de fertilidad."
-            : "Institutions, registries and medical societies: the sources fertility data comes from."}
-        </p>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {LIBRARY.map((r) => <SourceCard key={r.id} r={r} es={es} language={language} />)}
-        </div>
-        <Link to="/library" className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
-          {es ? "Ver la biblioteca de referencias completa, con cifras clave" : "See the full reference library, with key figures"} <ArrowRight className="size-4" />
-        </Link>
-      </section>
+      <Panel id="conversacion" open={open.conversacion} onOpenChange={setPanel("conversacion")} es={es}>
+        <ConversationSection />
       </Panel>
 
       <Panel id="voces" open={open.voces} onOpenChange={setPanel("voces")} es={es}>
@@ -227,6 +182,55 @@ export default function Descubre() {
             </div>
           </>
         )}
+      </section>
+      </Panel>
+
+      <Panel id="referencias" open={open.referencias} onOpenChange={setPanel("referencias")} es={es}>
+      <Link to="/descubre/regulacion" className="group block">
+        <Card className="flex items-center gap-4 rounded-lg border-accent/50 bg-card/60 p-5 shadow-none transition-colors group-hover:border-accent">
+          <Scale className="size-6 shrink-0 text-primary" aria-hidden />
+          <div className="min-w-0 flex-1">
+            <h2 className="font-display text-xl font-medium leading-snug">{es ? "Regulación comparada por país" : "Regulation compared by country"}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">{es ? "Qué permite cada país, con fuente y fecha" : "What each country allows, with source and date"}</p>
+          </div>
+          <ArrowRight className="size-5 shrink-0 text-primary transition-transform group-hover:translate-x-1" aria-hidden />
+        </Card>
+      </Link>
+      </Panel>
+
+      <Panel id="evidencia" open={open.evidencia} onOpenChange={setPanel("evidencia")} es={es}>
+      <Link to="/descubre/ciencia" className="group mt-3 block">
+        <Card className="flex items-center gap-4 rounded-lg border-accent/50 bg-card/60 p-5 shadow-none transition-colors group-hover:border-accent">
+          <FlaskConical className="size-6 shrink-0 text-primary" aria-hidden />
+          <div className="min-w-0 flex-1">
+            <h2 className="font-display text-xl font-medium leading-snug">{es ? "Qué dice la evidencia" : "What the evidence says"}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">{es ? "Edad, técnicas y 'extras': lo que mueve de verdad tus probabilidades" : "Age, techniques and 'add-ons': what really moves your odds"}</p>
+          </div>
+          <ArrowRight className="size-5 shrink-0 text-primary transition-transform group-hover:translate-x-1" aria-hidden />
+        </Card>
+      </Link>
+      </Panel>
+
+      <Panel id="basicos" open={open.basicos} onOpenChange={setPanel("basicos")} es={es}>
+        <BasicsSection />
+      </Panel>
+
+      <Panel id="biblioteca" open={open.biblioteca} onOpenChange={setPanel("biblioteca")} es={es}>
+      <section>
+        <h2 className="flex items-center gap-2 font-display text-3xl font-medium">
+          <Library className="size-6 text-primary" /> {es ? "Biblioteca científica" : "Scientific library"}
+        </h2>
+        <p className="mt-2 max-w-[65ch] text-sm text-muted-foreground">
+          {es
+            ? "Instituciones, registros y sociedades médicas: las fuentes de las que salen los datos de fertilidad."
+            : "Institutions, registries and medical societies: the sources fertility data comes from."}
+        </p>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {LIBRARY.map((r) => <SourceCard key={r.id} r={r} es={es} language={language} />)}
+        </div>
+        <Link to="/library" className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
+          {es ? "Ver la biblioteca de referencias completa, con cifras clave" : "See the full reference library, with key figures"} <ArrowRight className="size-4" />
+        </Link>
       </section>
       </Panel>
 
