@@ -18,6 +18,8 @@ export interface FeatureFlags {
   accessGate: boolean;
   /** Private-beta ribbon + "not active yet" notices on clinic contact/booking actions. */
   betaBanner: boolean;
+  /** /unirse signs invited testers in directly (name + email, no email wait). Off = magic link only. */
+  noEmailBetaJoin: boolean;
 }
 
 export const FEATURES: FeatureFlags = {
@@ -34,6 +36,7 @@ export const FEATURES: FeatureFlags = {
   feedback: true,
   accessGate: true,
   betaBanner: true,
+  noEmailBetaJoin: true,
 };
 
 export type FeatureFlag = keyof FeatureFlags;

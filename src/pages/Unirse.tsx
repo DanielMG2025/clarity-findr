@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { isEnabled } from "@/config/features";
 import { ArrowRight, Mail, ShieldCheck, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -21,6 +22,9 @@ export default function Unirse() {
   const [phase, setPhase] = useState<Phase>(code ? "loading" : "closed");
   const [info, setInfo] = useState<Info | null>(null);
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const direct = isEnabled("noEmailBetaJoin");
+  const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   const [reason, setReason] = useState<string | null>(null);
   const [ownCode, setOwnCode] = useState<string | null>(null);
@@ -43,10 +47,18 @@ export default function Unirse() {
     event.preventDefault();
     setBusy(true); setReason(null);
     try {
-      const { data, error } = await supabase.functions.invoke("join-via-referral", { body: { action: "join", code, email: normalizeEmail(email), origin: window.location.origin } });
+      const { data, error } = await supabase.functions.invoke("join-via-referral", { body: direct
+        ? { action: "join_direct", code, name: name.trim(), email: normalizeEmail(email), origin: window.location.origin }
+        : { action: "join", code, email: normalizeEmail(email), origin: window.location.origin } });
       if (error || !data) { setReason("error"); return; }
       if (!data.ok) { setReason(data.reason ?? "invalid"); if (data.reason === "full" || data.reason === "invalid") setPhase("closed"); return; }
       setOwnCode(typeof data.ownCode === "string" ? data.ownCode : null);
+      if (direct && typeof data.token_hash === "string") {
+        const { error: otpError } = await supabase.auth.verifyOtp({ token_hash: data.token_hash, type: "email" });
+        if (otpError) { setReason("error"); return; }
+        navigate("/", { replace: true });
+        return;
+      }
       setPhase("done");
     } catch { setReason("error"); }
     finally { setBusy(false); }
@@ -82,8 +94,11 @@ export default function Unirse() {
           ? "Fertility Compass es una beta privada de orientación sobre fertilidad: te ayuda a entender tu situación, opciones, costes y normativa. No es consejo médico ni sustituye a tu equipo sanitario."
           : "Fertility Compass is a private fertility orientation beta: it helps you understand your situation, options, costs and rules. It is not medical advice and does not replace your care team."}</p>
         <form onSubmit={submit} className="mt-8 space-y-5">
+          {direct && <div className="space-y-2"><Label htmlFor="join-name">{es ? "Tu nombre" : "Your name"}</Label><Input id="join-name" autoComplete="name" required maxLength={80} value={name} onChange={(e) => setName(e.target.value)} /></div>}
           <div className="space-y-2"><Label htmlFor="join-email">{es ? "Tu correo electrónico" : "Your email"}</Label><Input id="join-email" type="email" autoComplete="email" required maxLength={254} value={email} onChange={(e) => setEmail(e.target.value)} /></div>
-          <p className="text-xs text-muted-foreground">{es
+          <p className="text-xs text-muted-foreground">{direct ? (es
+            ? "Entrarás directamente en este navegador, sin esperar ningún correo. Usamos tu nombre y correo solo para identificar tus comentarios en la beta; no los compartimos con nadie. Si pierdes la sesión, vuelve a este enlace con el mismo correo."
+            : "You will get in straight away in this browser, without waiting for any email. We only use your name and email to identify your beta feedback; we do not share them. If you lose your session, come back to this link with the same email.") : es
             ? "Dejas tu propio correo para recibir tu acceso. Solo lo usamos para enviarte el enlace de entrada a la beta; no lo compartimos con nadie, tampoco con quien te invita."
             : "You are leaving your own email to get access. We only use it to send you your beta sign-in link; we do not share it with anyone, including the person who invited you."}</p>
           {reason && <p role="alert" className="text-sm text-destructive">{reasonMsg[reason] ?? reasonMsg.error}</p>}
