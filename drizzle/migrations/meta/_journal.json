@@ -85,6 +85,13 @@
       "when": 1793652210642,
       "tag": "0011_create_beta_events",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1793980077875,
+      "tag": "0012_no_email_join_marker",
+      "breakpoints": true
     }
   ]
 }
