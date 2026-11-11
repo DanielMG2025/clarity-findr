@@ -20,6 +20,8 @@ export interface FeatureFlags {
   betaBanner: boolean;
   /** /unirse signs invited testers in directly (name + email, no email wait). Off = magic link only. */
   noEmailBetaJoin: boolean;
+  /** "Continue with Google" on the access screen. Off hides the button only. */
+  googleSignIn: boolean;
 }
 
 export const FEATURES: FeatureFlags = {
@@ -37,6 +39,7 @@ export const FEATURES: FeatureFlags = {
   accessGate: true,
   betaBanner: true,
   noEmailBetaJoin: true,
+  googleSignIn: true,
 };
 
 export type FeatureFlag = keyof FeatureFlags;
