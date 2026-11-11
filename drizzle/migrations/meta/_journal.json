@@ -92,6 +92,13 @@
       "when": 1793980077875,
       "tag": "0012_no_email_join_marker",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1794390078904,
+      "tag": "0013_open_public_signup",
+      "breakpoints": true
     }
   ]
 }

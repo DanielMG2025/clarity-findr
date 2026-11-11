@@ -14,6 +14,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      access_settings: {
+        Row: {
+          id: boolean
+          open_signup: boolean
+          updated_at: string
+        }
+        Insert: {
+          id?: boolean
+          open_signup?: boolean
+          updated_at?: string
+        }
+        Update: {
+          id?: boolean
+          open_signup?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       aggregated_pricing: {
         Row: {
           avg_price: number
@@ -957,6 +975,7 @@ export type Database = {
     }
     Functions: {
       access_email_allowed: { Args: { candidate: string }; Returns: boolean }
+      access_email_open: { Args: { candidate: string }; Returns: boolean }
       current_user_has_access: { Args: never; Returns: boolean }
       has_role: {
         Args: {
@@ -976,6 +995,7 @@ export type Database = {
         }[]
       }
       new_referral_code: { Args: never; Returns: string }
+      open_signup_enabled: { Args: never; Returns: boolean }
       referral_code_info: {
         Args: { p_code: string }
         Returns: {
