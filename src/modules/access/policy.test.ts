@@ -6,6 +6,10 @@ describe("access rules", () => {
   it("allows an active authorized user", () => expect(mayEnter(true, false, true)).toBe(true));
   it("blocks a deactivated or missing user", () => expect(mayEnter(true, false, false)).toBe(false));
   it("always allows authenticated admins even after revocation", () => expect(mayEnter(true, true, false)).toBe(true));
+  it("open sign-up lets in a signed-in account that was never invited", () => expect(mayEnter(true, false, false, true, false)).toBe(true));
+  it("open sign-up still blocks an address an admin deactivated", () => expect(mayEnter(true, false, false, true, true)).toBe(false));
+  it("open sign-up never lets in signed-out visitors", () => expect(mayEnter(false, false, false, true, false)).toBe(false));
+  it("with sign-up closed, an uninvited account stays out", () => expect(mayEnter(true, false, false, false, false)).toBe(false));
   it("normalizes email to lowercase", () => expect(normalizeEmail(" DanielMunoz2005@gmail.com ")).toBe("danielmunoz2005@gmail.com"));
   it("lets only the invite-join page through without access", () => {
     expect(isOpenPath("/unirse")).toBe(true);

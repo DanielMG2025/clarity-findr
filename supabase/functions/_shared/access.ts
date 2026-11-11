@@ -24,11 +24,21 @@ export function accessOrigin(candidate?: string) {
 type AccessClients = ReturnType<typeof clients>;
 /**
  * The single magic-link sender used by request-access and join-via-referral.
- * Sends only to eligible addresses, with an atomic 60 s per-address cooldown.
+ * Listed addresses get an atomic 60 s per-address cooldown; open sign-up addresses
+ * (when access_settings.open_signup is on) are sent without being stored.
  */
 export async function sendAccessLink({ admin, sender }: AccessClients, email: string, origin?: string) {
   const { data: allowed, error } = await admin.rpc("access_email_allowed", { candidate: email });
-  if (error || !allowed) return false;
+  if (error) return false;
+  if (!allowed) {
+    // Open sign-up: anyone not deactivated gets a link, without storing their address
+    // in the access list; the auth service's own per-address send limit applies.
+    const { data: open, error: openError } = await admin.rpc("access_email_open", { candidate: email });
+    if (openError || !open) return false;
+    const { error: openSend } = await sender.auth.signInWithOtp({ email, options: { emailRedirectTo: accessOrigin(origin), shouldCreateUser: true } });
+    if (openSend) console.error("Access email delivery failed", openSend.status);
+    return !openSend;
+  }
   // An admin remains eligible even if their access-list entry was deleted.
   // Insert only when absent; do not reactivate a deliberately inactive row.
   await admin.from("allowed_users").upsert({ email }, { onConflict: "email", ignoreDuplicates: true });

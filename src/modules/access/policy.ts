@@ -1,5 +1,9 @@
-export function mayEnter(authenticated: boolean, admin: boolean, active: boolean) {
-  return authenticated && (admin || active);
+/**
+ * Mirrors public.current_user_has_access(): admins always, active list entries always,
+ * and with open sign-up anyone signed in unless an admin deactivated their address.
+ */
+export function mayEnter(authenticated: boolean, admin: boolean, active: boolean, openSignup = false, deactivated = false) {
+  return authenticated && (admin || active || (openSignup && !deactivated));
 }
 
 export const normalizeEmail = (email: string) => email.trim().toLowerCase();
