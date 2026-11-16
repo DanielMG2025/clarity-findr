@@ -18,20 +18,32 @@ import { usePublishedTopics } from "@/modules/content/conversation";
 type L = Record<Language, string>;
 
 const COPY = {
-  masthead: { en: "Explained orientation", es: "Orientación explicada" },
-  eyebrow: { en: "Explained, confidential orientation", es: "Orientación explicada y confidencial" },
-  h1a: { en: "From uncertainty to clarity", es: "De la incertidumbre a la claridad" },
-  h1b: { en: "on your fertility journey.", es: "en tu camino de fertilidad." },
-  subhead: {
-    en: "Your compass to understand your options, realistic costs and what truly matters — every figure explained.",
-    es: "Tu brújula para entender tus opciones, costes realistas y lo que de verdad influye — con cada dato explicado.",
+  masthead: { en: "Independent fertility guide", es: "Guía independiente de fertilidad" },
+  eyebrow: { en: "Independent · every figure with its source and date", es: "Independiente · cada dato con su fuente y su fecha" },
+  h1a: { en: "Understand and prepare your fertility treatment,", es: "Entiende y prepara tu tratamiento de fertilidad," },
+  h1b: { en: "without losing months.", es: "sin perder meses." },
+  support: {
+    en: "Fertility Compass brings together in one place, independently, what would normally take you months: real prices comparable by country, what the law allows in each place, what the science says and what's shared in forums and communities — every figure with its source and date. Then it helps you take the step: finding the clinic that fits, financing, travel and recovery.",
+    es: "Fertility Compass reúne en un sitio, de forma independiente, lo que normalmente te llevaría meses: precios reales comparables por país, qué permite la ley de cada sitio, qué dice la ciencia y lo que se cuenta en foros y comunidades — cada dato con su fuente y su fecha. Y luego te ayuda a dar el paso: encontrar la clínica que encaja, la financiación, el viaje y la recuperación.",
   },
-  doorsLabel: { en: "Choose where to start", es: "Elige por dónde empezar" },
+  blocksLabel: { en: "Two halves, one place", es: "Dos mitades, un solo sitio" },
+  soon: { en: "In progress", es: "En construcción" },
   demoLine: { en: "Want to see how it would work for someone like you?", es: "¿Quieres ver cómo funcionaría con alguien parecido a ti?" },
   demoLink: { en: "→ Example cases", es: "→ Casos de ejemplo" },
   disclaimer: {
     en: "Orientation based on public data and on what you choose to share. It does not replace a medical consultation.",
     es: "Orientación basada en datos públicos y en lo que eliges compartir. No sustituye una consulta médica.",
+  },
+  frameEyebrow: { en: "Why we exist", es: "Por qué existimos" },
+  h2a: { en: "From uncertainty to clarity", es: "De la incertidumbre a la claridad" },
+  h2b: { en: "on your fertility journey.", es: "en tu camino de fertilidad." },
+  subhead: {
+    en: "Your compass to understand your options, realistic costs and what truly matters — every figure explained.",
+    es: "Tu brújula para entender tus opciones, costes realistas y lo que de verdad influye — con cada dato explicado.",
+  },
+  frameBody: {
+    en: "Clinics, specialists, communities and public sources each hold part of the picture. We bring those parts together so you can arrive at a consultation knowing what to ask.",
+    es: "Clínicas, especialistas, comunidades y fuentes públicas tienen cada una una parte del cuadro. Las juntamos para que llegues a la consulta sabiendo qué preguntar.",
   },
   hotEyebrow: { en: "Forum listening", es: "Escucha de foros" },
   hotTitle: { en: "Hot this week", es: "Lo más candente esta semana" },
@@ -50,31 +62,60 @@ const COPY = {
   },
 } satisfies Record<string, L>;
 
-const DOORS = [
+type BlockItem = { label: L; to?: string };
+type Block = {
+  key: "discover" | "prepare";
+  icon: typeof Heart;
+  title: L;
+  desc: L;
+  items: BlockItem[];
+  audience: L;
+  cta: { to: string; label: L };
+};
+
+/** The two halves of the product. Every item points at a surface that already exists;
+ *  items without a destination are shown honestly as "in progress". */
+const BLOCKS: Block[] = [
   {
-    to: "/descubre",
+    key: "discover",
     icon: Newspaper,
     title: { en: "Discover", es: "Descubre" },
     desc: {
-      en: "What's moving in the forums this week, daily pills and resources. Come whenever you like — no data needed.",
-      es: "Lo que se mueve en los foros esta semana, píldoras diarias y recursos. Ven cuando quieras, sin dejar ningún dato.",
+      en: "Understand before you decide. Come whenever you like — no data needed.",
+      es: "Entiende antes de decidir. Ven cuando quieras, sin dejar ningún dato.",
     },
-    inside: {
-      en: "Daily pills · the forum conversation · guides · scientific library · trusted voices.",
-      es: "Píldoras diarias · la conversación de los foros · guías · biblioteca científica · voces de confianza.",
-    },
+    items: [
+      { label: { en: "Daily pills", es: "Píldoras" }, to: "/descubre#pildoras" },
+      { label: { en: "Trusted voices", es: "Voces de confianza" }, to: "/descubre#voces" },
+      { label: { en: "Scientific evidence", es: "Evidencia científica" }, to: "/descubre#evidencia" },
+      { label: { en: "Regulation by country", es: "Regulación por país" }, to: "/descubre/regulacion" },
+      { label: { en: "Reference prices", es: "Precios de referencia" }, to: "/costes" },
+      { label: { en: "The forum conversation", es: "La conversación de los foros" }, to: "/descubre#conversacion" },
+    ],
     audience: { en: "For any stage: just starting or experienced.", es: "Para cualquier etapa: empezando o con experiencia." },
+    cta: { to: "/descubre", label: { en: "Go to Discover", es: "Entrar en Descubre" } },
   },
   {
-    to: "/situacion",
+    key: "prepare",
     icon: Heart,
-    title: { en: "Check your case", es: "Estudia tu caso" },
+    title: { en: "Prepare", es: "Prepara" },
     desc: {
-      en: "A personalized read of your situation: the factors that matter, normalized costs and clinics that fit.",
-      es: "Una lectura personalizada de tu situación: los factores que influyen, costes normalizados y clínicas que encajan.",
+      en: "Take the step with your own case: the factors that matter, normalized costs and the clinics that fit.",
+      es: "Da el paso con tu propio caso: los factores que influyen, costes normalizados y las clínicas que encajan.",
     },
+    items: [
+      { label: { en: "Find the clinic that fits", es: "Encontrar la clínica que encaja" }, to: "/situacion" },
+      { label: { en: "Financing", es: "Financiación" } },
+      { label: { en: "Travel", es: "Viaje" } },
+      { label: { en: "Recovery", es: "Recuperación" } },
+    ],
+    audience: {
+      en: "If you're thinking about treatment or preserving your fertility — or aren't sure yet.",
+      es: "Si piensas en un tratamiento o en preservar tu fertilidad, o aún no lo tienes claro.",
+    },
+    cta: { to: "/situacion", label: { en: "Check your case", es: "Estudia tu caso" } },
   },
-] as { to: string; icon: typeof Heart; title: L; desc: L; inside?: L; audience?: L }[];
+];
 
 const TRUST: { icon: typeof Lock; title: L; desc: L; featured: boolean }[] = [
   {
@@ -116,35 +157,58 @@ function IconChip({ icon: Icon, size = "md" }: { icon: typeof Lock; size?: "sm" 
   );
 }
 
-/** The two equal doors. `tone="cover"` sits on the burgundy cover. */
-function Doors({ language, tone = "cover" }: { language: Language; tone?: "cover" }) {
+/** Discover + Prepare, side by side on the burgundy cover. */
+function Blocks({ language }: { language: Language }) {
+  const soon = COPY.soon[language];
   return (
     <div className="grid gap-4 md:grid-cols-2 md:gap-6">
-      {DOORS.map((d) => (
-        <Link
-          key={d.to}
-          to={d.to}
-          onClick={() => { if (d.to === "/situacion") logBetaClick("start_case", { from: "landing" }); }}
-          className="group flex min-w-0 flex-col rounded-2xl border border-accent/60 bg-background/[0.06] p-6 text-left shadow-elegant backdrop-blur-sm transition-colors hover:border-accent hover:bg-accent/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent md:p-7"
-          data-tone={tone}
+      {BLOCKS.map((b) => (
+        <section
+          key={b.key}
+          aria-labelledby={`block-${b.key}`}
+          className="flex min-w-0 flex-col rounded-2xl border border-accent/60 bg-background/[0.06] p-6 text-left shadow-elegant backdrop-blur-sm md:p-7"
         >
           <div className="flex items-center gap-3">
             <span className="grid size-11 shrink-0 place-items-center rounded-full border border-accent/70 text-accent">
-              <d.icon className="size-5" />
+              <b.icon className="size-5" />
             </span>
-            <span className="font-display text-2xl font-medium leading-tight text-background md:text-3xl">
-              {d.title[language]}
-            </span>
-            <ArrowRight className="ml-auto size-5 shrink-0 text-accent transition-transform group-hover:translate-x-1" />
+            <h2 id={`block-${b.key}`} className="font-display text-2xl font-medium leading-tight text-background md:text-3xl">
+              {b.title[language]}
+            </h2>
           </div>
-          <p className="mt-4 text-sm leading-relaxed text-background/80 md:text-base">{d.desc[language]}</p>
-          {d.inside && (
-            <p className="mt-4 border-t border-accent/30 pt-3 text-xs leading-relaxed text-accent md:text-sm">{d.inside[language]}</p>
-          )}
-          {d.audience && (
-            <p className="mt-1.5 font-editorial text-sm italic text-background/70">{d.audience[language]}</p>
-          )}
-        </Link>
+          <p className="mt-4 text-sm leading-relaxed text-background/80 md:text-base">{b.desc[language]}</p>
+          <ul className="mt-4 flex flex-wrap gap-2 border-t border-accent/30 pt-4">
+            {b.items.map((it) =>
+              it.to ? (
+                <li key={it.label.en}>
+                  <Link
+                    to={it.to}
+                    className="inline-flex items-center rounded-full border border-accent/50 px-3 py-1 text-xs font-medium text-accent transition-colors hover:bg-accent/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent md:text-sm"
+                  >
+                    {it.label[language]}
+                  </Link>
+                </li>
+              ) : (
+                <li
+                  key={it.label.en}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-background/30 px-3 py-1 text-xs text-background/70 md:text-sm"
+                >
+                  {it.label[language]}
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-background/50">· {soon}</span>
+                </li>
+              ),
+            )}
+          </ul>
+          <p className="mt-4 mb-6 font-editorial text-sm italic text-background/70">{b.audience[language]}</p>
+          <Link
+            to={b.cta.to}
+            onClick={() => { if (b.cta.to === "/situacion") logBetaClick("start_case", { from: "landing" }); }}
+            className="group mt-auto inline-flex w-fit items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-background"
+          >
+            {b.cta.label[language]}
+            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+          </Link>
+        </section>
       ))}
     </div>
   );
@@ -192,7 +256,7 @@ export default function Landing() {
   const c = (k: keyof typeof COPY) => COPY[k][language];
   return (
     <div className="min-h-screen [&_h1]:text-balance [&_h2]:text-balance [&_h3]:text-balance">
-      {/* HERO — magazine cover with the two-door fork */}
+      {/* HERO — headline, approved supporting line, then Discover + Prepare */}
       <section className="relative overflow-hidden border-b border-border text-background dark:[--foreground:var(--sidebar-background)] dark:[--background:var(--sidebar-accent-foreground)] dark:[--primary:var(--sidebar-accent)] before:absolute before:inset-x-0 before:top-0 before:z-10 before:h-px before:bg-gradient-to-r before:from-transparent before:via-accent before:to-transparent after:absolute after:inset-x-0 after:bottom-0 after:z-10 after:h-px after:bg-gradient-to-r after:from-transparent after:via-accent after:to-transparent">
         <div
           aria-hidden
@@ -236,21 +300,21 @@ export default function Landing() {
 
           <div className="pt-12 pb-14 md:pt-16 md:pb-20">
             <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
-              <Compass className="size-3" /> {c("eyebrow")}
+              <Compass className="size-3 shrink-0" /> {c("eyebrow")}
             </span>
-            <h1 className="mt-7 mx-auto max-w-5xl font-display text-[clamp(2.5rem,8vw,5.5rem)] font-medium leading-[1.05] tracking-normal">
+            <h1 className="mt-7 mx-auto max-w-5xl font-display text-[clamp(2.25rem,6.5vw,4.75rem)] font-medium leading-[1.08] tracking-normal">
               {c("h1a")}
               <span className="block text-accent italic">{c("h1b")}</span>
             </h1>
-            <p className="mt-7 font-editorial italic text-xl md:text-2xl text-background/90 max-w-[46ch] mx-auto leading-relaxed">
-              {c("subhead")}
+            <p className="mt-7 mx-auto max-w-[62ch] text-base leading-relaxed text-background/90 md:text-lg">
+              {c("support")}
             </p>
 
             <div className="mx-auto mt-10 max-w-4xl">
               <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-background/60">
-                {c("doorsLabel")}
+                {c("blocksLabel")}
               </p>
-              <Doors language={language} />
+              <Blocks language={language} />
             </div>
 
             <p className="mt-7 text-sm text-background/70">
@@ -267,8 +331,25 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* 1. HOT THIS WEEK — substantiates the Discover door */}
+      {/* 1. HOT THIS WEEK — substantiates the Discover half */}
       <HotThisWeek language={language} />
+
+      {/* 2. SUPPORTING FRAME — the emotional "why", moved down from the hero */}
+      <section className="border-y border-border/70 bg-card/40">
+        <div className="container max-w-4xl px-6 py-16 text-center md:py-20">
+          <Eyebrow><Compass className="size-3.5" /> {c("frameEyebrow")}</Eyebrow>
+          <h2 className="mt-5 font-display text-3xl font-medium leading-tight md:text-5xl">
+            {c("h2a")}
+            <span className="block italic text-primary">{c("h2b")}</span>
+          </h2>
+          <p className="mx-auto mt-6 max-w-[46ch] font-editorial text-lg italic leading-relaxed text-muted-foreground md:text-xl">
+            {c("subhead")}
+          </p>
+          <p className="mx-auto mt-5 max-w-[60ch] text-sm leading-relaxed text-muted-foreground md:text-base">
+            {c("frameBody")}
+          </p>
+        </div>
+      </section>
 
       {/* 3. TRUST & PRIVACY */}
       <section className="container max-w-6xl px-6 py-16 md:py-20">
