@@ -30,7 +30,7 @@ type PartnerCategory = {
   color: "primary" | "accent";
 };
 
-const PARTNERS: PartnerCategory[] = [
+export const PARTNERS: PartnerCategory[] = [
   {
     icon: Dna,
     category: "Genetic screening",

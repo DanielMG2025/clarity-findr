@@ -32,6 +32,13 @@ export function FeedbackWidget() {
   const [userId, setUserId] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState("");
   const pagePath = pathname + search;
+  // Pages open without an account (journey v2) must not offer a form that cannot be sent.
+  const [signedIn, setSignedIn] = useState(false);
+  useEffect(() => {
+    void supabase.auth.getSession().then(({ data }) => setSignedIn(!!data.session));
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => setSignedIn(!!session));
+    return () => sub.subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -83,7 +90,7 @@ export function FeedbackWidget() {
     onError: () => toast.error(es ? "No se ha podido enviar tu comentario. Inténtalo de nuevo." : "Could not send your comment. Please try again."),
   });
 
-  if (!showsFeedbackLauncher(pathname)) return null;
+  if (!showsFeedbackLauncher(pathname) || !signedIn) return null;
   const replies = mine.data?.filter(hasTeamReply).length ?? 0;
 
   const onSubmit = (e: FormEvent) => { e.preventDefault(); if (canSubmitFeedback(message, !!voice)) submit.mutate(); };

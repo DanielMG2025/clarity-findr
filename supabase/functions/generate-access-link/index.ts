@@ -21,9 +21,10 @@ Deno.serve(async (req) => {
     const redirect = accessOrigin(origin);
     const { data, error: linkError } = await admin.auth.admin.generateLink({ type: "magiclink", email, options: { redirectTo: redirect } });
     if (linkError || !data.properties?.hashed_token) return reply({ error: "Could not create access link" }, 503);
-    // Same-origin redemption avoids hosted redirect allow-list differences and never exposes the backend URL.
-    const link = new URL(redirect);
-    link.searchParams.set("access_token_hash", data.properties.hashed_token);
+    // Same-origin redemption on /auth/confirmar, verified only when the person taps (mail scanners can't spend it).
+    const link = new URL("/auth/confirmar", redirect);
+    link.searchParams.set("token_hash", data.properties.hashed_token);
+    link.searchParams.set("type", "email");
     await admin.from("allowed_users").update({ last_link_sent_at: new Date().toISOString() }).eq("email", email);
     return reply({ link: link.toString() });
   } catch { return reply({ error: "Could not create access link" }, 503); }

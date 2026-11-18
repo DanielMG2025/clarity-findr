@@ -26,11 +26,11 @@ type SectionId = (typeof SECTIONS)[number]["id"];
 const ALL_OPEN = Object.fromEntries(SECTIONS.map((s) => [s.id, true])) as Record<SectionId, boolean>;
 
 /** Collapsible top-level section of the hub; the wrapper carries the section id for index and deep links. */
-function Panel({ id, open, onOpenChange, es, children }: { id: SectionId; open: boolean; onOpenChange: (o: boolean) => void; es: boolean; children: ReactNode }) {
+function Panel({ id, open, onOpenChange, es, children, order }: { id: SectionId; open: boolean; onOpenChange: (o: boolean) => void; es: boolean; children: ReactNode; order?: number }) {
   const s = SECTIONS.find((x) => x.id === id);
   if (!s) return null;
   return (
-    <Collapsible id={id} open={open} onOpenChange={onOpenChange} className="mt-12 scroll-mt-28 border-t border-border pt-4">
+    <Collapsible id={id} open={open} onOpenChange={onOpenChange} style={order === undefined ? undefined : { order }} className="mt-12 scroll-mt-28 border-t border-border pt-4">
       <CollapsibleTrigger className="group flex w-full items-center justify-between gap-3 rounded-sm py-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
         <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">{es ? s.es : s.en}</span>
         <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground group-hover:text-primary">
@@ -71,8 +71,14 @@ function SourceCard({ r, es, language }: { r: Resource; es: boolean; language: "
   );
 }
 
-export default function Descubre() {
+/** Journey v2 "Biblioteca": guides come first; pills stay inside, no longer the entry point. */
+const LIBRARY_ORDER: SectionId[] = ["basicos", "evidencia", "referencias", "conversacion", "voces", "pildoras", "biblioteca"];
+
+export default function Descubre({ variant = "descubre" }: { variant?: "descubre" | "biblioteca" }) {
   const { language } = useLanguage();
+  const lib = variant === "biblioteca";
+  const sections = lib ? LIBRARY_ORDER.map((id) => SECTIONS.find((s) => s.id === id)!) : SECTIONS;
+  const ord = (id: SectionId) => (lib ? LIBRARY_ORDER.indexOf(id) : undefined);
   const es = language === "es";
   const [filter, setFilter] = useState<Audience | "all">("all");
   const [today, ...rest] = usePublishedPills();
@@ -99,7 +105,7 @@ export default function Descubre() {
   return (
     <div className="container max-w-5xl px-6 py-14 md:py-20 [&_h2]:text-balance">
       <header className="max-w-3xl">
-        <span className={`${eyebrow} inline-flex items-center gap-2`}><Sparkles className="size-3" /> {es ? "Descubre" : "Discover"}</span>
+        <span className={`${eyebrow} inline-flex items-center gap-2`}><Sparkles className="size-3" /> {lib ? (es ? "Biblioteca" : "Library") : (es ? "Descubre" : "Discover")}</span>
         <h1 className="mt-5 font-display text-4xl md:text-6xl font-medium leading-tight text-balance">
           {es ? "Recursos para apoyarte, estés donde estés en tu camino." : "Resources to support you, wherever you are on your journey."}
         </h1>
@@ -110,7 +116,7 @@ export default function Descubre() {
         </p>
         <p className="mt-5 text-sm text-muted-foreground">
           {es ? "¿Quieres ver tu caso?" : "Want to look at your case?"}{" "}
-          <Link to="/situacion" className="inline-flex items-center gap-1 font-medium text-primary hover:underline">
+          <Link to={lib ? "/empezar/lo-basico" : "/situacion"} className="inline-flex items-center gap-1 font-medium text-primary hover:underline">
             {es ? "Estudia tu caso" : "Check your case"} <ArrowRight className="size-3.5" />
           </Link>
         </p>
@@ -118,7 +124,7 @@ export default function Descubre() {
 
       <nav aria-label={es ? "Secciones" : "Sections"}
         className="no-print sticky top-10 z-30 -mx-6 mt-8 flex gap-2 overflow-x-auto border-b border-border/60 bg-background/95 px-6 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/80 md:flex-wrap">
-        {SECTIONS.map((s) => (
+        {sections.map((s) => (
           <a key={s.id} href={`#${s.id}`} onClick={(e) => { e.preventDefault(); go(s.id); }}
             className="shrink-0 rounded-full border border-border bg-card px-3.5 py-1 text-sm text-foreground transition-colors hover:border-accent hover:text-primary">
             {es ? s.es : s.en}
@@ -126,7 +132,8 @@ export default function Descubre() {
         ))}
       </nav>
 
-      <Panel id="pildoras" open={open.pildoras} onOpenChange={setPanel("pildoras")} es={es}>
+      <div className="flex flex-col">
+      <Panel id="pildoras" open={open.pildoras} onOpenChange={setPanel("pildoras")} es={es} order={ord("pildoras")}>
       <section>
         <p className={`${eyebrow} mb-4`}>{es ? "Píldora del día" : "Pill of the day"}</p>
         <PillCard pill={today} featured />
@@ -154,11 +161,11 @@ export default function Descubre() {
       </section>
       </Panel>
 
-      <Panel id="conversacion" open={open.conversacion} onOpenChange={setPanel("conversacion")} es={es}>
+      <Panel id="conversacion" open={open.conversacion} onOpenChange={setPanel("conversacion")} es={es} order={ord("conversacion")}>
         <ConversationSection />
       </Panel>
 
-      <Panel id="voces" open={open.voces} onOpenChange={setPanel("voces")} es={es}>
+      <Panel id="voces" open={open.voces} onOpenChange={setPanel("voces")} es={es} order={ord("voces")}>
       <section>
         <h2 className="font-display text-3xl font-medium">{es ? "Voces de confianza" : "Trusted voices"}</h2>
         <p className="mt-2 max-w-[65ch] text-sm text-muted-foreground">
@@ -185,7 +192,7 @@ export default function Descubre() {
       </section>
       </Panel>
 
-      <Panel id="referencias" open={open.referencias} onOpenChange={setPanel("referencias")} es={es}>
+      <Panel id="referencias" open={open.referencias} onOpenChange={setPanel("referencias")} es={es} order={ord("referencias")}>
       <Link to="/descubre/regulacion" className="group block">
         <Card className="flex items-center gap-4 rounded-lg border-accent/50 bg-card/60 p-5 shadow-none transition-colors group-hover:border-accent">
           <Scale className="size-6 shrink-0 text-primary" aria-hidden />
@@ -198,7 +205,7 @@ export default function Descubre() {
       </Link>
       </Panel>
 
-      <Panel id="evidencia" open={open.evidencia} onOpenChange={setPanel("evidencia")} es={es}>
+      <Panel id="evidencia" open={open.evidencia} onOpenChange={setPanel("evidencia")} es={es} order={ord("evidencia")}>
       <Link to="/descubre/ciencia" className="group mt-3 block">
         <Card className="flex items-center gap-4 rounded-lg border-accent/50 bg-card/60 p-5 shadow-none transition-colors group-hover:border-accent">
           <FlaskConical className="size-6 shrink-0 text-primary" aria-hidden />
@@ -211,11 +218,11 @@ export default function Descubre() {
       </Link>
       </Panel>
 
-      <Panel id="basicos" open={open.basicos} onOpenChange={setPanel("basicos")} es={es}>
+      <Panel id="basicos" open={open.basicos} onOpenChange={setPanel("basicos")} es={es} order={ord("basicos")}>
         <BasicsSection />
       </Panel>
 
-      <Panel id="biblioteca" open={open.biblioteca} onOpenChange={setPanel("biblioteca")} es={es}>
+      <Panel id="biblioteca" open={open.biblioteca} onOpenChange={setPanel("biblioteca")} es={es} order={ord("biblioteca")}>
       <section>
         <h2 className="flex items-center gap-2 font-display text-3xl font-medium">
           <Library className="size-6 text-primary" /> {es ? "Biblioteca científica" : "Scientific library"}
@@ -233,6 +240,7 @@ export default function Descubre() {
         </Link>
       </section>
       </Panel>
+      </div>
 
       <p className="mt-16 max-w-[65ch] border-t border-border pt-6 text-sm text-muted-foreground leading-relaxed">
         {es

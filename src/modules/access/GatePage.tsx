@@ -6,7 +6,7 @@ import { LanguageSwitch } from "@/i18n/LanguageSwitch";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { normalizeEmail } from "./policy";
+import { normalizeEmail, rememberReturn } from "./policy";
 import { GoogleButton } from "./GoogleButton";
 import { isEnabled } from "@/config/features";
 
@@ -34,6 +34,7 @@ export function GatePage({ denied = false, unavailable = false, retry }: { denie
         const { error } = await supabase.auth.signInWithPassword({ email: normalizeEmail(email), password });
         if (error) setFailed(true);
       } else {
+        rememberReturn(window.location.pathname + window.location.search);
         await supabase.functions.invoke("request-access", { body: { email: normalizeEmail(email), origin: window.location.origin } });
         setSent(true);
       }

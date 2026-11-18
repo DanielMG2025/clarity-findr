@@ -2,6 +2,7 @@ import { useState } from "react";
 import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { rememberReturn } from "./policy";
 
 /** Google's official light-theme button (brand colours are fixed by Google's guidelines). */
 export function GoogleButton() {
@@ -11,6 +12,7 @@ export function GoogleButton() {
   const [failed, setFailed] = useState(false);
   async function signIn() {
     setBusy(true); setFailed(false);
+    rememberReturn(window.location.pathname + window.location.search);
     try {
       const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
       if (result.error) setFailed(true);

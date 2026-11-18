@@ -22,7 +22,22 @@ export interface FeatureFlags {
   noEmailBetaJoin: boolean;
   /** "Continue with Google" on the access screen. Off hides the button only. */
   googleSignIn: boolean;
+  /**
+   * Patient journey v2: one-screen landing → how it works → the basics → what you
+   * need → the guide in two layers → prepare your treatment, open without an account.
+   * Off = every current route and page exactly as before.
+   */
+  recorridoV2: boolean;
 }
+
+/**
+ * v2 is on in the preview (and local dev) only; on the published site and any
+ * custom domain it stays off until someone sets this to `true` deliberately.
+ */
+export function isPreviewHost(hostname: string): boolean {
+  return hostname === "localhost" || hostname === "127.0.0.1" || hostname.startsWith("id-preview--") || hostname.endsWith(".lovableproject.com");
+}
+export const RECORRIDO_V2_DEFAULT: boolean = typeof window !== "undefined" && isPreviewHost(window.location.hostname);
 
 export const FEATURES: FeatureFlags = {
   discover: true,
@@ -40,6 +55,7 @@ export const FEATURES: FeatureFlags = {
   betaBanner: true,
   noEmailBetaJoin: true,
   googleSignIn: true,
+  recorridoV2: RECORRIDO_V2_DEFAULT,
 };
 
 export type FeatureFlag = keyof FeatureFlags;

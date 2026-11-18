@@ -35,7 +35,7 @@ export async function sendAccessLink({ admin, sender }: AccessClients, email: st
     // in the access list; the auth service's own per-address send limit applies.
     const { data: open, error: openError } = await admin.rpc("access_email_open", { candidate: email });
     if (openError || !open) return false;
-    const { error: openSend } = await sender.auth.signInWithOtp({ email, options: { emailRedirectTo: accessOrigin(origin), shouldCreateUser: true } });
+    const { error: openSend } = await sender.auth.signInWithOtp({ email, options: { emailRedirectTo: `${accessOrigin(origin)}/auth/confirmar`, shouldCreateUser: true } });
     if (openSend) console.error("Access email delivery failed", openSend.status);
     return !openSend;
   }
@@ -48,7 +48,7 @@ export async function sendAccessLink({ admin, sender }: AccessClients, email: st
     .update({ last_link_sent_at: new Date().toISOString() }).eq("email", email)
     .or(`last_link_sent_at.is.null,last_link_sent_at.lt.${cutoff}`).select("id");
   if (claimError || !claimed?.length) return false;
-  const { error: sendError } = await sender.auth.signInWithOtp({ email, options: { emailRedirectTo: accessOrigin(origin), shouldCreateUser: true } });
+  const { error: sendError } = await sender.auth.signInWithOtp({ email, options: { emailRedirectTo: `${accessOrigin(origin)}/auth/confirmar`, shouldCreateUser: true } });
   if (sendError) {
     await admin.from("allowed_users").update({ last_link_sent_at: null }).eq("email", email);
     console.error("Access email delivery failed", sendError.status);
