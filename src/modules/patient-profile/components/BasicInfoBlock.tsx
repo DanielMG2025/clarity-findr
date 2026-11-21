@@ -29,7 +29,11 @@ const TRYING: { v: TryingDuration; l: string }[] = [
 
 const selectClass = "w-full h-10 px-3 rounded-md border border-input bg-background text-sm";
 
-export function BasicInfoBlock() {
+/**
+ * `hide`: answers already given elsewhere (journey v2 "lo básico") are not asked again here.
+ * `ageHint`: the age band already given, shown so the exact age reads as an optional refinement.
+ */
+export function BasicInfoBlock({ hide = [], ageHint }: { hide?: ("country" | "treatment")[]; ageHint?: string } = {}) {
   const identity = useMasterRecord((s) => s.identity);
   const intent = useMasterRecord((s) => s.intent);
   const patchIdentity = useMasterRecord((s) => s.patchIdentity);
@@ -39,17 +43,18 @@ export function BasicInfoBlock() {
     <div className="grid sm:grid-cols-2 gap-4">
       <div>
         <Label className="text-xs">Age</Label>
+        {ageHint && !identity.age && <p className="text-xs text-muted-foreground" data-testid="age-hint">{ageHint}</p>}
         <Input type="number" min={18} max={55} value={identity.age ?? ""} onChange={(e) => patchIdentity({ age: e.target.value ? Number(e.target.value) : undefined })} />
       </div>
 
       {/* Situational axis — required for the regulatory gate */}
-      <div>
+      {!hide.includes("country") && <div>
         <Label className="text-xs">Country of residence <span className="text-primary">*</span></Label>
         <select className={selectClass} value={identity.country_of_residence ?? ""} onChange={(e) => patchIdentity({ country_of_residence: e.target.value || undefined })}>
           <option value="">Select...</option>
           {COUNTRIES.map((c) => <option key={c.code} value={c.code}>{c.label}</option>)}
         </select>
-      </div>
+      </div>}
       <div>
         <Label className="text-xs">Family structure <span className="text-primary">*</span></Label>
         <select className={selectClass} value={identity.family_structure ?? ""} onChange={(e) => patchIdentity({ family_structure: (e.target.value || undefined) as FamilyStructure | undefined })}>
@@ -58,13 +63,13 @@ export function BasicInfoBlock() {
         </select>
       </div>
 
-      <div>
+      {!hide.includes("treatment") && <div>
         <Label className="text-xs">Treatment of interest</Label>
         <select className={selectClass} value={intent.treatment_interest ?? ""} onChange={(e) => patchIntent({ treatment_interest: (e.target.value || undefined) as TreatmentInterest | undefined })}>
           <option value="">Select...</option>
           {TREATMENTS.map((t) => <option key={t.v} value={t.v}>{t.l}</option>)}
         </select>
-      </div>
+      </div>}
       <div>
         <Label className="text-xs">Indicative budget (€)</Label>
         <Input type="number" min={0} step={500} value={intent.budget_eur ?? ""} onChange={(e) => patchIntent({ budget_eur: e.target.value ? Number(e.target.value) : undefined })} />

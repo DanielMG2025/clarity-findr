@@ -34,6 +34,7 @@ import Unirse from "./pages/Unirse.tsx";
 import Admin from "./pages/Admin.tsx";
 import AdminFeedback from "./pages/AdminFeedback.tsx";
 import { FeedbackWidget } from "./modules/feedback/FeedbackWidget";
+import { useJourneyAnswers } from "./modules/journey-v2/accountSync";
 import { BetaPageViews } from "./modules/beta-analytics/BetaPageViews";
 import { BackToTopButton, ScrollToTopOnNavigate } from "./components/nav/PageScroll";
 import NotFound from "./pages/NotFound.tsx";
@@ -103,6 +104,9 @@ function MaybeGate({ children }: { children: ReactNode }) {
   return <AccessGate>{children}</AccessGate>;
 }
 
+/** One source of truth for the person's answers (journey v2): binds "lo básico" and the case, and saves them to the account when signed in. */
+function JourneyAnswers() { useJourneyAnswers(); return null; }
+
 const App = () => (
   <LanguageProvider>
   <QueryClientProvider client={queryClient}>
@@ -113,6 +117,7 @@ const App = () => (
         <ScrollToTopOnNavigate />
         <BackToTopButton />
         {FEATURES.betaBanner && <BetaPageViews />}
+        {FEATURES.recorridoV2 && <JourneyAnswers />}
         <MaybeGate>
         <WithGlossary>
         <LayoutSwitch>

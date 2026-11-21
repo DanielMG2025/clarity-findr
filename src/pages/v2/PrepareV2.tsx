@@ -1,4 +1,4 @@
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,9 @@ import {
   BLOCKS, blockProgressMPR, ProfileBlock, BasicInfoBlock, MedicalContextBlock, TreatmentHistoryBlock, PreferencesBlock, DocumentsBlock, SharedQuotesBlock,
 } from "@/modules/patient-profile";
 import type { BlockKey } from "@/modules/patient-profile/blocks";
-import { useBasics, abroad, maleFocus, treatmentCountry } from "@/modules/journey-v2/basics";
+import { useBasics, abroad, ageLabel, maleFocus, treatmentCountry, type Basics } from "@/modules/journey-v2/basics";
+import { hasAnyAnswer } from "@/modules/journey-v2/answers";
+import { AnswersSummary, MissingAnswers } from "./answersUi";
 import { countryOption } from "@/modules/journey-v2/countries";
 import { MALE_GUIDE_ID, treatmentById } from "@/modules/journey-v2/treatments";
 import { usePublishedPills } from "@/modules/content";
@@ -16,7 +18,7 @@ import { PillCard } from "@/modules/content/PillCard";
 import { priceLines, regulationFor, regulationLink } from "@/modules/journey-v2/guide";
 import { depthSections } from "@/modules/journey-v2/depth";
 import { PENDING, PREPARE_STEPS, PREPARE_TITLES, prepareGuide, prepareSections, type PrepareStep } from "@/modules/journey-v2/prepare";
-import { ACCOUNT_PATH, BASICS_PATH, PREPARE_PATH } from "@/modules/journey-v2/paths";
+import { ACCOUNT_PATH, PREPARE_PATH, changePath, reviewPath } from "@/modules/journey-v2/paths";
 import { PARTNERS } from "@/pages/Partners";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { Eyebrow, Pending, SMALL_CAPS, Why, useL } from "./ui";
@@ -52,20 +54,46 @@ function Sections({ step }: { step: "clinica" | "financiacion" | "despues" | "co
   );
 }
 
+/** The answers "lo básico" already holds, so the "Datos básicos" block doesn't ask them again. */
+function answeredInBasics(b: Basics): ("country" | "treatment")[] {
+  // The country is always asked by "lo básico" (or inline just above), never in this block.
+  const out: ("country" | "treatment")[] = ["country"];
+  if (b.treatment) out.push("treatment");
+  return out;
+}
+
 function QuestionsStep() {
-  const { es, L } = useL();
+  const { es, L, language } = useL();
   const mpr = useMasterRecord();
+  const b = useBasics();
+  // Shown on arrival when there are answers; confirming (or arriving without answers) shows the remaining questions.
+  const [confirmed, setConfirmed] = useState(() => !hasAnyAnswer(useBasics.getState()));
+  const hide = answeredInBasics(b);
+  const band = ageLabel(b.age, language);
+  const renderers: Record<BlockKey, JSX.Element> = {
+    ...BLOCK_RENDERERS,
+    basic: <BasicInfoBlock hide={hide} ageHint={band ? (es ? `Ya nos has dicho el tramo (${band}). La edad exacta es opcional y afina los costes.` : `You've already given the range (${band}). The exact age is optional and refines the costs.`) : undefined} />,
+  };
+  if (!confirmed) return <AnswersSummary back={PREPARE_PATH} onConfirm={() => setConfirmed(true)} />;
   return (
     <div className="space-y-4">
       <Why>{es ? "Si nos cuentas un poco más, te podemos ofrecer información más enfocada. Cuanto más nos cuentes, más personal." : "If you tell us a little more, we can offer more focused information. The more you tell us, the more personal it gets."}</Why>
-      <p className="text-xs text-muted-foreground">{es ? "Todo es opcional y se guarda solo en este navegador." : "Everything is optional and stays in this browser only."}</p>
+      <p className="text-xs text-muted-foreground">{es ? "Todo es opcional y se guarda en este navegador (y en tu cuenta, si has iniciado sesión)." : "Everything is optional and is saved in this browser (and in your account, if you're signed in)."}</p>
+      <MissingAnswers needs={["country"]} />
+      {(b.residence || b.treatment) && (
+        <p className="text-sm text-muted-foreground" data-testid="prepare-from-basics">
+          {es ? "De «lo básico»: " : "From “the basics”: "}
+          <span className="text-foreground">{[b.residence ? L(countryOption(b.residence)?.name ?? { en: b.residence ?? "", es: b.residence ?? "" }) : null, hide.includes("treatment") ? (b.treatment === "unsure" ? (es ? "tratamiento aún sin decidir" : "treatment not decided yet") : L(treatmentById(b.treatment)!.label)) : null].filter(Boolean).join(" · ")}</span>{" "}
+          <Link to={reviewPath(PREPARE_PATH)} className="text-primary underline-offset-4 hover:underline">{es ? "cambiar" : "change"}</Link>
+        </p>
+      )}
       <div className="space-y-3 [&>div]:rounded-none [&>div]:border-x-0 [&>div]:border-t-0 [&>div]:bg-transparent [&>div]:shadow-none">
-        {BLOCKS.map((b) => (
-          <div key={b.key} className="border-b border-border/70 pb-2">
-            <ProfileBlock icon={b.icon} title={b.title} subtitle={b.subtitle} required={false} progress={blockProgressMPR(b.key, mpr)} unlocks={b.unlocks}>
-              {BLOCK_RENDERERS[b.key]}
+        {BLOCKS.map((blk) => (
+          <div key={blk.key} className="border-b border-border/70 pb-2">
+            <ProfileBlock icon={blk.icon} title={blk.title} subtitle={blk.subtitle} required={false} progress={blockProgressMPR(blk.key, mpr)} unlocks={blk.unlocks}>
+              {renderers[blk.key]}
             </ProfileBlock>
-            <p className="px-1 pt-1 text-xs leading-relaxed text-muted-foreground" data-testid={`purpose-${b.key}`}><strong className="font-semibold text-foreground">{es ? "Para qué" : "What for"}:</strong> {L(BLOCK_PURPOSE[b.key])}</p>
+            <p className="px-1 pt-1 text-xs leading-relaxed text-muted-foreground" data-testid={`purpose-${blk.key}`}><strong className="font-semibold text-foreground">{es ? "Para qué" : "What for"}:</strong> {L(BLOCK_PURPOSE[blk.key])}</p>
           </div>
         ))}
       </div>
@@ -95,7 +123,7 @@ function TravelStep() {
           {reg && <Link to={regulationLink(reg)} className="inline-flex items-center gap-1 text-sm text-primary hover:underline">{es ? `Qué permite la ley en ${L(countryOption(away)!.name)}` : `What the law allows in ${L(countryOption(away)!.name)}`} <ArrowRight aria-hidden className="size-3.5" /></Link>}
         </div>
       )}
-      {!away && <p className="text-sm text-muted-foreground">{es ? "Si te planteas tratarte en otro país, " : "If you're thinking of treatment in another country, "}<Link to={`${BASICS_PATH}?volver=${encodeURIComponent(`${PREPARE_PATH}?paso=viaje`)}`} className="text-primary hover:underline">{es ? "indícalo aquí" : "say so here"}</Link>{es ? " y te enseñamos las diferencias." : " and we'll show you the differences."}</p>}
+      {!away && <p className="text-sm text-muted-foreground">{es ? "Si te planteas tratarte en otro país, " : "If you're thinking of treatment in another country, "}<Link to={changePath(4, `${PREPARE_PATH}?paso=viaje`)} className="text-primary hover:underline">{es ? "indícalo aquí" : "say so here"}</Link>{es ? " y te enseñamos las diferencias." : " and we'll show you the differences."}</p>}
     </div>
   );
 }
@@ -194,7 +222,7 @@ export default function PrepareV2() {
           <div className="space-y-2 border-t border-border/70 pt-5">
             <Button asChild variant="ghost" className="px-0 text-primary"><Link to={ACCOUNT_PATH} data-testid="create-account">{es ? "Crear cuenta (opcional)" : "Create an account (optional)"}</Link></Button>
             <p className="max-w-[65ch] text-xs leading-relaxed text-muted-foreground">
-              {es ? "Con una cuenta puedes volver a entrar con tu correo o con Google y enviarnos comentarios. Por ahora tus respuestas siguen guardadas solo en este navegador." : "With an account you can sign back in with your email or Google and send us feedback. For now your answers stay saved in this browser only."}
+              {es ? "Con una cuenta puedes volver a entrar con tu correo o con Google y enviarnos comentarios. Al crearla, tus respuestas de este navegador se guardan también en ella, sin perder nada." : "With an account you can sign back in with your email or Google and send us feedback. When you create it, the answers in this browser are saved to it too, without losing anything."}
             </p>
           </div>
         </div>

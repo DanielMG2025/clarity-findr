@@ -123,7 +123,7 @@ export default function Descubre({ variant = "descubre" }: { variant?: "descubre
       </header>
 
       <nav aria-label={es ? "Secciones" : "Sections"}
-        className="no-print sticky top-10 z-30 -mx-6 mt-8 flex gap-2 overflow-x-auto border-b border-border/60 bg-background/95 px-6 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/80 md:flex-wrap">
+        className="no-print sticky top-[4.75rem] z-30 sm:top-10 -mx-6 mt-8 flex gap-2 overflow-x-auto border-b border-border/60 bg-background/95 px-6 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/80 md:flex-wrap">
         {sections.map((s) => (
           <a key={s.id} href={`#${s.id}`} onClick={(e) => { e.preventDefault(); go(s.id); }}
             className="shrink-0 rounded-full border border-border bg-card px-3.5 py-1 text-sm text-foreground transition-colors hover:border-accent hover:text-primary">

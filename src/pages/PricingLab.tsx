@@ -1,3 +1,6 @@
+import { useBasics, maleFocus } from "@/modules/journey-v2/basics";
+import { MissingAnswers } from "@/pages/v2/answersUi";
+import { PREPARE_PATH } from "@/modules/journey-v2/paths";
 import { situationEntryPath } from "@/modules/journey-v2/paths";
 import { FEATURES } from "@/config/features";
 import { Link } from "react-router-dom";
@@ -14,7 +17,10 @@ const PricingLab = () => {
   const orientation = usePatientJourney().step0_regulatory;
   const mpr = useMasterRecord();
   const completion = overallCompletionMPR(mpr);
-  const canPrice = completion >= 15;
+  const basics = useBasics();
+  const v2 = FEATURES.recorridoV2;
+  // Journey v2: the country from "lo básico" is enough to start; nothing else is asked again.
+  const canPrice = completion >= 15 || (v2 && !!basics.residence && (!!basics.age || maleFocus(basics)));
 
   return (
     <div className="container max-w-6xl py-10 space-y-8">
@@ -26,7 +32,9 @@ const PricingLab = () => {
           note="Every figure carries its source, its date and how confident we are about it."
         />
       </div>
-      {!canPrice ? (
+      {!canPrice && v2 ? (
+        <MissingAnswers needs={["country", "age"]} />
+      ) : !canPrice ? (
         <Card className="rounded-2xl border-primary/20 bg-primary-soft/25 p-8 text-center">
           <Calculator className="mx-auto size-8 text-primary" />
           <h2 className="mt-3 text-xl font-semibold">Complete your situation to see cost ranges</h2>
@@ -34,7 +42,7 @@ const PricingLab = () => {
             Cost ranges are personalized with your profile — the treatment you're considering, where you are and what's already in your situation. Add the basics that feel comfortable and this page will fill in.
           </p>
           <Button asChild className="no-print mt-5">
-            <Link to={situationEntryPath(FEATURES.recorridoV2)}>Tell us about your situation</Link>
+            <Link to={situationEntryPath(FEATURES.recorridoV2, "/costes")}>Tell us about your situation</Link>
           </Button>
         </Card>
       ) : (

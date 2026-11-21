@@ -484,6 +484,30 @@ export type Database = {
         }
         Relationships: []
       }
+      journey_answers: {
+        Row: {
+          answered_at: string
+          basics: Json
+          case_record: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          answered_at?: string
+          basics?: Json
+          case_record?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          answered_at?: string
+          basics?: Json
+          case_record?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       listen_sources: {
         Row: {
           active: boolean

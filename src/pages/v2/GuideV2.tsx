@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { AlertCircle, ArrowRight, ExternalLink } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getArticle } from "@/modules/education";
 import { CONFIDENCE_LABEL, usePublishedPills, voicesForArticle, primaryVoiceLink } from "@/modules/content";
@@ -13,7 +13,9 @@ import { useBasics, ageLabel, maleFocus, reasonLabel, treatmentCountry } from "@
 import { countryOption } from "@/modules/journey-v2/countries";
 import { MALE_GUIDE_ID, TREATMENTS_V2, treatmentById, type TreatmentV2 } from "@/modules/journey-v2/treatments";
 import { ageForGuide, guideArticles, guideFindings, guideSources, guideTags, priceLines, regulationFor, regulationLink } from "@/modules/journey-v2/guide";
-import { BASICS_PATH, LIBRARY_PATH, PREPARE_PATH, guidePath } from "@/modules/journey-v2/paths";
+import { LIBRARY_PATH, PREPARE_PATH, changePath, guidePath, reviewPath } from "@/modules/journey-v2/paths";
+import { STEP_OF } from "@/modules/journey-v2/answers";
+import { MissingAnswers } from "./answersUi";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { Eyebrow, Fold, Pending, SMALL_CAPS, useL } from "./ui";
 
@@ -31,29 +33,29 @@ function TreatmentLinks() {
   );
 }
 
+/** "[Tratamiento] · [país] · [edad] · [situación] · cambiar": each answer opens only its own question and comes back here. */
 function CaseBar({ t }: { t: TreatmentV2 }) {
   const { L, es, language } = useL();
   const b = useBasics();
+  const here = guidePath(t.id);
   const where = countryOption(treatmentCountry(b));
-  const parts = [L(t.label), where ? `${es ? "para" : "for"} ${L(where.name)}` : null, ageLabel(b.age, language), reasonLabel(b.reason, language)].filter(Boolean);
+  const parts: { text: string; step: number }[] = [
+    { text: L(t.label), step: STEP_OF.treatment },
+    ...(where ? [{ text: `${es ? "para" : "for"} ${L(where.name)}`, step: STEP_OF.residence }] : []),
+    ...(b.age ? [{ text: ageLabel(b.age, language)!, step: STEP_OF.age }] : []),
+    ...(b.reason ? [{ text: reasonLabel(b.reason, language)!, step: STEP_OF.reason }] : []),
+  ];
   return (
     <p className="text-sm text-muted-foreground" data-testid="guide-casebar">
-      <span className="text-foreground">{parts.join(" · ")}</span>{" "}
-      <Link to={`${BASICS_PATH}?volver=${encodeURIComponent(guidePath(t.id))}`} className="text-primary underline-offset-4 hover:underline">{es ? "cambiar" : "change"}</Link>
+      {parts.map((p, i) => (
+        <span key={p.text}>
+          {i > 0 && " · "}
+          <Link to={changePath(p.step, here)} className="text-foreground underline decoration-border underline-offset-4 hover:decoration-primary">{p.text}</Link>
+        </span>
+      ))}
+      {" · "}
+      <Link to={reviewPath(here)} className="text-primary underline-offset-4 hover:underline" data-testid="guide-casebar-change">{es ? "cambiar" : "change"}</Link>
     </p>
-  );
-}
-
-function NoCountryNotice({ t }: { t: TreatmentV2 }) {
-  const { es } = useL();
-  return (
-    <div role="alert" className="flex flex-col gap-3 rounded-lg border border-accent bg-accent-soft/40 p-4 sm:flex-row sm:items-center sm:justify-between" data-testid="no-country-notice">
-      <p className="flex items-start gap-2 text-sm leading-relaxed">
-        <AlertCircle aria-hidden className="mt-0.5 size-4 shrink-0 text-primary" />
-        {es ? "Aún no sabemos tu país, así que no podemos enseñarte los precios ni las reglas que te aplican." : "We don't know your country yet, so we can't show you the prices and rules that apply to you."}
-      </p>
-      <Button asChild size="sm" className="shrink-0 rounded-full"><Link to={`${BASICS_PATH}?volver=${encodeURIComponent(guidePath(t.id))}`}>{es ? "Elegir mi país" : "Choose my country"}</Link></Button>
-    </div>
   );
 }
 
@@ -207,12 +209,12 @@ export default function GuideV2() {
 
   return (
     <article className="container max-w-3xl space-y-6 px-6 py-8 md:py-12" data-testid={`guide-${t.id}`}>
-      {!b.residence && <NoCountryNotice t={t} />}
       <header className="space-y-3">
         <Eyebrow>{es ? "Guía" : "Guide"}</Eyebrow>
         <h1 className="font-display text-4xl font-medium leading-tight md:text-5xl">{L(t.label)}</h1>
         <CaseBar t={t} />
       </header>
+      <MissingAnswers needs={t.age ? ["country", "age"] : ["country"]} why={es ? "Para enseñarte precios, reglas y lo que cambia a tu edad, nos falta solo esto:" : "To show you prices, rules and what changes at your age, we only need this:"} />
 
       {!what ? (
         <>

@@ -189,7 +189,7 @@ export default function PatientReport() {
             Add the basics that feel comfortable. Your report will then bring your situation, factors, costs and regulatory context together.
           </p>
           <Button asChild className="no-print mt-5">
-            <Link to={situationEntryPath(FEATURES.recorridoV2)}>Tell us about your situation</Link>
+            <Link to={situationEntryPath(FEATURES.recorridoV2, "/report")}>Tell us about your situation</Link>
           </Button>
         </Card>
       ) : (

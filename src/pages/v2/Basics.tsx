@@ -1,57 +1,20 @@
 import { useLayoutEffect, useMemo, useState, type ReactNode } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Search } from "lucide-react";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
-import { restoreOwnCase, useMasterRecord } from "@/modules/master-record";
+import { restoreOwnCase } from "@/modules/master-record";
 import { logBetaClick } from "@/modules/beta-analytics/logger";
 import { safeReturnPath } from "@/modules/access/policy";
-import { AGE_BANDS_V2, REASONS, WHO_OPTIONS, pickReason, reasonById, useBasics, type Basics as BasicsAnswers } from "@/modules/journey-v2/basics";
-import { FEATURED_COUNTRIES, countryOption, isCaseCountry, searchCountries, suggestCountry } from "@/modules/journey-v2/countries";
-import { PICKER_TREATMENTS, TREATMENTS_V2 } from "@/modules/journey-v2/treatments";
-import { LIBRARY_PATH, NEEDS_PATH, START_PATH } from "@/modules/journey-v2/paths";
+import { AGE_BANDS_V2, REASONS, WHO_OPTIONS, pickReason, useBasics } from "@/modules/journey-v2/basics";
+import { basicsComplete, clearAllAnswers, firstMissingStep, hasAnyAnswer, syncBasicsToCase } from "@/modules/journey-v2/answers";
+import { countryOption, suggestCountry } from "@/modules/journey-v2/countries";
+import { PICKER_TREATMENTS } from "@/modules/journey-v2/treatments";
+import { BASICS_PATH, LIBRARY_PATH, NEEDS_PATH, START_PATH } from "@/modules/journey-v2/paths";
+import { AnswersSummary, CountryPicker } from "./answersUi";
 import { Eyebrow, SMALL_CAPS, Tile, Why, useL } from "./ui";
 
-/** Copy the answers the case already asks for into the case, so nothing is asked twice. Age bands are never copied (the case asks for an exact age). */
-export function syncBasicsToCase(b: BasicsAnswers) {
-  const { patchIdentity, patchIntent } = useMasterRecord.getState();
-  if (b.residence && isCaseCountry(b.residence)) patchIdentity({ country_of_residence: b.residence });
-  const t = TREATMENTS_V2.find((x) => x.id === b.treatment);
-  if (t?.interest) patchIntent({ treatment_interest: t.interest });
-  else if (b.treatment === "unsure") patchIntent({ treatment_interest: "unsure" });
-  // "What brings you here" is the latest explicit answer, so it sets the case goal.
-  const reason = reasonById(b.reason);
-  if (reason) patchIntent({ goal: reason.goal });
-}
-
-/** Featured countries as tiles, plus a search over the whole list. */
-function CountryPicker({ value, onPick, exclude, testPrefix, label }: { value?: string; onPick: (code: string) => void; exclude?: string; testPrefix: string; label: string }) {
-  const { L, es } = useL();
-  const [query, setQuery] = useState("");
-  const list = query.trim()
-    ? searchCountries(query, exclude)
-    : searchCountries("", exclude).filter((c) => FEATURED_COUNTRIES.includes(c.code) || c.code === value);
-  return (
-    <div className="space-y-3">
-      <label className="relative block">
-        <span className="sr-only">{label}</span>
-        <Search aria-hidden className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-        <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder={es ? "Busca tu país" : "Search for your country"} className="h-11 pl-9" data-testid={`${testPrefix}-search`} />
-      </label>
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-        {list.map((c) => (
-          <Tile key={c.code} selected={value === c.code} onClick={() => onPick(c.code)} testId={`${testPrefix}-${c.code}`}>{L(c.name)}</Tile>
-        ))}
-      </div>
-      {list.length === 0 && (
-        <p className="text-sm text-muted-foreground" data-testid={`${testPrefix}-none`}>
-          {es ? "Aún no tenemos ese país en la lista. Puedes elegir un país vecino o seguir sin elegir ninguno." : "We don't have that country in the list yet. You can pick a neighbouring country or continue without choosing one."}
-        </p>
-      )}
-    </div>
-  );
-}
+export { syncBasicsToCase } from "@/modules/journey-v2/answers";
 
 function Question({ title, help, children }: { title: string; help: string; children: ReactNode }) {
   return (
@@ -66,21 +29,54 @@ function Question({ title, help, children }: { title: string; help: string; chil
 export const BASICS_STEPS = ["who", "age", "reason", "country", "treatment"] as const;
 export type BasicsStep = (typeof BASICS_STEPS)[number];
 
-/** Journey v2 · screen 2: one question per step (who it is for first), saved in the browser as they are tapped. */
+/** "Empezar de cero": a discreet two-tap control that clears every answer (here and in the case). */
+function StartOver({ onDone }: { onDone: () => void }) {
+  const { es } = useL();
+  const [confirming, setConfirming] = useState(false);
+  if (!confirming) {
+    return <button type="button" onClick={() => setConfirming(true)} className="self-start text-xs text-muted-foreground underline decoration-border underline-offset-4 hover:text-foreground" data-testid="basics-start-over">{es ? "Empezar de cero" : "Start from scratch"}</button>;
+  }
+  return (
+    <p className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground" role="group" aria-label={es ? "Empezar de cero" : "Start from scratch"}>
+      <span>{es ? "Se borra cada respuesta que has dado, en este navegador (y en tu cuenta, si has iniciado sesión)." : "All your answers are deleted in this browser (and in your account, if you're signed in)."}</span>
+      <button type="button" onClick={() => { clearAllAnswers(); setConfirming(false); onDone(); }} className="font-semibold text-destructive underline underline-offset-4" data-testid="basics-start-over-confirm">{es ? "Borrar todo" : "Delete everything"}</button>
+      <button type="button" onClick={() => setConfirming(false)} className="underline underline-offset-4">{es ? "Cancelar" : "Cancel"}</button>
+    </p>
+  );
+}
+
+/**
+ * Journey v2 · screen 2: one question per step (who it is for first), saved in the browser as they are tapped.
+ *  - Already answered → a confirmable summary instead of the five screens again.
+ *  - Partly answered → straight to the first missing question.
+ *  - `?paso=N&solo=1&volver=…` → only that question, then back to where the person was.
+ */
 export default function Basics() {
   const { L, es } = useL();
   const navigate = useNavigate();
+  const location = useLocation();
   const [params, setParams] = useSearchParams();
   const back = safeReturnPath(params.get("volver"));
+  const solo = params.get("solo") === "1";
   const b = useBasics();
   useLayoutEffect(() => { restoreOwnCase(); }, []);
 
   const raw = Number(params.get("paso"));
-  const index = Number.isInteger(raw) && raw >= 1 && raw <= BASICS_STEPS.length ? raw - 1 : 0;
+  const hasStep = Number.isInteger(raw) && raw >= 1 && raw <= BASICS_STEPS.length;
+  // Decided once on arrival, so answering the last core question doesn't flip the screen into the summary.
+  const [arrival] = useState(() => {
+    const now = useBasics.getState();
+    if (hasStep) return "steps" as const;
+    if (basicsComplete(now)) return "summary" as const;
+    return (firstMissingStep(now) ?? 1) - 1;
+  });
+  const index = hasStep ? raw - 1 : typeof arrival === "number" ? arrival : 0;
+  const showSummary = !hasStep && arrival === "summary";
   const step = BASICS_STEPS[index];
   const goTo = (i: number) => {
     const next = new URLSearchParams(params);
     next.set("paso", String(i + 1));
+    next.delete("solo");
     setParams(next);
     window.scrollTo?.({ top: 0 });
   };
@@ -90,23 +86,40 @@ export default function Basics() {
   const destination = b.destination ?? "same";
   const [pickOther, setPickOther] = useState(() => !!b.destination && b.destination !== "same" && b.destination !== "unsure");
 
+  const save = () => {
+    if (step === "country" || index === BASICS_STEPS.length - 1) b.patch({ residence, destination });
+    syncBasicsToCase({ ...b, residence, destination });
+  };
   const proceed = () => {
-    const answers = { ...b, residence, destination };
-    b.patch({ residence, destination });
-    syncBasicsToCase(answers);
+    save();
     logBetaClick("start_case", { from: "basics" });
     navigate(back ?? NEEDS_PATH);
   };
+  const saveAndReturn = () => { save(); navigate(back ?? BASICS_PATH); };
+  const startOver = () => { setPickOther(false); navigate(`${BASICS_PATH}?paso=1`, { replace: true }); };
   const last = index === BASICS_STEPS.length - 1;
 
-  return (
-    <div className="container flex max-w-3xl flex-col gap-6 px-6 py-8 md:py-12" data-testid="basics" data-step={step}>
-      <header className="space-y-3">
-        <Eyebrow>{es ? "Lo básico" : "The basics"} · {index + 1}/{BASICS_STEPS.length}</Eyebrow>
-        <Progress value={((index + 1) / BASICS_STEPS.length) * 100} aria-label={es ? "Progreso" : "Progress"} className="h-1.5" />
-        {index === 0 && <Why>{es ? "Cinco respuestas y te enseñamos precios, reglas y guías de tu país, con lo que cambia a tu edad. Puedes cambiarlas cuando quieras." : "Five answers and we show you prices, rules and guides for your country, with what changes at your age. You can change them whenever you like."}</Why>}
-      </header>
+  if (showSummary) {
+    return (
+      <div className="container flex max-w-3xl flex-col gap-6 px-6 py-8 md:py-12" data-testid="basics" data-step="summary">
+        <Eyebrow>{es ? "Lo básico" : "The basics"}</Eyebrow>
+        <AnswersSummary back={`${location.pathname}${location.search}`} onConfirm={proceed} />
+        <StartOver onDone={startOver} />
+      </div>
+    );
+  }
 
+  return (
+    <div className="container flex max-w-3xl flex-col gap-6 px-6 py-8 md:py-12" data-testid="basics" data-step={step} data-solo={solo ? "1" : undefined}>
+      <header className="space-y-3">
+        {solo
+          ? <Eyebrow>{es ? "Lo básico · cambiar una respuesta" : "The basics · change one answer"}</Eyebrow>
+          : <>
+            <Eyebrow>{es ? "Lo básico" : "The basics"} · {index + 1}/{BASICS_STEPS.length}</Eyebrow>
+            <Progress value={((index + 1) / BASICS_STEPS.length) * 100} aria-label={es ? "Progreso" : "Progress"} className="h-1.5" />
+          </>}
+        {index === 0 && !solo && <Why>{es ? "Cinco respuestas y te enseñamos precios, reglas y guías de tu país, con lo que cambia a tu edad. Puedes cambiarlas cuando quieras." : "Five answers and we show you prices, rules and guides for your country, with what changes at your age. You can change them whenever you like."}</Why>}
+      </header>
       {step === "who" && (
         <Question title={es ? "¿Para quién buscas información?" : "Who are you looking for information for?"} help={es ? "Nos sirve para enseñarte lo que aplica a tu situación; en fertilidad no es lo mismo según quién se trata." : "We use it to show you what applies to your situation; in fertility it isn't the same depending on who is being treated."}>
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -156,17 +169,29 @@ export default function Basics() {
         </Question>
       )}
 
-      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border/70 pt-5">
-        {index > 0
-          ? <Button variant="ghost" onClick={() => goTo(index - 1)} className="gap-1 px-0" data-testid="basics-prev"><ArrowLeft aria-hidden className="size-4" />{es ? "Anterior" : "Previous"}</Button>
-          : <Button asChild variant="ghost" className="gap-1 px-0"><Link to={START_PATH} data-testid="basics-prev"><ArrowLeft aria-hidden className="size-4" />{es ? "Anterior" : "Previous"}</Link></Button>}
-        {last
-          ? <Button size="lg" className="rounded-full" onClick={proceed} data-testid="basics-continue">{es ? "Continuar" : "Continue"} <ArrowRight aria-hidden className="ml-1 size-4" /></Button>
-          : <Button size="lg" className="rounded-full" onClick={() => goTo(index + 1)} data-testid="basics-next">{es ? "Siguiente" : "Next"} <ArrowRight aria-hidden className="ml-1 size-4" /></Button>}
-      </div>
-      <Link to={LIBRARY_PATH} className="self-start text-sm text-muted-foreground underline decoration-accent/50 underline-offset-4 hover:text-foreground" data-testid="basics-skip">
-        {es ? "Ver sin personalizar" : "View without personalising"}
-      </Link>
+      {solo ? (
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border/70 pt-5">
+          <Button asChild variant="ghost" className="gap-1 px-0"><Link to={back ?? BASICS_PATH} data-testid="basics-cancel"><ArrowLeft aria-hidden className="size-4" />{es ? "Volver sin cambiar" : "Back without changing"}</Link></Button>
+          <Button size="lg" className="rounded-full" onClick={saveAndReturn} data-testid="basics-save-return">{es ? "Guardar y volver" : "Save and go back"} <ArrowRight aria-hidden className="ml-1 size-4" /></Button>
+        </div>
+      ) : (
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border/70 pt-5">
+          {index > 0
+            ? <Button variant="ghost" onClick={() => goTo(index - 1)} className="gap-1 px-0" data-testid="basics-prev"><ArrowLeft aria-hidden className="size-4" />{es ? "Anterior" : "Previous"}</Button>
+            : <Button asChild variant="ghost" className="gap-1 px-0"><Link to={START_PATH} data-testid="basics-prev"><ArrowLeft aria-hidden className="size-4" />{es ? "Anterior" : "Previous"}</Link></Button>}
+          {last
+            ? <Button size="lg" className="rounded-full" onClick={proceed} data-testid="basics-continue">{es ? "Continuar" : "Continue"} <ArrowRight aria-hidden className="ml-1 size-4" /></Button>
+            : <Button size="lg" className="rounded-full" onClick={() => goTo(index + 1)} data-testid="basics-next">{es ? "Siguiente" : "Next"} <ArrowRight aria-hidden className="ml-1 size-4" /></Button>}
+        </div>
+      )}
+      {!solo && (
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <Link to={LIBRARY_PATH} className="text-sm text-muted-foreground underline decoration-accent/50 underline-offset-4 hover:text-foreground" data-testid="basics-skip">
+            {es ? "Ver sin personalizar" : "View without personalising"}
+          </Link>
+          {hasAnyAnswer(b) && <StartOver onDone={startOver} />}
+        </div>
+      )}
     </div>
   );
 }

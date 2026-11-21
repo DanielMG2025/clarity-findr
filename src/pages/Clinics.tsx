@@ -1,3 +1,6 @@
+import { useBasics, maleFocus } from "@/modules/journey-v2/basics";
+import { MissingAnswers } from "@/pages/v2/answersUi";
+import { PREPARE_PATH } from "@/modules/journey-v2/paths";
 import { situationEntryPath } from "@/modules/journey-v2/paths";
 import { FEATURES } from "@/config/features";
 import { Link } from "react-router-dom";
@@ -29,7 +32,10 @@ export default function Clinics() {
   const orientation = usePatientJourney().step0_regulatory;
   const completion = overallCompletionMPR(mpr);
   const confidence = profileConfidence(completion);
-  const canMatch = completion >= 25;
+  const basics = useBasics();
+  const v2 = FEATURES.recorridoV2;
+  // Journey v2: country and age band from "lo básico" are enough to start; nothing else is asked again.
+  const canMatch = completion >= 25 || (v2 && !!basics.residence && (!!basics.age || maleFocus(basics)));
 
   const { identity, intent } = mpr;
 
@@ -51,7 +57,9 @@ export default function Clinics() {
         subtitle="Normalized prices, clinical fit and proximity — with a transparent why for every suggestion. You decide whether and when to reach out."
         note="This is not a medical recommendation. It's orientation to help you have better conversations with each clinic."
       />
-      {!canMatch ? (
+      {!canMatch && v2 ? (
+        <MissingAnswers needs={["country", "age"]} />
+      ) : !canMatch ? (
         <Card className="rounded-2xl border-primary/20 bg-primary-soft/25 p-8 text-center">
           <Building2 className="mx-auto size-8 text-primary" />
           <h2 className="mt-3 text-xl font-semibold">Complete your situation to see clinics that may fit</h2>
@@ -59,7 +67,7 @@ export default function Clinics() {
             Clinics are ranked for your profile and filtered to the countries where your situation is legally viable. Add the basics that feel comfortable and this list will fill in.
           </p>
           <Button asChild className="no-print mt-5">
-            <Link to={situationEntryPath(FEATURES.recorridoV2)}>Tell us about your situation</Link>
+            <Link to={situationEntryPath(FEATURES.recorridoV2, "/clinicas")}>Tell us about your situation</Link>
           </Button>
         </Card>
       ) : (
@@ -86,7 +94,7 @@ export default function Clinics() {
               </div>
             </div>
             <Button asChild size="sm" variant="outline">
-              <Link to={situationEntryPath(FEATURES.recorridoV2)}>Tell us about your situation <ArrowRight className="size-3.5 ml-1" /></Link>
+              <Link to={v2 ? PREPARE_PATH : situationEntryPath(false)}>{v2 ? "Tell us a little more" : "Tell us about your situation"} <ArrowRight className="size-3.5 ml-1" /></Link>
             </Button>
           </div>
           <Progress value={completion} className="h-2" />

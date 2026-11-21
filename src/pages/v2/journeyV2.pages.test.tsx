@@ -58,15 +58,20 @@ describe("v2 landing and start", () => {
 });
 
 describe("v2 guide", () => {
-  it("without a country: clear notice with a button to choose it", () => {
+  it("without a country: asks only the country and age band, inline, and saves them", () => {
     at("/guia/fiv", <GuideV2 />, "/guia/:tratamiento");
-    expect(screen.getByTestId("no-country-notice")).toBeTruthy();
-    expect(screen.getByRole("link", { name: "Elegir mi país" }).getAttribute("href")).toBe("/empezar/lo-basico?volver=%2Fguia%2Ffiv");
+    expect(screen.getByTestId("missing-answers")).toBeTruthy();
+    fireEvent.click(screen.getByTestId("missing-country-ES"));
+    fireEvent.click(screen.getByTestId("missing-age-35-37"));
+    expect(useBasics.getState().residence).toBe("ES");
+    expect(useBasics.getState().age).toBe("35-37");
+    expect(screen.queryByTestId("missing-answers")).toBeNull();
+    expect(screen.getByTestId("guide-price")).toBeTruthy();
   });
   it("Spain, 35–37: shows the Spanish price range with its source and the HFEA age row labelled as UK data", () => {
     useBasics.setState({ residence: "ES", age: "35-37", reason: "entender" });
     at("/guia/fiv", <GuideV2 />, "/guia/:tratamiento");
-    expect(screen.queryByTestId("no-country-notice")).toBeNull();
+    expect(screen.queryByTestId("missing-answers")).toBeNull();
     expect(screen.getByTestId("guide-price").textContent).toMatch(/4\.?000\s€\s–\s6\.?000\s€/);
     expect(screen.getByTestId("guide-age").textContent).toMatch(/Reino Unido/);
     expect(screen.getByTestId("guide-casebar").textContent).toMatch(/FIV · para España · 35–37 años · Solo quiero entender/);

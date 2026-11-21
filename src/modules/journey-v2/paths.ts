@@ -8,7 +8,11 @@ export const PREPARE_PATH = "/tu-tratamiento";
 export const LIBRARY_PATH = "/biblioteca";
 export const ACCOUNT_PATH = "/cuenta";
 /** Where "Tell us about your situation" buttons go: v2 Basics, or the legacy form when v2 is off. */
-export const situationEntryPath = (v2: boolean) => (v2 ? BASICS_PATH : "/situacion");
+export const situationEntryPath = (v2: boolean, back?: string) => (v2 ? (back ? reviewPath(back) : BASICS_PATH) : "/situacion");
+/** Open one question of "lo básico" on its own and come back to `back` when it is saved. */
+export const changePath = (step: number, back: string) => `${BASICS_PATH}?paso=${step}&solo=1&volver=${encodeURIComponent(back)}`;
+/** "Lo básico" as a confirmable summary (or the first missing question), returning to `back`. */
+export const reviewPath = (back: string) => `${BASICS_PATH}?volver=${encodeURIComponent(back)}`;
 export const guidePath = (id: string) => `/guia/${id}`;
 
 /** Exact paths and path prefixes ("x/" = anything below x) open in v2. */
