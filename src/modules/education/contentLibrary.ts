@@ -165,7 +165,7 @@ export const TREATMENTS: Article[] = withDepth([
     title: "IVF, step by step",
     hook: "From the first consultation to the embryo in the uterus, explained simply.",
     summary:
-      "An IVF cycle almost always follows the same steps. Here's the typical journey and how long each phase usually takes — orientative; your clinic adapts it to your case.",
+      "An IVF cycle almost always follows the same steps. Here's the typical journey and how long each phase usually takes — orientative; your clinic adapts it to your situation.",
     reading_time_min: 3,
     steps: [
       { title: "1. Assessment and plan", detail: "Initial tests (hormones, ultrasound, semen analysis) and protocol design.", typical_duration: "1–2 weeks" },

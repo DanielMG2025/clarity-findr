@@ -272,7 +272,7 @@ const RULES: Rule[] = [
     return `${f} en ${country(c)}${w}.${extra ? " " + lookup(extra.trim()) : ""} Confírmalo con tu sistema de salud: las condiciones de acceso varían.`;
   }],
   [/^For your case, we started from typical prices in (.+) for a (.+) treatment, then adjusted the range based on your age \((\d+)\)\.$/, (c, tr, a) =>
-    `Para tu caso, partimos de los precios habituales en ${country(c)} para un tratamiento de ${TREATMENT_KEY_ES[tr] ?? tr} y ajustamos el rango según tu edad (${a}).`],
+    `Para tu situación, partimos de los precios habituales en ${country(c)} para un tratamiento de ${TREATMENT_KEY_ES[tr] ?? tr} y ajustamos el rango según tu edad (${a}).`],
   [/^Prices in (.+) are typically 20–35% lower than in Spain, but you should add travel and accommodation\.$/, (c) => `Los precios en ${country(c)} suelen ser un 20–35 % más bajos que en España, pero hay que sumar viaje y alojamiento.`],
   [/^Estimated by (.+)'s price level \(index (.+)\)\.$/, (c, i) => `Estimado según el nivel de precios de ${country(c)} (índice ${i}).`],
   [/^(.+\.) Estimated by (.+)'s price level \(index (.+)\)\.$/, (note, c, i) => `${lookup(note)} Estimado según el nivel de precios de ${country(c)} (índice ${i}).`],

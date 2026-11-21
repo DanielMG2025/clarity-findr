@@ -75,7 +75,7 @@ export default function Unirse() {
   return (
     <div className="mx-auto flex max-w-xl flex-col px-6 py-14 md:py-20">
       <ShieldCheck className="mb-6 size-9 text-primary" aria-hidden="true" />
-      <p className="mb-3 text-xs uppercase tracking-[0.16em] text-muted-foreground">{es ? "Beta privada · por invitación" : "Private beta · by invitation"}</p>
+      <p className="mb-3 text-xs uppercase tracking-[0.16em] text-muted-foreground">{es ? "Beta · invitación" : "Beta · invitation"}</p>
 
       {phase === "loading" && <p role="status" className="text-muted-foreground">{es ? "Comprobando tu invitación…" : "Checking your invitation…"}</p>}
 
@@ -85,14 +85,14 @@ export default function Unirse() {
         <h1 className="font-editorial text-3xl leading-tight">{code ? invalidMsg : (es ? "Necesitas un enlace de invitación" : "You need an invite link")}</h1>
         <p className="text-muted-foreground">{code
           ? (es ? "Pide a la persona que te invitó un enlace nuevo." : "Ask the person who invited you for a new link.")
-          : (es ? "Fertility Compass está en beta privada. Para unirte, abre el enlace que te ha enviado alguien que ya participa." : "Fertility Compass is in private beta. To join, open the link someone already taking part sent you.")}</p>
+          : (es ? "Fertility Compass está en beta y puedes explorarla sin cuenta. Para aceptar una invitación, abre el enlace que te ha enviado alguien que ya participa." : "Fertility Compass is in beta and you can explore it without an account. To accept an invitation, open the link someone already taking part sent you.")}</p>
       </div>}
 
       {phase === "open" && info && <>
         <h1 className="font-editorial text-4xl leading-tight">{es ? `Te invita ${info.owner_label}` : `${info.owner_label} is inviting you`}</h1>
         <p className="mt-5 text-muted-foreground">{es
-          ? "Fertility Compass es una beta privada de orientación sobre fertilidad: te ayuda a entender tu situación, opciones, costes y normativa. No es consejo médico ni sustituye a tu equipo sanitario."
-          : "Fertility Compass is a private fertility orientation beta: it helps you understand your situation, options, costs and rules. It is not medical advice and does not replace your care team."}</p>
+          ? "Fertility Compass es una beta de orientación sobre fertilidad: te ayuda a entender tu situación, opciones, costes y normativa. No es consejo médico ni sustituye a tu equipo sanitario."
+          : "Fertility Compass is a fertility orientation beta: it helps you understand your situation, options, costs and rules. It is not medical advice and does not replace your care team."}</p>
         <form onSubmit={submit} className="mt-8 space-y-5">
           {direct && <div className="space-y-2"><Label htmlFor="join-name">{es ? "Tu nombre" : "Your name"}</Label><Input id="join-name" autoComplete="name" required maxLength={80} value={name} onChange={(e) => setName(e.target.value)} /></div>}
           <div className="space-y-2"><Label htmlFor="join-email">{es ? "Tu correo electrónico" : "Your email"}</Label><Input id="join-email" type="email" autoComplete="email" required maxLength={254} value={email} onChange={(e) => setEmail(e.target.value)} /></div>
@@ -112,7 +112,7 @@ export default function Unirse() {
           <h2 id="own-invite" className="flex items-center gap-2 font-editorial text-2xl"><Users className="size-5 text-primary" aria-hidden="true" />{es ? `Ahora invita tú (hasta ${DEFAULT_SEATS})` : `Now invite others (up to ${DEFAULT_SEATS})`}</h2>
           <p className="text-sm text-muted-foreground">{es ? "Comparte este enlace o el código QR con quien creas que le puede ayudar." : "Share this link or QR code with anyone you think it could help."}</p>
           <InviteKit link={inviteLink(window.location.origin, ownCode)} />
-        </section> : <p className="text-sm text-muted-foreground">{es ? "Cuando entres, encontrarás tu propio enlace para invitar en tu cuenta." : "Once you are in, you will find your own invite link in your account."}</p>}
+        </section> : <p className="text-sm text-muted-foreground">{es ? "Si creas una cuenta, encontrarás en ella tu propio enlace para invitar." : "If you create an account, you'll find your own invite link there."}</p>}
       </div>}
     </div>
   );

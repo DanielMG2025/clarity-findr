@@ -115,9 +115,9 @@ export default function Descubre({ variant = "descubre" }: { variant?: "descubre
             : "Whether you're just starting or you've been in fertility for a while: everything to inform yourself, open and with no data asked."}
         </p>
         <p className="mt-5 text-sm text-muted-foreground">
-          {es ? "¿Quieres ver tu caso?" : "Want to look at your case?"}{" "}
+          {es ? "¿Quieres información para tu situación?" : "Want information for your situation?"}{" "}
           <Link to={lib ? "/empezar/lo-basico" : "/situacion"} className="inline-flex items-center gap-1 font-medium text-primary hover:underline">
-            {es ? "Estudia tu caso" : "Check your case"} <ArrowRight className="size-3.5" />
+            {es ? "Explora tu situación" : "Explore your situation"} <ArrowRight className="size-3.5" />
           </Link>
         </p>
       </header>
@@ -244,8 +244,8 @@ export default function Descubre({ variant = "descubre" }: { variant?: "descubre
 
       <p className="mt-16 max-w-[65ch] border-t border-border pt-6 text-sm text-muted-foreground leading-relaxed">
         {es
-          ? "Una nota de transparencia: la mayoría de las voces sobre fertilidad son médicos que ejercen en clínicas. Por eso siempre indicamos quién habla y qué interés tiene."
-          : "A note on transparency: most fertility voices are practising clinicians. That is why we always label who is talking and what their interest is."}
+          ? "Una nota de transparencia: la mayoría de las voces sobre fertilidad son profesionales que ejercen en clínicas. Por eso siempre indicamos quién habla y qué interés tiene."
+          : "A note on transparency: most fertility voices are practising clinical professionals. That is why we always label who is talking and what their interest is."}
       </p>
     </div>
   );

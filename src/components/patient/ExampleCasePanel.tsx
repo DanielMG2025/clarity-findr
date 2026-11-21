@@ -18,12 +18,12 @@ export function StudyOwnCaseCta({ compact = false }: { compact?: boolean }) {
         <p className="font-display text-xl font-medium text-foreground">{es ? "¿Te sirve?" : "Useful?"}</p>
         <p className="mt-1 max-w-[55ch] text-sm leading-relaxed text-muted-foreground">
           {es
-            ? "Estudia tu caso con tus propios datos. Borramos este ejemplo y empiezas por la primera pregunta."
-            : "Study your own case with your own data. We clear this example and you start from the first question."}
+            ? "Explora tu situación con tus propios datos. Borramos este ejemplo para que empieces por la primera pregunta."
+            : "Explore your situation with your own information. We clear this example so you start from the first question."}
         </p>
       </div>
       <Button onClick={go} className="gap-2 rounded-full">
-        {es ? "Estudia tu caso con tus propios datos" : "Study your own case"} <ArrowRight className="size-4" />
+        {es ? "Explora tu situación" : "Explore your situation"} <ArrowRight className="size-4" />
       </Button>
     </div>
   );

@@ -135,7 +135,7 @@ export const FINDINGS: Finding[] = [
     title_es: "El AMH predice la respuesta al tratamiento, no si concebirás de forma natural", title_en: "AMH predicts treatment response, not whether you'll conceive naturally",
     summary_es: "La hormona antimülleriana (AMH) y el recuento de folículos estiman cómo responderán los ovarios a la estimulación, no tu fertilidad natural.",
     summary_en: "Anti-Müllerian hormone (AMH) and antral follicle count estimate how the ovaries will respond to stimulation, not your natural fertility.",
-    means_es: "Un AMH bajo orienta la dosis del tratamiento; no significa que no puedas quedarte embarazada.",
+    means_es: "Un AMH bajo orienta la dosis del tratamiento; no descarta un embarazo.",
     means_en: "A low AMH guides the treatment dose; it doesn't mean you can't get pregnant.",
     evidence_type_es: "Consenso de sociedades (ASRM/ESHRE)", evidence_type_en: "Society consensus (ASRM/ESHRE)",
     strength: "alta",

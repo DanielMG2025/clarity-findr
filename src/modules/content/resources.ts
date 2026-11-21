@@ -6,7 +6,7 @@ export const RESOURCES: Resource[] = [
     blurb: { en: "Evidence-based women's fertility, explained warmly.", es: "Fertilidad femenina basada en la evidencia, explicada con cariño." },
     affiliation: { en: "Reproductive endocrinologist — co-owns a clinic.", es: "Endocrinóloga reproductiva — copropietaria de una clínica." } },
   { id: "fdu", topics: ["ivf",  "icsi",  "male-factor",  "pgt",  "genetics",  "egg-donation",  "freezing",  "vitrification",  "transfer",  "fet",  "iui",  "retrieval",  "stimulation",  "basics"], kind: "creator", name: "Fertility Docs Uncensored", url: "https://www.youtube.com/@fertilitydocsuncensored/videos", platform: "Podcast · YouTube", audiences: ["first-steps", "planners", "men", "experienced"],
-    blurb: { en: "Q&A by several fertility doctors — plain answers.", es: "Preguntas y respuestas con varios médicos de fertilidad — respuestas claras." },
+    blurb: { en: "Q&A by several fertility doctors — plain answers.", es: "Preguntas y respuestas con especialistas en fertilidad — respuestas claras." },
     affiliation: { en: "Hosts are practising clinicians.", es: "Los presentadores ejercen en clínica." } },
   { id: "eyvazzadeh", topics: ["freezing",  "vitrification",  "ivf",  "reserve",  "amh",  "basics"], kind: "creator", name: "Aimee Eyvazzadeh ('The Egg Whisperer')", handle: "@eggwhisperer", url: "https://www.youtube.com/@eggwhisperer", platform: "YouTube · Instagram", links: [{ label: "Instagram", url: "https://www.instagram.com/eggwhisperer" }], audiences: ["planners", "first-steps"],
     blurb: { en: "Egg freezing and IVF explainers.", es: "Explicaciones sobre congelación de óvulos y FIV." },

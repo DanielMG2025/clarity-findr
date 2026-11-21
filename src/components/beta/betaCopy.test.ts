@@ -3,8 +3,8 @@ import { BETA_COPY, betaText, shouldInterceptClinicAction } from "./betaCopy";
 
 describe("private beta frame", () => {
   it("uses the exact banner copy in both languages", () => {
-    expect(betaText("banner", "es")).toBe("Beta privada · estás probando una versión en pruebas");
-    expect(betaText("banner", "en")).toBe("Private beta · you're testing a work-in-progress version");
+    expect(betaText("banner", "es")).toBe("Beta · estás probando una versión en pruebas");
+    expect(betaText("banner", "en")).toBe("Beta · you're testing a work-in-progress version");
   });
 
   it("uses the exact not-active notice in both languages", () => {

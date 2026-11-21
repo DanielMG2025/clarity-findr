@@ -32,7 +32,7 @@ export function DataSourcesWeights({ confidence }: { confidence: Confidence }) {
     <Card className="p-6 rounded-none border-0 border-y border-border/70 bg-transparent shadow-none">
       <h3 className="font-display text-xl font-medium mb-1">How each source weighs in your estimate</h3>
       <p className="text-sm text-muted-foreground mb-5">
-        We blend several sources and re-weight them based on the data available for your case. The more data we have, the more the estimate leans on real-world evidence.
+        We blend several sources and re-weight them based on the data available for your situation. The more data we have, the more the estimate leans on real-world evidence.
       </p>
       <div className="space-y-3">
         {sources.map(({ Icon, title, weight, desc, tone }) => (

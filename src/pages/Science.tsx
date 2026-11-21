@@ -151,8 +151,8 @@ export default function Science() {
 
   return (
     <div className="container max-w-4xl px-6 py-14 md:py-20">
-      <Link to="/descubre" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary">
-        <ArrowLeft className="size-4" /> {L("Descubre", "Discover")}
+      <Link to="/biblioteca" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary">
+        <ArrowLeft className="size-4" /> {L("Biblioteca", "Library")}
       </Link>
       <header className="mt-6 max-w-3xl">
         <span className={`${eyebrow} inline-flex items-center gap-2`}><FlaskConical className="size-3" /> {L("Referencia", "Reference")}</span>

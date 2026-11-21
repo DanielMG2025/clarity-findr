@@ -14,7 +14,7 @@ describe("beta notices", () => {
   it("shows the Spanish ribbon", () => {
     localStorage.setItem(LANGUAGE_KEY, "es");
     render(<LanguageProvider><BetaBanner /></LanguageProvider>);
-    expect(screen.getByText("Beta privada · estás probando una versión en pruebas")).toBeTruthy();
+    expect(screen.getByText("Beta · estás probando una versión en pruebas")).toBeTruthy();
   });
 
   it("requesting an appointment shows the notice instead of the contact form", () => {

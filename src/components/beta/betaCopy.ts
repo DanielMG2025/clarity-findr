@@ -4,8 +4,8 @@ import type { Language } from "@/i18n/translate";
 /** Exact bilingual copy for the private-beta frame. */
 export const BETA_COPY = {
   banner: {
-    es: "Beta privada · estás probando una versión en pruebas",
-    en: "Private beta · you're testing a work-in-progress version",
+    es: "Beta · estás probando una versión en pruebas",
+    en: "Beta · you're testing a work-in-progress version",
   },
   notActiveTitle: {
     es: "Todavía no está activo",

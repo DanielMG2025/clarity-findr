@@ -85,5 +85,5 @@ export function forumSearchTerm(article: { tags: string[] }): Localized | null {
 
 /** Deep link into the Conversación section of /descubre, pre-filled with a search. */
 export function conversationLink(query: string): string {
-  return `/descubre?q=${encodeURIComponent(query)}#conversacion`;
+  return `/biblioteca?q=${encodeURIComponent(query)}#conversacion`;
 }

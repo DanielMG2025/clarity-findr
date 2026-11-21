@@ -93,8 +93,8 @@ export const EDUCATION_ES: Record<string, string> = {
   // ivf-step-by-step
   "IVF, step by step": "La FIV, paso a paso",
   "From the first consultation to the embryo in the uterus, explained simply.": "De la primera consulta al embrión en el útero, explicado de forma sencilla.",
-  "An IVF cycle almost always follows the same steps. Here's the typical journey and how long each phase usually takes — orientative; your clinic adapts it to your case.":
-    "Un ciclo de FIV casi siempre sigue los mismos pasos. Este es el recorrido típico y lo que suele durar cada fase; es orientativo y tu clínica lo adapta a tu caso.",
+  "An IVF cycle almost always follows the same steps. Here's the typical journey and how long each phase usually takes — orientative; your clinic adapts it to your situation.":
+    "Un ciclo de FIV casi siempre sigue los mismos pasos. Este es el recorrido típico y lo que suele durar cada fase; es orientativo y tu clínica lo adapta a tu situación.",
   "1. Assessment and plan": "1. Valoración y plan",
   "Initial tests (hormones, ultrasound, semen analysis) and protocol design.": "Pruebas iniciales (hormonas, ecografía, seminograma) y diseño del protocolo.",
   "2. Ovarian stimulation": "2. Estimulación ovárica",

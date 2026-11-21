@@ -305,7 +305,7 @@ export default function PatientReport() {
             </> : <p className="rounded-xl border border-border/70 bg-muted/30 p-4 text-sm text-muted-foreground">There is not enough published price data for this exact profile, so no number is shown.</p>}
             <div className="flex gap-3 border-y border-accent/40 bg-accent-soft/35 px-4 py-5 text-sm leading-7 sm:px-5">
               <CircleAlert className="mt-1 size-4 shrink-0 text-accent" />
-              <p className="max-w-[65ch] text-muted-foreground"><span className="font-semibold text-primary">What this price doesn't tell you:</span> Published prices are usually per cycle, usually excluding medication, storage, travel and case-specific add-ons. Only a clinic quote can confirm your total.</p>
+              <p className="max-w-[65ch] text-muted-foreground"><span className="font-semibold text-primary">What this price doesn't tell you:</span> Published prices are usually per cycle, usually excluding medication, storage, travel and add-ons specific to your situation. Only a clinic quote can confirm your total.</p>
             </div>
           </Card>
 

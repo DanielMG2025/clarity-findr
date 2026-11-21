@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/sidebar";
 
 const items = [
-  { title: "My situation",        url: "/situacion",     icon: Heart,        desc: "Your story and data" },
+  { title: "Your treatment",      url: "/tu-tratamiento", icon: Heart,       desc: "Your story and data" },
   { title: "My orientation",      url: "/orientacion",   icon: Compass,      desc: "Factors that may influence" },
   { title: "Behind the numbers",  url: "/sources",       icon: FileText,     desc: "Every source, explained" },
   { title: "Reference library",   url: "/library",       icon: Library,      desc: "Every source, curated" },
@@ -22,7 +22,7 @@ const items = [
   { title: "Clinics",             url: "/clinicas",      icon: Building2,    desc: "Options that may fit" },
   { title: "Guidance",            url: "/asesoramiento", icon: Stethoscope,  desc: "Professionals and services" },
   { title: "Community",           url: "/community",     icon: Users,        desc: "Real experiences" },
-  { title: "Discover",            url: "/descubre",      icon: Sparkles,     desc: "Sources, forums and basics" },
+  { title: "Library",             url: "/biblioteca",    icon: Sparkles,     desc: "Sources, forums and basics" },
   { title: "My space",            url: "/account",       icon: LayoutDashboard, desc: "History and saved items" },
 ];
 

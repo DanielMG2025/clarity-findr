@@ -41,6 +41,6 @@ describe("forum topics for a guide", () => {
   it("'See more' deep-links into Conversación with the guide's best term", () => {
     expect(forumSearchTerm(getArticle("what-is-icsi")!)?.es).toBe("factor masculino");
     expect(forumSearchTerm(getArticle("what-is-ropa-method")!)?.es).toBe("ROPA");
-    expect(conversationLink("ovodonación")).toBe("/descubre?q=ovodonaci%C3%B3n#conversacion");
+    expect(conversationLink("ovodonación")).toBe("/biblioteca?q=ovodonaci%C3%B3n#conversacion");
   });
 });

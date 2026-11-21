@@ -40,9 +40,9 @@ const LEVEL_LABEL: Record<DemoPatientSeed["data_level"], Record<Language, string
 const FAMILY_LABEL: Record<FamilyStructure, Record<Language, string>> = {
   hetero_couple: { en: "Hetero couple", es: "Pareja heterosexual" },
   female_couple: { en: "Female couple", es: "Pareja de mujeres" },
-  single_woman: { en: "Single woman", es: "Mujer sola" },
+  single_woman: { en: "Single woman", es: "Mujer sin pareja" },
   male_couple: { en: "Male couple", es: "Pareja de hombres" },
-  single_man: { en: "Single man", es: "Hombre solo" },
+  single_man: { en: "Single man", es: "Hombre sin pareja" },
 };
 const AGE_BANDS: [AgeBand, string][] = [["under_32", "< 32"], ["32_35", "32–35"], ["36_39", "36–39"], ["40_plus", "40+"]];
 const FAMILIES: FamilyStructure[] = ["single_woman", "hetero_couple", "female_couple", "male_couple", "single_man"];

@@ -36,7 +36,7 @@ export default function LearnArticle() {
         <h1 className="text-2xl font-bold">{es ? "Guía no encontrada" : "Article not found"}</h1>
         <p className="text-muted-foreground">{es ? "Esta guía no existe o se ha movido." : "This explainer doesn't exist or was moved."}</p>
         <Button asChild variant="outline">
-          <Link to="/descubre#basicos"><ArrowLeft className="size-4 mr-1" /> {es ? "Volver a Guías" : "Back to Guides"}</Link>
+          <Link to="/biblioteca#basicos"><ArrowLeft className="size-4 mr-1" /> {es ? "Volver a Guías" : "Back to Guides"}</Link>
         </Button>
       </div>
     );
@@ -50,7 +50,7 @@ export default function LearnArticle() {
 
   return (
     <article className="container max-w-2xl py-10 space-y-6">
-      <Link to="/descubre#basicos" className="text-sm text-muted-foreground hover:text-primary inline-flex items-center gap-1">
+      <Link to="/biblioteca#basicos" className="text-sm text-muted-foreground hover:text-primary inline-flex items-center gap-1">
         <ArrowLeft className="size-4" /> {es ? "Guías" : "Guides"}
       </Link>
 

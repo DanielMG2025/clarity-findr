@@ -164,7 +164,7 @@ export function PricingConfigurator() {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <h3 className="font-display text-xl font-medium">Next step?</h3>
-            <p className="text-sm text-muted-foreground">We'll show you which clinics fit your range and your case — with the same transparency.</p>
+            <p className="text-sm text-muted-foreground">We'll show you which clinics fit your range and your situation — with the same transparency.</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" onClick={saveEstimate} className="gap-1.5"><Save className="size-4" /> Save estimate</Button>

@@ -30,7 +30,7 @@ export interface ClinicCardData {
 }
 
 const BADGE_LABELS: Record<NonNullable<ClinicCardData["badge"]>, { label: string; cls: string }> = {
-  "best-match": { label: "Best for your case", cls: "bg-primary text-primary-foreground" },
+  "best-match": { label: "Best fit for your situation", cls: "bg-primary text-primary-foreground" },
   "best-value": { label: "Best value", cls: "bg-accent text-accent-foreground" },
   closest: { label: "Closest", cls: "bg-secondary text-secondary-foreground" },
 };
@@ -73,7 +73,7 @@ export function ClinicCardV2({ clinic }: { clinic: ClinicCardData }) {
               source="Public price lists"
               date="2026-Q1"
               confidence="medium"
-              detail="Normalized from this clinic's published price list and patient-shared quotes, last reviewed in Q1 2026. Your own quote may differ once the clinic reviews your case."
+              detail="Normalized from this clinic's published price list and patient-shared quotes, last reviewed in Q1 2026. Your own quote may differ once the clinic reviews your situation."
             />
           </div>
         </div>

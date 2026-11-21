@@ -49,7 +49,7 @@ export const PILLS: Pill[] = [
   },
   {
     id: "amh-myth", date: "2026-10-15", mold: "myth", audiences: ["planners"],
-    title: { en: "Myth: AMH tells you whether you can get pregnant.", es: "Mito: la AMH te dice si puedes quedarte embarazada." },
+    title: { en: "Myth: AMH tells you whether you can get pregnant.", es: "Mito: la AMH te dice si conseguirás un embarazo." },
     body: {
       en: "AMH is a rough gauge of how many eggs you have left — a 'how many', not a 'can I'. A low number doesn't mean you can't; a high one isn't a promise. Useful context, not a verdict.",
       es: "La AMH es una medida aproximada de cuántos óvulos te quedan: un «cuántos», no un «puedo». Un valor bajo no significa que no puedas; uno alto no es una promesa. Es contexto útil, no un veredicto.",
@@ -67,7 +67,7 @@ export const PILLS: Pill[] = [
     title: { en: "Worth a look: 'Fertility Docs Uncensored'.", es: "Para ver: «Fertility Docs Uncensored»." },
     body: {
       en: "A no-nonsense Q&A podcast by several fertility doctors — good for plain answers to the things you google at 2am.",
-      es: "Un pódcast de preguntas y respuestas, sin rodeos, con varios médicos de fertilidad. Ideal para respuestas claras a lo que buscas en Google a las dos de la mañana.",
+      es: "Un pódcast de preguntas y respuestas, sin rodeos, con especialistas en fertilidad. Ideal para respuestas claras a lo que buscas en Google a las dos de la mañana.",
     },
     source: { name: "Fertility Docs Uncensored (YouTube/podcast)", url: "https://www.youtube.com/@fertilitydocsuncensored/videos", date: "2025", confidence: "medium", note: { en: "Hosts are practising clinicians — treat clinic tips with the usual care.", es: "Los presentadores ejercen en clínica — toma sus consejos de clínica con la cautela habitual." } },
   },

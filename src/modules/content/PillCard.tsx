@@ -35,7 +35,7 @@ export function PillCard({ pill, featured = false }: { pill: Pill; featured?: bo
   const { language } = useLanguage();
   const [copied, setCopied] = useState(false);
   const share = async () => {
-    const url = `${window.location.origin}/descubre#${pill.id}`;
+    const url = `${window.location.origin}/biblioteca#${pill.id}`;
     try {
       if (navigator.share) await navigator.share({ title: pill.title[language], url });
       else { await navigator.clipboard.writeText(url); setCopied(true); setTimeout(() => setCopied(false), 2000); }
@@ -68,9 +68,9 @@ export function BridgeCta() {
   const es = language === "es";
   return (
     <p className="mt-5 border-t border-border/70 pt-4 text-sm">
-      <span className="text-muted-foreground">{es ? "¿Y en tu caso?" : "And in your case?"}</span>{" "}
-      <Link to="/situacion" className="font-medium text-primary hover:underline">
-        {es ? "→ Estudia tu situación" : "→ Check your situation"}
+      <span className="text-muted-foreground">{es ? "¿Y en tu situación?" : "And in your situation?"}</span>{" "}
+      <Link to="/tu-tratamiento" className="font-medium text-primary hover:underline">
+        {es ? "→ Prepara tu tratamiento" : "→ Prepare your treatment"}
       </Link>
     </p>
   );

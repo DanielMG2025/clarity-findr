@@ -45,7 +45,7 @@ export default function Clinics() {
     <div className="container max-w-6xl py-10 space-y-8">
       <PageHeader
         eyebrow="Clinics"
-        title="Clinics that may fit your case"
+        title="Clinics that may fit your situation"
         subtitle="Normalized prices, clinical fit and proximity — with a transparent why for every suggestion. You decide whether and when to reach out."
         note="This is not a medical recommendation. It's orientation to help you have better conversations with each clinic."
       />
@@ -121,7 +121,7 @@ export default function Clinics() {
                       source="Clinic-reported"
                       date="2026-Q1"
                       confidence="low"
-                      detail="Self-reported by each clinic, with cohorts that are not directly comparable. Use it as context, never as a prediction for your case."
+                      detail="Self-reported by each clinic, with cohorts that are not directly comparable. Use it as context, never as a prediction for your situation."
                     />
                   </div>
                 </TableHead>
