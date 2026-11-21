@@ -1,3 +1,5 @@
+import { situationEntryPath } from "@/modules/journey-v2/paths";
+import { FEATURES } from "@/config/features";
 import { useMemo } from "react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { Link } from "react-router-dom";
@@ -187,7 +189,7 @@ export default function PatientReport() {
             Add the basics that feel comfortable. Your report will then bring your situation, factors, costs and regulatory context together.
           </p>
           <Button asChild className="no-print mt-5">
-            <Link to="/situacion">Complete my situation</Link>
+            <Link to={situationEntryPath(FEATURES.recorridoV2)}>Tell us about your situation</Link>
           </Button>
         </Card>
       ) : (

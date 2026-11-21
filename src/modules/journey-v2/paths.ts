@@ -7,6 +7,8 @@ export const NEEDS_PATH = "/empezar/que-necesitas";
 export const PREPARE_PATH = "/tu-tratamiento";
 export const LIBRARY_PATH = "/biblioteca";
 export const ACCOUNT_PATH = "/cuenta";
+/** Where "Tell us about your situation" buttons go: v2 Basics, or the legacy form when v2 is off. */
+export const situationEntryPath = (v2: boolean) => (v2 ? BASICS_PATH : "/situacion");
 export const guidePath = (id: string) => `/guia/${id}`;
 
 /** Exact paths and path prefixes ("x/" = anything below x) open in v2. */

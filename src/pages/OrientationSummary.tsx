@@ -1,3 +1,5 @@
+import { situationEntryPath } from "@/modules/journey-v2/paths";
+import { FEATURES } from "@/config/features";
 import { useMemo } from "react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { Link } from "react-router-dom";
@@ -98,7 +100,7 @@ export default function OrientationSummary() {
           <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
             Share your age, country and what you are considering. We can then turn the information already in your profile into a clear, personal summary.
           </p>
-          <Button asChild className="no-print mt-5 rounded-full"><Link to="/situacion">Complete my situation</Link></Button>
+          <Button asChild className="no-print mt-5 rounded-full"><Link to={situationEntryPath(FEATURES.recorridoV2)}>Tell us about your situation</Link></Button>
         </Card>
       ) : (
         <>

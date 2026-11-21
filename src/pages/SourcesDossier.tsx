@@ -1,3 +1,5 @@
+import { situationEntryPath } from "@/modules/journey-v2/paths";
+import { FEATURES } from "@/config/features";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, BookOpen, CircleAlert, ExternalLink, FileDown, FileText, Route, Scale, Wallet } from "lucide-react";
@@ -563,7 +565,7 @@ export default function SourcesDossier() {
               Add your country of residence and family situation to see the regulatory source file for your orientation.
             </p>
             <Button asChild size="sm" variant="outline" className="mt-3 gap-1.5">
-              <Link to="/situacion">Complete my situation <ArrowRight className="size-3.5" /></Link>
+              <Link to={situationEntryPath(FEATURES.recorridoV2)}>Tell us about your situation <ArrowRight className="size-3.5" /></Link>
             </Button>
           </div>
         )}

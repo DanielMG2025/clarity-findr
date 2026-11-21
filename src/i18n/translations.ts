@@ -353,6 +353,7 @@ export const es: Record<string, string> = {
   "family situation": "situación familiar",
   "and we'll show you what's within reach where you live — and, if something isn't, where in Europe it would be. It's the first gate: without it, neither the clinical orientation nor the price are actionable.": "y te mostraremos qué opciones tienes a tu alcance donde vives y, si alguna no está disponible, dónde podrías acceder a ella en Europa. Es el primer paso: sin esta información, ni la orientación clínica ni los precios son aplicables.",
   "Complete my situation": "Completar mi situación",
+  "Tell us about your situation": "Cuéntanos tu situación",
   "What you can legally do in": "Qué puedes hacer legalmente en",
   "May require travelling": "Puede requerir desplazamiento",
   "All within reach": "Todo a tu alcance",

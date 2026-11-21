@@ -1,3 +1,5 @@
+import { situationEntryPath } from "@/modules/journey-v2/paths";
+import { FEATURES } from "@/config/features";
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -33,7 +35,7 @@ export function RegulatoryFrameworkPanel({ orientation }: { orientation: Regulat
           it would be. It's the first gate: without it, neither the clinical orientation nor the price
           are actionable.
         </p>
-        <Button asChild size="sm" className="gap-1"><Link to="/situacion">Complete my situation <ArrowRight className="size-3.5" /></Link></Button>
+        <Button asChild size="sm" className="gap-1"><Link to={situationEntryPath(FEATURES.recorridoV2)}>Tell us about your situation <ArrowRight className="size-3.5" /></Link></Button>
       </Card>
     );
   }

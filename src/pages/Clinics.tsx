@@ -1,3 +1,5 @@
+import { situationEntryPath } from "@/modules/journey-v2/paths";
+import { FEATURES } from "@/config/features";
 import { Link } from "react-router-dom";
 import { ArrowRight, Building2, Sparkles } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -57,7 +59,7 @@ export default function Clinics() {
             Clinics are ranked for your profile and filtered to the countries where your situation is legally viable. Add the basics that feel comfortable and this list will fill in.
           </p>
           <Button asChild className="no-print mt-5">
-            <Link to="/situacion">Complete my situation</Link>
+            <Link to={situationEntryPath(FEATURES.recorridoV2)}>Tell us about your situation</Link>
           </Button>
         </Card>
       ) : (
@@ -84,7 +86,7 @@ export default function Clinics() {
               </div>
             </div>
             <Button asChild size="sm" variant="outline">
-              <Link to="/situacion">Complete my situation <ArrowRight className="size-3.5 ml-1" /></Link>
+              <Link to={situationEntryPath(FEATURES.recorridoV2)}>Tell us about your situation <ArrowRight className="size-3.5 ml-1" /></Link>
             </Button>
           </div>
           <Progress value={completion} className="h-2" />

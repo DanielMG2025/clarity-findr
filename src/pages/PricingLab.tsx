@@ -1,3 +1,5 @@
+import { situationEntryPath } from "@/modules/journey-v2/paths";
+import { FEATURES } from "@/config/features";
 import { Link } from "react-router-dom";
 import { ArrowRight, Calculator } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -32,7 +34,7 @@ const PricingLab = () => {
             Cost ranges are personalized with your profile — the treatment you're considering, where you are and what's already in your situation. Add the basics that feel comfortable and this page will fill in.
           </p>
           <Button asChild className="no-print mt-5">
-            <Link to="/situacion">Complete my situation</Link>
+            <Link to={situationEntryPath(FEATURES.recorridoV2)}>Tell us about your situation</Link>
           </Button>
         </Card>
       ) : (
