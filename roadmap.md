@@ -18,3 +18,5 @@
 - [x] Seed 26 more forum topics (56 published) + labelled Theme/Forum/Profile/Time filter bar
 - [x] Route/goal step at /situacion + Example cases (find-similar + browse) + 3 egg-freezing cases
 - [x] Example cases: full ES/EN homogeneity, 24 richer cases across countries/families/routes, example next-step panel + "Study your own case" CTA
+
+- [x] Journey v2 Build B: new landing copy (EN/ES), basics reordered starting with who it's for (+ 'what brings you here' mapping), male content priority, tests for order/mapping/no gendered forms

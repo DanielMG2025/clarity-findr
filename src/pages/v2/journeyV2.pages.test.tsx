@@ -27,14 +27,15 @@ function at(path: string, el: React.ReactNode, pattern = "*") {
   );
 }
 
-beforeEach(() => { localStorage.setItem(LANGUAGE_KEY, "es"); useBasics.setState({ residence: undefined, destination: undefined, age: undefined, stage: undefined, treatment: undefined }); });
+beforeEach(() => { localStorage.setItem(LANGUAGE_KEY, "es"); useBasics.getState().reset(); });
 afterEach(() => { cleanup(); localStorage.clear(); });
 
 describe("v2 landing and start", () => {
-  it("landing: approved title and paragraph, one Start button to /empezar, no-account micro-copy", () => {
+  it("landing: approved slogan, sub-slogan and paragraph verbatim, one Start button to /empezar, no-account micro-copy", () => {
     at("/", <LandingV2 />);
-    expect(screen.getByRole("heading", { level: 1 }).textContent).toBe("Entiende y prepara tu tratamiento de fertilidad, sin perder meses.");
-    expect(screen.getByText(/^Fertility Compass reúne, de forma independiente, lo que normalmente tardarías meses en juntar/)).toBeTruthy();
+    expect(screen.getByRole("heading", { level: 1 }).textContent).toBe("Entiende y prepara tu tratamiento de fertilidad.");
+    expect(screen.getByTestId("landing-sub").textContent).toBe("Lo que tardarías meses en recopilar, condensado en un único sitio.");
+    expect(screen.getByText("Para preparar un tratamiento de fertilidad normalmente buscas en Google, preguntas a una IA, hablas con gente cercana, buceas en foros y acabas fiándote de alguien de confianza. Toda esa información es valiosa, pero llega a trozos, sin orden y sin saber qué aplica a tu caso. Fertility Compass junta todo eso en un solo sitio y te lo enseña en el orden en que lo necesitas: qué es cada tratamiento, cuánto cuesta de verdad en tu país, qué permite la ley, qué dice la evidencia a tu edad y lo que se cuenta en las comunidades.")).toBeTruthy();
     expect(screen.getByRole("link", { name: /Empezar/ }).getAttribute("href")).toBe("/empezar");
     expect(screen.getByText("Sin cuenta. Tus respuestas se quedan en tu navegador.")).toBeTruthy();
     expect(screen.getByRole("button", { name: /Qué encontrarás/ })).toBeTruthy();
@@ -63,12 +64,12 @@ describe("v2 guide", () => {
     expect(screen.getByRole("link", { name: "Elegir mi país" }).getAttribute("href")).toBe("/empezar/lo-basico?volver=%2Fguia%2Ffiv");
   });
   it("Spain, 35–37: shows the Spanish price range with its source and the HFEA age row labelled as UK data", () => {
-    useBasics.setState({ residence: "ES", age: "35-37", stage: "entendiendo" });
+    useBasics.setState({ residence: "ES", age: "35-37", reason: "entender" });
     at("/guia/fiv", <GuideV2 />, "/guia/:tratamiento");
     expect(screen.queryByTestId("no-country-notice")).toBeNull();
     expect(screen.getByTestId("guide-price").textContent).toMatch(/4\.?000\s€\s–\s6\.?000\s€/);
     expect(screen.getByTestId("guide-age").textContent).toMatch(/Reino Unido/);
-    expect(screen.getByTestId("guide-casebar").textContent).toMatch(/FIV · para España · 35–37 años · Empezando a entender/);
+    expect(screen.getByTestId("guide-casebar").textContent).toMatch(/FIV · para España · 35–37 años · Solo quiero entender/);
   });
   it("no sourced price for the country: the price block says so instead of inventing one", () => {
     useBasics.setState({ residence: "UK" });

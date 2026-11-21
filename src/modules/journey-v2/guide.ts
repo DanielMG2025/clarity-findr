@@ -59,6 +59,12 @@ export function regulationFor(code?: string): RegRow | null {
 
 export const regulationLink = (row: RegRow) => `/descubre/regulacion?country=${encodeURIComponent(row.country_en)}`;
 
+/**
+ * The age figures we have are by the woman's age, so they are not shown when the
+ * person being treated is a man.
+ */
+export const ageForGuide = (t: TreatmentV2, b: Basics) => (b.who === "hombre" ? null : ageBlock(t, b.age));
+
 export const guideArticles = (t: TreatmentV2): Article[] => t.guides.map(getArticle).filter((a): a is Article => !!a);
 
 export const guideFindings = (t: TreatmentV2): Finding[] => t.findings.map((id) => FINDINGS.find((f) => f.id === id)).filter((f): f is Finding => !!f);
@@ -73,7 +79,7 @@ export function guideSources(t: TreatmentV2, b: Basics): CollectedSource[] {
   const out: CollectedSource[] = [];
   const add = (s: CollectedSource) => { if (!out.some((x) => x.label === s.label && x.url === s.url)) out.push(s); };
   for (const a of guideArticles(t)) a.sources.forEach((s) => add({ label: s.label, url: s.url }));
-  const age = ageBlock(t, b.age);
+  const age = ageForGuide(t, b);
   if (age) add({ label: age.finding.source_label, url: age.finding.source_url, date: age.finding.source_year });
   for (const p of priceLines(t, b)) if (p.price) p.sources.forEach((s) => add({ ...s, date: p.price!.as_of }));
   for (const f of guideFindings(t)) add({ label: f.source_label, url: f.source_url, date: f.source_year });

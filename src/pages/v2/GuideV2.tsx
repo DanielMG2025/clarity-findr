@@ -9,10 +9,10 @@ import { forumTopicsForArticle, conversationLink } from "@/modules/content/forum
 import { ADDONS, ADDONS_FRAMING, ADDON_RATING_LABEL, ADDON_WHAT, FINDINGS } from "@/modules/content/science";
 import { CONFIDENCE_LABEL as REG_CONFIDENCE } from "@/modules/content/regulation";
 import { scopeFromMarket, scopeLabel, isOtherCountry } from "@/modules/evidence/geoScope";
-import { useBasics, ageLabel, stageLabel, treatmentCountry } from "@/modules/journey-v2/basics";
+import { useBasics, ageLabel, maleFocus, reasonLabel, treatmentCountry } from "@/modules/journey-v2/basics";
 import { countryOption } from "@/modules/journey-v2/countries";
-import { TREATMENTS_V2, treatmentById, type TreatmentV2 } from "@/modules/journey-v2/treatments";
-import { ageBlock, guideArticles, guideFindings, guideSources, guideTags, priceLines, regulationFor, regulationLink } from "@/modules/journey-v2/guide";
+import { MALE_GUIDE_ID, TREATMENTS_V2, treatmentById, type TreatmentV2 } from "@/modules/journey-v2/treatments";
+import { ageForGuide, guideArticles, guideFindings, guideSources, guideTags, priceLines, regulationFor, regulationLink } from "@/modules/journey-v2/guide";
 import { BASICS_PATH, LIBRARY_PATH, PREPARE_PATH, guidePath } from "@/modules/journey-v2/paths";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { Eyebrow, Fold, Pending, SMALL_CAPS, useL } from "./ui";
@@ -35,7 +35,7 @@ function CaseBar({ t }: { t: TreatmentV2 }) {
   const { L, es, language } = useL();
   const b = useBasics();
   const where = countryOption(treatmentCountry(b));
-  const parts = [L(t.label), where ? `${es ? "para" : "for"} ${L(where.name)}` : null, ageLabel(b.age, language), stageLabel(b.stage, language)].filter(Boolean);
+  const parts = [L(t.label), where ? `${es ? "para" : "for"} ${L(where.name)}` : null, ageLabel(b.age, language), reasonLabel(b.reason, language)].filter(Boolean);
   return (
     <p className="text-sm text-muted-foreground" data-testid="guide-casebar">
       <span className="text-foreground">{parts.join(" · ")}</span>{" "}
@@ -69,7 +69,7 @@ function Section({ title, children, testId }: { title: string; children: React.R
 function AgeSection({ t }: { t: TreatmentV2 }) {
   const { es, language } = useL();
   const b = useBasics();
-  const block = ageBlock(t, b.age);
+  const block = ageForGuide(t, b);
   if (!block) return null;
   const f = block.finding;
   const scope = scopeFromMarket(block.kind === "hfea-table" ? "UK" : null);
@@ -133,6 +133,40 @@ function PriceSection({ t }: { t: TreatmentV2 }) {
   );
 }
 
+/**
+ * Male content that already exists (pills, the ICSI evidence, the ICSI guide, voices).
+ * Shown first when the information is for a man or about male fertility; the
+ * dedicated guide is still "en preparación".
+ */
+function MaleBlock({ own }: { own: boolean }) {
+  const { es, language } = useL();
+  const pills = usePublishedPills();
+  const m = treatmentById(MALE_GUIDE_ID)!;
+  const related = pills.filter((p) => m.pills.includes(p.id));
+  const findings = guideFindings(m);
+  const voices = voicesForArticle({ tags: guideTags(m) }).filter((r) => r.audiences?.includes("men"));
+  return (
+    <Section title={es ? "Fertilidad masculina" : "Male fertility"} testId="guide-male">
+      {!own && <p className="text-sm text-muted-foreground">{es ? "Está aquí primero porque la información es para un hombre o sobre fertilidad masculina." : "It's here first because the information is for a man or about male fertility."}</p>}
+      {!own && <Link to={guidePath(MALE_GUIDE_ID)} className="inline-flex items-center gap-1 text-sm text-primary hover:underline">{es ? "Ver todo lo que tenemos sobre fertilidad masculina" : "See everything we have on male fertility"} <ArrowRight aria-hidden className="size-3.5" /></Link>}
+      {own && (
+        <>
+          {related.map((p) => <PillCard key={p.id} pill={p} />)}
+          {findings.map((f) => (
+            <div key={f.id} className="border-l-2 border-accent/60 pl-3">
+              <p className="font-medium">{es ? f.title_es : f.title_en}</p>
+              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{es ? f.summary_es : f.summary_en} {es ? f.means_es : f.means_en}</p>
+              <p className="mt-1 text-xs text-muted-foreground">{es ? "Evidencia" : "Evidence"}: <a href={f.source_url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{f.source_label}</a> · {f.source_year}</p>
+            </div>
+          ))}
+          <Link to="/aprende/what-is-icsi" className="inline-flex items-center gap-1 text-sm text-primary hover:underline">{es ? "Leer la guía de ICSI (la técnica que se usa cuando hay un problema en el semen)" : "Read the ICSI guide (the technique used when there's a sperm problem)"} <ArrowRight aria-hidden className="size-3.5" /></Link>
+          {voices.map((r) => <p key={r.id} className="text-sm"><a href={primaryVoiceLink(r)} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{r.name}</a> <span className="text-muted-foreground">· {r.affiliation[language]}</span></p>)}
+        </>
+      )}
+    </Section>
+  );
+}
+
 /** Journey v2 · screen 4a: the guide in two layers. */
 export default function GuideV2() {
   const { tratamiento } = useParams();
@@ -154,6 +188,8 @@ export default function GuideV2() {
   }
 
   const what = t.what ? getArticle(t.what) : undefined;
+  const male = maleFocus(b);
+  const isMaleGuide = t.id === MALE_GUIDE_ID;
   const articles = guideArticles(t);
   const faqs = articles.flatMap((a) => (a.faqs ?? []).map((f) => ({ ...f, slug: a.slug })));
   const findings = guideFindings(t);
@@ -181,6 +217,7 @@ export default function GuideV2() {
       {!what ? (
         <>
           <Pending>{es ? `La guía de ${L(t.label).toLowerCase()} todavía no está escrita. No la rellenamos con contenido sin fuente.` : `The ${L(t.label).toLowerCase()} guide isn't written yet. We don't fill it with unsourced content.`}</Pending>
+          {isMaleGuide && <MaleBlock own />}
           <div className="flex flex-wrap gap-3">
             <Button asChild className="rounded-full"><Link to={PREPARE_PATH}>{es ? "Preparar mi tratamiento" : "Prepare my treatment"}</Link></Button>
             <Button asChild variant="outline" className="rounded-full"><Link to={LIBRARY_PATH}>{es ? "Ir a la biblioteca" : "Go to the library"}</Link></Button>
@@ -190,6 +227,7 @@ export default function GuideV2() {
       ) : (
         <>
           {/* LAYER 1 — the essentials */}
+          {male && <MaleBlock own={false} />}
           <Section title={es ? "Qué es" : "What it is"} testId="guide-what">
             <p className="leading-relaxed">{tr(what.summary)}</p>
             <Link to={`/aprende/${what.slug}`} className="inline-flex items-center gap-1 text-sm text-primary hover:underline">{es ? "Leer la guía completa" : "Read the full guide"} <ArrowRight aria-hidden className="size-3.5" /></Link>

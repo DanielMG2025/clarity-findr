@@ -104,7 +104,7 @@ describe("journey v2 · what each block shows", () => {
 describe("journey v2 · basics → case", () => {
   beforeEach(() => useMasterRecord.getState().reset?.());
   it("copies country and treatment, never the age band, and never a country the case engines don't know", () => {
-    syncBasicsToCase({ residence: "ES", age: "35-37", treatment: "ovodonacion", stage: "preservar" });
+    syncBasicsToCase({ residence: "ES", age: "35-37", treatment: "ovodonacion", reason: "preservar" });
     let s = useMasterRecord.getState();
     expect(s.identity.country_of_residence).toBe("ES");
     expect(s.identity.age).toBeUndefined();

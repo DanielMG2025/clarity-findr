@@ -1,21 +1,25 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, BookOpen, ClipboardList } from "lucide-react";
-import { useBasics } from "@/modules/journey-v2/basics";
-import { treatmentById } from "@/modules/journey-v2/treatments";
+import { maleFocus, useBasics, type Basics } from "@/modules/journey-v2/basics";
+import { MALE_GUIDE_ID, treatmentById } from "@/modules/journey-v2/treatments";
 import { BASICS_PATH, LIBRARY_PATH, PREPARE_PATH, guidePath } from "@/modules/journey-v2/paths";
 import { Eyebrow, useL } from "./ui";
 
-/** Where "Entender" goes: the chosen treatment's guide, or the library when none was chosen. */
-export function understandPath(treatment?: string): string {
-  return treatmentById(treatment) ? guidePath(treatment as string) : LIBRARY_PATH;
+/** Where "Entender" goes: the chosen treatment's guide; with no treatment, the male-fertility page for a male focus, else the library. */
+export function understandPath(b: Pick<Basics, "treatment" | "who" | "reason">): string {
+  const t = treatmentById(b.treatment);
+  if (t) return guidePath(t.id);
+  return maleFocus(b) ? guidePath(MALE_GUIDE_ID) : LIBRARY_PATH;
 }
 
 /** Journey v2 · screen 3: two doors. */
 export default function WhatYouNeed() {
   const { es } = useL();
   const treatment = useBasics((s) => s.treatment);
+  const who = useBasics((s) => s.who);
+  const reason = useBasics((s) => s.reason);
   const doors = [
-    { to: understandPath(treatment), icon: BookOpen, title: es ? "Entender" : "Understand", desc: es ? "Qué es, cuánto cuesta y qué dice la evidencia, para tu caso." : "What it is, what it costs and what the evidence says, for your case.", testId: "door-understand" },
+    { to: understandPath({ treatment, who, reason }), icon: BookOpen, title: es ? "Entender" : "Understand", desc: es ? "Qué es, cuánto cuesta y qué dice la evidencia, para tu caso." : "What it is, what it costs and what the evidence says, for your case.", testId: "door-understand" },
     { to: PREPARE_PATH, icon: ClipboardList, title: es ? "Preparar mi tratamiento" : "Prepare my treatment", desc: es ? "La clínica, la financiación, el viaje y el después, paso a paso." : "The clinic, financing, travel and what comes after, step by step.", testId: "door-prepare" },
   ];
   return (

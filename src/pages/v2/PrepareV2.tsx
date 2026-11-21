@@ -8,9 +8,11 @@ import {
   BLOCKS, blockProgressMPR, ProfileBlock, BasicInfoBlock, MedicalContextBlock, TreatmentHistoryBlock, PreferencesBlock, DocumentsBlock, SharedQuotesBlock,
 } from "@/modules/patient-profile";
 import type { BlockKey } from "@/modules/patient-profile/blocks";
-import { useBasics, abroad, treatmentCountry } from "@/modules/journey-v2/basics";
+import { useBasics, abroad, maleFocus, treatmentCountry } from "@/modules/journey-v2/basics";
 import { countryOption } from "@/modules/journey-v2/countries";
-import { treatmentById } from "@/modules/journey-v2/treatments";
+import { MALE_GUIDE_ID, treatmentById } from "@/modules/journey-v2/treatments";
+import { usePublishedPills } from "@/modules/content";
+import { PillCard } from "@/modules/content/PillCard";
 import { priceLines, regulationFor, regulationLink } from "@/modules/journey-v2/guide";
 import { depthSections } from "@/modules/journey-v2/depth";
 import { PENDING, PREPARE_STEPS, PREPARE_TITLES, prepareGuide, prepareSections, type PrepareStep } from "@/modules/journey-v2/prepare";
@@ -98,6 +100,21 @@ function TravelStep() {
   );
 }
 
+/** Male focus: the existing male pill about the first test goes first; male-specific questions are still pending. */
+function MaleConsult() {
+  const { es } = useL();
+  const pills = usePublishedPills();
+  const first = pills.find((p) => p.id === "seminogram");
+  return (
+    <div className="space-y-3" data-testid="prepare-male">
+      <p className={`${SMALL_CAPS} text-primary`}>{es ? "Fertilidad masculina" : "Male fertility"}</p>
+      {first && <PillCard pill={first} />}
+      <Pending>{es ? "Preguntas para la consulta pensadas para la fertilidad masculina" : "Consultation questions focused on male fertility"}</Pending>
+      <Link to={`/guia/${MALE_GUIDE_ID}`} className="inline-flex items-center gap-1 text-sm text-primary hover:underline">{es ? "Ver todo lo que tenemos sobre fertilidad masculina" : "See everything we have on male fertility"} <ArrowRight aria-hidden className="size-3.5" /></Link>
+    </div>
+  );
+}
+
 /** Journey v2 · screen 4b: skippable modules with progress, ending in the report. */
 export default function PrepareV2() {
   const { es, L } = useL();
@@ -106,6 +123,7 @@ export default function PrepareV2() {
   const step: PrepareStep = raw && PREPARE_STEPS.includes(raw) ? raw : "preguntas";
   const index = PREPARE_STEPS.indexOf(step);
   const treatment = useBasics((s) => s.treatment);
+  const male = useBasics((s) => maleFocus(s));
   useLayoutEffect(() => { restoreOwnCase(); }, []);
   const go = (s: PrepareStep) => { setParams({ paso: s }); window.scrollTo({ top: 0 }); };
   const next = PREPARE_STEPS[index + 1];
@@ -161,6 +179,7 @@ export default function PrepareV2() {
       {step === "consulta" && (
         <div className="space-y-5">
           <Why>{es ? "Lo que conviene llevar pensado a la primera cita, para salir con respuestas." : "What's worth having thought through for the first appointment, so you leave with answers."}</Why>
+          {male && <MaleConsult />}
           <Sections step="consulta" />
           <Link to={`/aprende/${prepareGuide("consulta", treatment)}`} className="inline-flex items-center gap-1 text-sm text-primary hover:underline">{es ? "Leer la guía completa" : "Read the full guide"} <ArrowRight aria-hidden className="size-3.5" /></Link>
         </div>
