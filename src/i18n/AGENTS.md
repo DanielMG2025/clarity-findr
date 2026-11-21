@@ -1,0 +1,1 @@
+- Site `<title>`/description: English in `index.html` for crawlers; `siteMeta.ts` swaps them per language via `LanguageContext`.

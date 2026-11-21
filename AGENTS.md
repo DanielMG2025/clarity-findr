@@ -28,4 +28,3 @@
 - Scroll-to-top + back-to-top button (`nav/PageScroll.tsx`) mount once in App; no page copies.
 - Evidence geography labels/ordering (`modules/evidence/geoScope.ts`) are presentation-only; never alter figures or sources.
 - `noEmailBetaJoin`: `join_direct` token redeemed by `verifyOtp`; re-entry only `no_email_join` rows, not admins.
-- Site `<title>`/description: English in static `index.html` for crawlers; `src/i18n/siteMeta.ts` swaps them per language at runtime via `LanguageContext`, so both stay one source of copy.
