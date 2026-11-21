@@ -19,7 +19,7 @@ export default function WhatYouNeed() {
   const who = useBasics((s) => s.who);
   const reason = useBasics((s) => s.reason);
   const doors = [
-    { to: understandPath({ treatment, who, reason }), icon: BookOpen, title: es ? "Entender" : "Understand", desc: es ? "Qué es, cuánto cuesta y qué dice la evidencia, para tu caso." : "What it is, what it costs and what the evidence says, for your case.", testId: "door-understand" },
+    { to: understandPath({ treatment, who, reason }), icon: BookOpen, title: es ? "Entender" : "Understand", desc: es ? "Qué es, cuánto cuesta y qué dice la evidencia, para tu situación." : "What it is, what it costs and what the evidence says, for your situation.", testId: "door-understand" },
     { to: PREPARE_PATH, icon: ClipboardList, title: es ? "Preparar mi tratamiento" : "Prepare my treatment", desc: es ? "La clínica, la financiación, el viaje y el después, paso a paso." : "The clinic, financing, travel and what comes after, step by step.", testId: "door-prepare" },
   ];
   return (

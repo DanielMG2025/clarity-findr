@@ -40,8 +40,8 @@ export const AGE_BANDS_V2: { id: AgeBandV2; label: Localized }[] = [
 export const WHO_OPTIONS: { id: Who; label: Localized }[] = [
   { id: "mujer", label: { en: "For me (woman)", es: "Para mí (mujer)" } },
   { id: "hombre", label: { en: "For me (man)", es: "Para mí (hombre)" } },
-  { id: "pareja", label: { en: "For us, as a couple", es: "Para nosotros, en pareja" } },
-  { id: "otra-persona", label: { en: "For someone close to me", es: "Para alguien cercano" } },
+  { id: "pareja", label: { en: "As a couple", es: "En pareja" } },
+  { id: "otra-persona", label: { en: "For someone in my circle", es: "Para alguien de mi entorno" } },
 ];
 
 /** Case goal used by the existing engines (intent.goal). */
@@ -53,7 +53,7 @@ export type ReasonGoal = "treatment" | "preserve" | "unsure";
  * Male fertility has no treatment of its own: it switches on the male focus.
  */
 export const REASONS: { id: Reason; label: Localized; goal: ReasonGoal; treatment?: TreatmentId; male?: true }[] = [
-  { id: "embarazo", label: { en: "I want treatment to get pregnant", es: "Quiero un tratamiento para quedarme embarazada" }, goal: "treatment" },
+  { id: "embarazo", label: { en: "I'm seeking a pregnancy with the help of treatment", es: "Busco un embarazo con ayuda de un tratamiento" }, goal: "treatment" },
   { id: "preservar", label: { en: "Freeze eggs / preserve fertility", es: "Congelar óvulos / preservar" }, goal: "preserve", treatment: "preservacion" },
   { id: "masculina", label: { en: "Male fertility", es: "Fertilidad masculina" }, goal: "treatment", male: true },
   { id: "donacion", label: { en: "Donation (eggs / embryos)", es: "Donación (óvulos / embriones)" }, goal: "treatment", treatment: "ovodonacion" },

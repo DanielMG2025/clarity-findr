@@ -148,7 +148,7 @@ export default function PrepareV2() {
       {step === "preguntas" && <QuestionsStep />}
       {step === "clinica" && (
         <div className="space-y-5">
-          <Why>{es ? "Elegir clínica es comparar lo mismo con lo mismo: qué incluye cada precio y qué encaja con tu caso." : "Choosing a clinic means comparing like with like: what each price includes and what fits your case."}</Why>
+          <Why>{es ? "Elegir clínica es comparar lo mismo con lo mismo: qué incluye cada precio y qué encaja con tu situación." : "Choosing a clinic means comparing like with like: what each price includes and what fits your situation."}</Why>
           <p className="flex max-w-[65ch] gap-3 border-l-2 border-accent/60 pl-4 text-sm leading-relaxed"><ShieldCheck aria-hidden className="mt-0.5 size-4 shrink-0 text-accent" />{es ? "Somos independientes: no hay posiciones pagadas, y de cada clínica te decimos qué hemos podido comprobar." : "We're independent: there are no paid positions, and for each clinic we tell you what we've been able to check."}</p>
           <Sections step="clinica" />
           <Button asChild className="rounded-full"><Link to="/clinicas">{es ? "Ver clínicas que pueden encajar" : "See clinics that may fit"} <ArrowRight aria-hidden className="ml-1 size-4" /></Link></Button>

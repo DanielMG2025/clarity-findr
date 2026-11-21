@@ -67,3 +67,11 @@ export function suggestCountry(languages: readonly string[]): string | undefined
   }
   return undefined;
 }
+
+const fold = (v: string) => v.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+
+/** Countries whose name (in either language) or code matches the search, accent-insensitive. */
+export function searchCountries(query: string, exclude?: string): CountryOption[] {
+  const q = fold(query);
+  return COUNTRY_OPTIONS.filter((c) => c.code !== exclude && (!q || fold(c.name.es).includes(q) || fold(c.name.en).includes(q) || c.code.toLowerCase() === q));
+}

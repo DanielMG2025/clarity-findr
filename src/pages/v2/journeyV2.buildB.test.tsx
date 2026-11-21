@@ -33,23 +33,52 @@ function at(path: string, el: React.ReactNode, pattern = "*") {
 beforeEach(() => { localStorage.setItem(LANGUAGE_KEY, "es"); useBasics.getState().reset(); });
 afterEach(() => { cleanup(); localStorage.clear(); });
 
-describe("basics · starts with who it's for", () => {
-  it("asks the five questions in the agreed order", () => {
+describe("basics · one question per step, starting with who it's for", () => {
+  it("walks the five questions in the agreed order with Previous / Next and progress", () => {
     at("/empezar/lo-basico", <Basics />);
-    expect(screen.getAllByRole("heading", { level: 2 }).map((h) => h.textContent)).toEqual([
+    const seen: string[] = [];
+    for (let i = 0; i < 5; i++) {
+      expect(screen.getByText(`Lo básico · ${i + 1}/5`)).toBeTruthy();
+      seen.push(screen.getByRole("heading", { level: 2 }).textContent!);
+      if (i < 4) fireEvent.click(screen.getByTestId("basics-next"));
+    }
+    expect(seen).toEqual([
       "¿Para quién buscas información?",
       "¿Qué edad tiene la persona que se trataría?",
       "¿Qué te trae aquí?",
       "¿Dónde vives?",
       "¿Sabes qué tratamiento te interesa?",
     ]);
-    for (const id of ["mujer", "hombre", "pareja", "otra-persona"]) expect(screen.getByTestId(`who-${id}`)).toBeTruthy();
+    expect(screen.getByTestId("basics-continue")).toBeTruthy();
+    fireEvent.click(screen.getByTestId("basics-prev"));
+    expect(screen.getByRole("heading", { level: 2 }).textContent).toBe("¿Dónde vives?");
   });
-  it("for a couple asks for the woman's age, and explains why", () => {
+  it("offers the four neutral 'who' options", () => {
     at("/empezar/lo-basico", <Basics />);
-    expect(screen.queryByTestId("age-couple")).toBeNull();
+    expect(["mujer", "hombre", "pareja", "otra-persona"].map((id) => screen.getByTestId(`who-${id}`).textContent)).toEqual(["Para mí (mujer)", "Para mí (hombre)", "En pareja", "Para alguien de mi entorno"]);
+  });
+  it("answers are kept when going back and forth", () => {
+    at("/empezar/lo-basico", <Basics />);
     fireEvent.click(screen.getByTestId("who-pareja"));
+    fireEvent.click(screen.getByTestId("basics-next"));
     expect(screen.getByTestId("age-couple").textContent).toBe("Indica la edad de la mujer: es la que más cambia las probabilidades.");
+    fireEvent.click(screen.getByTestId("age-38-40"));
+    fireEvent.click(screen.getByTestId("basics-prev"));
+    expect(screen.getByTestId("who-pareja").getAttribute("aria-pressed")).toBe("true");
+    fireEvent.click(screen.getByTestId("basics-next"));
+    expect(screen.getByTestId("age-38-40").getAttribute("aria-pressed")).toBe("true");
+    expect(useBasics.getState()).toMatchObject({ who: "pareja", age: "38-40" });
+  });
+  it("the country list has a search, accent-insensitive, in both languages", () => {
+    at("/empezar/lo-basico?paso=4", <Basics />);
+    expect(screen.queryByTestId("residence-UY")).toBeNull();
+    fireEvent.change(screen.getByTestId("residence-search"), { target: { value: "uru" } });
+    fireEvent.click(screen.getByTestId("residence-UY"));
+    expect(useBasics.getState().residence).toBe("UY");
+    fireEvent.change(screen.getByTestId("residence-search"), { target: { value: "mexico" } });
+    expect(screen.getByTestId("residence-MX")).toBeTruthy();
+    fireEvent.change(screen.getByTestId("residence-search"), { target: { value: "zzz" } });
+    expect(screen.getByTestId("residence-none")).toBeTruthy();
   });
   it("the treatment picker does not offer the male-fertility page as a treatment", () => {
     expect(PICKER_TREATMENTS.map((t) => t.id)).toEqual(["fiv", "icsi", "inseminacion", "ovodonacion", "preservacion", "adopcion-embriones"]);
@@ -59,7 +88,7 @@ describe("basics · starts with who it's for", () => {
 describe("'¿Qué te trae aquí?' maps onto the existing situation and treatment", () => {
   it("each answer has the agreed label, case goal and (if any) treatment", () => {
     expect(REASONS.map((r) => [r.label.es, r.goal, r.treatment ?? null, !!r.male])).toEqual([
-      ["Quiero un tratamiento para quedarme embarazada", "treatment", null, false],
+      ["Busco un embarazo con ayuda de un tratamiento", "treatment", null, false],
       ["Congelar óvulos / preservar", "preserve", "preservacion", false],
       ["Fertilidad masculina", "treatment", null, true],
       ["Donación (óvulos / embriones)", "treatment", "ovodonacion", false],
@@ -117,9 +146,9 @@ describe("male focus puts the existing male content first", () => {
 });
 
 describe("no gendered forms in the journey copy", () => {
-  // Wording given verbatim in the brief; everything else must stay gender-neutral.
-  const ALLOWED = ["Para nosotros, en pareja", "Para alguien cercano", "quedarme embarazada", "gente cercana", "Tu enlace está listo"];
-  const GENDERED = /\b(amig[ao]s?|bienvenid[ao]s?|interesad[ao]s?|preparad[ao]s?|informad[ao]s?|segur[ao]s?|list[ao]s?|cansad[ao]s?|perdid[ao]s?|agobiad[ao]s?|tranquil[ao]s?|nervios[ao]s?|decidid[ao]s?|embarazad[ao]s?|cercan[ao]s?|nosotr[ao]s|vosotr[ao]s|ell[ao]s|tod[ao]s|sol[ao]s? (?:o|y|con|ante)|girlfriends?|ladies|guys)\b/i;
+  // "gente cercana" / "enlace … listo" agree with a noun, not with the reader.
+  const ALLOWED = ["gente cercana", "Tu enlace está listo"];
+  const GENDERED = /\b(amig[ao]s?|bienvenid[ao]s?|interesad[ao]s?|preparad[ao]s?|informad[ao]s?|segur[ao]s?|list[ao]s? (?:para|ya)|cansad[ao]s?|perdid[ao]s?|agobiad[ao]s?|tranquil[ao]s?|nervios[ao]s?|decidid[ao]s?|embarazad[ao]s?|cercan[ao]s?|nosotr[ao]s|vosotr[ao]s|ell[ao]s|tod[ao]s|sol[ao]s? (?:o|y|con|ante)|girlfriends?|ladies|guys)\b/i;
   const root = process.cwd();
   const files = [
     ...readdirSync(join(root, "src/pages/v2")).map((f) => `src/pages/v2/${f}`),

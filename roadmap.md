@@ -20,3 +20,5 @@
 - [x] Example cases: full ES/EN homogeneity, 24 richer cases across countries/families/routes, example next-step panel + "Study your own case" CTA
 
 - [x] Journey v2 Build B: new landing copy (EN/ES), basics reordered starting with who it's for (+ 'what brings you here' mapping), male content priority, tests for order/mapping/no gendered forms
+
+- [ ] Journey v2 Build C: neutral options, one-question-per-step basics with country search, shared-copy coherence, recorridoV2 on in production, access links production-ready
